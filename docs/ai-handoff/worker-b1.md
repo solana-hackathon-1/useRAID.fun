@@ -1,0 +1,1 @@
+- #285 → `task/285-consent-followups`: consent pre-screen reuses acceptance's offer checks/codes (`findParticipantOffer` + `assertOffer`), shared `assertOpenForTaking` splits DEADLINE_PASSED/PUBLICATION_BLOCKED across consent, acceptance and applications, deterministic-clock tests with a hit check. Full real-PG 274 files / 3999 tests, lint 0 errors, typecheck clean.

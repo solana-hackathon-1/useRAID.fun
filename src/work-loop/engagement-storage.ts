@@ -7,7 +7,7 @@ import {
   type CommandReceiptTransaction as Tx,
 } from '../command-receipts';
 import { WorkError, type WorkCommand } from './contracts';
-import { RaidTermsSchema, publicationProblems } from './terms';
+import { RaidTermsSchema } from './terms';
 import {
   CommitEngagementInput,
   CommittedEngagementSchema,
@@ -29,6 +29,7 @@ import {
   source,
   definition,
   clock,
+  assertOpenForTaking,
   type Source,
 } from './engagement-authority';
 const Approval = z.strictObject({
@@ -161,7 +162,7 @@ export async function commitEngagement(
         requireOfferIssuerCheck(host);
         assertOffer(offer, input, authorization.participantId, await clock(tx));
       } else if (offer) fail('INVALID_INPUT');
-      if (publicationProblems(terms, await clock(tx)).length) fail('DEADLINE_PASSED');
+      assertOpenForTaking(terms, await clock(tx));
       const assessed = Approval.safeParse(
         await host.assess(tx, {
           actor,
@@ -185,7 +186,7 @@ export async function commitEngagement(
       // Host callbacks and lock waits cannot carry an expired session/window across the command boundary.
       await session(tx, actor);
       const now = await clock(tx);
-      if (publicationProblems(terms, now).length) fail('DEADLINE_PASSED');
+      assertOpenForTaking(terms, now);
       if (locked)
         await assertOfferIssuerAuthorized(
           tx,
@@ -221,7 +222,7 @@ export async function commitEngagement(
         throw new WorkError('CAPACITY_CONFLICT', existing[0].engagementId);
       }
       await session(tx, actor);
-      if (publicationProblems(terms, await clock(tx)).length) fail('DEADLINE_PASSED');
+      assertOpenForTaking(terms, await clock(tx));
       if (offer) {
         assertOffer(offer, input, authorization.participantId, await clock(tx));
         await tx.query(

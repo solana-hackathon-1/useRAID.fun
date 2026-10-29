@@ -18,6 +18,26 @@ async function readLockedOffer(tx: Tx, id: string) {
     issuer: String(offeredByAccountId),
   };
 }
+/**
+ * The participant's offer most relevant to this slot, read without a lock: a live PENDING offer for these terms
+ * first, otherwise the newest. A pre-screen only; acceptance rereads and locks the offer.
+ */
+export async function findParticipantOffer(
+  tx: Tx,
+  target: { participantId: string; slotId: string; termsVersionId: string },
+  now: Date,
+) {
+  const rows = await tx.query<Record<string, unknown>>(
+    `SELECT "id"::text,"applicationId"::text,"slotId"::text,"termsVersionId"::text,"participantId"::text,"expiresAt","state","acceptedEngagementId"::text FROM "RaidOffer" WHERE "participantId"=$1::uuid AND "slotId"=$2::uuid ORDER BY ("state"='PENDING' AND "termsVersionId"=$3::uuid AND "expiresAt">$4::timestamptz) DESC,"createdAt" DESC LIMIT 1`,
+    [target.participantId, target.slotId, target.termsVersionId, now.toISOString()],
+  );
+  if (!rows.length) return undefined;
+  const row = rows[0];
+  return OfferSchema.parse({
+    ...row,
+    expiresAt: row.expiresAt instanceof Date ? row.expiresAt.toISOString() : row.expiresAt,
+  });
+}
 export async function lockOffer(tx: Tx, id: string) {
   return (await readLockedOffer(tx, id)).offer;
 }

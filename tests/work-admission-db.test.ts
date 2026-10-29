@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
+import { canonicalRequestDigest } from '../src/command-receipts';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
 import {
   submitApplication,
@@ -359,11 +360,100 @@ integration('T021 applications and offers', () => {
       status: 'EXECUTED',
     });
     await run((tx) => revokeOffer(tx, cmd(founder.actor, { offerId: o.offer.id }), host));
-    // A fresh command after the offer was revoked is refused; the consent already recorded stays untouched.
+    // A fresh command after the offer was revoked is refused with acceptance's code; the recorded consent stays.
     await expect(consentTo(applicant.actor, slot, digest)).rejects.toMatchObject({
-      code: 'ADMISSION_REQUIRED',
+      code: 'OFFER_UNAVAILABLE',
     });
     expect(await db.$queryRawUnsafe('SELECT 1 FROM "WorkAcceptanceConsent"')).toHaveLength(1);
+  });
+  // Deterministic clock at the port; fails loudly if the stubbed statement is never issued.
+  const withClock = async <T>(
+    at: Date,
+    work: (tx: Parameters<Parameters<typeof run>[0]>[0], hits: () => number) => Promise<T>,
+  ) => {
+    let hit = 0;
+    const result = await run((tx) =>
+      work(
+        {
+          ...tx,
+          async query<Row>(sql: string, bindings: readonly (string | null)[]) {
+            if (sql === 'SELECT clock_timestamp() AS now') return (hit++, [{ now: at }]) as Row[];
+            return tx.query<Row>(sql, bindings);
+          },
+        } as typeof tx,
+        () => hit,
+      ),
+    );
+    expect(hit).toBeGreaterThan(0);
+    return result;
+  };
+  it('refuses consent for an expired offer with the code acceptance uses', async () => {
+    const { applicant, founder, slot, apply } = await setup();
+    const digest = await digestOf(slot.termsVersionId);
+    const a = await applyTo(apply);
+    const o = await offerTo(
+      cmd(founder.actor, { applicationId: a.application.id, expiresAt: expiry() }),
+    );
+    const after = new Date(Date.parse(o.offer.expiresAt) + 1000);
+    const consent = (c: Date) =>
+      withClock(c, (tx) =>
+        recordAcceptanceConsent(
+          tx,
+          cmd(applicant.actor, {
+            slotId: slot.slotId,
+            termsVersionId: slot.termsVersionId,
+            termsDigest: digest,
+          }),
+          { allowNewWrites: true },
+        ),
+      );
+    await expect(consent(after)).rejects.toMatchObject({ code: 'OFFER_EXPIRED' });
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "WorkAcceptanceConsent"')).toEqual([]);
+    await expect(consent(new Date(Date.parse(o.offer.expiresAt) - 1000))).resolves.toMatchObject({
+      status: 'EXECUTED',
+    });
+  });
+  it('records consent for an open-admission Raid without any offer', async () => {
+    const human = await seedWorkHuman(db);
+    const slot = await seedWorkSlot(db);
+    await expect(
+      consentTo(human.actor, slot, await digestOf(slot.termsVersionId)),
+    ).resolves.toMatchObject({ status: 'EXECUTED' });
+  });
+  it('reports a blocked publication apart from a passed deadline', async () => {
+    const human = await seedWorkHuman(db);
+    const slot = await seedWorkSlot(db);
+    const digest = await digestOf(slot.termsVersionId);
+    const [{ snapshot }] = (await db.$queryRawUnsafe(
+      'SELECT "snapshot" FROM "TermsVersion" WHERE "id"=$1::uuid',
+      slot.termsVersionId,
+    )) as { snapshot: Record<string, unknown> }[];
+    // Saved terms cannot be unpublishable, so present a non-public variant (with its own digest) at the read port.
+    const blocked = { ...snapshot, visibility: 'INVITE_ONLY' };
+    let served = 0;
+    await expect(
+      run((tx) =>
+        recordAcceptanceConsent(
+          {
+            ...tx,
+            async query<Row>(sql: string, bindings: readonly (string | null)[]) {
+              if (sql === 'SELECT "snapshot","digest" FROM "TermsVersion" WHERE "id"=$1::uuid')
+                return (served++,
+                [{ snapshot: blocked, digest: canonicalRequestDigest(blocked) }]) as Row[];
+              return tx.query<Row>(sql, bindings);
+            },
+          } as typeof tx,
+          cmd(human.actor, {
+            slotId: slot.slotId,
+            termsVersionId: slot.termsVersionId,
+            termsDigest: digest,
+          }),
+          { allowNewWrites: true },
+        ),
+      ),
+    ).rejects.toMatchObject({ code: 'PUBLICATION_BLOCKED' });
+    expect(served).toBeGreaterThan(0);
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "WorkAcceptanceConsent"')).toEqual([]);
   });
   it('refuses consent once the commitment deadline has passed', async () => {
     const human = await seedWorkHuman(db);
