@@ -31,7 +31,6 @@ import {
   clock,
   type Source,
 } from './engagement-authority';
-const Input = CommitEngagementInput;
 const Approval = z.strictObject({
   consentRef: InternalId,
   beneficiaryRef: InternalId,
@@ -120,7 +119,7 @@ export async function commitEngagement(
   host: AcceptanceHost,
 ): Promise<CommittedEngagement> {
   validate(tx, command?.actor);
-  const parsed = Input.safeParse(command.input);
+  const parsed = CommitEngagementInput.safeParse(command.input);
   if (!parsed.success) fail('INVALID_INPUT');
   if (
     typeof host?.allowNewWrites !== 'boolean' ||

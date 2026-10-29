@@ -104,6 +104,12 @@ function invalid(): never {
 function contract(): never {
   throw new WorkError('STORAGE_CONTRACT');
 }
+/** Parses a host result with its strict schema and requires it to describe the request that was made. */
+function echoed<T>(schema: z.ZodType<T>, raw: unknown, matches: (value: T) => boolean): T {
+  const parsed = schema.safeParse(raw);
+  if (!parsed.success || !matches(parsed.data)) return contract();
+  return parsed.data;
+}
 /**
  * Where this boundary's callers act on an open Raid, a passed deadline or an unpublished listing means the Raid is
  * closed to them, not that their record is stale. Other boundaries keep the shared "refresh" mapping.
@@ -231,80 +237,78 @@ export function createWorkHandlers(host: WorkHttpHost) {
     SUBMIT(request: Request) {
       return run(request, true, async (a, requestId) => {
         const c = await command(request, SubmitWorkInput, a, requestId);
-        const r = SubmissionResultSchema.safeParse(await host.submitWork(c));
-        if (!r.success || r.data.submission.engagementId !== c.input.engagementId) contract();
-        return r.data;
+        return echoed(
+          SubmissionResultSchema,
+          await host.submitWork(c),
+          (r) => r.submission.engagementId === c.input.engagementId,
+        );
       });
     },
     DECIDE(request: Request) {
       return run(request, true, async (a, requestId) => {
         const c = await command(request, DecideReviewInput, a, requestId);
-        const r = ReviewResultSchema.safeParse(await host.decideReview(c));
-        if (
-          !r.success ||
-          r.data.review.submissionId !== c.input.submissionId ||
-          r.data.review.decision !== c.input.decision
-        )
-          contract();
-        return r.data;
+        return echoed(
+          ReviewResultSchema,
+          await host.decideReview(c),
+          (r) =>
+            r.review.submissionId === c.input.submissionId &&
+            r.review.decision === c.input.decision,
+        );
       });
     },
     ISSUE_OFFER(request: Request) {
       return run(request, true, async (a, requestId) => {
         const c = await command(request, IssueOffer, a, requestId);
-        const r = OfferResultSchema.safeParse(await host.issueOffer(c));
-        if (!r.success || r.data.offer.applicationId !== c.input.applicationId) contract();
-        return r.data;
+        return echoed(
+          OfferResultSchema,
+          await host.issueOffer(c),
+          (r) => r.offer.applicationId === c.input.applicationId,
+        );
       });
     },
     REVOKE_OFFER(request: Request, offerId: string | Promise<string>) {
       return run(request, true, async (a, requestId) => {
         const target = await uuid(offerId);
         const c = await command(request, NoBody, a, requestId, { offerId: target });
-        const r = OfferResultSchema.safeParse(await host.revokeOffer(c));
-        if (!r.success || r.data.offer.id !== target) contract();
-        return r.data;
+        return echoed(OfferResultSchema, await host.revokeOffer(c), (r) => r.offer.id === target);
       });
     },
     APPLY(request: Request) {
       return run(request, true, async (a, requestId) => {
         const c = await command(request, SubmitApplicationInput, a, requestId);
-        const r = ApplicationResultSchema.safeParse(await host.submitApplication(c));
-        if (
-          !r.success ||
-          r.data.application.slotId !== c.input.slotId ||
-          r.data.application.termsVersionId !== c.input.termsVersionId
-        )
-          contract();
-        return r.data;
+        return echoed(
+          ApplicationResultSchema,
+          await host.submitApplication(c),
+          (r) =>
+            r.application.slotId === c.input.slotId &&
+            r.application.termsVersionId === c.input.termsVersionId,
+        );
       });
     },
     CONSENT(request: Request) {
       return run(request, true, async (a, requestId) => {
         const c = await command(request, RecordConsentInput, a, requestId);
-        const r = ConsentResultSchema.safeParse(await host.recordConsent(c));
-        if (
-          !r.success ||
-          r.data.consent.slotId !== c.input.slotId ||
-          r.data.consent.termsVersionId !== c.input.termsVersionId ||
-          r.data.consent.termsDigest !== c.input.termsDigest
-        )
-          contract();
-        return r.data;
+        return echoed(
+          ConsentResultSchema,
+          await host.recordConsent(c),
+          (r) =>
+            r.consent.slotId === c.input.slotId &&
+            r.consent.termsVersionId === c.input.termsVersionId &&
+            r.consent.termsDigest === c.input.termsDigest,
+        );
       });
     },
     ACCEPT(request: Request) {
       return run(request, true, async (a, requestId) => {
         const c = await command(request, CommitEngagementInput, a, requestId);
-        const r = CommittedEngagementSchema.safeParse(await host.commitEngagement(c));
-        if (
-          !r.success ||
-          r.data.engagement.source.kind !== 'RAID_SLOT' ||
-          r.data.engagement.source.raidSlotId !== c.input.slotId ||
-          r.data.engagement.acceptedTerms.id !== c.input.termsVersionId
-        )
-          contract();
-        return r.data;
+        return echoed(
+          CommittedEngagementSchema,
+          await host.commitEngagement(c),
+          (r) =>
+            r.engagement.source.kind === 'RAID_SLOT' &&
+            r.engagement.source.raidSlotId === c.input.slotId &&
+            r.engagement.acceptedTerms.id === c.input.termsVersionId,
+        );
       });
     },
     START(request: Request, engagementId: string | Promise<string>) {
@@ -321,9 +325,11 @@ export function createWorkHandlers(host: WorkHttpHost) {
       return run(request, true, async (a, requestId) => {
         const target = await uuid(applicationId);
         const c = await command(request, NoBody, a, requestId, { applicationId: target });
-        const r = ApplicationResultSchema.safeParse(await host.withdrawApplication(c));
-        if (!r.success || r.data.application.id !== target) contract();
-        return r.data;
+        return echoed(
+          ApplicationResultSchema,
+          await host.withdrawApplication(c),
+          (r) => r.application.id === target,
+        );
       });
     },
   };
