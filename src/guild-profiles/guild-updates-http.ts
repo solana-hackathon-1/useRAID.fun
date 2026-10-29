@@ -50,7 +50,8 @@ const StepBodySchema = z.strictObject({
   guildId: z.uuid(),
   action: z.enum(['PUBLISH', 'WITHDRAW']),
 });
-const STORAGE_CODES: Readonly<Record<string, ErrorCode>> = {
+// Keyed by every storage code, so a new code is a compile error here instead of a silent 503.
+const STORAGE_CODES: Readonly<Record<GuildStorageError['code'], ErrorCode>> = {
   UNAUTHENTICATED: 'AUTHENTICATION_REQUIRED',
   ACCOUNT_RESTRICTED: 'ACCOUNT_RESTRICTED',
   FORBIDDEN: 'FORBIDDEN',
@@ -59,6 +60,14 @@ const STORAGE_CODES: Readonly<Record<string, ErrorCode>> = {
   UPDATE_LIMIT: 'GUILD_UPDATE_LIMIT_REACHED',
   WRITES_DISABLED: 'NOT_AVAILABLE',
   INVALID_INPUT: 'INVALID_COMMAND',
+  // Not reachable from this route (no revoke, create, grant or transfer here); a leak would be a 503, never detail.
+  GRANT_REVOKED: 'SERVICE_UNAVAILABLE',
+  GUILD_EXISTS: 'SERVICE_UNAVAILABLE',
+  SLUG_UNAVAILABLE: 'SERVICE_UNAVAILABLE',
+  GRANT_LIMIT: 'SERVICE_UNAVAILABLE',
+  TRANSFER_PENDING: 'SERVICE_UNAVAILABLE',
+  STORAGE_CONTRACT: 'SERVICE_UNAVAILABLE',
+  STORAGE_UNAVAILABLE: 'SERVICE_UNAVAILABLE',
 };
 function failure(error: unknown, requestId: string) {
   let code: ErrorCode = 'SERVICE_UNAVAILABLE',
@@ -74,7 +83,7 @@ function failure(error: unknown, requestId: string) {
           ? 'FORBIDDEN'
           : 'RATE_LIMITED';
   } else if (error instanceof GuildStorageError) {
-    code = STORAGE_CODES[error.code] ?? 'SERVICE_UNAVAILABLE';
+    code = STORAGE_CODES[error.code];
   } else if (error instanceof CommandReceiptError) {
     code =
       error.code === 'IDEMPOTENCY_KEY_REUSED'

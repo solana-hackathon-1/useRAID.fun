@@ -9,6 +9,7 @@ try {
     'migrations/guilds.sql',
     'migrations/ownership.sql',
     'migrations/updates.sql',
+    'migrations/fk-indexes.sql',
   ])
     await client.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   console.log(

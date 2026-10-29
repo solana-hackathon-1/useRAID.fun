@@ -498,6 +498,57 @@ integration('T009 Guild public updates', () => {
     });
   });
 
+  it('review follow-up: a cursor that names no published update of this Guild is INVALID_INPUT, not the end of the feed', async () => {
+    const { founder, guild: g } = await guild('news-c');
+    const { founder: other, guild: h } = await guild('news-c-other');
+    const ids: string[] = [];
+    for (let i = 1; i <= 2; i++) {
+      const id = (await draft(founder, g.id, `Update ${i}`, 'Body', `c-d-${i}`)).update.id;
+      await publish(founder, g.id, id, `c-p-${i}`);
+      ids.push(id);
+    }
+    const unpublished = (await draft(founder, g.id, 'Still a draft', 'Body')).update.id;
+    const foreign = (await draft(other, h.id, 'Elsewhere', 'Body')).update.id;
+    await publish(other, h.id, foreign);
+    for (const before of [crypto.randomUUID(), unpublished, foreign])
+      await expect(
+        run((tx) => listPublicGuildUpdates(tx, 'news-c', { before })),
+      ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    // A page cursor stays usable if that update is taken down after the page was served.
+    await withdraw(founder, g.id, ids[1]);
+    expect(
+      (await run((tx) => listPublicGuildUpdates(tx, 'news-c', { before: ids[1] }))).updates.map(
+        (u) => u.title,
+      ),
+    ).toEqual(['Update 1']);
+  });
+
+  it('review follow-up: the managed list reads its rows in a fixed number of queries', async () => {
+    const { founder, guild: g } = await guild('news-q');
+    for (let i = 1; i <= 5; i++) await draft(founder, g.id, `Draft ${i}`, 'Body', `q-${i}`);
+    const counted = async (rows: number) => {
+      let queries = 0;
+      const result = await run((tx) =>
+        listManagedGuildUpdates(
+          {
+            ...tx,
+            query: ((...args: Parameters<typeof tx.query>) => {
+              queries++;
+              return tx.query(...args);
+            }) as typeof tx.query,
+          },
+          founder,
+          g.id,
+        ),
+      );
+      expect(result.updates).toHaveLength(rows);
+      return queries;
+    };
+    const five = await counted(5);
+    await draft(founder, g.id, 'Draft 6', 'Body', 'q-6');
+    expect(await counted(6)).toBe(five);
+  });
+
   it('caps open drafts per Guild and replays only to someone who still may act', async () => {
     const { founder, guild: g } = await guild('news-c');
     const author = await person();
