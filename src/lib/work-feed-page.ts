@@ -8,6 +8,7 @@ import {
 } from '../work-loop/feed-contracts';
 import { cookies } from 'next/headers';
 import { currentUser, hash } from './auth';
+import type { ApplyMode } from './work-apply-mode';
 import { sessionCookie } from './studio-mode';
 import { readMyRaidsFromHost, workWorkspaceConfiguration } from './work-workspace-host';
 import { readDetailFromHost, readFeedFromHost, workFeedAvailable } from './work-feed-host';
@@ -54,7 +55,7 @@ export async function loadDetail(listingId: string): Promise<LoadedDetail> {
       : { status: 'UNAVAILABLE' };
   }
 }
-export type ApplyState = 'FORM' | 'ACCEPT' | 'SIGN_IN' | 'CLOSED' | 'NOT_APPLICABLE';
+export type ApplyState = ApplyMode;
 async function signedIn() {
   try {
     return (await currentUser()) !== null;
@@ -74,32 +75,48 @@ export async function applyMode(detail: Pick<Detail, 'admission'>): Promise<Appl
     return config.readsAvailable && config.applicationsAvailable ? 'FORM' : 'CLOSED';
   return config.readsAvailable && config.acceptanceAvailable ? 'ACCEPT' : 'CLOSED';
 }
+export interface ViewerStanding {
+  /** The viewer's own usable offer for these terms and an open slot; set only while acceptance is open. */
+  offer: { offerId: string; slotId: string } | null;
+  /** The viewer already has a submitted application for these terms. */
+  applied: boolean;
+  /** The open slot to apply to: a stable per-person choice, so applicants do not all contend on one slot. */
+  applySlotId: string;
+}
 /**
- * The viewer's own usable offer for the terms and an open slot shown on this brief, if any. Read only for a signed-in
- * person while acceptance is open; any failure reads as no offer. The server rechecks the offer's state, expiry and
- * issuer when the person accepts.
+ * What the signed-in viewer already holds on this brief. Any failure reads as nothing held and the first open slot;
+ * the server rechecks every state, expiry and issuer when the person acts.
  */
-export async function pendingOffer(
+export async function viewerStanding(
   detail: Pick<Detail, 'termsVersionId' | 'openSlotIds'>,
-): Promise<{ offerId: string; slotId: string } | null> {
+): Promise<ViewerStanding> {
+  const none: ViewerStanding = { offer: null, applied: false, applySlotId: detail.openSlotIds[0] };
   try {
     const config = workWorkspaceConfiguration();
-    if (!config.readsAvailable || !config.acceptanceAvailable) return null;
+    if (!config.readsAvailable) return none;
     const user = await currentUser(),
       cookie = (await cookies()).get(sessionCookie())?.value;
-    if (!user || !cookie) return null;
+    if (!user || !cookie) return none;
     const mine = await readMyRaidsFromHost({ accountId: user.id, sessionHash: hash(cookie) });
-    for (const a of mine.applications)
+    const slots = detail.openSlotIds;
+    const standing: ViewerStanding = {
+      ...none,
+      applySlotId: slots[parseInt(hash(user.id).slice(0, 8), 16) % slots.length],
+    };
+    for (const a of mine.applications) {
+      if (a.state !== 'SUBMITTED' || a.termsVersionId !== detail.termsVersionId) continue;
+      standing.applied = true;
       if (
-        a.state === 'SUBMITTED' &&
-        a.termsVersionId === detail.termsVersionId &&
-        detail.openSlotIds.includes(a.slotId) &&
+        config.acceptanceAvailable &&
+        !standing.offer &&
+        slots.includes(a.slotId) &&
         a.offer?.state === 'PENDING' &&
         !a.offer.expired
       )
-        return { offerId: a.offer.offerId, slotId: a.slotId };
-    return null;
+        standing.offer = { offerId: a.offer.offerId, slotId: a.slotId };
+    }
+    return standing;
   } catch {
-    return null;
+    return none;
   }
 }

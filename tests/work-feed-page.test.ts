@@ -24,7 +24,7 @@ vi.mock('../src/lib/work-workspace-host', () => ({
 vi.mock('next/headers', () => ({
   cookies: async () => ({ get: mocks.cookie }),
 }));
-import { applyMode, pendingOffer, loadDetail, loadFeed } from '../src/lib/work-feed-page';
+import { applyMode, viewerStanding, loadDetail, loadFeed } from '../src/lib/work-feed-page';
 import { WorkError } from '../src/work-loop/contracts';
 
 const page = { items: [], nextCursor: null, sort: 'newest', rewardComparable: false };
@@ -117,7 +117,7 @@ describe('applyMode for instant-start Raids', () => {
     expect(await applyMode(instant)).toBe('SIGN_IN');
   });
 });
-describe('pendingOffer', () => {
+describe('viewerStanding', () => {
   const termsVersionId = '22222222-2222-4222-8222-222222222222';
   const slotId = '11111111-1111-4111-8111-111111111111';
   const otherSlot = '33333333-3333-4333-8333-333333333333';
@@ -143,9 +143,8 @@ describe('pendingOffer', () => {
   });
   it("returns the viewer's usable offer for these exact terms and an open slot", async () => {
     mocks.mine.mockResolvedValue({ applications: [card({})] });
-    expect(await pendingOffer(detail)).toEqual({
-      offerId: '44444444-4444-4444-8444-444444444444',
-      slotId,
+    expect(await viewerStanding(detail)).toMatchObject({
+      offer: { offerId: '44444444-4444-4444-8444-444444444444', slotId },
     });
   });
   it('ignores expired, revoked, other-terms and other-slot offers', async () => {
@@ -159,17 +158,51 @@ describe('pendingOffer', () => {
         card({ offer: null }),
       ],
     });
-    expect(await pendingOffer(detail)).toBeNull();
+    expect((await viewerStanding(detail)).offer).toBeNull();
   });
   it('is null while acceptance is closed, signed out, or reads fail, and never throws', async () => {
     mocks.mine.mockResolvedValue({ applications: [card({})] });
     mocks.config.mockReturnValue({ readsAvailable: true, acceptanceAvailable: false });
-    expect(await pendingOffer(detail)).toBeNull();
+    expect((await viewerStanding(detail)).offer).toBeNull();
     mocks.config.mockReturnValue({ readsAvailable: true, acceptanceAvailable: true });
     mocks.user.mockResolvedValue(null);
-    expect(await pendingOffer(detail)).toBeNull();
+    expect((await viewerStanding(detail)).offer).toBeNull();
     mocks.user.mockResolvedValue({ id: 'someone' });
     mocks.mine.mockRejectedValue(new Error('postgres://secret'));
-    expect(await pendingOffer(detail)).toBeNull();
+    expect((await viewerStanding(detail)).offer).toBeNull();
+  });
+  it("reports the viewer's own submitted application for these terms, without needing acceptance", async () => {
+    mocks.config.mockReturnValue({ readsAvailable: true, acceptanceAvailable: false });
+    mocks.mine.mockResolvedValue({ applications: [card({ offer: null })] });
+    expect(await viewerStanding(detail)).toMatchObject({ applied: true, offer: null });
+    mocks.mine.mockResolvedValue({
+      applications: [
+        card({ state: 'WITHDRAWN', offer: null }),
+        card({ termsVersionId: '55555555-5555-4555-8555-555555555555', offer: null }),
+      ],
+    });
+    expect((await viewerStanding(detail)).applied).toBe(false);
+  });
+  it('spreads applicants over the open slots by a stable per-person choice instead of the first slot', async () => {
+    const slots = Array.from({ length: 5 }, (_, i) => `${i}0000000-0000-4000-8000-000000000000`);
+    const many = { termsVersionId, openSlotIds: slots } as never;
+    mocks.mine.mockResolvedValue({ applications: [] });
+    const chosen = new Set<string>();
+    for (const id of ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']) {
+      mocks.user.mockResolvedValue({ id });
+      const first = (await viewerStanding(many)).applySlotId;
+      expect(slots).toContain(first);
+      expect((await viewerStanding(many)).applySlotId).toBe(first);
+      chosen.add(first);
+    }
+    expect(chosen.size).toBeGreaterThan(1);
+  });
+  it('falls back to the first open slot when signed out or reads are off', async () => {
+    mocks.user.mockResolvedValue(null);
+    expect(await viewerStanding(detail)).toEqual({
+      offer: null,
+      applied: false,
+      applySlotId: slotId,
+    });
   });
 });

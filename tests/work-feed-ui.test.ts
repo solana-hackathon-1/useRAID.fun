@@ -2,6 +2,7 @@ import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { WorkDetail, WorkFeed, feedHref } from '../src/components/work-feed';
+import type { ApplyMode } from '../src/lib/work-apply-mode';
 import { DetailSchema, FeedPageSchema } from '../src/work-loop/feed-contracts';
 
 const id = (n: number) =>
@@ -132,7 +133,7 @@ const brief = (patch: Record<string, unknown> = {}) =>
   });
 describe('R08 public Raid detail markup', () => {
   const out = (
-    apply: 'FORM' | 'SIGN_IN' | 'CLOSED' | 'NOT_APPLICABLE' | 'ACCEPT' = 'NOT_APPLICABLE',
+    apply: ApplyMode = 'NOT_APPLICABLE',
     patch: Record<string, unknown> = {},
     offer?: { offerId: string; slotId: string },
   ) => renderToStaticMarkup(createElement(WorkDetail, { detail: brief(patch), apply, offer }));
@@ -189,5 +190,16 @@ describe('R08 public Raid detail markup', () => {
     const html = out('SIGN_IN', { admission: 'INSTANT' });
     expect(html).toContain('Sign in to take this Raid');
     expect(html).not.toContain('Sign in to apply');
+  });
+  it('shows the viewer’s existing application instead of the apply form', () => {
+    const html = renderToStaticMarkup(
+      createElement(WorkDetail, {
+        detail: brief({ admission: 'APPLICATION' }),
+        apply: 'FORM',
+        applied: true,
+      }),
+    );
+    expect(html).toContain('You already applied');
+    expect(html).not.toContain('name="apply-form"');
   });
 });
