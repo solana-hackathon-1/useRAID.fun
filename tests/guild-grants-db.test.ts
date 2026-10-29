@@ -14,6 +14,7 @@ import {
 } from '../src/guild-profiles/guild-storage';
 import { hash } from '../src/lib/auth-primitives';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import type { SqlBinding } from '../src/command-receipts';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 let counter = 0;
 async function person(): Promise<GuildActor> {
@@ -570,6 +571,67 @@ integration('T009 Guild role grants and revocation', () => {
     )) as { r: boolean }[];
     expect(r).toBe(true);
   });
+
+  it('#314-1: judges redelegation bounds at the locked instant and refuses when cover lapses between reads', async () => {
+    const { founder, guild: g } = await guild();
+    const lead = await person();
+    const helper = await person();
+    // Grants are immutable except for revocation, so the lapse is real: cover that expires two seconds from now.
+    await giveRole(founder, g.id, {
+      granteeAccountId: lead.accountId,
+      kind: 'PROFILE',
+      fields: ['name'],
+      canDelegate: true,
+      expiresAt: future(2000),
+    });
+    // Unrelated live delegating cover (another field) keeps the lead a delegator after the lapse.
+    await giveRole(founder, g.id, {
+      granteeAccountId: lead.accountId,
+      kind: 'PROFILE',
+      fields: ['description'],
+      canDelegate: true,
+    });
+    const seen: { sql: string; bindings: readonly unknown[]; rows: unknown[] }[] = [];
+    const attempt = run((tx) =>
+      grantGuildRole(
+        {
+          dialect: tx.dialect,
+          isolation: tx.isolation,
+          async query<Row>(sql: string, bindings: readonly SqlBinding[]) {
+            // The lead's only delegating cover for 'name' lapses after the policy read and before the bounds read.
+            if (/CROSS JOIN LATERAL unnest/.test(sql))
+              await tx.query(
+                `SELECT pg_sleep(GREATEST(0,EXTRACT(EPOCH FROM max("expiresAt")-clock_timestamp()))+0.05)::text AS slept
+                 FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2`,
+                [g.id, lead.accountId],
+              );
+            const rows = await tx.query<Row>(sql, bindings);
+            seen.push({ sql, bindings, rows });
+            return rows;
+          },
+        },
+        cmd(lead, {
+          guildId: g.id,
+          granteeAccountId: helper.accountId,
+          kind: 'PROFILE',
+          fields: ['name'],
+          expiresAt: null,
+        }),
+        host(),
+      ),
+    );
+    await expect(attempt).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    const [{ n }] = (await db.$queryRawUnsafe(
+      `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "granteeAccountId"=$1`,
+      helper.accountId,
+    )) as { n: number }[];
+    expect(n).toBe(0);
+    const now = (seen.find((q) => /AS now FROM "Guild"/.test(q.sql))!.rows[0] as { now: Date }).now;
+    const bounds = seen.find((q) => /CROSS JOIN LATERAL unnest/.test(q.sql))!;
+    expect(bounds.sql).not.toContain('clock_timestamp()');
+    expect(bounds.bindings.map(String)).toContain(now.toISOString());
+  });
+
   it('review follow-up: a delegate may pass on without an expiry only when their own cover has none', async () => {
     const { founder, guild: g } = await guild();
     const lead = await person();
@@ -665,5 +727,67 @@ integration('T009 Guild role grants and revocation', () => {
     await expect(takeRole(a.founder, a.guild.id, crypto.randomUUID())).rejects.toMatchObject({
       code: 'NOT_FOUND',
     });
+  });
+
+  it('redacts the Founder id from grant views returned to a grantee without profile authority (#318)', async () => {
+    const { founder, guild: g } = await guild('redact-a');
+    const treasurer = await person();
+    const editor = await person();
+    const treasury = (
+      await giveRole(founder, g.id, { granteeAccountId: treasurer.accountId, kind: 'TREASURY' })
+    ).grant;
+    expect(treasury.grantedByAccountId).toBe(founder.accountId);
+    const surrendered = await takeRole(treasurer, g.id, treasury.id, 'surrender-1');
+    expect(surrendered.grant.grantedByAccountId).toBeNull();
+    const replay = await takeRole(treasurer, g.id, treasury.id, 'surrender-1');
+    expect(replay.status).toBe('REPLAYED');
+    expect(replay.grant.grantedByAccountId).toBeNull();
+    // A profile manager and the Founder still see who issued the grant.
+    const work = (
+      await giveRole(founder, g.id, { granteeAccountId: editor.accountId, kind: 'WORK' })
+    ).grant;
+    expect((await takeRole(founder, g.id, work.id)).grant.grantedByAccountId).toBe(
+      founder.accountId,
+    );
+  });
+
+  it('answers GRANT_REVOKED to an involved caller without taking the Guild row lock (#321)', async () => {
+    const { founder, guild: g } = await guild('prelock-a');
+    const holder = await person();
+    const grant = (
+      await giveRole(founder, g.id, { granteeAccountId: holder.accountId, kind: 'WORK' })
+    ).grant;
+    await takeRole(founder, g.id, grant.id, 'first');
+    let release!: () => void;
+    const held = new Promise<void>((resolve) => (release = resolve));
+    let locked!: () => void;
+    const lockTaken = new Promise<void>((resolve) => (locked = resolve));
+    const blocker = db.$transaction(
+      async (tx) => {
+        await tx.$queryRawUnsafe('SELECT 1 FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE', g.id);
+        locked();
+        await held;
+      },
+      { timeout: 30000 },
+    );
+    await lockTaken;
+    try {
+      const outcomes = await Promise.race([
+        takeRole(holder, g.id, grant.id, 'again').then(
+          () => 'resolved',
+          (error: { code?: string }) => error.code,
+        ),
+        new Promise((resolve) => setTimeout(() => resolve('blocked'), 1500)),
+      ]);
+      expect(outcomes).toBe('GRANT_REVOKED');
+      // A stranger still learns nothing.
+      const stranger = await person();
+      await expect(takeRole(stranger, g.id, grant.id, 'nosy')).rejects.toMatchObject({
+        code: 'FORBIDDEN',
+      });
+    } finally {
+      release();
+      await blocker;
+    }
   });
 });

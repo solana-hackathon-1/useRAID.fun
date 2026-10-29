@@ -145,6 +145,30 @@ describe('Guild profile edit HTTP boundary', () => {
     }
   });
 
+  it('#314-2: never forwards an edit result whose Founder id is redacted; a redacted read view still passes', async () => {
+    for (const status of ['EXECUTED', 'REPLAYED']) {
+      const { value } = host({
+        edit: async () => ({
+          status,
+          guild: guild({ name: 'Renamed Guild', revision: 3, founderAccountId: null }),
+        }),
+      });
+      const response = await createGuildProfileHandlers(value).EDIT(edit());
+      expect(response.status, status).toBe(503);
+      expect((await body(response)).error.code).toBe('SERVICE_UNAVAILABLE');
+    }
+    const redacted = host({
+      read: async () =>
+        view({
+          guild: guild({ founderAccountId: null }),
+          authority: { founder: false, kinds: ['TREASURY'] },
+        }),
+    });
+    const read = await createGuildProfileHandlers(redacted.value).READ(get());
+    expect(read.status).toBe(200);
+    expect((await body(read)).guild.founderAccountId).toBeNull();
+  });
+
   it('accepts an exact replay, and checks only the fields that were requested', async () => {
     const replay = host({
       edit: async () => ({

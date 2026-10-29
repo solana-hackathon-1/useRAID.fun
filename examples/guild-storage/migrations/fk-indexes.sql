@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610290001_guild_fk_indexes/migration.sql
