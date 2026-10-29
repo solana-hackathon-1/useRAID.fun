@@ -319,6 +319,7 @@ describe('T022 work workspace HTTP boundary', () => {
       status: 'EXECUTED',
       fundingMode: 'SIMULATED',
       generation: 1,
+      offerId: null as string | null,
       engagement: {
         id: engagementId,
         guildId: 'synthetic-guild',
@@ -342,7 +343,22 @@ describe('T022 work workspace HTTP boundary', () => {
       requestId: 'request-1',
     });
     const offerId = '77777777-7777-4777-8777-777777777777';
-    expect((await handlers.ACCEPT(post('/x', { ...request, offerId }))).status).toBe(200);
+    // The result must name the offer that was accepted: none for a direct acceptance, the requested one otherwise.
+    expect((await handlers.ACCEPT(post('/x', { ...request, offerId }))).status).toBe(503);
+    const throughOffer = createWorkHandlers(
+      host({ commitEngagement: async () => ({ ...committed(), offerId }) }),
+    );
+    expect((await throughOffer.ACCEPT(post('/x', { ...request, offerId }))).status).toBe(200);
+    expect((await throughOffer.ACCEPT(post('/x', request))).status).toBe(503);
+    const otherOffer = createWorkHandlers(
+      host({
+        commitEngagement: async () => ({
+          ...committed(),
+          offerId: '88888888-8888-4888-8888-888888888888',
+        }),
+      }),
+    );
+    expect((await otherOffer.ACCEPT(post('/x', { ...request, offerId }))).status).toBe(503);
     for (const bad of [{ ...request, extra: 1 }, { slotId }, { ...request, offerId: 'nope' }])
       expect((await handlers.ACCEPT(post('/x', bad))).status).toBe(422);
     const wrongSlot = createWorkHandlers(

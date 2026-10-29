@@ -1,7 +1,10 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
-vi.mock('next/navigation', () => ({ usePathname: () => '/raids' }));
+vi.mock('next/navigation', () => ({
+  usePathname: () => '/raids',
+  useRouter: () => ({ refresh() {}, push() {} }),
+}));
 import { Shell } from '../src/components/shell';
 
 const render = (extraLinks?: { href: string; label: string }[]) =>
@@ -19,5 +22,22 @@ describe('main navigation', () => {
     expect(html.match(/Live Raids/g)).toHaveLength(2);
     expect(html).toContain('aria-current="page"');
     expect(html.indexOf('Live Raids')).toBeLessThan(html.indexOf('Creator studio'));
+  });
+});
+describe('My Raid indicator', () => {
+  const activeRaid = { engagementId: '00000000-0000-4000-8000-000000000001', title: 'Docs <task>' };
+  const account = { handle: 'h', image: null, connected: true, admin: false, links: [] };
+  const html = (props: Record<string, unknown>) =>
+    renderToStaticMarkup(createElement(Shell, { demo: false, children: null, ...props }));
+  it('links the signed-in holder to their workspace from the header, escaped', () => {
+    const out = html({ account, activeRaid });
+    expect(out).toContain('href="/raider/work"');
+    expect(out).toContain('Docs &lt;task&gt;');
+    expect(out).not.toContain('Docs <task>');
+    expect(out).toContain('aria-label="My Raid: Docs &lt;task&gt;"');
+  });
+  it('renders nothing without a held Raid or without a signed-in account', () => {
+    expect(html({ account, activeRaid: null })).not.toContain('active-raid');
+    expect(html({ account: null, activeRaid })).not.toContain('active-raid');
   });
 });
