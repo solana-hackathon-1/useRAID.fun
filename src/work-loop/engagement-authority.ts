@@ -7,9 +7,15 @@ import {
   type IdentityLockCapability,
 } from '../identity-locks';
 import { WorkError, type WorkActor } from './contracts';
-import { RaidTermsSchema } from './terms';
+import { RaidTermsSchema, publicationProblems } from './terms';
 export function fail(code: WorkError['code']): never {
   throw new WorkError(code);
+}
+/** A passed commitment deadline is its own answer; any other publication problem means the Raid is not takeable. */
+export function assertOpenForTaking(terms: unknown, now: Date) {
+  const problems = publicationProblems(terms, now);
+  if (problems.length)
+    fail(problems.includes('DEADLINE_PASSED') ? 'DEADLINE_PASSED' : 'PUBLICATION_BLOCKED');
 }
 export function validate(tx: Tx, actor: WorkActor) {
   if (
