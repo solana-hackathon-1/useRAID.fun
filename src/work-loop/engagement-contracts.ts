@@ -55,6 +55,8 @@ export const CommittedEngagementSchema = z.strictObject({
   status: z.enum(['EXECUTED', 'REPLAYED']),
   fundingMode: z.literal('SIMULATED'),
   generation: z.number().int().min(1),
+  /** The Founder's offer this engagement was accepted through, or null for a direct acceptance. */
+  offerId: z.uuid().nullable(),
   engagement: EngagementSchema,
 });
 export type CommittedEngagement = z.infer<typeof CommittedEngagementSchema>;
