@@ -5,7 +5,12 @@ import {
   describeWorkFailure,
   type WorkTransport,
 } from '../src/work-http/workspace-client';
-const empty = { version: 'v1', engagements: [], applications: [] };
+const empty = {
+  version: 'v1',
+  capacity: { limit: 1, held: false, engagementId: null, title: null },
+  engagements: [],
+  applications: [],
+};
 const submissionInput = {
   engagementId: '11111111-1111-4111-8111-111111111111',
   expectedSubmissionNumber: 1,
