@@ -9,6 +9,12 @@ import { raidTerms } from './helpers/raid-terms-fixture';
 import { seedWorkHuman, seedWorkSlot } from './helpers/work-loop-db';
 import { seedOwnAssessmentFixture, db } from './helpers/own-assessment-fixture';
 import { assertTestDatabase } from './helpers/db-guard';
+import { waitForAdvisoryWaiter } from './helpers/advisory-wait';
+import {
+  ASSESSMENT_LOCK_CLASS,
+  ASSESSMENT_LOCK_SQL,
+  assessmentLockKey,
+} from '../src/skills/assessment-lock';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 const run = <T>(work: Parameters<typeof runCommandTransaction<T>>[1]) =>
   runCommandTransaction(db, work);
@@ -172,34 +178,37 @@ integration('Root acceptance: explicit consent and verified skills', { timeout: 
     // Stands in for a decision (REVOKE/REASSESS) that holds the same lock until it commits.
     const holder = db.$transaction(
       async (t) => {
-        await t.$queryRawUnsafe(
-          `SELECT pg_advisory_xact_lock(hashtextextended($1,12022))::text`,
-          participantId + ':frontend',
-        );
+        await t.$queryRawUnsafe(ASSESSMENT_LOCK_SQL, assessmentLockKey(participantId, 'frontend'));
         locked();
         await released;
       },
       { timeout: 60000 },
     );
+    let pending: ReturnType<typeof accept> | undefined;
     try {
       await holding;
       let settled = false;
-      const pending = accept(person, slot).finally(() => (settled = true));
-      let waiting = false;
-      for (let i = 0; i < 100 && !waiting; i++) {
-        const rows = (await db.$queryRawUnsafe(
-          `SELECT 1 FROM pg_stat_activity WHERE datname=current_database() AND wait_event_type='Lock' AND wait_event='advisory' AND pid<>pg_backend_pid()`,
-        )) as unknown[];
-        waiting = rows.length > 0;
-        if (!waiting) await new Promise((resolve) => setTimeout(resolve, 50));
-      }
-      expect(waiting).toBe(true);
+      pending = accept(person, slot);
+      // Observed below; keeps a failed expectation from leaving this promise unhandled.
+      pending.then(
+        () => (settled = true),
+        () => (settled = true),
+      );
+      // The acceptance must be blocked on exactly this person's lock for the skill, not on another advisory lock.
+      expect(
+        await waitForAdvisoryWaiter(
+          db,
+          assessmentLockKey(participantId, 'frontend'),
+          ASSESSMENT_LOCK_CLASS,
+        ),
+      ).toBe(true);
       expect(settled).toBe(false);
       release();
       expect((await pending).engagement.state).toBe('ACCESS_PENDING');
     } finally {
       release();
       await holder;
+      await pending?.catch(() => undefined);
     }
   });
 });
