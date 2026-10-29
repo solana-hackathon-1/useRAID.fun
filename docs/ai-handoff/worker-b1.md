@@ -1,2 +1,3 @@
+- #300 → `task/300-updates-followups` (base #299 head): authority judged before the Guild lock in publish/withdraw; item 3 (shared HTTP helper) split out. Full run under CPU contention: 7 unrelated files timed out (practice/worker/wallet-link/integration); same 7 files pass alone, 156 tests. Independent review NOT done.
 - #305 filed (needs-owner-decision): who may approve Guild activation. Activation HTTP not started.
 - `task/t009-guild-profile-edit-http` (base #299 head): GET/POST `/api/v1/guild-profile`, flag `GUILD_PROFILE_EDITS_ENABLED`. Full real-PG 279 files / 4030 tests, lint 0 errors, typecheck clean. Independent review (access grants) NOT done.
