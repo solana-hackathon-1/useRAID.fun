@@ -551,6 +551,9 @@ export async function grantGuildRole(
     async ({ receiptId }) => {
       await authorize(tx, actor);
       if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      // Standing is judged before the Guild row is locked, so an account that may not issue roles here cannot stall
+      // the Guild and learns nothing about which Guilds exist; it is judged again under the lock below.
+      if (!(await mayDelegate())) fail('FORBIDDEN');
       const guilds = await query<{
         id: string;
         founderAccountId: string;
@@ -658,7 +661,9 @@ export async function grantGuildRole(
 }
 /**
  * Revokes a grant: by the Founder, the account that issued it, or its grantee (surrender). Revoking a delegating profile
- * grant also revokes what that grantee passed on (unless another delegating grant of theirs is still live).
+ * grant also revokes what that grantee passed on, except grants whose every field is still covered by another live
+ * delegating grant of the grantee that lasts at least as long. Never blocked by the new-writes switch: taking authority
+ * away must stay possible in an incident. A repeat revocation fails with `GRANT_REVOKED`, which callers treat as done.
  */
 export async function revokeGuildRole(
   tx: CommandReceiptTransaction,
@@ -684,7 +689,27 @@ export async function revokeGuildRole(
     },
     async () => {
       await authorize(tx, actor);
-      if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      // Standing first, without a lock: only the Founder or someone involved in the grant may take it further, so a
+      // stranger cannot stall the Guild or learn whether a Guild or grant id exists (all answer FORBIDDEN).
+      const standing = await query<{
+        founder: boolean;
+        grantedBy: string | null;
+        grantee: string | null;
+      }>(
+        tx,
+        `SELECT g."founderAccountId"=$3 AS founder,r."grantedByAccountId" AS "grantedBy",r."granteeAccountId" AS grantee
+         FROM "Guild" g LEFT JOIN "GuildRoleGrant" r ON r."id"=$2::uuid AND r."guildId"=g."id" WHERE g."id"=$1::uuid`,
+        [input.guildId, input.grantId, actor.accountId],
+      );
+      if (
+        standing.length !== 1 ||
+        !(
+          standing[0].founder ||
+          standing[0].grantedBy === actor.accountId ||
+          standing[0].grantee === actor.accountId
+        )
+      )
+        fail('FORBIDDEN');
       // The Guild row serializes revocation with profile edits, grants and other revocations.
       const guilds = await query<{ founderAccountId: string; revision: number }>(
         tx,
@@ -709,7 +734,7 @@ export async function revokeGuildRole(
       const grant = grants[0];
       if (!involved({ founder: guilds[0].founderAccountId === actor.accountId, ...grant }))
         fail('FORBIDDEN');
-      if (grant.revoked) fail('REVISION_CONFLICT');
+      if (grant.revoked) fail('GRANT_REVOKED');
       await query(
         tx,
         'UPDATE "GuildRoleGrant" SET "revokedAt"=clock_timestamp() WHERE "id"=$1::uuid AND "revokedAt" IS NULL RETURNING "id"',
