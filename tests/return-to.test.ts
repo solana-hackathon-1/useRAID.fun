@@ -21,6 +21,11 @@ describe('sign-in return path', () => {
       label: 'Return to draft',
     });
   });
+  it('fails closed on a repeated returnTo query parameter instead of throwing', () => {
+    expect(accountReturn(['/creator/a', '/creator/b'])).toBeNull();
+    expect(accountReturn([`/raids/work/${listing}`])).toBeNull();
+    expect(accountReturn([])).toBeNull();
+  });
   it('ignores anything else, so the return link can never leave this site', () => {
     for (const bad of [
       undefined,

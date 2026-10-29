@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 export default async function AccountPage({
   searchParams,
 }: {
-  searchParams: Promise<{ returnTo?: string; auth?: string }>;
+  searchParams: Promise<{ returnTo?: string | string[]; auth?: string }>;
 }) {
   const user = await currentUser();
   const { returnTo, auth } = await searchParams;

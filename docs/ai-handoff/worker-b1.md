@@ -3,4 +3,5 @@
 
 - 2026-10-29 b1 (Claude): stopped a stale background vitest run and my old `raid-guild-test-20261027` DB; own test DB is `raid-b1-283-test-20261029` (127.0.0.1:55433, database `useraid_test` because `assertTestDatabase` requires that exact name).
 - #283 → `task/283-offer-issuer-followups`: issuer check up front, issuer column validated, guard comment, stronger no-side-effect test, doc line. Full real-PG suite 275 files / 4002 tests, lint 0 errors, typecheck clean.
+- #329 item 1 → `task/329-return-to-array`: `accountReturn` fails closed (null) on repeated `returnTo` array instead of throwing 500; widened page searchParams type. Targeted return-to test, tsc, lint.
 - 2026-10-30 b1-a3 (Claude): #322 identity-lock fence — proposeAmendment funding-reference advisory lock moved into `lockFundingReference` (key unchanged, byte-identical to trigger migration 202610270002), registered hash-pinned in `planning/identity-writer-fence.json`; fence allows only that exact seed-0 `raid:funding-reference:` shape (seed-0 `$1` still rejected). identity-lock-architecture + work-amendments-db green.
