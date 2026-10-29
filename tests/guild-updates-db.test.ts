@@ -237,6 +237,50 @@ integration('T009 Guild public updates', () => {
     });
   });
 
+  it('review follow-up: a non-manager is refused before any lock and cannot tell a missing update from an existing one', async () => {
+    const a = await guild('lock-a');
+    const mine = await draft(a.founder, a.guild.id);
+    const stranger = await person();
+    const worker = await person();
+    const grantee = await person();
+    await grantRow(a.guild.id, worker, 'WORK');
+    await grantRow(a.guild.id, grantee, 'PROFILE');
+    // Hold the Guild row as a competing writer would; a refused account must not queue behind it.
+    let release!: () => void, locked!: () => void;
+    const held = new Promise<void>((r) => (release = r));
+    const ready = new Promise<void>((r) => (locked = r));
+    const holder = db.$transaction(async (t) => {
+      await t.$queryRawUnsafe('SELECT 1 FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE', a.guild.id);
+      locked();
+      await held;
+    });
+    await ready;
+    const outcome = (work: Promise<unknown>) =>
+      Promise.race([
+        work.then(
+          () => 'EXECUTED',
+          (e: { code?: string }) => e.code ?? 'ERROR',
+        ),
+        new Promise<string>((r) => setTimeout(() => r('BLOCKED'), 4000)),
+      ]);
+    try {
+      const unknownUpdate = crypto.randomUUID();
+      const unknownGuild = crypto.randomUUID();
+      for (const who of [stranger, worker])
+        for (const id of [mine.update.id, unknownUpdate]) {
+          expect(await outcome(publish(who, a.guild.id, id)), 'publish').toBe('FORBIDDEN');
+          expect(await outcome(withdraw(who, a.guild.id, id)), 'withdraw').toBe('FORBIDDEN');
+        }
+      expect(await outcome(withdraw(stranger, unknownGuild, unknownUpdate))).toBe('FORBIDDEN');
+      // Only the Founder publishes, so a delegate is turned away without waiting either.
+      expect(await outcome(publish(grantee, a.guild.id, mine.update.id))).toBe('FORBIDDEN');
+    } finally {
+      release();
+      await holder;
+    }
+    expect((await publish(a.founder, a.guild.id, mine.update.id)).update.state).toBe('PUBLISHED');
+  });
+
   it('withdraws: the Founder any update, an author only their own draft; a withdrawn update leaves the public view', async () => {
     const { founder, guild: g } = await guild('news-w');
     const author = await person();

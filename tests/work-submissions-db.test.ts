@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient, type Prisma } from '@prisma/client';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
@@ -114,6 +115,55 @@ integration('T023 versioned submissions and criterion review', () => {
     await truncateAll(db);
   });
   afterAll(() => db.$disconnect());
+  it('refuses text jsonb cannot store as invalid input, not as a raw database error', async () => {
+    const { worker, engagementId } = await setup();
+    for (const bad of ['a\u0000b', 'a\ud800b'])
+      await expect(
+        submit(worker.actor, { ...work(engagementId), explanation: bad }),
+      ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    expect(await state(engagementId)).toBe('IN_PROGRESS');
+  });
+  it('audits stored rows against the shape rules, naming only ids', async () => {
+    const { worker, reviewer, engagementId } = await setup();
+    const sub = await submit(worker.actor, work(engagementId));
+    await decide(reviewer.actor, review(sub.submission.id, 'ACCEPT'));
+    const audit = readFileSync('scripts/audit-work-json-shape.sql', 'utf8');
+    expect(await db.$queryRawUnsafe(audit)).toEqual([]);
+    const sentinel = new Error('rollback');
+    // A row written before the stricter rules existed: constraints and the immutability trigger are bypassed
+    // inside this transaction only, then rolled back.
+    const found = await db
+      .$transaction(
+        async (tx) => {
+          await tx.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
+          for (const c of [
+            ['WorkSubmission', 'WorkSubmission_artifacts_shape_check'],
+            ['WorkSubmission', 'WorkSubmission_dependencies_shape_check'],
+            ['WorkReview', 'WorkReview_criteria_shape_check'],
+          ])
+            await tx.$executeRawUnsafe(`ALTER TABLE "${c[0]}" DROP CONSTRAINT "${c[1]}"`);
+          await tx.$executeRawUnsafe(
+            `UPDATE "WorkSubmission" SET "artifacts"='[{"kind":"COMMIT","ref":"\\t","immutableVersion":"v"}]'::jsonb,"dependencies"='["\\t"]'::jsonb`,
+          );
+          await tx.$executeRawUnsafe(
+            `UPDATE "WorkReview" SET "criteria"='[{"index":0,"result":"MET","evidence":"\\t"}]'::jsonb`,
+          );
+          const rows = await tx.$queryRawUnsafe(audit);
+          throw Object.assign(sentinel, { rows });
+        },
+        { timeout: 15000, maxWait: 15000 },
+      )
+      .catch((e) => {
+        if (e !== sentinel) throw e;
+        return (e as unknown as { rows: Record<string, string>[] }).rows;
+      });
+    expect(found.map((r) => [r.table, r.column])).toEqual([
+      ['WorkReview', 'criteria'],
+      ['WorkSubmission', 'artifacts'],
+      ['WorkSubmission', 'dependencies'],
+    ]);
+    expect(await db.$queryRawUnsafe(audit)).toEqual([]);
+  });
   it('records an immutable submission, holds capacity, and replays the original receipt', async () => {
     const { worker, engagementId } = await setup();
     const key = randomUUID();
