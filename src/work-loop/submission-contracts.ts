@@ -1,6 +1,10 @@
 import { z } from 'zod';
 import { UtcTimestamp } from '../contracts/ids';
-const text = z.string().trim().min(1).max(8000);
+/** jsonb cannot store U+0000 (22P05) or a lone surrogate (22P02): refuse them as input, not as a raw database error. */
+const UNSTORABLE = /\u0000|[\ud800-\udbff](?![\udc00-\udfff])|(?<![\ud800-\udbff])[\udc00-\udfff]/;
+const storable = (value: string) => !UNSTORABLE.test(value);
+const STORABLE = { message: 'Text contains a character that cannot be stored.' };
+const text = z.string().trim().min(1).max(8000).refine(storable, STORABLE);
 /** Explicit host policy. Reviewer authority comes from the accepted terms, never from host flags. */
 export interface SubmissionHost {
   allowNewWrites: boolean;
@@ -8,8 +12,8 @@ export interface SubmissionHost {
 /** A reference plus the immutable version reviewed: checksum, provider commit id or artifact version. */
 export const ArtifactSchema = z.strictObject({
   kind: z.enum(['URL_SNAPSHOT', 'COMMIT', 'PRIVATE_ARTIFACT']),
-  ref: z.string().trim().min(1).max(500),
-  immutableVersion: z.string().trim().min(1).max(200),
+  ref: z.string().trim().min(1).max(500).refine(storable, STORABLE),
+  immutableVersion: z.string().trim().min(1).max(200).refine(storable, STORABLE),
 });
 export const SubmitWorkInput = z
   .strictObject({
@@ -31,7 +35,7 @@ export const SubmitWorkInput = z
 export const CriterionResultSchema = z.strictObject({
   index: z.number().int().min(0).max(49),
   result: z.enum(['MET', 'UNMET']),
-  evidence: z.string().trim().min(1).max(2000).nullable(),
+  evidence: z.string().trim().min(1).max(2000).refine(storable, STORABLE).nullable(),
 });
 export const DecideReviewInput = z
   .strictObject({
