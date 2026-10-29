@@ -1,0 +1,2 @@
+- #305 filed (needs-owner-decision): who may approve Guild activation. Activation HTTP not started.
+- `task/t009-guild-profile-edit-http` (base #299 head): GET/POST `/api/v1/guild-profile`, flag `GUILD_PROFILE_EDITS_ENABLED`. Full real-PG 279 files / 4030 tests, lint 0 errors, typecheck clean. Independent review (access grants) NOT done.
