@@ -1,0 +1,1 @@
+- #300 → `task/300-updates-followups` (base #299 head): authority judged before the Guild lock in publish/withdraw; item 3 (shared HTTP helper) split out. Full run under CPU contention: 7 unrelated files timed out (practice/worker/wallet-link/integration); same 7 files pass alone, 156 tests. Independent review NOT done.
