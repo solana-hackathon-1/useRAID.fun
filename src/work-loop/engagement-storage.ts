@@ -15,7 +15,12 @@ import {
   type AcceptanceApproval,
   type CommittedEngagement,
 } from './engagement-contracts';
-import { lockOffer, assertOffer, assertOfferIssuerAuthorized } from './admission-acceptance';
+import {
+  lockOfferForAcceptance,
+  assertOffer,
+  assertOfferIssuerAuthorized,
+  requireOfferIssuerCheck,
+} from './admission-acceptance';
 import {
   fail,
   validate,
@@ -147,12 +152,14 @@ export async function commitEngagement(
       )
         fail('TERMS_VERSION_CHANGED');
       if (s.fundingMode !== 'SIMULATED' || !s.fundingRef) fail('FUNDING_REQUIRED');
-      const offer = input.offerId ? await lockOffer(tx, input.offerId) : undefined;
+      const locked = input.offerId ? await lockOfferForAcceptance(tx, input.offerId) : undefined;
+      const offer = locked?.offer;
       authorization = await currentHuman(tx, actor, host.identityLocks);
       const terms = await definition(tx, input.termsVersionId);
       const definitionDigest = canonicalRequestDigest(terms);
       if (terms.admission === 'APPLICATION') {
         if (!offer) fail('ADMISSION_REQUIRED');
+        requireOfferIssuerCheck(host);
         assertOffer(offer, input, authorization.participantId, await clock(tx));
       } else if (offer) fail('INVALID_INPUT');
       if (publicationProblems(terms, await clock(tx)).length) fail('DEADLINE_PASSED');
@@ -180,10 +187,10 @@ export async function commitEngagement(
       await session(tx, actor);
       const now = await clock(tx);
       if (publicationProblems(terms, now).length) fail('DEADLINE_PASSED');
-      if (offer)
+      if (locked)
         await assertOfferIssuerAuthorized(
           tx,
-          offer.id,
+          { id: locked.offer.id, issuer: locked.issuer },
           { slotId: input.slotId, guildId: s.guildId },
           host,
         );

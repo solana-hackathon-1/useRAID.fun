@@ -292,6 +292,29 @@ integration('T021 applications and offers', () => {
       status: 'EXECUTED',
     });
   });
+  it('rejects a host without the issuer check before running any host callback or side effect', async () => {
+    const { applicant, founder, slot, apply } = await setup();
+    const a = await applyTo(apply);
+    const o = await offerTo(
+      cmd(founder.actor, { applicationId: a.application.id, expiresAt: expiry() }),
+    );
+    const calls: string[] = [];
+    const { authorizeOfferIssuer: _omitted, ...withoutCheck } = syntheticAcceptanceHost;
+    const spying = {
+      ...withoutCheck,
+      assess: async (...args: Parameters<typeof syntheticAcceptanceHost.assess>) => (
+        calls.push('assess'),
+        syntheticAcceptanceHost.assess(...args)
+      ),
+      fundingAvailable: async (
+        ...args: Parameters<typeof syntheticAcceptanceHost.fundingAvailable>
+      ) => (calls.push('fundingAvailable'), syntheticAcceptanceHost.fundingAvailable(...args)),
+    };
+    await expect(accept(applicant.actor, slot, o.offer.id, spying)).rejects.toMatchObject({
+      code: 'STORAGE_CONTRACT',
+    });
+    expect(calls).toEqual([]);
+  });
   it('revokes outstanding offers and closes their applications when the Founder edits the terms', async () => {
     const { applicant, founder, slot, apply } = await setup();
     const a = await applyTo(apply);
