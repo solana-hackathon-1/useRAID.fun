@@ -391,4 +391,45 @@ integration('T009 Guild ownership transfer', () => {
     await respond(next, g.id, id, 'ACCEPT');
     expect((await edit(editor, g.id, 1, { name: 'Delegate keeps scope' })).guild.revision).toBe(2);
   });
+
+  it('cannot be forged by a direct writer that decides on the recipient’s behalf', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+    const forge = (decidedBy: string, receiptColumn: string, decidedAt = 'clock_timestamp()') =>
+      db.$transaction(async (tx) => {
+        await tx.$executeRawUnsafe(
+          `UPDATE "GuildOwnershipTransfer" SET "state"='ACCEPTED',"decidedAt"=${decidedAt},"decidedByAccountId"=$2,"decideReceiptId"=${receiptColumn} WHERE "id"=$1::uuid`,
+          id,
+          decidedBy,
+        );
+        await tx.$executeRawUnsafe(
+          `UPDATE "Guild" SET "founderAccountId"=$2 WHERE "id"=$1::uuid`,
+          g.id,
+          next.accountId,
+        );
+        await tx.$executeRawUnsafe(
+          `UPDATE "GuildOwnershipTransfer" SET "appliedAt"=clock_timestamp() WHERE "id"=$1::uuid`,
+          id,
+        );
+      });
+    const founderNow = async () =>
+      (
+        (await db.$queryRawUnsafe(
+          `SELECT "founderAccountId" AS f FROM "Guild" WHERE "id"=$1::uuid`,
+          g.id,
+        )) as { f: string }[]
+      )[0].f;
+    // The Founder "accepting" for the recipient, or any non-recipient deciding an acceptance.
+    await expect(forge(founder.accountId, '"proposeReceiptId"')).rejects.toThrow(
+      /GuildOwnershipTransfer/,
+    );
+    // The recipient named, but the decision is not backed by a recipient's own response receipt.
+    await expect(forge(next.accountId, '"proposeReceiptId"')).rejects.toThrow(/Guild/);
+    // An acceptance stamped after the proposal's own window closed.
+    await expect(
+      forge(next.accountId, '"proposeReceiptId"', `"expiresAt"+interval '1 minute'`),
+    ).rejects.toThrow(/GuildOwnershipTransfer/);
+    expect(await founderNow()).toBe(founder.accountId);
+  });
 });

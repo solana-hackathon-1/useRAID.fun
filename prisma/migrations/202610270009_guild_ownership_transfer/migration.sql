@@ -23,6 +23,14 @@ CREATE TABLE "GuildOwnershipTransfer" (
   OR ("state"='EXPIRED' AND "decidedAt" IS NOT NULL AND "decidedByAccountId" IS NOT NULL AND "decideReceiptId" IS NOT NULL)
   OR ("state" IN ('ACCEPTED','DECLINED','WITHDRAWN') AND "decidedAt" IS NOT NULL AND "decidedByAccountId" IS NOT NULL AND "decideReceiptId" IS NOT NULL)),
  CONSTRAINT "GuildOwnershipTransfer_applied_check" CHECK ("appliedAt" IS NULL OR "state"='ACCEPTED'),
+ -- Who may decide: the recipient accepts or declines, the proposer withdraws; an expiry can be recorded by either party.
+ CONSTRAINT "GuildOwnershipTransfer_decider_check" CHECK (
+  "state" IN ('PROPOSED','EXPIRED')
+  OR ("state" IN ('ACCEPTED','DECLINED') AND "decidedByAccountId"="toAccountId")
+  OR ("state"='WITHDRAWN' AND "decidedByAccountId"="fromAccountId")),
+ -- An acceptance happens inside the proposal's window and an expiry is recorded after it.
+ CONSTRAINT "GuildOwnershipTransfer_timing_check" CHECK (
+  ("state"<>'ACCEPTED' OR "decidedAt"<="expiresAt") AND ("state"<>'EXPIRED' OR "decidedAt">="expiresAt")),
  CONSTRAINT "GuildOwnershipTransfer_guild_fkey" FOREIGN KEY ("guildId") REFERENCES "Guild"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
  CONSTRAINT "GuildOwnershipTransfer_from_fkey" FOREIGN KEY ("fromAccountId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
  CONSTRAINT "GuildOwnershipTransfer_to_fkey" FOREIGN KEY ("toAccountId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE RESTRICT,
@@ -60,13 +68,23 @@ BEGIN
 END;
 $$;
 CREATE TRIGGER guild_transfer_guard_v1 BEFORE INSERT OR UPDATE OR DELETE ON "GuildOwnershipTransfer" FOR EACH ROW EXECUTE FUNCTION raid_guild_transfer_guard_v1();
--- An accepted transfer is applied to the Guild before the transaction ends: no half-applied ownership change.
+-- At commit: an accepted transfer is applied to the Guild (no half-applied ownership change), and the proposal and any
+-- decision are backed by the command receipts of the people who made them.
 CREATE FUNCTION raid_guild_transfer_applied_v1() RETURNS trigger LANGUAGE plpgsql AS $$
 DECLARE t record;
 BEGIN
  SELECT * INTO t FROM "GuildOwnershipTransfer" WHERE "id"=NEW."id";
  IF t."state"='ACCEPTED' AND (t."appliedAt" IS NULL OR NOT EXISTS (SELECT 1 FROM "Guild" g WHERE g."id"=t."guildId" AND g."founderAccountId"=t."toAccountId")) THEN
   RAISE EXCEPTION 'An accepted Guild ownership transfer must be applied to the Guild' USING ERRCODE='23000';
+ END IF;
+ IF NOT EXISTS (SELECT 1 FROM "CommandReceipt" c WHERE c."id"=t."proposeReceiptId" AND c."actorId"=t."fromAccountId"
+     AND c."commandKind"='ProposeOwnershipTransfer' AND c."resultRef"=t."id"::text) THEN
+  RAISE EXCEPTION 'A Guild ownership transfer needs its proposing Founder''s command receipt' USING ERRCODE='23000';
+ END IF;
+ IF t."state"<>'PROPOSED' AND NOT EXISTS (SELECT 1 FROM "CommandReceipt" c WHERE c."id"=t."decideReceiptId" AND c."actorId"=t."decidedByAccountId"
+     AND ((c."commandKind"='RespondOwnershipTransfer' AND c."resultRef"=t."id"::text)
+       OR (t."state"='EXPIRED' AND c."commandKind"='ProposeOwnershipTransfer'))) THEN
+  RAISE EXCEPTION 'A Guild ownership transfer decision needs the deciding account''s command receipt' USING ERRCODE='23000';
  END IF;
  RETURN NULL;
 END;
