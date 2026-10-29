@@ -6,6 +6,11 @@ vi.mock('next/navigation', () => ({
     throw new Error('NOT_FOUND');
   },
 }));
+vi.mock('next/headers', () => ({ headers: async () => new Headers() }));
+vi.mock('../src/lib/auth', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../src/lib/auth')>()),
+  publicRateLimit: async () => undefined,
+}));
 import Page, { dynamic, generateMetadata } from '../src/app/guilds/[slug]/page';
 import Loading from '../src/app/guilds/[slug]/loading';
 import GuildNotFound from '../src/app/guilds/[slug]/not-found';
