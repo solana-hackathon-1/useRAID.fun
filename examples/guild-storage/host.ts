@@ -10,6 +10,7 @@ import { saveGuildDraft } from './guild-profiles/draft-storage';
 import {
   activateGuild,
   editGuildProfile,
+  grantGuildRole,
   hasGuildAuthority,
   readManagedGuild,
   readPublicGuild,
@@ -150,15 +151,17 @@ try {
     (e) => e instanceof GuildStorageError && e.code === 'FORBIDDEN',
   );
   // A delegated treasury grant is its own authority: it does not edit the profile, and the Founder has none by role.
-  const client = await pool.connect();
-  try {
-    await client.query(
-      `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","grantedByAccountId") VALUES ($1::uuid,$2,'TREASURY',$3)`,
-      [active.guild.id, delegate.accountId, founder.accountId],
-    );
-  } finally {
-    client.release();
-  }
+  await transaction((tx) =>
+    grantGuildRole(
+      tx,
+      cmd(
+        founder,
+        { guildId: active.guild.id, granteeAccountId: delegate.accountId, kind: 'TREASURY' },
+        'g-1',
+      ),
+      host,
+    ),
+  );
   const can = (who: GuildActor, kind: 'PROFILE' | 'WORK' | 'TREASURY' | 'DISPUTE') =>
     transaction((tx) => hasGuildAuthority(tx, who.accountId, active.guild.id, kind));
   assert.deepEqual(

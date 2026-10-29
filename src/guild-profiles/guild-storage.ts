@@ -10,8 +10,14 @@ import { PublicGuildSchema } from '../contracts/entities';
 import { evaluateGuildProfilePermission, projectPublicGuildProfile } from './index';
 import {
   ActivateGuildInputSchema,
+  DELEGATED_GRANT_LIMIT,
   EditGuildProfileInputSchema,
   GUILD_AUTHORITY_KINDS,
+  GUILD_GRANT_LIMIT,
+  GrantGuildRoleInputSchema,
+  GuildRoleGrantViewSchema,
+  RevokeGuildRoleInputSchema,
+  type GuildRoleGrantView,
   GuildStorageError,
   ManagedGuildSchema,
   type GuildActivationHost,
@@ -277,6 +283,62 @@ export async function activateGuild(
   await approved();
   return { status: result.status, guild: await loadGuild(tx, result.resultRef) };
 }
+/**
+ * Asks the pure policy whether the actor may take a profile action over these fields, from facts rebuilt here under the
+ * database clock. Window bounds are rounded conservatively to the policy's millisecond precision (start up, expiry down).
+ */
+async function profileDecision(
+  tx: CommandReceiptTransaction,
+  actor: GuildActor,
+  guild: { id: string; founderAccountId: string; revision: number; now: Date },
+  action: 'EDIT_PROFILE' | 'DELEGATE_PROFILE',
+  fields: string[],
+) {
+  const grants = await query<{
+    id: string;
+    fields: string[];
+    canDelegate: boolean;
+    validFrom: Date;
+    expiresAt: Date | null;
+  }>(
+    tx,
+    `SELECT "id"::text,"fields","canDelegate",
+       date_trunc('milliseconds',"validFrom")+CASE WHEN "validFrom">date_trunc('milliseconds',"validFrom") THEN interval '1 millisecond' ELSE interval '0' END AS "validFrom",
+       date_trunc('milliseconds',"expiresAt") AS "expiresAt"
+     FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2 AND "kind"='PROFILE' AND "revokedAt" IS NULL
+      AND "validFrom"<=clock_timestamp() AND ("expiresAt" IS NULL OR "expiresAt">clock_timestamp())`,
+    [guild.id, actor.accountId],
+  );
+  return evaluateGuildProfilePermission(
+    {
+      version: 'v1',
+      guild: {
+        id: guild.id,
+        founderAccountId: guild.founderAccountId,
+        revision: guild.revision,
+        primaryToken: null,
+      },
+      // The activation record is the verified relationship; it exists for every row of this table.
+      founderControlVerified: true,
+      actorAccountId: actor.accountId,
+      actorSessionAuthorized: true,
+      actorRestricted: false,
+      holderEligible: null,
+      now: guild.now.toISOString(),
+      grants: grants.map((g) => ({
+        id: g.id,
+        guildId: guild.id,
+        granteeAccountId: actor.accountId,
+        status: 'ACTIVE',
+        fields: g.fields,
+        canDelegateProfile: g.canDelegate,
+        validFrom: g.validFrom.toISOString(),
+        expiresAt: g.expiresAt ? g.expiresAt.toISOString() : null,
+      })),
+    },
+    { guildId: guild.id, expectedRevision: guild.revision, action, fields },
+  );
+}
 /** Edits the public profile fields the actor may change, as the Founder or under a live field-scoped grant. */
 export async function editGuildProfile(
   tx: CommandReceiptTransaction,
@@ -315,50 +377,7 @@ export async function editGuildProfile(
     if (rows.length !== 1) fail('NOT_FOUND');
     await authorize(tx, actor);
     const guild = rows[0];
-    // Window bounds are rounded conservatively to the policy's millisecond precision (start up, expiry down).
-    const grants = await query<{
-      id: string;
-      fields: string[];
-      validFrom: Date;
-      expiresAt: Date | null;
-    }>(
-      tx,
-      `SELECT "id"::text,"fields",
-         date_trunc('milliseconds',"validFrom")+CASE WHEN "validFrom">date_trunc('milliseconds',"validFrom") THEN interval '1 millisecond' ELSE interval '0' END AS "validFrom",
-         date_trunc('milliseconds',"expiresAt") AS "expiresAt"
-       FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2 AND "kind"='PROFILE' AND "revokedAt" IS NULL
-        AND "validFrom"<=clock_timestamp() AND ("expiresAt" IS NULL OR "expiresAt">clock_timestamp())`,
-      [input.guildId, actor.accountId],
-    );
-    const decision = evaluateGuildProfilePermission(
-      {
-        version: 'v1',
-        guild: {
-          id: guild.id,
-          founderAccountId: guild.founderAccountId,
-          revision: guild.revision,
-          primaryToken: null,
-        },
-        // The activation record is the verified relationship; it exists for every row of this table.
-        founderControlVerified: true,
-        actorAccountId: actor.accountId,
-        actorSessionAuthorized: true,
-        actorRestricted: false,
-        holderEligible: null,
-        now: guild.now.toISOString(),
-        grants: grants.map((g) => ({
-          id: g.id,
-          guildId: guild.id,
-          granteeAccountId: actor.accountId,
-          status: 'ACTIVE',
-          fields: g.fields,
-          canDelegateProfile: false,
-          validFrom: g.validFrom.toISOString(),
-          expiresAt: g.expiresAt ? g.expiresAt.toISOString() : null,
-        })),
-      },
-      { guildId: guild.id, expectedRevision: guild.revision, action: 'EDIT_PROFILE', fields },
-    );
+    const decision = await profileDecision(tx, actor, guild, 'EDIT_PROFILE', fields);
     if (!decision.allowed) fail('FORBIDDEN');
     return guild;
   }
@@ -451,4 +470,280 @@ export async function readManagedGuild(
   const guild = await loadGuild(tx, guildId);
   await authorize(tx, actor);
   return { guild, authority };
+}
+const LIVE_R = `r."revokedAt" IS NULL AND r."validFrom"<=clock_timestamp() AND (r."expiresAt" IS NULL OR r."expiresAt">clock_timestamp())`;
+const LIVE = `"revokedAt" IS NULL AND "validFrom"<=clock_timestamp() AND ("expiresAt" IS NULL OR "expiresAt">clock_timestamp())`;
+async function loadGrant(
+  tx: CommandReceiptTransaction,
+  guildId: string,
+  grantId: string,
+): Promise<GuildRoleGrantView> {
+  const rows = await query<Record<string, unknown>>(
+    tx,
+    `SELECT "id"::text,"guildId"::text,"granteeAccountId","kind","fields","canDelegate","validFrom","expiresAt","revokedAt","grantedByAccountId"
+     FROM "GuildRoleGrant" WHERE "id"=$1::uuid AND "guildId"=$2::uuid`,
+    [grantId, guildId],
+  );
+  if (rows.length !== 1) fail('STORAGE_CONTRACT');
+  const iso = (v: unknown) => (v instanceof Date ? v.toISOString() : v);
+  const parsed = GuildRoleGrantViewSchema.safeParse({
+    version: 'v1',
+    ...rows[0],
+    validFrom: iso(rows[0].validFrom),
+    expiresAt: iso(rows[0].expiresAt),
+    revokedAt: iso(rows[0].revokedAt),
+  });
+  if (!parsed.success) fail('STORAGE_CONTRACT');
+  return parsed.data;
+}
+/**
+ * Delegates a role. The Founder may grant any kind to another account (never to themselves, and never treasury or
+ * dispute authority to themselves). A grantee with a live delegating profile grant may pass on only profile fields
+ * they hold, without delegation rights, and not beyond their own expiry.
+ */
+export async function grantGuildRole(
+  tx: CommandReceiptTransaction,
+  command: GuildCommand,
+  host: GuildHost,
+): Promise<{ status: 'EXECUTED' | 'REPLAYED'; grant: GuildRoleGrantView }> {
+  validateActor(command?.actor);
+  if (typeof host?.allowNewWrites !== 'boolean') fail('STORAGE_CONTRACT');
+  const parsed = GrantGuildRoleInputSchema.safeParse(command.input);
+  if (!parsed.success) fail('INVALID_INPUT');
+  const input = parsed.data,
+    actor = command.actor;
+  /** May this actor issue roles in this Guild at all (Founder, or holding a live delegating profile grant)? */
+  async function mayDelegate() {
+    const rows = await query<{ founder: boolean; delegating: boolean }>(
+      tx,
+      `SELECT g."founderAccountId"=$2 AS founder,
+         EXISTS(SELECT 1 FROM "GuildRoleGrant" WHERE "guildId"=g."id" AND "granteeAccountId"=$2 AND "kind"='PROFILE' AND "canDelegate" AND ${LIVE}) AS delegating
+       FROM "Guild" g WHERE g."id"=$1::uuid`,
+      [input.guildId, actor.accountId],
+    );
+    return rows.length === 1 && (rows[0].founder || rows[0].delegating);
+  }
+  const result = await executeIdempotentCommand(
+    tx,
+    {
+      actorId: actor.accountId,
+      commandKind: 'GrantGuildRole',
+      idempotencyKey: command.idempotencyKey,
+      requestId: command.requestId,
+      request: input,
+    },
+    async ({ receiptId }) => {
+      await authorize(tx, actor);
+      if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      const guilds = await query<{
+        id: string;
+        founderAccountId: string;
+        revision: number;
+        now: Date;
+      }>(
+        tx,
+        `SELECT "id"::text,"founderAccountId","revision",date_trunc('milliseconds',clock_timestamp()) AS now FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE`,
+        [input.guildId],
+      );
+      if (guilds.length !== 1) fail('NOT_FOUND');
+      await authorize(tx, actor);
+      const guild = guilds[0];
+      const founder = guild.founderAccountId === actor.accountId;
+      // Nobody grants themselves a role, and the Founder already holds profile and work by role.
+      if (
+        input.granteeAccountId === actor.accountId ||
+        input.granteeAccountId === guild.founderAccountId
+      )
+        fail('FORBIDDEN');
+      if (input.expiresAt !== null) {
+        const ok = await query<{ ok: boolean }>(
+          tx,
+          'SELECT $1::timestamptz>clock_timestamp() AS ok',
+          [input.expiresAt],
+        );
+        if (ok[0]?.ok !== true) fail('INVALID_INPUT');
+      }
+      if (!founder) {
+        // Redelegation: profile fields the actor holds with delegation rights, nothing more, nothing longer.
+        if (input.kind !== 'PROFILE' || input.canDelegate) fail('FORBIDDEN');
+        const decision = await profileDecision(tx, actor, guild, 'DELEGATE_PROFILE', input.fields);
+        if (!decision.allowed) fail('FORBIDDEN');
+        const bounds = await query<{ field: string; bound: Date | null; unbounded: boolean }>(
+          tx,
+          `SELECT f AS field,max("expiresAt") AS bound,bool_or("expiresAt" IS NULL) AS unbounded
+           FROM "GuildRoleGrant" r CROSS JOIN LATERAL unnest(r."fields") f
+           WHERE r."guildId"=$1::uuid AND r."granteeAccountId"=$2 AND r."kind"='PROFILE' AND r."canDelegate" AND ${LIVE_R} AND f=ANY($3::text[])
+           GROUP BY f`,
+          [input.guildId, actor.accountId, `{${input.fields.join(',')}}`],
+        );
+        // The latest expiry among the covering grants, per field; the earliest of those bounds the new grant.
+        const finite = bounds.filter((b) => !b.unbounded && b.bound);
+        if (finite.length) {
+          const earliest = Math.min(...finite.map((b) => b.bound!.getTime()));
+          if (input.expiresAt === null || Date.parse(input.expiresAt) > earliest) fail('FORBIDDEN');
+        }
+        const passed = await query<{ n: number }>(
+          tx,
+          `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "grantedByAccountId"=$2 AND ${LIVE}`,
+          [input.guildId, actor.accountId],
+        );
+        if ((passed[0]?.n ?? 0) >= DELEGATED_GRANT_LIMIT) fail('GRANT_LIMIT');
+      }
+      const live = await query<{ n: number }>(
+        tx,
+        `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND ${LIVE}`,
+        [input.guildId],
+      );
+      if ((live[0]?.n ?? 0) >= GUILD_GRANT_LIMIT) fail('GRANT_LIMIT');
+      // Read without a lock: locking the grantee here would invert the grantee-then-Guild order other commands use.
+      // The foreign key still proves existence, and suspension is re-checked wherever authority is used.
+      const grantees = await query<{ suspended: boolean }>(
+        tx,
+        'SELECT "suspended" FROM "User" WHERE "id"=$1',
+        [input.granteeAccountId],
+      );
+      if (grantees.length !== 1) fail('NOT_FOUND');
+      if (grantees[0].suspended) fail('ACCOUNT_RESTRICTED');
+      const rows = await query<{ id: string }>(
+        tx,
+        `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","canDelegate","expiresAt","grantedByAccountId","receiptId") VALUES ($1::uuid,$2,$3,$4::text[],$5::boolean,$6::timestamptz,$7,$8::uuid) RETURNING "id"::text`,
+        [
+          input.guildId,
+          input.granteeAccountId,
+          input.kind,
+          `{${input.fields.join(',')}}`,
+          String(input.canDelegate),
+          input.expiresAt,
+          actor.accountId,
+          receiptId,
+        ],
+      );
+      if (rows.length !== 1) fail('STORAGE_CONTRACT');
+      await authorize(tx, actor);
+      return {
+        resultRef: rows[0].id,
+        events: [
+          {
+            type: 'guild.role_granted.v1',
+            aggregateId: input.guildId,
+            aggregateVersion: guild.revision,
+            guildId: input.guildId,
+            payload: { guildRoleGrantId: rows[0].id },
+            publish: false,
+          },
+        ],
+      };
+    },
+  );
+  // A replay re-proves the issuing authority and returns the grant as stored, never to anyone else.
+  await authorize(tx, actor);
+  if (!(await mayDelegate())) fail('FORBIDDEN');
+  return { status: result.status, grant: await loadGrant(tx, input.guildId, result.resultRef) };
+}
+/**
+ * Revokes a grant: by the Founder, the account that issued it, or its grantee (surrender). Revoking a delegating profile
+ * grant also revokes what that grantee passed on (unless another delegating grant of theirs is still live).
+ */
+export async function revokeGuildRole(
+  tx: CommandReceiptTransaction,
+  command: GuildCommand,
+  host: GuildHost,
+): Promise<{ status: 'EXECUTED' | 'REPLAYED'; grant: GuildRoleGrantView }> {
+  validateActor(command?.actor);
+  if (typeof host?.allowNewWrites !== 'boolean') fail('STORAGE_CONTRACT');
+  const parsed = RevokeGuildRoleInputSchema.safeParse(command.input);
+  if (!parsed.success) fail('INVALID_INPUT');
+  const input = parsed.data,
+    actor = command.actor;
+  const involved = (row: { founder: boolean; grantedBy: string; grantee: string }) =>
+    row.founder || row.grantedBy === actor.accountId || row.grantee === actor.accountId;
+  const result = await executeIdempotentCommand(
+    tx,
+    {
+      actorId: actor.accountId,
+      commandKind: 'RevokeGuildRole',
+      idempotencyKey: command.idempotencyKey,
+      requestId: command.requestId,
+      request: input,
+    },
+    async () => {
+      await authorize(tx, actor);
+      if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      // The Guild row serializes revocation with profile edits, grants and other revocations.
+      const guilds = await query<{ founderAccountId: string; revision: number }>(
+        tx,
+        'SELECT "founderAccountId","revision" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
+        [input.guildId],
+      );
+      if (guilds.length !== 1) fail('NOT_FOUND');
+      await authorize(tx, actor);
+      const grants = await query<{
+        kind: string;
+        canDelegate: boolean;
+        grantee: string;
+        grantedBy: string;
+        revoked: boolean;
+      }>(
+        tx,
+        `SELECT "kind","canDelegate","granteeAccountId" AS grantee,"grantedByAccountId" AS "grantedBy","revokedAt" IS NOT NULL AS revoked
+         FROM "GuildRoleGrant" WHERE "id"=$1::uuid AND "guildId"=$2::uuid FOR UPDATE`,
+        [input.grantId, input.guildId],
+      );
+      if (grants.length !== 1) fail('NOT_FOUND');
+      const grant = grants[0];
+      if (!involved({ founder: guilds[0].founderAccountId === actor.accountId, ...grant }))
+        fail('FORBIDDEN');
+      if (grant.revoked) fail('REVISION_CONFLICT');
+      await query(
+        tx,
+        'UPDATE "GuildRoleGrant" SET "revokedAt"=clock_timestamp() WHERE "id"=$1::uuid AND "revokedAt" IS NULL RETURNING "id"',
+        [input.grantId],
+      );
+      const passedOn: string[] = [];
+      if (grant.kind === 'PROFILE' && grant.canDelegate) {
+        // Only grants that are still live and no longer backed are revoked; each of their fields needs a remaining live
+        // delegating grant of the grantee that covers the field and lasts at least as long. Expired rows grant nothing,
+        // are not counted by any cap and stay as history, so they cannot inflate the audit events of this command.
+        const cascaded = await query<{ id: string }>(
+          tx,
+          `UPDATE "GuildRoleGrant" s SET "revokedAt"=clock_timestamp()
+           WHERE s."guildId"=$1::uuid AND s."grantedByAccountId"=$2 AND s."kind"='PROFILE' AND s."revokedAt" IS NULL
+             AND (s."expiresAt" IS NULL OR s."expiresAt">clock_timestamp())
+             AND EXISTS (
+               SELECT 1 FROM unnest(s."fields") f WHERE NOT EXISTS (
+                 SELECT 1 FROM "GuildRoleGrant" d
+                 WHERE d."guildId"=$1::uuid AND d."granteeAccountId"=$2 AND d."kind"='PROFILE' AND d."canDelegate"
+                   AND d."revokedAt" IS NULL AND d."validFrom"<=clock_timestamp()
+                   AND (d."expiresAt" IS NULL OR d."expiresAt">clock_timestamp())
+                   AND f=ANY(d."fields")
+                   AND (d."expiresAt" IS NULL OR (s."expiresAt" IS NOT NULL AND s."expiresAt"<=d."expiresAt"))))
+           RETURNING s."id"::text`,
+          [input.guildId, grant.grantee],
+        );
+        passedOn.push(...cascaded.map((row) => row.id));
+      }
+      await authorize(tx, actor);
+      return {
+        resultRef: input.grantId,
+        events: [input.grantId, ...passedOn].map((id) => ({
+          type: 'guild.role_revoked.v1',
+          aggregateId: input.guildId,
+          aggregateVersion: guilds[0].revision,
+          guildId: input.guildId,
+          payload: { guildRoleGrantId: id },
+          publish: false,
+        })),
+      };
+    },
+  );
+  // A replay is for the people involved in the grant, judged by identity rather than by whether the grant is live.
+  await authorize(tx, actor);
+  const again = await query<{ founder: boolean; grantedBy: string; grantee: string }>(
+    tx,
+    `SELECT g."founderAccountId"=$3 AS founder,r."grantedByAccountId" AS "grantedBy",r."granteeAccountId" AS grantee
+     FROM "GuildRoleGrant" r JOIN "Guild" g ON g."id"=r."guildId" WHERE r."id"=$1::uuid AND r."guildId"=$2::uuid`,
+    [input.grantId, input.guildId, actor.accountId],
+  );
+  if (again.length !== 1 || !involved(again[0])) fail('FORBIDDEN');
+  return { status: result.status, grant: await loadGrant(tx, input.guildId, result.resultRef) };
 }

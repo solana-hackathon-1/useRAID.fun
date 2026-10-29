@@ -171,16 +171,16 @@
       "review": "SELF-EVALUATED; independent review pending."
     },
     "GuildRoleGrant.granteeAccountId": {
-      "writer": "fixture-only until the grant command slice; src/guild-profiles/guild-storage.ts reads grants",
+      "writer": "src/guild-profiles/guild-storage.ts#grantGuildRole",
       "effects": "Grant recipient attribution; the grant row is immutable except one-time revocation; no identity mutation.",
-      "authority": "Reads only: authority is recomputed per call from live, unrevoked grants on the database clock; no grant command exists yet.",
+      "authority": "Current actual Session of the Founder, or of a grantee holding a live delegating profile grant for the same fields, rechecked after the Guild row lock; the grantee row is read unlocked and the foreign key proves existence.",
       "fold": "Restrict preserves grant history; no rehome/fold enablement.",
       "review": "SELF-EVALUATED; independent review pending."
     },
     "GuildRoleGrant.grantedByAccountId": {
-      "writer": "fixture-only until the grant command slice",
+      "writer": "src/guild-profiles/guild-storage.ts#grantGuildRole",
       "effects": "Issuer attribution of a grant; no identity mutation.",
-      "authority": "Reads only; the issuing command and its authority rule are the next slice.",
+      "authority": "Same issuing authority as grantGuildRole (Founder or live delegating profile grantee); revocation by Founder, issuer or grantee via revokeGuildRole.",
       "fold": "Restrict preserves grant history; no rehome/fold enablement.",
       "review": "SELF-EVALUATED; independent review pending."
     }

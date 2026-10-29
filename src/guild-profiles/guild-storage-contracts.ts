@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { CommandReceiptTransaction } from '../command-receipts';
 import { PublicGuildSchema } from '../contracts/entities';
+import { InternalId } from '../contracts/ids';
 
 /** Cookie-derived own authority supplied by the host; never browser JSON. */
 export interface GuildActor {
@@ -37,6 +38,52 @@ export const GUILD_AUTHORITY_KINDS: readonly GuildAuthorityKind[] = [
 ];
 const profileName = z.string().trim().pipe(PublicGuildSchema.shape.name);
 const profileDescription = z.string().trim().pipe(PublicGuildSchema.shape.description);
+/** Live grants per Guild, and live grants one delegate may have passed on (bounds the cascade audit on revocation). */
+export const GUILD_GRANT_LIMIT = 200;
+export const DELEGATED_GRANT_LIMIT = 10;
+const profileFields = z.enum(['name', 'description']);
+export const GrantGuildRoleInputSchema = z
+  .strictObject({
+    guildId: z.uuid(),
+    granteeAccountId: InternalId,
+    kind: z.enum(['PROFILE', 'WORK', 'TREASURY', 'DISPUTE']),
+    fields: z.array(profileFields).min(1).max(2).optional(),
+    canDelegate: z.boolean().optional(),
+    expiresAt: z.iso.datetime().nullable().optional(),
+  })
+  .superRefine((value, ctx) => {
+    const profile = value.kind === 'PROFILE';
+    if (profile !== (value.fields !== undefined))
+      ctx.addIssue({ code: 'custom', message: 'Only profile grants name fields, and they must.' });
+    if (value.fields && new Set(value.fields).size !== value.fields.length)
+      ctx.addIssue({ code: 'custom', message: 'Duplicate field.' });
+    if (!profile && value.canDelegate)
+      ctx.addIssue({ code: 'custom', message: 'Only profile grants can delegate.' });
+  })
+  // Equivalent requests normalize to one digest, so a retry with the same meaning replays.
+  .transform((value) => ({
+    guildId: value.guildId,
+    granteeAccountId: value.granteeAccountId,
+    kind: value.kind,
+    fields: value.fields ? [...value.fields].sort() : [],
+    canDelegate: value.canDelegate === true,
+    expiresAt: value.expiresAt ? new Date(value.expiresAt).toISOString() : null,
+  }));
+export const RevokeGuildRoleInputSchema = z.strictObject({ guildId: z.uuid(), grantId: z.uuid() });
+export const GuildRoleGrantViewSchema = z.strictObject({
+  version: z.literal('v1'),
+  id: z.uuid(),
+  guildId: z.uuid(),
+  granteeAccountId: z.string().min(1).max(200),
+  kind: z.enum(['PROFILE', 'WORK', 'TREASURY', 'DISPUTE']),
+  fields: z.array(profileFields).max(2),
+  canDelegate: z.boolean(),
+  validFrom: z.iso.datetime(),
+  expiresAt: z.iso.datetime().nullable(),
+  revokedAt: z.iso.datetime().nullable(),
+  grantedByAccountId: z.string().min(1).max(200),
+});
+export type GuildRoleGrantView = z.infer<typeof GuildRoleGrantViewSchema>;
 export const ActivateGuildInputSchema = z.strictObject({
   guildDraftId: z.uuid(),
   expectedDraftRevision: z.number().int().min(1).max(2147483646),
@@ -77,6 +124,7 @@ export class GuildStorageError extends Error {
       | 'REVISION_CONFLICT'
       | 'GUILD_EXISTS'
       | 'SLUG_UNAVAILABLE'
+      | 'GRANT_LIMIT'
       | 'STORAGE_CONTRACT'
       | 'STORAGE_UNAVAILABLE',
   ) {
