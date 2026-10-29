@@ -6,10 +6,12 @@ import { saveGuildDraft } from '../src/guild-profiles/draft-storage';
 import {
   activateGuild,
   editGuildProfile,
+  grantGuildRole,
   hasGuildAuthority,
   proposeOwnershipTransfer,
   readManagedGuild,
   respondOwnershipTransfer,
+  revokeGuildRole,
   type GuildActor,
 } from '../src/guild-profiles/guild-storage';
 import { hash } from '../src/lib/auth-primitives';
@@ -142,6 +144,17 @@ const respond = (
       ownerHost(writes),
     ),
   );
+const grant = (actor: GuildActor, input: Record<string, unknown>, key?: string) =>
+  run((tx) => grantGuildRole(tx, cmd(actor, input, key), ownerHost()));
+const revoke = (actor: GuildActor, guildId: string, grantId: string, key?: string) =>
+  run((tx) => revokeGuildRole(tx, cmd(actor, { guildId, grantId }, key), ownerHost()));
+const founderOf = async (guildId: string) =>
+  (
+    await db.$queryRawUnsafe<{ f: string }[]>(
+      `SELECT "founderAccountId" AS f FROM "Guild" WHERE "id"=$1::uuid`,
+      guildId,
+    )
+  )[0].f;
 const grantRow = (guildId: string, grantee: GuildActor) =>
   db.$executeRawUnsafe(
     `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","grantedByAccountId") SELECT $1::uuid,$2,'PROFILE',ARRAY['name'],"founderAccountId" FROM "Guild" WHERE "id"=$1::uuid`,
@@ -431,5 +444,163 @@ integration('T009 Guild ownership transfer', () => {
       forge(next.accountId, '"proposeReceiptId"', `"expiresAt"+interval '1 minute'`),
     ).rejects.toThrow(/GuildOwnershipTransfer/);
     expect(await founderNow()).toBe(founder.accountId);
+  });
+  it('accepts non-canonical (uppercase) ids and commits them in canonical form', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const editor = await person();
+    const G = g.id.toUpperCase();
+    const proposed = await propose(founder, G, next.accountId, {}, 'p-upper');
+    expect(proposed.transfer.guildId).toBe(g.id);
+    const done = await respond(next, G, proposed.transfer.id.toUpperCase(), 'ACCEPT', 'a-upper');
+    expect(done).toMatchObject({
+      status: 'EXECUTED',
+      transfer: { id: proposed.transfer.id, state: 'ACCEPTED', applied: true },
+    });
+    // The same request in canonical form is the same request.
+    expect((await respond(next, g.id, proposed.transfer.id, 'ACCEPT', 'a-upper')).status).toBe(
+      'REPLAYED',
+    );
+    expect(await founderOf(g.id)).toBe(next.accountId);
+    const issued = await grant(next, {
+      guildId: G,
+      granteeAccountId: editor.accountId,
+      kind: 'WORK',
+    });
+    expect(issued.grant.guildId).toBe(g.id);
+    const revoked = await revoke(next, G, issued.grant.id.toUpperCase(), 'r-upper');
+    expect(revoked.grant).toMatchObject({ id: issued.grant.id, guildId: g.id });
+    expect(revoked.grant.revokedAt).not.toBeNull();
+    expect((await revoke(next, g.id, issued.grant.id, 'r-upper')).status).toBe('REPLAYED');
+  });
+
+  it('records an acceptance that crosses the expiry during a slow host hook as expired', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const [{ at }] = await db.$queryRawUnsafe<{ at: Date }[]>(
+      `SELECT clock_timestamp()+interval '1500 milliseconds' AS at`,
+    );
+    const id = (await propose(founder, g.id, next.accountId, { expiresAt: at.toISOString() }))
+      .transfer.id;
+    const slowHost = {
+      allowNewWrites: true,
+      authorizeOwnershipTransfer: async () => {
+        await new Promise((resolve) => setTimeout(resolve, at.getTime() - Date.now() + 300));
+        return true;
+      },
+    };
+    const result = await run((tx) =>
+      respondOwnershipTransfer(
+        tx,
+        cmd(next, { guildId: g.id, transferId: id, decision: 'ACCEPT' }, 'slow'),
+        slowHost,
+      ),
+    );
+    expect(result).toMatchObject({
+      status: 'EXECUTED',
+      transfer: { state: 'EXPIRED', applied: false },
+    });
+    expect(await founderOf(g.id)).toBe(founder.accountId);
+    const events = await db.$queryRawUnsafe<{ eventType: string }[]>(
+      `SELECT "eventType" FROM "AuditEvent" WHERE "guildId"=$1 AND "eventType" LIKE 'guild.ownership_%' ORDER BY "occurredAt"`,
+      g.id,
+    );
+    expect(events.map((e) => e.eventType)).toEqual([
+      'guild.ownership_proposed.v1',
+      'guild.ownership_expired.v1',
+    ]);
+  });
+
+  it('never makes a Founder of an account holding live treasury or dispute authority in the Guild', async () => {
+    const { founder, guild: g } = await guild();
+    const treasurer = await person();
+    const arbiter = await person();
+    const editor = await person();
+    const t = await grant(founder, {
+      guildId: g.id,
+      granteeAccountId: treasurer.accountId,
+      kind: 'TREASURY',
+    });
+    await grant(founder, { guildId: g.id, granteeAccountId: arbiter.accountId, kind: 'DISPUTE' });
+    await grant(founder, {
+      guildId: g.id,
+      granteeAccountId: editor.accountId,
+      kind: 'PROFILE',
+      fields: ['name'],
+    });
+    await expect(propose(founder, g.id, treasurer.accountId)).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
+    await expect(propose(founder, g.id, arbiter.accountId)).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
+    // A grant issued after the proposal is caught at acceptance; nothing moves.
+    const id = (await propose(founder, g.id, editor.accountId, {}, 'p-editor')).transfer.id;
+    const late = await grant(founder, {
+      guildId: g.id,
+      granteeAccountId: editor.accountId,
+      kind: 'TREASURY',
+    });
+    await expect(respond(editor, g.id, id, 'ACCEPT', 'a-1')).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
+    expect(await founderOf(g.id)).toBe(founder.accountId);
+    // Once the recipient surrenders the separate authority, the proposal can be accepted.
+    await revoke(editor, g.id, late.grant.id);
+    expect((await respond(editor, g.id, id, 'ACCEPT', 'a-2')).transfer.applied).toBe(true);
+    expect(await founderOf(g.id)).toBe(editor.accountId);
+    // A revoked or expired treasury grant is history, not authority.
+    await revoke(editor, g.id, t.grant.id);
+    expect((await propose(editor, g.id, treasurer.accountId, {}, 'p-t')).transfer.state).toBe(
+      'PROPOSED',
+    );
+  });
+
+  it('lets the former Founder revoke grants they issued after the transfer', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const editor = await person();
+    const issued = await grant(founder, {
+      guildId: g.id,
+      granteeAccountId: editor.accountId,
+      kind: 'WORK',
+    });
+    const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+    await respond(next, g.id, id, 'ACCEPT');
+    const revoked = await revoke(founder, g.id, issued.grant.id);
+    expect(revoked.grant.revokedAt).not.toBeNull();
+  });
+
+  it('records a lapse for DECLINE and WITHDRAW too, with EXECUTED status and state EXPIRED', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const lapse = async (id: string) => {
+      await db.$executeRawUnsafe(
+        `ALTER TABLE "GuildOwnershipTransfer" DISABLE TRIGGER guild_transfer_guard_v1`,
+      );
+      try {
+        await db.$executeRawUnsafe(
+          `UPDATE "GuildOwnershipTransfer" SET "proposedAt"=clock_timestamp()-interval '2 days',"expiresAt"=clock_timestamp()-interval '1 day' WHERE "id"=$1::uuid`,
+          id,
+        );
+      } finally {
+        await db.$executeRawUnsafe(
+          `ALTER TABLE "GuildOwnershipTransfer" ENABLE TRIGGER guild_transfer_guard_v1`,
+        );
+      }
+    };
+    const t1 = (await propose(founder, g.id, next.accountId, {}, 'p-1')).transfer.id;
+    await lapse(t1);
+    expect(await respond(next, g.id, t1, 'DECLINE')).toMatchObject({
+      status: 'EXECUTED',
+      transfer: { state: 'EXPIRED', applied: false },
+    });
+    const t2 = (await propose(founder, g.id, next.accountId, {}, 'p-2')).transfer.id;
+    await lapse(t2);
+    expect(await respond(founder, g.id, t2, 'WITHDRAW')).toMatchObject({
+      status: 'EXECUTED',
+      transfer: { state: 'EXPIRED', applied: false },
+    });
+    expect(await founderOf(g.id)).toBe(founder.accountId);
   });
 });

@@ -14,6 +14,7 @@ import {
 } from '../src/guild-profiles/guild-storage';
 import { hash } from '../src/lib/auth-primitives';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import type { SqlBinding } from '../src/command-receipts';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 let counter = 0;
 async function person(): Promise<GuildActor> {
@@ -255,7 +256,7 @@ integration('T009 Guild role grants and revocation', () => {
       canDelegate: true,
       expiresAt: expiry,
     });
-    // A delegate must give an explicit expiry no later than their own.
+    // A delegate with bounded cover must give an explicit expiry no later than their own.
     const sub = await giveRole(lead, g.id, {
       granteeAccountId: helper.accountId,
       kind: 'PROFILE',
@@ -312,7 +313,9 @@ integration('T009 Guild role grants and revocation', () => {
     const one = await grantOf();
     await expect(takeRole(stranger, a.guild.id, one)).rejects.toMatchObject({ code: 'FORBIDDEN' });
     await expect(takeRole(b.founder, a.guild.id, one)).rejects.toMatchObject({ code: 'FORBIDDEN' });
-    await expect(takeRole(a.founder, b.guild.id, one)).rejects.toMatchObject({ code: 'NOT_FOUND' });
+    await expect(takeRole(a.founder, b.guild.id, one)).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
     await expect(
       takeRole(a.founder, a.guild.id, '00000000-0000-4000-8000-000000000000'),
     ).rejects.toMatchObject({ code: 'NOT_FOUND' });
@@ -322,8 +325,9 @@ integration('T009 Guild role grants and revocation', () => {
     expect(done.grant.revokedAt).not.toBeNull();
     expect((await takeRole(a.founder, a.guild.id, one, 'rv-1')).status).toBe('REPLAYED');
     expect(await can(holder, a.guild.id, 'WORK')).toBe(false);
+    // No revision is involved, so a client that re-reads and retries must not loop on a conflict code.
     await expect(takeRole(a.founder, a.guild.id, one, 'rv-2')).rejects.toMatchObject({
-      code: 'REVISION_CONFLICT',
+      code: 'GRANT_REVOKED',
     });
     // The grantee may surrender their own role.
     const two = await grantOf('DISPUTE');
@@ -566,5 +570,162 @@ integration('T009 Guild role grants and revocation', () => {
       forever,
     )) as { r: boolean }[];
     expect(r).toBe(true);
+  });
+
+  it('#314-1: judges redelegation bounds at the locked instant and refuses when cover lapses between reads', async () => {
+    const { founder, guild: g } = await guild();
+    const lead = await person();
+    const helper = await person();
+    // Grants are immutable except for revocation, so the lapse is real: cover that expires two seconds from now.
+    await giveRole(founder, g.id, {
+      granteeAccountId: lead.accountId,
+      kind: 'PROFILE',
+      fields: ['name'],
+      canDelegate: true,
+      expiresAt: future(2000),
+    });
+    // Unrelated live delegating cover (another field) keeps the lead a delegator after the lapse.
+    await giveRole(founder, g.id, {
+      granteeAccountId: lead.accountId,
+      kind: 'PROFILE',
+      fields: ['description'],
+      canDelegate: true,
+    });
+    const seen: { sql: string; bindings: readonly unknown[]; rows: unknown[] }[] = [];
+    const attempt = run((tx) =>
+      grantGuildRole(
+        {
+          dialect: tx.dialect,
+          isolation: tx.isolation,
+          async query<Row>(sql: string, bindings: readonly SqlBinding[]) {
+            // The lead's only delegating cover for 'name' lapses after the policy read and before the bounds read.
+            if (/CROSS JOIN LATERAL unnest/.test(sql))
+              await tx.query(
+                `SELECT pg_sleep(GREATEST(0,EXTRACT(EPOCH FROM max("expiresAt")-clock_timestamp()))+0.05)::text AS slept
+                 FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2`,
+                [g.id, lead.accountId],
+              );
+            const rows = await tx.query<Row>(sql, bindings);
+            seen.push({ sql, bindings, rows });
+            return rows;
+          },
+        },
+        cmd(lead, {
+          guildId: g.id,
+          granteeAccountId: helper.accountId,
+          kind: 'PROFILE',
+          fields: ['name'],
+          expiresAt: null,
+        }),
+        host(),
+      ),
+    );
+    await expect(attempt).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    const [{ n }] = (await db.$queryRawUnsafe(
+      `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "granteeAccountId"=$1`,
+      helper.accountId,
+    )) as { n: number }[];
+    expect(n).toBe(0);
+    const now = (seen.find((q) => /AS now FROM "Guild"/.test(q.sql))!.rows[0] as { now: Date }).now;
+    const bounds = seen.find((q) => /CROSS JOIN LATERAL unnest/.test(q.sql))!;
+    expect(bounds.sql).not.toContain('clock_timestamp()');
+    expect(bounds.bindings.map(String)).toContain(now.toISOString());
+  });
+
+  it('review follow-up: a delegate may pass on without an expiry only when their own cover has none', async () => {
+    const { founder, guild: g } = await guild();
+    const lead = await person();
+    const bounded = await person();
+    const helper = await person();
+    const body = { kind: 'PROFILE', fields: ['name'], canDelegate: true };
+    await giveRole(founder, g.id, { ...body, granteeAccountId: lead.accountId, expiresAt: null });
+    await giveRole(founder, g.id, {
+      ...body,
+      granteeAccountId: bounded.accountId,
+      expiresAt: future(3600000),
+    });
+    const pass = (from: GuildActor, expiresAt: string | null) =>
+      giveRole(from, g.id, {
+        granteeAccountId: helper.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+        expiresAt,
+      });
+    // Bounded cover: an explicit expiry no later than theirs is required.
+    await expect(pass(bounded, null)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    await expect(pass(bounded, future(7200000))).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    expect((await pass(bounded, future(1800000))).grant.expiresAt).not.toBeNull();
+    // Unbounded cover: nothing to be longer than, so no expiry is allowed (the cascade treats it as covering).
+    expect((await pass(lead, null)).grant.expiresAt).toBeNull();
+  });
+
+  it('review follow-up: the kill switch stops new grants but never blocks taking authority away', async () => {
+    const { founder, guild: g } = await guild();
+    const holder = await person();
+    const given = await giveRole(founder, g.id, {
+      granteeAccountId: holder.accountId,
+      kind: 'TREASURY',
+    });
+    await expect(
+      giveRole(
+        founder,
+        g.id,
+        { granteeAccountId: holder.accountId, kind: 'WORK' },
+        'blocked',
+        false,
+      ),
+    ).rejects.toMatchObject({ code: 'WRITES_DISABLED' });
+    const revoked = await takeRole(founder, g.id, given.grant.id, 'incident', false);
+    expect(revoked.grant.revokedAt).not.toBeNull();
+    expect(await can(holder, g.id, 'TREASURY')).toBe(false);
+  });
+
+  it('review follow-up: an account with no standing is refused before any lock and learns nothing about Guilds or grants', async () => {
+    const a = await guild('standing-a');
+    const stranger = await person();
+    const holder = await person();
+    const given = await giveRole(a.founder, a.guild.id, {
+      granteeAccountId: holder.accountId,
+      kind: 'WORK',
+    });
+    let release!: () => void, locked!: () => void;
+    const held = new Promise<void>((r) => (release = r));
+    const ready = new Promise<void>((r) => (locked = r));
+    const holderTx = db.$transaction(async (t) => {
+      await t.$queryRawUnsafe('SELECT 1 FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE', a.guild.id);
+      locked();
+      await held;
+    });
+    await ready;
+    const outcome = (work: Promise<unknown>) =>
+      Promise.race([
+        work.then(
+          () => 'EXECUTED',
+          (e: { code?: string }) => e.code ?? 'ERROR',
+        ),
+        new Promise<string>((r) => setTimeout(() => r('BLOCKED'), 4000)),
+      ]);
+    try {
+      const missing = crypto.randomUUID();
+      const body = { granteeAccountId: holder.accountId, kind: 'WORK' };
+      expect(await outcome(giveRole(stranger, a.guild.id, body)), 'grant').toBe('FORBIDDEN');
+      expect(await outcome(giveRole(stranger, missing, body)), 'grant, no Guild').toBe('FORBIDDEN');
+      expect(await outcome(takeRole(stranger, a.guild.id, given.grant.id)), 'revoke').toBe(
+        'FORBIDDEN',
+      );
+      expect(await outcome(takeRole(stranger, a.guild.id, missing)), 'revoke, no grant').toBe(
+        'FORBIDDEN',
+      );
+      expect(await outcome(takeRole(stranger, missing, missing)), 'revoke, no Guild').toBe(
+        'FORBIDDEN',
+      );
+    } finally {
+      release();
+      await holderTx;
+    }
+    // The Founder still learns that a grant id does not exist in their own Guild.
+    await expect(takeRole(a.founder, a.guild.id, crypto.randomUUID())).rejects.toMatchObject({
+      code: 'NOT_FOUND',
+    });
   });
 });
