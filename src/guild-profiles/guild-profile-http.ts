@@ -45,9 +45,10 @@ const ViewSchema = z
     unavailableReason: z.literal('DISABLED').nullable(),
   })
   .refine((s) => s.writesAvailable === (s.unavailableReason === null));
+// Only a managed read may redact the Founder id; a command result always carries it.
 const ResultSchema = z.strictObject({
   status: z.enum(['EXECUTED', 'REPLAYED']),
-  guild: ManagedGuildSchema,
+  guild: ManagedGuildSchema.extend({ founderAccountId: z.string().min(1).max(200) }),
 });
 const STORAGE_CODES: Readonly<Record<string, ErrorCode>> = {
   UNAUTHENTICATED: 'AUTHENTICATION_REQUIRED',

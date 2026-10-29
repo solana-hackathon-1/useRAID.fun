@@ -198,6 +198,8 @@ try {
   );
   const managed = await transaction((tx) => readManagedGuild(tx, delegate, active.guild.id));
   assert.deepEqual(managed.authority, { founder: false, kinds: ['TREASURY'] });
+  // A treasury-only manager does not see the Founder's account id.
+  assert.equal(managed.guild.founderAccountId, null);
   // A public update is drafted, then published only by the Founder; the public list shows text and time alone.
   const news = await transaction((tx) =>
     draftGuildUpdate(

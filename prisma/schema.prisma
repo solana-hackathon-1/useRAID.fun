@@ -1542,6 +1542,7 @@ model Guild {
   transfers GuildOwnershipTransfer[]
   updates GuildUpdate[]
   @@index([founderAccountId])
+  @@index([activatedByAccountId], map: "Guild_activatedBy_idx")
 }
 model GuildProfileVersion {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -1559,6 +1560,7 @@ model GuildProfileVersion {
   receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildProfileVersion_receipt_fkey")
   @@unique([guildId, revision], map: "GuildProfileVersion_guild_revision_key")
   @@unique([id, guildId, revision], map: "GuildProfileVersion_pointer_key")
+  @@index([actorAccountId], map: "GuildProfileVersion_actor_idx")
 }
 // kind separates profile, work, treasury and dispute authority; only PROFILE grants carry fields.
 model GuildRoleGrant {
@@ -1578,6 +1580,7 @@ model GuildRoleGrant {
   grantedBy User @relation("GuildGrantIssuer", fields: [grantedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildRoleGrant_grantedBy_fkey")
   receipt CommandReceipt? @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildRoleGrant_receipt_fkey")
   @@index([guildId, granteeAccountId], map: "GuildRoleGrant_guild_grantee_idx")
+  @@index([grantedByAccountId], map: "GuildRoleGrant_grantedBy_idx")
 }
 // The Founder changes only through a consented transfer recorded here; see the guards in migration 202610270009.
 model GuildOwnershipTransfer {

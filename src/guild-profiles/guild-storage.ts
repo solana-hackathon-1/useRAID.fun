@@ -302,6 +302,7 @@ export async function activateGuild(
 /**
  * Asks the pure policy whether the actor may take a profile action over these fields, from facts rebuilt here under the
  * database clock. Window bounds are rounded conservatively to the policy's millisecond precision (start up, expiry down).
+ * The grant query and the policy share the caller's single clock reading `guild.now`.
  */
 async function profileDecision(
   tx: CommandReceiptTransaction,
@@ -322,8 +323,9 @@ async function profileDecision(
        date_trunc('milliseconds',"validFrom")+CASE WHEN "validFrom">date_trunc('milliseconds',"validFrom") THEN interval '1 millisecond' ELSE interval '0' END AS "validFrom",
        date_trunc('milliseconds',"expiresAt") AS "expiresAt"
      FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2 AND "kind"='PROFILE' AND "revokedAt" IS NULL
-      AND "validFrom"<=clock_timestamp() AND ("expiresAt" IS NULL OR "expiresAt">clock_timestamp())`,
-    [guild.id, actor.accountId],
+      AND "validFrom"<=$3::timestamptz AND ("expiresAt" IS NULL OR "expiresAt">$3::timestamptz)`,
+    // One clock reading: the grants are selected at the same instant the policy is asked about.
+    [guild.id, actor.accountId, guild.now.toISOString()],
   );
   return evaluateGuildProfilePermission(
     {
@@ -377,6 +379,10 @@ export async function editGuildProfile(
   async function permitted(
     lock: boolean,
   ): Promise<{ revision: number; name: string; description: string }> {
+    // Judge standing before taking any lock: an account with no profile authority here cannot queue behind the
+    // Guild row, and a missing Guild answers the same FORBIDDEN as an existing one. Field scope is judged below.
+    const standing = await authorityKinds(tx, actor.accountId, input.guildId);
+    if (!standing.kinds.includes('PROFILE')) fail('FORBIDDEN');
     const rows = await query<{
       id: string;
       founderAccountId: string;
@@ -472,7 +478,11 @@ export async function readPublicGuild(tx: CommandReceiptTransaction, slug: strin
     publicProfileApproved: true,
   });
 }
-/** The private management view: the Guild plus only the authority the caller actually holds. */
+/**
+ * The private management view: the Guild plus only the authority the caller actually holds. The Founder's account id
+ * is shown only to the Founder and to profile managers; a caller whose authority is only work, treasury or dispute
+ * sees `founderAccountId: null`.
+ */
 export async function readManagedGuild(
   tx: CommandReceiptTransaction,
   actor: GuildActor,
@@ -483,12 +493,17 @@ export async function readManagedGuild(
   await authorize(tx, actor);
   const authority = await authorityKinds(tx, actor.accountId, guildId);
   if (!authority.kinds.length) fail('FORBIDDEN');
-  const guild = await loadGuild(tx, guildId);
+  const loaded = await loadGuild(tx, guildId);
+  const guild = authority.kinds.includes('PROFILE')
+    ? loaded
+    : { ...loaded, founderAccountId: null };
   await authorize(tx, actor);
   return { guild, authority };
 }
-const LIVE_R = `r."revokedAt" IS NULL AND r."validFrom"<=clock_timestamp() AND (r."expiresAt" IS NULL OR r."expiresAt">clock_timestamp())`;
 const LIVE = `"revokedAt" IS NULL AND "validFrom"<=clock_timestamp() AND ("expiresAt" IS NULL OR "expiresAt">clock_timestamp())`;
+/** Live at a bound instant (placeholder `$n`), so several reads in one command judge grants at the same moment. */
+const liveAt = (n: number, alias = '') =>
+  `${alias}"revokedAt" IS NULL AND ${alias}"validFrom"<=$${n}::timestamptz AND (${alias}"expiresAt" IS NULL OR ${alias}"expiresAt">$${n}::timestamptz)`;
 async function loadGrant(
   tx: CommandReceiptTransaction,
   guildId: string,
@@ -591,10 +606,14 @@ export async function grantGuildRole(
           tx,
           `SELECT f AS field,max("expiresAt") AS bound,bool_or("expiresAt" IS NULL) AS unbounded
            FROM "GuildRoleGrant" r CROSS JOIN LATERAL unnest(r."fields") f
-           WHERE r."guildId"=$1::uuid AND r."granteeAccountId"=$2 AND r."kind"='PROFILE' AND r."canDelegate" AND ${LIVE_R} AND f=ANY($3::text[])
+           WHERE r."guildId"=$1::uuid AND r."granteeAccountId"=$2 AND r."kind"='PROFILE' AND r."canDelegate" AND ${liveAt(4, 'r.')} AND f=ANY($3::text[])
            GROUP BY f`,
-          [input.guildId, actor.accountId, `{${input.fields.join(',')}}`],
+          // The same instant the policy judged: cover cannot lapse between the two reads.
+          [input.guildId, actor.accountId, `{${input.fields.join(',')}}`, guild.now.toISOString()],
         );
+        // Fail closed: every requested field must still show delegating cover here.
+        const covered = new Set(bounds.map((b) => b.field));
+        if (input.fields.some((f) => !covered.has(f))) fail('FORBIDDEN');
         // The latest expiry among the covering grants, per field; the earliest of those bounds the new grant.
         const finite = bounds.filter((b) => !b.unbounded && b.bound);
         if (finite.length) {
@@ -603,15 +622,15 @@ export async function grantGuildRole(
         }
         const passed = await query<{ n: number }>(
           tx,
-          `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "grantedByAccountId"=$2 AND ${LIVE}`,
-          [input.guildId, actor.accountId],
+          `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "grantedByAccountId"=$2 AND ${liveAt(3)}`,
+          [input.guildId, actor.accountId, guild.now.toISOString()],
         );
         if ((passed[0]?.n ?? 0) >= DELEGATED_GRANT_LIMIT) fail('GRANT_LIMIT');
       }
       const live = await query<{ n: number }>(
         tx,
-        `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND ${LIVE}`,
-        [input.guildId],
+        `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND ${liveAt(2)}`,
+        [input.guildId, guild.now.toISOString()],
       );
       if ((live[0]?.n ?? 0) >= GUILD_GRANT_LIMIT) fail('GRANT_LIMIT');
       // Read without a lock: locking the grantee here would invert the grantee-then-Guild order other commands use.

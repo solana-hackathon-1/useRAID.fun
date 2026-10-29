@@ -177,7 +177,8 @@ export const ManagedGuildSchema = z.strictObject({
   slug: PublicGuildSchema.shape.slug,
   name: PublicGuildSchema.shape.name,
   description: PublicGuildSchema.shape.description,
-  founderAccountId: z.string().min(1).max(200),
+  /** Null only in `readManagedGuild` for a caller without profile authority (redacted, never unknown). */
+  founderAccountId: z.string().min(1).max(200).nullable(),
   revision: z.number().int().min(1),
   state: z.literal('ACTIVE'),
   primaryToken: z.null(),
