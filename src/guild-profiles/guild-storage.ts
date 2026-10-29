@@ -995,6 +995,19 @@ export async function respondOwnershipTransfer(
     fail('FORBIDDEN');
   return { status: result.status, transfer };
 }
+const UPDATE_COLUMNS =
+  '"id"::text,"guildId"::text,"title","body","state","authorAccountId","createdAt","publishedAt"';
+function parseUpdate(row: Record<string, unknown>): ManagedGuildUpdate {
+  const iso = (v: unknown) => (v instanceof Date ? v.toISOString() : v);
+  const parsed = ManagedGuildUpdateSchema.safeParse({
+    version: 'v1',
+    ...row,
+    createdAt: iso(row.createdAt),
+    publishedAt: iso(row.publishedAt),
+  });
+  if (!parsed.success) fail('STORAGE_CONTRACT');
+  return parsed.data;
+}
 async function loadUpdate(
   tx: CommandReceiptTransaction,
   guildId: string,
@@ -1002,20 +1015,11 @@ async function loadUpdate(
 ): Promise<ManagedGuildUpdate> {
   const rows = await query<Record<string, unknown>>(
     tx,
-    `SELECT "id"::text,"guildId"::text,"title","body","state","authorAccountId","createdAt","publishedAt"
-     FROM "GuildUpdate" WHERE "id"=$1::uuid AND "guildId"=$2::uuid`,
+    `SELECT ${UPDATE_COLUMNS} FROM "GuildUpdate" WHERE "id"=$1::uuid AND "guildId"=$2::uuid`,
     [id, guildId],
   );
   if (rows.length !== 1) fail('STORAGE_CONTRACT');
-  const iso = (v: unknown) => (v instanceof Date ? v.toISOString() : v);
-  const parsed = ManagedGuildUpdateSchema.safeParse({
-    version: 'v1',
-    ...rows[0],
-    createdAt: iso(rows[0].createdAt),
-    publishedAt: iso(rows[0].publishedAt),
-  });
-  if (!parsed.success) fail('STORAGE_CONTRACT');
-  return parsed.data;
+  return parseUpdate(rows[0]);
 }
 const updateEvent = (type: string, guildId: string, revision: number, id: string) => ({
   type,
@@ -1219,6 +1223,19 @@ export async function listPublicGuildUpdates(
     slug,
   ]);
   if (guilds.length !== 1) fail('NOT_FOUND');
+  // A cursor must name an update of this Guild that was published (it may have been withdrawn since the page was
+  // served); anything else is a stale or tampered cursor, which must not look like the end of the feed.
+  if (
+    parsed.data.before &&
+    (
+      await query(
+        tx,
+        'SELECT 1 FROM "GuildUpdate" WHERE "id"=$1::uuid AND "guildId"=$2::uuid AND "publishedAt" IS NOT NULL',
+        [parsed.data.before, guilds[0].id],
+      )
+    ).length !== 1
+  )
+    fail('INVALID_INPUT');
   const rows = await query<Record<string, unknown>>(
     tx,
     `SELECT u."id"::text,u."title",u."body",u."publishedAt" FROM "GuildUpdate" u
@@ -1251,14 +1268,13 @@ export async function listManagedGuildUpdates(
   await authorize(tx, actor);
   const authority = await authorityKinds(tx, actor.accountId, guildId);
   if (!authority.kinds.includes('PROFILE')) fail('FORBIDDEN');
-  const rows = await query<{ id: string }>(
+  const rows = await query<Record<string, unknown>>(
     tx,
-    `SELECT "id"::text FROM "GuildUpdate" WHERE "guildId"=$1::uuid AND "state"<>'WITHDRAWN' AND ($3::boolean OR "authorAccountId"=$2)
+    `SELECT ${UPDATE_COLUMNS} FROM "GuildUpdate" WHERE "guildId"=$1::uuid AND "state"<>'WITHDRAWN' AND ($3::boolean OR "authorAccountId"=$2)
      ORDER BY "createdAt" DESC,"id" DESC LIMIT 100`,
     [guildId, actor.accountId, String(authority.founder)],
   );
-  const updates: ManagedGuildUpdate[] = [];
-  for (const row of rows) updates.push(await loadUpdate(tx, guildId, row.id));
+  const updates = rows.map(parseUpdate);
   await authorize(tx, actor);
   return { updates };
 }
