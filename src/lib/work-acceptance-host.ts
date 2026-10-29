@@ -8,6 +8,7 @@ import {
 } from '../skills/eligibility';
 import { SkillTaxonomyStorageError } from '../skills/taxonomy-storage-contracts';
 import { readPublishedSkillTaxonomy } from '../skills/taxonomy-storage';
+import { ASSESSMENT_LOCK_SQL, assessmentLockKey } from '../skills/assessment-lock';
 import { WorkError } from '../work-loop/contracts';
 import type { AcceptanceHost } from '../work-loop/engagement-contracts';
 
@@ -56,9 +57,7 @@ async function lockAssessmentEvidence(
   skillIds: readonly string[],
 ) {
   for (const skillId of [...new Set(skillIds)].sort())
-    await tx.query('SELECT pg_advisory_xact_lock(hashtextextended($1,12022))::text', [
-      participantId + ':' + skillId,
-    ]);
+    await tx.query(ASSESSMENT_LOCK_SQL, [assessmentLockKey(participantId, skillId)]);
 }
 export const ROOT_ELIGIBILITY_POLICY = 'root-skill-admission-v1';
 interface FactRow {
