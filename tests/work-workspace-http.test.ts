@@ -222,10 +222,11 @@ describe('T022 work workspace HTTP boundary', () => {
     const calls: string[] = [];
     const offerId = '66666666-6666-4666-8666-666666666666';
     const applicationId = '77777777-7777-4777-8777-777777777777';
+    const slotId = '55555555-5555-4555-8555-555555555555';
     const offer = {
       id: offerId,
       applicationId,
-      slotId: engagementId,
+      slotId,
       termsVersionId,
       participantId,
       expiresAt: '2026-10-27T00:00:00.000Z',
@@ -234,7 +235,7 @@ describe('T022 work workspace HTTP boundary', () => {
     };
     const application = {
       id: applicationId,
-      slotId: engagementId,
+      slotId,
       termsVersionId,
       participantId,
       evidenceRefs: [],
@@ -333,6 +334,7 @@ describe('T022 work workspace HTTP boundary', () => {
       status: 'EXECUTED',
       fundingMode: 'SIMULATED',
       generation: 1,
+      offerId: null as string | null,
       engagement: {
         id: engagementId,
         guildId: 'synthetic-guild',
@@ -356,7 +358,22 @@ describe('T022 work workspace HTTP boundary', () => {
       requestId: 'request-1',
     });
     const offerId = '77777777-7777-4777-8777-777777777777';
-    expect((await handlers.ACCEPT(post('/x', { ...request, offerId }))).status).toBe(200);
+    // The result must name the offer that was accepted: none for a direct acceptance, the requested one otherwise.
+    expect((await handlers.ACCEPT(post('/x', { ...request, offerId }))).status).toBe(503);
+    const throughOffer = createWorkHandlers(
+      host({ commitEngagement: async () => ({ ...committed(), offerId }) }),
+    );
+    expect((await throughOffer.ACCEPT(post('/x', { ...request, offerId }))).status).toBe(200);
+    expect((await throughOffer.ACCEPT(post('/x', request))).status).toBe(503);
+    const otherOffer = createWorkHandlers(
+      host({
+        commitEngagement: async () => ({
+          ...committed(),
+          offerId: '88888888-8888-4888-8888-888888888888',
+        }),
+      }),
+    );
+    expect((await otherOffer.ACCEPT(post('/x', { ...request, offerId }))).status).toBe(503);
     for (const bad of [{ ...request, extra: 1 }, { slotId }, { ...request, offerId: 'nope' }])
       expect((await handlers.ACCEPT(post('/x', bad))).status).toBe(422);
     const wrongSlot = createWorkHandlers(
@@ -425,6 +442,32 @@ describe('T022 work workspace HTTP boundary', () => {
       }),
     );
     expect((await drift.APPLY(post('/api/v1/work/applications', request))).status).toBe(503);
+    // A host result for other terms is never forwarded either.
+    const otherTerms = createWorkHandlers(
+      host({
+        submitApplication: async () => ({
+          status: 'EXECUTED',
+          application: { ...application, termsVersionId: '88888888-8888-4888-8888-888888888888' },
+        }),
+      }),
+    );
+    expect((await otherTerms.APPLY(post('/api/v1/work/applications', request))).status).toBe(503);
+    // A slot that does not carry the requested terms is refused by the command and answered as changed terms.
+    const mismatched = createWorkHandlers(
+      host({
+        submitApplication: async () => {
+          throw new WorkError('TERMS_VERSION_CHANGED');
+        },
+      }),
+    );
+    const pair = await mismatched.APPLY(
+      post('/api/v1/work/applications', {
+        ...request,
+        termsVersionId: '88888888-8888-4888-8888-888888888888',
+      }),
+    );
+    expect(pair.status).toBe(409);
+    expect(await error(pair)).toMatchObject({ code: 'TERMS_VERSION_CHANGED' });
     const full = createWorkHandlers(
       host({
         submitApplication: async () => {

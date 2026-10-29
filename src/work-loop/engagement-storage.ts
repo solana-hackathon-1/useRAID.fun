@@ -275,11 +275,19 @@ export async function commitEngagement(
     engagement.acceptedTerms.id !== input.termsVersionId
   )
     fail('STORAGE_CONTRACT');
+  // Read back the offer bound to this engagement, so a replay reports it as well and it must be the requested one.
+  const accepted = await tx.query<{ id: string }>(
+    'SELECT "id"::text FROM "RaidOffer" WHERE "acceptedEngagementId"=$1::uuid',
+    [engagement.id],
+  );
+  const offerId = accepted.length === 1 ? accepted[0].id : null;
+  if (accepted.length > 1 || offerId !== (input.offerId ?? null)) fail('STORAGE_CONTRACT');
   await session(tx, actor);
   return CommittedEngagementSchema.parse({
     status: result.status,
     fundingMode: 'SIMULATED',
     generation,
+    offerId,
     engagement,
   });
 }

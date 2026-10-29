@@ -104,6 +104,17 @@ function invalid(): never {
 function contract(): never {
   throw new WorkError('STORAGE_CONTRACT');
 }
+/**
+ * True when every named field of the result equals the request's. An absent optional request field must be absent
+ * (or null) in the result too, so a result cannot add or drop one silently.
+ */
+export function resultMatchesRequest<K extends string>(
+  result: Readonly<Partial<Record<K, unknown>>>,
+  request: Readonly<Partial<Record<K, unknown>>>,
+  fields: readonly K[],
+): boolean {
+  return fields.every((f) => (result[f] ?? null) === (request[f] ?? null));
+}
 /** Parses a host result with its strict schema and requires it to describe the request that was made. */
 function echoed<T>(schema: z.ZodType<T>, raw: unknown, matches: (value: T) => boolean): T {
   const parsed = schema.safeParse(raw);
@@ -276,25 +287,16 @@ export function createWorkHandlers(host: WorkHttpHost) {
     APPLY(request: Request) {
       return run(request, true, async (a, requestId) => {
         const c = await command(request, SubmitApplicationInput, a, requestId);
-        return echoed(
-          ApplicationResultSchema,
-          await host.submitApplication(c),
-          (r) =>
-            r.application.slotId === c.input.slotId &&
-            r.application.termsVersionId === c.input.termsVersionId,
+        return echoed(ApplicationResultSchema, await host.submitApplication(c), (r) =>
+          resultMatchesRequest(r.application, c.input, ['slotId', 'termsVersionId']),
         );
       });
     },
     CONSENT(request: Request) {
       return run(request, true, async (a, requestId) => {
         const c = await command(request, RecordConsentInput, a, requestId);
-        return echoed(
-          ConsentResultSchema,
-          await host.recordConsent(c),
-          (r) =>
-            r.consent.slotId === c.input.slotId &&
-            r.consent.termsVersionId === c.input.termsVersionId &&
-            r.consent.termsDigest === c.input.termsDigest,
+        return echoed(ConsentResultSchema, await host.recordConsent(c), (r) =>
+          resultMatchesRequest(r.consent, c.input, ['slotId', 'termsVersionId', 'termsDigest']),
         );
       });
     },
@@ -306,8 +308,15 @@ export function createWorkHandlers(host: WorkHttpHost) {
           await host.commitEngagement(c),
           (r) =>
             r.engagement.source.kind === 'RAID_SLOT' &&
-            r.engagement.source.raidSlotId === c.input.slotId &&
-            r.engagement.acceptedTerms.id === c.input.termsVersionId,
+            resultMatchesRequest(
+              {
+                slotId: r.engagement.source.raidSlotId,
+                termsVersionId: r.engagement.acceptedTerms.id,
+                offerId: r.offerId,
+              },
+              c.input,
+              ['slotId', 'termsVersionId', 'offerId'],
+            ),
         );
       });
     },

@@ -15,7 +15,12 @@ import type { AdmissionHost } from '../src/work-loop/admission-contracts';
 import { saveRaidTerms } from '../src/work-loop/storage';
 import { WorkError, type WorkHost } from '../src/work-loop/contracts';
 import { raidTerms } from './helpers/raid-terms-fixture';
-import { seedWorkHuman, seedWorkSlot, syntheticAcceptanceHost } from './helpers/work-loop-db';
+import {
+  revokeSyntheticIssuerAuthority,
+  seedWorkHuman,
+  seedWorkSlot,
+  syntheticAcceptanceHost,
+} from './helpers/work-loop-db';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 const db = new PrismaClient();
@@ -556,8 +561,61 @@ integration('T021 applications and offers', () => {
     expect(events[0].aggregateId).toBe(slot.listingId);
     expect(events[0].payload.termsVersionId).toBe(slot.termsVersionId);
   });
+  it('records the revocation once for an application without an offer, paired with the new terms version, and not again on replay', async () => {
+    const { founder, slot, apply } = await setup();
+    const a = await applyTo(apply);
+    const founderHost: WorkHost = {
+      allowNewWrites: true,
+      authorize: async (_tx, who, guild) =>
+        who.accountId === founder.actor.accountId && guild === 'synthetic-guild',
+      reserveSimulatedFunding: async (_tx, b) => 'synthetic:' + b.slotId,
+    };
+    const edit = cmd(founder.actor, {
+      listingId: slot.listingId,
+      expectedRevision: 1,
+      guildId: 'synthetic-guild',
+      terms: { ...raidTerms(), admission: 'APPLICATION', title: 'Edited with one applicant' },
+    });
+    const saved = await run((tx) => saveRaidTerms(tx, edit, founderHost));
+    const replayed = await run((tx) => saveRaidTerms(tx, edit, founderHost));
+    expect(replayed.termsVersionId).toBe(saved.termsVersionId);
+    expect(
+      await db.$queryRawUnsafe(
+        'SELECT "state" FROM "RaidApplication" WHERE "id"=$1::uuid',
+        a.application.id,
+      ),
+    ).toEqual([{ state: 'CLOSED' }]);
+    const events = (await db.$queryRawUnsafe(
+      `SELECT "eventType","aggregateId","aggregateVersion","payload" FROM "AuditEvent" WHERE "eventType" IN ('work.offers_revoked.v1','work.terms_saved.v1') AND "aggregateVersion"=2 ORDER BY "eventType"`,
+    )) as {
+      eventType: string;
+      aggregateId: string;
+      aggregateVersion: number;
+      payload: { termsVersionId: string };
+    }[];
+    expect(events).toEqual([
+      {
+        eventType: 'work.offers_revoked.v1',
+        aggregateId: slot.listingId,
+        aggregateVersion: 2,
+        payload: { termsVersionId: slot.termsVersionId },
+      },
+      {
+        eventType: 'work.terms_saved.v1',
+        aggregateId: slot.listingId,
+        aggregateVersion: 2,
+        payload: { termsVersionId: saved.termsVersionId },
+      },
+    ]);
+  });
   it('records no revocation event when a terms edit leaves nothing outstanding', async () => {
     const { founder, slot } = await setup();
+    // The listing's first save had nothing to supersede.
+    expect(
+      await db.$queryRawUnsafe(
+        `SELECT 1 FROM "AuditEvent" WHERE "eventType"='work.offers_revoked.v1'`,
+      ),
+    ).toEqual([]);
     const founderHost: WorkHost = {
       allowNewWrites: true,
       authorize: async (_tx, who, guild) =>
@@ -592,6 +650,26 @@ integration('T021 applications and offers', () => {
     await expect(accept(applicant.actor, slot, o.offer.id)).rejects.toMatchObject({
       code: 'OFFER_UNAVAILABLE',
     });
+  });
+  it('approves an offer issuer only from seeded Guild authority, so losing it is observable', async () => {
+    const { applicant, founder, slot, apply } = await setup();
+    const a = await applyTo(apply);
+    const o = await offerTo(
+      cmd(founder.actor, { applicationId: a.application.id, expiresAt: expiry() }),
+    );
+    const target = { offerId: o.offer.id, slotId: slot.slotId, guildId: 'synthetic-guild' };
+    const ask = (accountId: string, t = target) =>
+      run((tx) => syntheticAcceptanceHost.authorizeOfferIssuer!(tx, { accountId }, t));
+    expect(await ask(founder.actor.accountId)).toBe(true);
+    // A naming convention grants nothing: only the authority the fixture seeded counts, per Guild.
+    expect(await ask('founder-' + randomUUID())).toBe(false);
+    expect(await ask(founder.actor.accountId, { ...target, guildId: 'other-guild' })).toBe(false);
+    revokeSyntheticIssuerAuthority(founder.actor.accountId, 'synthetic-guild');
+    expect(await ask(founder.actor.accountId)).toBe(false);
+    await expect(accept(applicant.actor, slot, o.offer.id)).rejects.toMatchObject({
+      code: 'OFFER_UNAVAILABLE',
+    });
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "Engagement"')).toEqual([]);
   });
   it('indexes offers by application for history and restrict checks', async () => {
     const found = await db.$queryRawUnsafe(
