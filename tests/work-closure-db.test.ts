@@ -25,6 +25,12 @@ const host: ClosureHost = {
   authorize: async (_tx, a) => a.accountId.startsWith('ops-'),
 };
 const at = (ms: number) => new Date(Date.now() + ms).toISOString();
+/** Waits on the database clock, which the closure guard uses, until the instant has passed. */
+const untilPast = (instant: string) =>
+  db.$queryRawUnsafe(
+    `SELECT pg_sleep(GREATEST(0, extract(epoch FROM $1::timestamptz-clock_timestamp()))+0.05)::text AS slept`,
+    instant,
+  );
 const work = (engagementId: string, n = 1) => ({
   engagementId,
   expectedSubmissionNumber: n,
@@ -199,9 +205,7 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
     const before = await Promise.all(
       [pending, inProgress, submitted, revising].map((e) => engagement(e.engagementId)),
     );
-    await new Promise((resolve) =>
-      setTimeout(resolve, Math.max(0, Date.parse(deadlines.operationalClosure) - Date.now() + 300)),
-    );
+    await untilPast(deadlines.operationalClosure);
     const expected = [
       [pending, 'ACCESS_TIMEOUT'],
       [inProgress, 'SUBMISSION_TIMEOUT'],
@@ -304,24 +308,27 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
     };
     const first = await setup({ deadlines });
     const second = await setup({ deadlines });
+    const third = await setup({ deadlines });
     await start(first.engagementId);
     await start(second.engagementId);
+    await start(third.engagementId);
     const ops = await seedWorkHuman(db, 'ops-' + randomUUID());
-    await new Promise((resolve) => setTimeout(resolve, 5300));
-    const rolledBack = Error('rolled back after the statements were accepted');
+    await untilPast(deadlines.operationalClosure);
+    // Each transaction throws its own error so no state leaks between them.
+    const rolledBack = () => Error('rolled back after the statements were accepted');
     const closureSql = `INSERT INTO "EngagementClosure" ("engagementId","reason","finalState","closedByAccountId") VALUES ($1::uuid,'SUBMISSION_TIMEOUT','TERMINATED',$2)`;
     // A crafted accepted-terms record without an operational deadline cannot satisfy "the deadline has passed".
     await expect(
       db.$transaction(async (tx) => {
-        await tx.$executeRawUnsafe(
-          'ALTER TABLE "Engagement" DISABLE TRIGGER "Engagement_lifecycle_guard"',
-        );
+        // Skip triggers for this one crafted write only (no table lock or DDL), then restore them for the closure.
+        await tx.$executeRawUnsafe('SET LOCAL session_replication_role = replica');
         await tx.$executeRawUnsafe(
           `UPDATE "Engagement" SET "acceptedTerms"="acceptedTerms" #- '{deadlines,operationalClosure}' WHERE "id"=$1::uuid`,
           first.engagementId,
         );
+        await tx.$executeRawUnsafe('SET LOCAL session_replication_role = origin');
         await tx.$executeRawUnsafe(closureSql, first.engagementId, ops.actor.accountId);
-        throw rolledBack;
+        throw rolledBack();
       }),
     ).rejects.toThrow(/operational deadline/);
     // The closure time is the database clock's, never a writer-supplied value.
@@ -332,7 +339,7 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
           first.engagementId,
           ops.actor.accountId,
         );
-        throw Object.assign(rolledBack, { ageSeconds: r.ageSeconds });
+        throw Object.assign(rolledBack(), { ageSeconds: r.ageSeconds });
       })
       .catch((error) => error as Error & { ageSeconds: number });
     expect(stamped.ageSeconds).toBeLessThan(60);
@@ -342,10 +349,39 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
       expectedRevision: (await engagement(second.engagementId)).revision,
     };
     const key = randomUUID();
-    await close(ops.actor, input, host, key);
+    const calls: string[] = [];
+    const counting: ClosureHost = {
+      allowNewWrites: true,
+      authorize: async (tx, a, target) => {
+        calls.push(target.guildId);
+        return host.authorize(tx, a, target);
+      },
+    };
+    // A fresh closure asks the host once before and once after the engagement lock; the read-back adds nothing.
+    await close(ops.actor, input, counting, key);
+    expect(calls).toHaveLength(2);
+    // A replay runs no command body, so it asks once, before returning the recorded closure.
+    calls.length = 0;
+    expect((await close(ops.actor, input, counting, key)).status).toBe('REPLAYED');
+    expect(calls).toHaveLength(1);
     await expect(
       close(ops.actor, input, { ...host, authorize: async () => false }, key),
     ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    // A fresh closure is refused, and nothing closes, when authority is lost while waiting for the engagement lock.
+    let asked = 0;
+    const lostAfterLock: ClosureHost = {
+      allowNewWrites: true,
+      authorize: async () => ++asked === 1,
+    };
+    const thirdInput = {
+      engagementId: third.engagementId,
+      expectedRevision: (await engagement(third.engagementId)).revision,
+    };
+    await expect(close(ops.actor, thirdInput, lostAfterLock)).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
+    expect(asked).toBe(2);
+    expect(await engagement(third.engagementId)).toMatchObject({ state: 'IN_PROGRESS' });
     // Closure reason must match the state the engagement actually left, even inside one transaction.
     await expect(
       db.$transaction(async (tx) => {
@@ -393,7 +429,7 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
     expect(await engagement(engagementId)).toMatchObject({ state: 'IN_PROGRESS' });
     const sub = await submit(worker.actor, work(engagementId));
     // A mismatched reason is refused even once the deadline has passed.
-    await new Promise((resolve) => setTimeout(resolve, 5300));
+    await untilPast(deadlines.operationalClosure);
     await expect(
       db.$executeRawUnsafe(
         `INSERT INTO "EngagementClosure" ("engagementId","reason","finalState","closedByAccountId") VALUES ($1::uuid,'ACCESS_TIMEOUT','TERMINATED',$2)`,
