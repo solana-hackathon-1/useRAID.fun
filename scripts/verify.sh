@@ -41,18 +41,8 @@ step() {
   return 0
 }
 format_changed() {
-  local files=() file target root
-  root=$(pwd -P)
-  while IFS= read -r file; do
-    [ -f "$file" ] || continue
-    if [ -L "$file" ]; then
-      # Prettier refuses symbolic links: check an in-repo target instead; a link leaving the repo is not ours to format.
-      target=$(readlink -f "$file") || continue
-      case "$target" in "$root"/*) files+=("${target#"$root"/}") ;; esac
-    else
-      files+=("$file")
-    fi
-  done < <(git diff --name-only --diff-filter=d "$base" HEAD)
+  local files=() file
+  while IFS= read -r file; do [ -f "$file" ] && [ ! -L "$file" ] && files+=("$file"); done < <(git diff --name-only --diff-filter=d "$base" HEAD)
   if [ "${#files[@]}" -eq 0 ]; then echo "no changed files to format-check"; return 0; fi
   npx prettier --check --ignore-unknown "${files[@]}"
 }
