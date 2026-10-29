@@ -2,7 +2,7 @@ import type { CommandReceiptTransaction as Tx } from '../command-receipts';
 import { OfferSchema } from './admission-contracts';
 import { fail } from './engagement-authority';
 import type { AcceptanceHost } from './engagement-contracts';
-import type { z } from 'zod';
+import { z } from 'zod';
 async function readLockedOffer(tx: Tx, id: string) {
   const rows = await tx.query<Record<string, unknown>>(
     'SELECT "id"::text,"applicationId"::text,"slotId"::text,"termsVersionId"::text,"participantId"::text,"expiresAt","state","acceptedEngagementId"::text,"offeredByAccountId" FROM "RaidOffer" WHERE "id"=$1::uuid FOR UPDATE',
@@ -10,12 +10,15 @@ async function readLockedOffer(tx: Tx, id: string) {
   );
   if (rows.length !== 1) fail('NOT_FOUND');
   const { offeredByAccountId, ...row } = rows[0];
+  // The column is NOT NULL; an unusable value is a storage fault, never an issuer named "null".
+  const issuer = z.string().min(1).safeParse(offeredByAccountId);
+  if (!issuer.success) fail('STORAGE_CONTRACT');
   return {
     offer: OfferSchema.parse({
       ...row,
       expiresAt: row.expiresAt instanceof Date ? row.expiresAt.toISOString() : row.expiresAt,
     }),
-    issuer: String(offeredByAccountId),
+    issuer: issuer.data,
   };
 }
 export async function lockOffer(tx: Tx, id: string) {
@@ -42,6 +45,7 @@ export async function assertOfferIssuerAuthorized(
   target: { slotId: string; guildId: string },
   host: Pick<AcceptanceHost, 'authorizeOfferIssuer'>,
 ) {
+  // Callers also check up front; keep this guard so the non-null assertion below never rests on a caller.
   requireOfferIssuerCheck(host);
   // The issuer has no session in the applicant's request: the host judges the account's current scoped authority.
   if (
