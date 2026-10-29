@@ -21,3 +21,12 @@ Requirement mapping: T032 (start part; closes the "no start precondition" note o
 ## Verification
 
 `tests/work-start-db.test.ts` (real PostgreSQL: member start with capacity held and the audit event, replay with writes off, stranger/Founder/missing as one answer, binding/resource/writes/state refusals, two simultaneous starts, session loss, no time left), plus `work-workspace-http/client/host/ui` additions and the example host.
+
+## Review follow-ups (#274)
+
+Dispositions of the MINOR/NOTE findings from the review of the start command; tests are in `tests/work-start-db.test.ts`.
+
+- **Hosts receive the version's terms, on purpose.** `verifyBinding` and `resourcesReady` get the terms version snapshot, not the amended effective terms. The simulated reservation was made against that version's reward vector (an amendment that raises a reward reserves its increase separately through the amendment host), and amendments can change only scope, acceptance criteria, reward amounts and deadlines, none of which `resourcesReady` reads. Only the deadline check uses effective terms. A live-custody host must keep this split. Pinned by a test.
+- **No second `ActiveCommitment` check.** The database already refuses to remove a pending engagement's commitment (`Engagement, source, roster and capacity must commit atomically`), so a pending engagement without its held slot cannot exist and a check in the command would be unreachable. The "keeps your slot" copy is therefore true. Pinned by a test.
+- **Already handled elsewhere.** `RESOURCES_NOT_READY` is the non-retryable `SETUP_NOT_READY`; `DEADLINE_PASSED` reads as `NO_LONGER_OPEN` on this boundary; the pending-engagement hint changes when Start is offered.
+- **Deferred, unchanged.** Locking the reservation `FOR SHARE` (the simulated reservation is immutable; revisit with live custody), refusing to wire the simulated host once live custody exists (no such configuration exists yet), gating the button on visibility and multi-member start policy (only solo, public work is reachable), and returning the recorded start time on a replay.
