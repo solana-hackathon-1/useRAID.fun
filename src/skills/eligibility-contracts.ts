@@ -97,6 +97,8 @@ export type SkillPredicate =
       assessmentPolicyVersion: string;
     }
   | { kind: 'AND' | 'OR'; children: SkillPredicate[] };
+/** Parser bounds on a requirement tree: children per AND/OR group, nesting depth and total nodes. */
+export const SKILL_PREDICATE_LIMITS = Object.freeze({ children: 16, depth: 8, nodes: 128 });
 /** Call the bounded input parser before exposing this recursive schema to untrusted JSON. */
 const Predicate: z.ZodType<SkillPredicate> = z.lazy(() =>
   z.discriminatedUnion('kind', [
@@ -107,8 +109,14 @@ const Predicate: z.ZodType<SkillPredicate> = z.lazy(() =>
       verificationRequired: z.boolean(),
       assessmentPolicyVersion: InternalId,
     }),
-    z.strictObject({ kind: z.literal('AND'), children: z.array(Predicate).min(1).max(16) }),
-    z.strictObject({ kind: z.literal('OR'), children: z.array(Predicate).min(1).max(16) }),
+    z.strictObject({
+      kind: z.literal('AND'),
+      children: z.array(Predicate).min(1).max(SKILL_PREDICATE_LIMITS.children),
+    }),
+    z.strictObject({
+      kind: z.literal('OR'),
+      children: z.array(Predicate).min(1).max(SKILL_PREDICATE_LIMITS.children),
+    }),
   ]),
 );
 const Input = z.strictObject({
@@ -171,8 +179,8 @@ export function parseSkillEligibilityInput(value: unknown): SkillEligibilityInpu
     while (stack.length) {
       const [current, depth] = stack.pop()!;
       if (
-        ++count > 128 ||
-        depth > 8 ||
+        ++count > SKILL_PREDICATE_LIMITS.nodes ||
+        depth > SKILL_PREDICATE_LIMITS.depth ||
         !current ||
         typeof current !== 'object' ||
         Array.isArray(current) ||
@@ -182,7 +190,7 @@ export function parseSkillEligibilityInput(value: unknown): SkillEligibilityInpu
       seen.add(current);
       const children = (current as Record<string, unknown>).children;
       if (children !== undefined) {
-        if (!Array.isArray(children) || children.length > 16)
+        if (!Array.isArray(children) || children.length > SKILL_PREDICATE_LIMITS.children)
           throw new SkillEligibilityContractError('INVALID_INPUT');
         for (const child of children) stack.push([child, depth + 1]);
       }

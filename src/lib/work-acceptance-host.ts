@@ -1,8 +1,15 @@
-import { canonicalRequestDigest } from '../command-receipts';
+import {
+  CommandReceiptError,
+  canonicalRequestDigest,
+  type CommandReceiptTransaction,
+  type SqlBinding,
+} from '../command-receipts';
 import { SkillRankSchema, type SkillRank } from '../contracts/entities';
 import {
+  SKILL_PREDICATE_LIMITS,
   SkillEligibilityContractError,
   explainSkillEligibility,
+  type SkillEligibilityContext,
   type SkillEligibilityInput,
   type SkillPredicate,
 } from '../skills/eligibility';
@@ -18,17 +25,44 @@ export interface RootAcceptanceConfig {
   /** Synthetic operator allowlist standing in for Guild authority, which the shared Root cannot recognize yet. */
   isOperator(accountId: string): boolean;
 }
-const GROUP_LIMIT = 16;
-const NOT_APPROVED = new Set<string>([
-  'INVALID_INPUT',
-  'FORBIDDEN',
-  'AUTHENTICATION_REQUIRED',
-  'ACCOUNT_RESTRICTED',
-]);
-/** Every required skill must be met. The eligibility schema allows 16 children per group and terms up to 50 skills. */
+/**
+ * Only a request the reader rejects as invalid or not permitted is a verdict on the person. A missing or restricted
+ * session is the caller's session problem and is reported as such; anything else is an outage.
+ */
+const NOT_APPROVED = new Set<string>(['INVALID_INPUT', 'FORBIDDEN']);
+const SESSION_PROBLEM: Readonly<Record<string, 'UNAUTHENTICATED' | 'ACCOUNT_RESTRICTED'>> = {
+  AUTHENTICATION_REQUIRED: 'UNAUTHENTICATED',
+  ACCOUNT_RESTRICTED: 'ACCOUNT_RESTRICTED',
+};
+/** A storage failure while reading the person's facts: not a verdict, safe to retry. */
+export class RootAcceptanceUnavailableError extends Error {
+  readonly code = 'STORAGE_UNAVAILABLE' as const;
+  readonly retryable = true as const;
+  constructor() {
+    super('STORAGE_UNAVAILABLE');
+    this.name = 'RootAcceptanceUnavailableError';
+  }
+}
+type Tx = Parameters<AcceptanceHost['assess']>[0];
+/** Deadlock/serialization signals pass through so the whole transaction is retried; other failures are typed. */
+async function available<T>(work: () => Promise<T>): Promise<T> {
+  try {
+    return await work();
+  } catch (error) {
+    if (error instanceof CommandReceiptError) throw error;
+    throw new RootAcceptanceUnavailableError();
+  }
+}
+const read = <Row>(tx: Tx, sql: string, bindings: readonly SqlBinding[]) =>
+  available(() => (tx as CommandReceiptTransaction).query<Row>(sql, bindings));
+/**
+ * Every required skill must be met. Groups respect the eligibility parser's per-group child limit; terms allow up
+ * to 50 skills, which fits two levels well inside its depth and node bounds. No skills is not a requirement.
+ */
 export function buildSkillRequirement(
   required: readonly { skillId: string; minimumRank: SkillRank; assessmentPolicyVersion: string }[],
 ): SkillPredicate {
+  if (required.length === 0) throw new SkillEligibilityContractError('INVALID_INPUT');
   const leaves: SkillPredicate[] = required.map((s) => ({
     kind: 'SKILL',
     skillId: s.skillId,
@@ -39,8 +73,8 @@ export function buildSkillRequirement(
   let level = leaves;
   do {
     const groups: SkillPredicate[] = [];
-    for (let i = 0; i < level.length; i += GROUP_LIMIT)
-      groups.push({ kind: 'AND', children: level.slice(i, i + GROUP_LIMIT) });
+    for (let i = 0; i < level.length; i += SKILL_PREDICATE_LIMITS.children)
+      groups.push({ kind: 'AND', children: level.slice(i, i + SKILL_PREDICATE_LIMITS.children) });
     level = groups;
   } while (level.length > 1);
   return level[0];
@@ -61,7 +95,7 @@ async function lockAssessmentEvidence(
     ]);
 }
 export const ROOT_ELIGIBILITY_POLICY = 'root-skill-admission-v1';
-interface FactRow {
+export interface FactRow {
   assessmentId: string;
   revision: number;
   skillId: string;
@@ -74,6 +108,52 @@ interface FactRow {
   reassessmentAt: Date | null;
   definitionVersionId: string;
 }
+/** The eligibility context for one person from their current assessment facts, observed at database time. */
+export function buildRootEligibilityContext(source: {
+  participantId: string;
+  accountId: string;
+  taxonomy: SkillEligibilityContext['taxonomy'];
+  facts: readonly FactRow[];
+  now: Date;
+}) {
+  const { now, taxonomy } = source;
+  const domains = new Map(taxonomy.skills.map((s) => [s.id, s.domain]));
+  return {
+    version: 'v1' as const,
+    now: now.toISOString(),
+    taxonomy,
+    participants: [
+      {
+        participant: {
+          id: source.participantId,
+          kind: 'HUMAN' as const,
+          accountId: source.accountId,
+        },
+        evidence: {
+          status: 'CURRENT' as const,
+          observedAt: now.toISOString(),
+          validUntil: new Date(now.getTime() + 60000).toISOString(),
+          skills: source.facts
+            // Evidence whose domain no longer matches the published taxonomy supplies nothing.
+            .filter((f) => domains.get(f.skillId) === f.skillDomain)
+            .map((f) => ({
+              kind: 'ASSESSMENT' as const,
+              skillId: f.skillId,
+              domain: f.skillDomain,
+              state: f.state,
+              assessedRank: f.assessedRank,
+              assessmentReference: { recordId: f.assessmentId, revision: f.revision },
+              rubricReference: { recordId: f.definitionVersionId, revision: 1 },
+              assessmentPolicyVersion: f.policyVersionId,
+              evaluatorAccountId: f.evaluatorAccountId,
+              issuedAt: f.issuedAt.toISOString(),
+              reassessmentAt: f.reassessmentAt ? f.reassessmentAt.toISOString() : null,
+            })),
+        },
+      },
+    ],
+  };
+}
 /**
  * Acceptance host for the shared Root. A person is approved only with (1) their own recorded consent to the exact
  * stored terms and (2) a current VERIFIED assessment meeting every required skill under the terms' assessment policy.
@@ -84,7 +164,8 @@ export function createRootAcceptanceHost(config: RootAcceptanceConfig): Acceptan
   return {
     allowNewWrites: config.allowNewWrites,
     async assess(tx, ctx) {
-      const consent = await tx.query<{ id: string }>(
+      const consent = await read<{ id: string }>(
+        tx,
         `SELECT c."id"::text FROM "WorkAcceptanceConsent" c JOIN "TermsVersion" t ON t."id"=c."termsVersionId"
          WHERE c."participantId"=$1::uuid AND c."slotId"=$2::uuid AND c."termsVersionId"=$3::uuid AND c."termsDigest"=t."digest"`,
         [ctx.participantId, ctx.slotId, ctx.termsVersionId],
@@ -95,14 +176,23 @@ export function createRootAcceptanceHost(config: RootAcceptanceConfig): Acceptan
       try {
         taxonomy = await readPublishedSkillTaxonomy(tx, ctx.actor, config.taxonomyId);
       } catch (error) {
-        // An unreadable or unpublished taxonomy means no one can be approved; an outage is not a verdict on the person.
-        if (error instanceof SkillTaxonomyStorageError && NOT_APPROVED.has(error.code)) return null;
+        if (error instanceof SkillTaxonomyStorageError) {
+          // An unreadable or unpublished taxonomy means no one can be approved.
+          if (NOT_APPROVED.has(error.code)) return null;
+          const session = SESSION_PROBLEM[error.code];
+          if (session) throw new WorkError(session);
+        }
+        // An outage is not a verdict on the person.
         throw error;
       }
       if (!taxonomy) return null;
+      // Terms that name no skill have no verified-skill basis for admission at the Root; refuse rather than build
+      // an empty requirement.
+      if (ctx.terms.requiredSkills.length === 0) return null;
       const skillIds = ctx.terms.requiredSkills.map((s) => s.skillId);
-      await lockAssessmentEvidence(tx, ctx.participantId, skillIds);
-      const facts = await tx.query<FactRow>(
+      await available(() => lockAssessmentEvidence(tx, ctx.participantId, skillIds));
+      const facts = await read<FactRow>(
+        tx,
         `SELECT a."id"::text AS "assessmentId",a."revision",v."skillId",v."skillDomain",v."state",v."assessedRank",
           v."policyVersionId"::text AS "policyVersionId",v."evaluatorAccountId",v."issuedAt",v."reassessmentAt",
           v."definitionVersionId"::text AS "definitionVersionId"
@@ -110,44 +200,15 @@ export function createRootAcceptanceHost(config: RootAcceptanceConfig): Acceptan
          WHERE a."participantId"=$1::uuid AND a."taxonomyId"=$2 AND a."skillId" IN (SELECT jsonb_array_elements_text($3::jsonb))`,
         [ctx.participantId, config.taxonomyId, JSON.stringify(skillIds)],
       );
-      const [clock] = await tx.query<{ now: Date }>('SELECT clock_timestamp() AS now', []);
-      const now = clock.now;
-      const domains = new Map(taxonomy.skills.map((s) => [s.id, s.domain]));
-      const context = {
-        version: 'v1' as const,
-        now: now.toISOString(),
+      const [clock] = await read<{ now: Date }>(tx, 'SELECT clock_timestamp() AS now', []);
+      if (!(clock?.now instanceof Date)) throw new RootAcceptanceUnavailableError();
+      const context = buildRootEligibilityContext({
+        participantId: ctx.participantId,
+        accountId: ctx.actor.accountId,
         taxonomy,
-        participants: [
-          {
-            participant: {
-              id: ctx.participantId,
-              kind: 'HUMAN' as const,
-              accountId: ctx.actor.accountId,
-            },
-            evidence: {
-              status: 'CURRENT' as const,
-              observedAt: now.toISOString(),
-              validUntil: new Date(now.getTime() + 60000).toISOString(),
-              skills: facts
-                // Evidence whose domain no longer matches the published taxonomy supplies nothing.
-                .filter((f) => domains.get(f.skillId) === f.skillDomain)
-                .map((f) => ({
-                  kind: 'ASSESSMENT' as const,
-                  skillId: f.skillId,
-                  domain: f.skillDomain,
-                  state: f.state,
-                  assessedRank: f.assessedRank,
-                  assessmentReference: { recordId: f.assessmentId, revision: f.revision },
-                  rubricReference: { recordId: f.definitionVersionId, revision: 1 },
-                  assessmentPolicyVersion: f.policyVersionId,
-                  evaluatorAccountId: f.evaluatorAccountId,
-                  issuedAt: f.issuedAt.toISOString(),
-                  reassessmentAt: f.reassessmentAt ? f.reassessmentAt.toISOString() : null,
-                })),
-            },
-          },
-        ],
-      };
+        facts,
+        now: clock.now,
+      });
       const input: SkillEligibilityInput = {
         version: 'v1',
         coverage: 'ONE_MEMBER',
@@ -156,8 +217,10 @@ export function createRootAcceptanceHost(config: RootAcceptanceConfig): Acceptan
       try {
         if (explainSkillEligibility(context, input).status !== 'MET') return null;
       } catch (error) {
-        // Only a malformed requirement or evidence contract is a verdict; storage and database errors propagate.
-        if (error instanceof SkillEligibilityContractError) return null;
+        // Only a requirement the person's terms cannot satisfy is a verdict. A malformed host contract (a bad stored
+        // row or a Root bug) surfaces to operators instead of silently rejecting every applicant.
+        if (error instanceof SkillEligibilityContractError && error.code === 'INVALID_INPUT')
+          return null;
         throw error;
       }
       return {
