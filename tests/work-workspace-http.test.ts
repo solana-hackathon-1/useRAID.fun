@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { WorkError } from '../src/work-loop/contracts';
+import { CommandReceiptError } from '../src/command-receipts';
+import { RootAcceptanceUnavailableError } from '../src/lib/work-acceptance-host';
 import { TermsSnapshotSchema } from '../src/contracts/entities';
 import { raidTerms } from './helpers/raid-terms-fixture';
 import {
@@ -92,6 +94,21 @@ describe('T022 work workspace HTTP boundary', () => {
     const response = await handlers.ME(new Request('http://localhost/api/v1/work/me'));
     expect(response.status).toBe(503);
     expect((await error(response)).code).toBe('SERVICE_UNAVAILABLE');
+  });
+  it.each([
+    ['typed root outage', () => new RootAcceptanceUnavailableError()],
+    ['receipt storage outage', () => new CommandReceiptError('STORAGE_UNAVAILABLE')],
+  ])('reports a %s as a retryable SERVICE_UNAVAILABLE', async (_name, make) => {
+    const handlers = createWorkHandlers(
+      host({
+        commitEngagement: async () => {
+          throw make();
+        },
+      }),
+    );
+    const response = await handlers.ACCEPT(post('/x', { slotId, termsVersionId }));
+    expect(response.status).toBe(503);
+    expect(await error(response)).toMatchObject({ code: 'SERVICE_UNAVAILABLE', retryable: true });
   });
   it('rejects query strings and foreign methods before reading', async () => {
     const me = vi.fn(async () => ({ version: 'v1', engagements: [], applications: [] }));

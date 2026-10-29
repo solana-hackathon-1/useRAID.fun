@@ -3,3 +3,4 @@
 
 - 2026-10-29 b1 (Claude): stopped a stale background vitest run and my old `raid-guild-test-20261027` DB; own test DB is `raid-b1-283-test-20261029` (127.0.0.1:55433, database `useraid_test` because `assertTestDatabase` requires that exact name).
 - #283 → `task/283-offer-issuer-followups`: issuer check up front, issuer column validated, guard comment, stronger no-side-effect test, doc line. Full real-PG suite 275 files / 4002 tests, lint 0 errors, typecheck clean.
+- #332 → `task/332-acceptance-followups`: `available` maps the port's `CommandReceiptError('STORAGE_UNAVAILABLE')` to `RootAcceptanceUnavailableError` (RETRY_TRANSACTION still passes through); offerId mismatch on commit now fails `SLOT_FILLED` (slot-state check already runs first); `RaidOffer.acceptedEngagementId` already UNIQUE-indexed, no migration. Targeted real-PG 3 files / 60 tests, tsc clean, eslint clean.

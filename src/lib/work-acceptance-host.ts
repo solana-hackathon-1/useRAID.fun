@@ -44,12 +44,15 @@ export class RootAcceptanceUnavailableError extends Error {
   }
 }
 type Tx = Parameters<AcceptanceHost['assess']>[0];
-/** Deadlock/serialization signals pass through so the whole transaction is retried; other failures are typed. */
+/**
+ * Deadlock/serialization signals pass through so the whole transaction is retried. The production port's own storage
+ * outage is the same retryable outage as any other driver failure, so it is typed here too.
+ */
 async function available<T>(work: () => Promise<T>): Promise<T> {
   try {
     return await work();
   } catch (error) {
-    if (error instanceof CommandReceiptError) throw error;
+    if (error instanceof CommandReceiptError && error.code !== 'STORAGE_UNAVAILABLE') throw error;
     throw new RootAcceptanceUnavailableError();
   }
 }
