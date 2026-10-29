@@ -77,6 +77,30 @@ it('allows only reviewed, hash-pinned domain-seed advisory locks outside the sha
         `registered but seed ${seed} is outside the domain range`,
       ).not.toEqual([]);
     }
+    // The funding-reference key is fixed by the database triggers (seed 0): only that exact prefixed shape is reviewed.
+    const funding = (
+      key: string,
+    ) => `export async function domainLock(tx: { q(sql: string): Promise<void> }) {
+  await tx.q("SELECT pg_advisory_xact_lock(hashtextextended(${key}, 0))");
+}
+`;
+    const reference = `'raid:funding-reference:'||$1`;
+    await writeFile(file, funding(reference));
+    expect(
+      advisory(identityArchitecture(root, [file])),
+      'funding-reference key, unregistered',
+    ).not.toEqual([]);
+    expect(
+      advisory(identityArchitecture(root, [file], registry(funding(reference)))),
+      'funding-reference key, registered',
+    ).toEqual([]);
+    for (const key of [`'raid:other:'||$1`, `'raid:funding-reference'||$1`, '$1']) {
+      await writeFile(file, funding(key));
+      expect(
+        advisory(identityArchitecture(root, [file], registry(funding(key)))),
+        `registered but ${key} is not the trigger's funding-reference key`,
+      ).not.toEqual([]);
+    }
   } finally {
     await unlink(file).catch(() => undefined);
   }
