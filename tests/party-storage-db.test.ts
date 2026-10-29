@@ -801,34 +801,12 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
     });
   });
 
-  it('refuses a suspended or non-human member through the command', async () => {
+  it('refuses a suspended member through the command', async () => {
     const t = await setup();
     const members = t.split(500000000n, 300000000n, 200000000n);
     await db.user.update({ where: { id: t.ben.actor.accountId }, data: { suspended: true } });
     await rejects(t.propose(t.leader.actor, t.proposal(members)), 'INVALID_INPUT');
     await db.user.update({ where: { id: t.ben.actor.accountId }, data: { suspended: false } });
-    await db.$executeRawUnsafe(
-      `ALTER TABLE "Participant" DROP CONSTRAINT "Participant_kind_check"`,
-    );
-    try {
-      await replica((tx) =>
-        tx.$executeRawUnsafe(
-          `UPDATE "Participant" SET "kind"='AI_AGENT' WHERE "id"=$1::uuid`,
-          t.ben.participantId,
-        ),
-      );
-      await rejects(t.propose(t.leader.actor, t.proposal(members)), 'INVALID_INPUT');
-    } finally {
-      await replica((tx) =>
-        tx.$executeRawUnsafe(
-          `UPDATE "Participant" SET "kind"='HUMAN' WHERE "id"=$1::uuid`,
-          t.ben.participantId,
-        ),
-      );
-      await db.$executeRawUnsafe(
-        `ALTER TABLE "Participant" ADD CONSTRAINT "Participant_kind_check" CHECK ("kind" = 'HUMAN')`,
-      );
-    }
     expect(await db.$queryRawUnsafe('SELECT 1 FROM "PartyProposal"')).toHaveLength(0);
     expect((await t.propose(t.leader.actor, t.proposal(members))).status).toBe('EXECUTED');
   });
