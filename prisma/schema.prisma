@@ -6,6 +6,9 @@ datasource db {
   url = env("DATABASE_URL")
 }
 model User {
+  guildUpdatesAuthored GuildUpdate[] @relation("GuildUpdateAuthor")
+  guildUpdatesPublished GuildUpdate[] @relation("GuildUpdatePublisher")
+  guildUpdatesWithdrawn GuildUpdate[] @relation("GuildUpdateWithdrawer")
   guildTransfersProposed GuildOwnershipTransfer[] @relation("GuildTransferFrom")
   guildTransfersReceived GuildOwnershipTransfer[] @relation("GuildTransferTo")
   guildTransfersDecided GuildOwnershipTransfer[] @relation("GuildTransferDecider")
@@ -668,6 +671,9 @@ model XEndpointState {
 // Command receipts, audit and outbox foundation (T019). Checks, triggers and immutability live in the
 // additive SQL migration 202610090001_command_receipts; Prisma only mirrors columns, keys and indexes.
 model CommandReceipt {
+  guildUpdateDraft GuildUpdate? @relation("GuildUpdateDraftReceipt")
+  guildUpdatePublication GuildUpdate? @relation("GuildUpdatePublishReceipt")
+  guildUpdateWithdrawal GuildUpdate? @relation("GuildUpdateWithdrawReceipt")
   guildTransferProposal GuildOwnershipTransfer? @relation("GuildTransferProposeReceipt")
   guildTransferDecision GuildOwnershipTransfer? @relation("GuildTransferDecideReceipt")
   guildProfileVersion GuildProfileVersion?
@@ -1534,6 +1540,7 @@ model Guild {
   versions GuildProfileVersion[] @relation("GuildProfileHistory")
   grants GuildRoleGrant[]
   transfers GuildOwnershipTransfer[]
+  updates GuildUpdate[]
   @@index([founderAccountId])
 }
 model GuildProfileVersion {
@@ -1595,4 +1602,31 @@ model GuildOwnershipTransfer {
   @@index([guildId], map: "GuildOwnershipTransfer_guild_idx")
   @@index([fromAccountId], map: "GuildOwnershipTransfer_from_idx")
   @@index([toAccountId], map: "GuildOwnershipTransfer_to_idx")
+}
+// Public project/progress updates; the public projection is title, body and publication time only.
+model GuildUpdate {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guildId String @db.Uuid
+  authorAccountId String
+  title String
+  body String
+  state String @default("DRAFT")
+  createdAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  publishedAt DateTime? @db.Timestamptz(6)
+  publishedByAccountId String?
+  withdrawnAt DateTime? @db.Timestamptz(6)
+  withdrawnByAccountId String?
+  draftReceiptId String @unique(map: "GuildUpdate_draftReceiptId_key") @db.Uuid
+  publishReceiptId String? @unique(map: "GuildUpdate_publishReceiptId_key") @db.Uuid
+  withdrawReceiptId String? @unique(map: "GuildUpdate_withdrawReceiptId_key") @db.Uuid
+  guild Guild @relation(fields: [guildId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildUpdate_guild_fkey")
+  author User @relation("GuildUpdateAuthor", fields: [authorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildUpdate_author_fkey")
+  publisher User? @relation("GuildUpdatePublisher", fields: [publishedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildUpdate_publisher_fkey")
+  withdrawer User? @relation("GuildUpdateWithdrawer", fields: [withdrawnByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildUpdate_withdrawer_fkey")
+  draftReceipt CommandReceipt @relation("GuildUpdateDraftReceipt", fields: [draftReceiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildUpdate_draftReceipt_fkey")
+  publishReceipt CommandReceipt? @relation("GuildUpdatePublishReceipt", fields: [publishReceiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildUpdate_publishReceipt_fkey")
+  withdrawReceipt CommandReceipt? @relation("GuildUpdateWithdrawReceipt", fields: [withdrawReceiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildUpdate_withdrawReceipt_fkey")
+  @@index([authorAccountId], map: "GuildUpdate_author_idx")
+  @@index([publishedByAccountId], map: "GuildUpdate_publisher_idx")
+  @@index([withdrawnByAccountId], map: "GuildUpdate_withdrawer_idx")
 }

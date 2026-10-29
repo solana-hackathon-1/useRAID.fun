@@ -304,6 +304,7 @@
     "tests/guild-storage-db.test.ts",
     "tests/guild-grants-db.test.ts",
     "tests/guild-ownership-db.test.ts",
+    "tests/guild-updates-db.test.ts",
     "tests/guild-storage-boundary.test.ts",
     "tests/work-workspace-consumer.test.ts"
   ],
@@ -1228,6 +1229,7 @@
         "tests/guild-storage-db.test.ts",
         "tests/guild-grants-db.test.ts",
         "tests/guild-ownership-db.test.ts",
+        "tests/guild-updates-db.test.ts",
         "tests/guild-storage-boundary.test.ts",
         "tests/browser-live/tracking.spec.ts",
         "tests/browser/discovery.spec.ts",

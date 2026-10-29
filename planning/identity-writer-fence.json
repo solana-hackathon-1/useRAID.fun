@@ -22,6 +22,9 @@
     "GuildProfileVersion:actor User @relation(fields: [actorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildProfileVersion_actor_fkey\")",
     "GuildRoleGrant:grantedBy User @relation(\"GuildGrantIssuer\", fields: [grantedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildRoleGrant_grantedBy_fkey\")",
     "GuildRoleGrant:grantee User @relation(\"GuildGrantGrantee\", fields: [granteeAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildRoleGrant_grantee_fkey\")",
+    "GuildUpdate:author User @relation(\"GuildUpdateAuthor\", fields: [authorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildUpdate_author_fkey\")",
+    "GuildUpdate:publisher User? @relation(\"GuildUpdatePublisher\", fields: [publishedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildUpdate_publisher_fkey\")",
+    "GuildUpdate:withdrawer User? @relation(\"GuildUpdateWithdrawer\", fields: [withdrawnByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildUpdate_withdrawer_fkey\")",
     "MediaAsset:uploader User? @relation(fields: [uploaderId], references: [id], onDelete: SetNull)",
     "Notification:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "NotificationPreference:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
@@ -206,6 +209,27 @@
       "effects": "Immutable decider attribution (recipient, withdrawing Founder, or the actor that lapsed an expired proposal).",
       "authority": "Current actual Session of the decider; a decision is final.",
       "fold": "Restrict preserves ownership history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildUpdate.authorAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#draftGuildUpdate",
+      "effects": "Immutable author attribution of public update text; no User/Session/Participant mutation.",
+      "authority": "Current actual Session of the Founder or a live PROFILE grantee, rechecked after the Guild row lock.",
+      "fold": "Restrict preserves update history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildUpdate.publishedByAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#publishGuildUpdate",
+      "effects": "Immutable publisher attribution; a publication is made only by the Guild's current Founder (database guard).",
+      "authority": "Current actual Session of the current Founder, rechecked after the Guild row lock.",
+      "fold": "Restrict preserves update history and fails closed on account deletion; no rehome/fold enablement.",
+      "review": "SELF-EVALUATED; independent review pending."
+    },
+    "GuildUpdate.withdrawnByAccountId": {
+      "writer": "src/guild-profiles/guild-storage.ts#withdrawGuildUpdate",
+      "effects": "Immutable withdrawer attribution; withdrawal removes the update from the public view only.",
+      "authority": "Current actual Session of the current Founder, or of an author withdrawing their own unpublished draft.",
+      "fold": "Restrict preserves update history and fails closed on account deletion; no rehome/fold enablement.",
       "review": "SELF-EVALUATED; independent review pending."
     }
   }

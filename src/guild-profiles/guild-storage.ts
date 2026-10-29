@@ -15,14 +15,24 @@ import {
   GUILD_AUTHORITY_KINDS,
   GUILD_GRANT_LIMIT,
   GrantGuildRoleInputSchema,
+  DraftGuildUpdateInputSchema,
+  GUILD_DRAFT_UPDATE_LIMIT,
+  GUILD_UNPUBLISHED_UPDATE_LIMIT,
+  GUILD_UPDATE_PAGE_MAX,
   GuildRoleGrantViewSchema,
+  GuildUpdateRefInputSchema,
+  ListPublicGuildUpdatesInputSchema,
+  ManagedGuildUpdateSchema,
   OWNERSHIP_TRANSFER_MAX_DAYS,
   OwnershipTransferViewSchema,
   ProposeOwnershipTransferInputSchema,
   RespondOwnershipTransferInputSchema,
   RevokeGuildRoleInputSchema,
   type GuildOwnershipHost,
+  PublicGuildUpdateSchema,
   type GuildRoleGrantView,
+  type ManagedGuildUpdate,
+  type PublicGuildUpdate,
   type OwnershipTransferView,
   GuildStorageError,
   ManagedGuildSchema,
@@ -984,4 +994,266 @@ export async function respondOwnershipTransfer(
   if (transfer.fromAccountId !== actor.accountId && transfer.toAccountId !== actor.accountId)
     fail('FORBIDDEN');
   return { status: result.status, transfer };
+}
+async function loadUpdate(
+  tx: CommandReceiptTransaction,
+  guildId: string,
+  id: string,
+): Promise<ManagedGuildUpdate> {
+  const rows = await query<Record<string, unknown>>(
+    tx,
+    `SELECT "id"::text,"guildId"::text,"title","body","state","authorAccountId","createdAt","publishedAt"
+     FROM "GuildUpdate" WHERE "id"=$1::uuid AND "guildId"=$2::uuid`,
+    [id, guildId],
+  );
+  if (rows.length !== 1) fail('STORAGE_CONTRACT');
+  const iso = (v: unknown) => (v instanceof Date ? v.toISOString() : v);
+  const parsed = ManagedGuildUpdateSchema.safeParse({
+    version: 'v1',
+    ...rows[0],
+    createdAt: iso(rows[0].createdAt),
+    publishedAt: iso(rows[0].publishedAt),
+  });
+  if (!parsed.success) fail('STORAGE_CONTRACT');
+  return parsed.data;
+}
+const updateEvent = (type: string, guildId: string, revision: number, id: string) => ({
+  type,
+  aggregateId: guildId,
+  aggregateVersion: revision,
+  guildId,
+  payload: { guildUpdateId: id },
+  publish: false,
+});
+/** Drafts a public update: the Founder or a profile delegate. Nothing is public until the Founder publishes it. */
+export async function draftGuildUpdate(
+  tx: CommandReceiptTransaction,
+  command: GuildCommand,
+  host: GuildHost,
+): Promise<{ status: 'EXECUTED' | 'REPLAYED'; update: ManagedGuildUpdate }> {
+  validateActor(command?.actor);
+  if (typeof host?.allowNewWrites !== 'boolean') fail('STORAGE_CONTRACT');
+  const parsed = DraftGuildUpdateInputSchema.safeParse(command.input);
+  if (!parsed.success) fail('INVALID_INPUT');
+  const input = parsed.data,
+    actor = command.actor;
+  const result = await executeIdempotentCommand(
+    tx,
+    {
+      actorId: actor.accountId,
+      commandKind: 'DraftGuildUpdate',
+      idempotencyKey: command.idempotencyKey,
+      requestId: command.requestId,
+      request: input,
+    },
+    async ({ receiptId }) => {
+      await authorize(tx, actor);
+      if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      const guilds = await query<{ revision: number }>(
+        tx,
+        'SELECT "revision" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
+        [input.guildId],
+      );
+      if (guilds.length !== 1) fail('NOT_FOUND');
+      await authorize(tx, actor);
+      if (!(await authorityKinds(tx, actor.accountId, input.guildId)).kinds.includes('PROFILE'))
+        fail('FORBIDDEN');
+      const open = await query<{ n: number }>(
+        tx,
+        `SELECT count(*)::int AS n FROM "GuildUpdate" WHERE "guildId"=$1::uuid AND "state"='DRAFT'`,
+        [input.guildId],
+      );
+      if ((open[0]?.n ?? 0) >= GUILD_DRAFT_UPDATE_LIMIT) fail('UPDATE_LIMIT');
+      // Withdrawn drafts are never deleted, so they keep counting against their author.
+      const unpublished = await query<{ n: number }>(
+        tx,
+        `SELECT count(*)::int AS n FROM "GuildUpdate"
+         WHERE "guildId"=$1::uuid AND "authorAccountId"=$2 AND ("state"='DRAFT' OR ("state"='WITHDRAWN' AND "publishedAt" IS NULL))`,
+        [input.guildId, actor.accountId],
+      );
+      if ((unpublished[0]?.n ?? 0) >= GUILD_UNPUBLISHED_UPDATE_LIMIT) fail('UPDATE_LIMIT');
+      const rows = await query<{ id: string }>(
+        tx,
+        `INSERT INTO "GuildUpdate" ("guildId","authorAccountId","title","body","draftReceiptId") VALUES ($1::uuid,$2,$3,$4,$5::uuid) RETURNING "id"::text`,
+        [input.guildId, actor.accountId, input.title, input.body, receiptId],
+      );
+      if (rows.length !== 1) fail('STORAGE_CONTRACT');
+      await authorize(tx, actor);
+      return {
+        resultRef: rows[0].id,
+        events: [
+          updateEvent('guild.update_drafted.v1', input.guildId, guilds[0].revision, rows[0].id),
+        ],
+      };
+    },
+  );
+  // A replay is for the author, who must still hold profile authority.
+  await authorize(tx, actor);
+  if (!(await authorityKinds(tx, actor.accountId, input.guildId)).kinds.includes('PROFILE'))
+    fail('FORBIDDEN');
+  const update = await loadUpdate(tx, input.guildId, result.resultRef);
+  if (update.authorAccountId !== actor.accountId) fail('FORBIDDEN');
+  return { status: result.status, update };
+}
+async function moveUpdate(
+  tx: CommandReceiptTransaction,
+  command: GuildCommand,
+  host: GuildHost,
+  step: 'PUBLISH' | 'WITHDRAW',
+): Promise<{ status: 'EXECUTED' | 'REPLAYED'; update: ManagedGuildUpdate }> {
+  validateActor(command?.actor);
+  if (typeof host?.allowNewWrites !== 'boolean') fail('STORAGE_CONTRACT');
+  const parsed = GuildUpdateRefInputSchema.safeParse(command.input);
+  if (!parsed.success) fail('INVALID_INPUT');
+  const input = parsed.data,
+    actor = command.actor;
+  const result = await executeIdempotentCommand(
+    tx,
+    {
+      actorId: actor.accountId,
+      commandKind: step === 'PUBLISH' ? 'PublishGuildUpdate' : 'WithdrawGuildUpdate',
+      idempotencyKey: command.idempotencyKey,
+      requestId: command.requestId,
+      request: input,
+    },
+    async ({ receiptId }) => {
+      await authorize(tx, actor);
+      // Taking content down stays possible while new writes are disabled.
+      if (step === 'PUBLISH' && !host.allowNewWrites) fail('WRITES_DISABLED');
+      const guilds = await query<{ founderAccountId: string; revision: number }>(
+        tx,
+        'SELECT "founderAccountId","revision" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
+        [input.guildId],
+      );
+      if (guilds.length !== 1) fail('NOT_FOUND');
+      await authorize(tx, actor);
+      const updates = await query<{ state: string; author: string }>(
+        tx,
+        'SELECT "state","authorAccountId" AS author FROM "GuildUpdate" WHERE "id"=$1::uuid AND "guildId"=$2::uuid FOR UPDATE',
+        [input.updateId, input.guildId],
+      );
+      if (updates.length !== 1) fail('NOT_FOUND');
+      const founder = guilds[0].founderAccountId === actor.accountId;
+      const current = updates[0];
+      if (step === 'PUBLISH') {
+        if (!founder) fail('FORBIDDEN');
+        if (current.state !== 'DRAFT') fail('REVISION_CONFLICT');
+        await query(
+          tx,
+          `UPDATE "GuildUpdate" SET "state"='PUBLISHED',"publishedAt"=clock_timestamp(),"publishedByAccountId"=$2,"publishReceiptId"=$3::uuid WHERE "id"=$1::uuid RETURNING "id"`,
+          [input.updateId, actor.accountId, receiptId],
+        );
+      } else {
+        // The Founder withdraws anything; an author only takes back their own unpublished draft.
+        // An author must still hold live profile authority, as drafting requires.
+        if (
+          !founder &&
+          !(
+            current.author === actor.accountId &&
+            current.state === 'DRAFT' &&
+            (await authorityKinds(tx, actor.accountId, input.guildId)).kinds.includes('PROFILE')
+          )
+        )
+          fail('FORBIDDEN');
+        if (current.state === 'WITHDRAWN') fail('REVISION_CONFLICT');
+        await query(
+          tx,
+          `UPDATE "GuildUpdate" SET "state"='WITHDRAWN',"withdrawnAt"=clock_timestamp(),"withdrawnByAccountId"=$2,"withdrawReceiptId"=$3::uuid WHERE "id"=$1::uuid RETURNING "id"`,
+          [input.updateId, actor.accountId, receiptId],
+        );
+      }
+      await authorize(tx, actor);
+      return {
+        resultRef: input.updateId,
+        events: [
+          updateEvent(
+            step === 'PUBLISH' ? 'guild.update_published.v1' : 'guild.update_withdrawn.v1',
+            input.guildId,
+            guilds[0].revision,
+            input.updateId,
+          ),
+        ],
+      };
+    },
+  );
+  // A replay is for the account that took the step, judged by identity.
+  await authorize(tx, actor);
+  const by = await query<{ by: string | null }>(
+    tx,
+    step === 'PUBLISH'
+      ? 'SELECT "publishedByAccountId" AS by FROM "GuildUpdate" WHERE "id"=$1::uuid AND "guildId"=$2::uuid'
+      : 'SELECT "withdrawnByAccountId" AS by FROM "GuildUpdate" WHERE "id"=$1::uuid AND "guildId"=$2::uuid',
+    [result.resultRef, input.guildId],
+  );
+  if (by.length !== 1 || by[0].by !== actor.accountId) fail('FORBIDDEN');
+  return { status: result.status, update: await loadUpdate(tx, input.guildId, result.resultRef) };
+}
+/** Publishes a draft. Only the Guild's current Founder, so approval is never delegated. */
+export const publishGuildUpdate = (
+  tx: CommandReceiptTransaction,
+  command: GuildCommand,
+  host: GuildHost,
+) => moveUpdate(tx, command, host, 'PUBLISH');
+/** Withdraws an update: the Founder any, an author only their own draft. A withdrawn update is no longer public. */
+export const withdrawGuildUpdate = (
+  tx: CommandReceiptTransaction,
+  command: GuildCommand,
+  host: GuildHost,
+) => moveUpdate(tx, command, host, 'WITHDRAW');
+/** Published updates of a Guild by slug, newest first: title, text and time only. */
+export async function listPublicGuildUpdates(
+  tx: CommandReceiptTransaction,
+  slug: string,
+  options: unknown,
+): Promise<{ updates: PublicGuildUpdate[]; nextCursor: string | null }> {
+  if (!PublicGuildSchema.shape.slug.safeParse(slug).success) fail('INVALID_INPUT');
+  const parsed = ListPublicGuildUpdatesInputSchema.safeParse(options ?? {});
+  if (!parsed.success) fail('INVALID_INPUT');
+  const limit = parsed.data.limit ?? GUILD_UPDATE_PAGE_MAX;
+  const guilds = await query<{ id: string }>(tx, 'SELECT "id"::text FROM "Guild" WHERE "slug"=$1', [
+    slug,
+  ]);
+  if (guilds.length !== 1) fail('NOT_FOUND');
+  const rows = await query<Record<string, unknown>>(
+    tx,
+    `SELECT u."id"::text,u."title",u."body",u."publishedAt" FROM "GuildUpdate" u
+     WHERE u."guildId"=$1::uuid AND u."state"='PUBLISHED'
+       AND ($2::uuid IS NULL OR (u."publishedAt",u."id")<(SELECT c."publishedAt",c."id" FROM "GuildUpdate" c WHERE c."id"=$2::uuid AND c."guildId"=$1::uuid AND c."publishedAt" IS NOT NULL))
+     ORDER BY u."publishedAt" DESC,u."id" DESC LIMIT $3::int`,
+    [guilds[0].id, parsed.data.before ?? null, String(limit + 1)],
+  );
+  const page = rows.slice(0, limit).map((row) => {
+    const out = PublicGuildUpdateSchema.safeParse({
+      id: row.id,
+      title: row.title,
+      body: row.body,
+      publishedAt:
+        row.publishedAt instanceof Date ? row.publishedAt.toISOString() : row.publishedAt,
+    });
+    if (!out.success) return fail('STORAGE_CONTRACT');
+    return out.data;
+  });
+  return { updates: page, nextCursor: rows.length > limit ? page[page.length - 1].id : null };
+}
+/** Updates a manager may see: the Founder all of them, a profile delegate only their own. */
+export async function listManagedGuildUpdates(
+  tx: CommandReceiptTransaction,
+  actor: GuildActor,
+  guildId: string,
+): Promise<{ updates: ManagedGuildUpdate[] }> {
+  validateActor(actor);
+  if (!z.uuid().safeParse(guildId).success) fail('INVALID_INPUT');
+  await authorize(tx, actor);
+  const authority = await authorityKinds(tx, actor.accountId, guildId);
+  if (!authority.kinds.includes('PROFILE')) fail('FORBIDDEN');
+  const rows = await query<{ id: string }>(
+    tx,
+    `SELECT "id"::text FROM "GuildUpdate" WHERE "guildId"=$1::uuid AND "state"<>'WITHDRAWN' AND ($3::boolean OR "authorAccountId"=$2)
+     ORDER BY "createdAt" DESC,"id" DESC LIMIT 100`,
+    [guildId, actor.accountId, String(authority.founder)],
+  );
+  const updates: ManagedGuildUpdate[] = [];
+  for (const row of rows) updates.push(await loadUpdate(tx, guildId, row.id));
+  await authorize(tx, actor);
+  return { updates };
 }
