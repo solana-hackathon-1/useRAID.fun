@@ -55,7 +55,6 @@ export async function loadDetail(listingId: string): Promise<LoadedDetail> {
       : { status: 'UNAVAILABLE' };
   }
 }
-export type ApplyState = ApplyMode;
 async function signedIn() {
   try {
     return (await currentUser()) !== null;
@@ -68,7 +67,7 @@ async function signedIn() {
  * eligibility and source at the moment of the action. Application Raids are applied to; instant-start Raids are
  * accepted directly.
  */
-export async function applyMode(detail: Pick<Detail, 'admission'>): Promise<ApplyState> {
+export async function applyMode(detail: Pick<Detail, 'admission'>): Promise<ApplyMode> {
   if (!(await signedIn())) return 'SIGN_IN';
   const config = workWorkspaceConfiguration();
   if (detail.admission === 'APPLICATION')

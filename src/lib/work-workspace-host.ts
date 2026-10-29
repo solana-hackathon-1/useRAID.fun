@@ -7,7 +7,12 @@ import {
   revokeOffer,
   submitApplication,
 } from '../work-loop/admission-storage';
-import { readMyRaids, readReviewQueue, readApplicantQueue } from '../work-loop/workspace-storage';
+import {
+  readActiveRaid,
+  readMyRaids,
+  readReviewQueue,
+  readApplicantQueue,
+} from '../work-loop/workspace-storage';
 import { recordAcceptanceConsent } from '../work-loop/consent-storage';
 import { commitEngagement } from '../work-loop/engagement-storage';
 import { createRootAcceptanceHost } from './work-acceptance-host';
@@ -62,6 +67,10 @@ function requireReads() {
 export async function readMyRaidsFromHost(actor: WorkActor) {
   requireReads();
   return runCommandTransaction(db, (tx) => readMyRaids(tx, actor));
+}
+export async function readActiveRaidFromHost(actor: WorkActor) {
+  requireReads();
+  return runCommandTransaction(db, (tx) => readActiveRaid(tx, actor));
 }
 export async function readReviewQueueFromHost(actor: WorkActor) {
   requireReads();

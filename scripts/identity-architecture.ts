@@ -216,9 +216,14 @@ export function identityArchitecture(
         // so they can never alias the identity key space (seed 0 labels and fixed 729102-729104).
         !(
           trusted(source, node, manifest.trustedAdvisoryFunctions!) &&
-          /pg_advisory_xact_lock\(\s*hashtextextended\(\s*\$1\s*,\s*120(?:1[2-9]|[2-9]\d)\s*\)\s*\)/.test(
+          (/pg_advisory_xact_lock\(\s*hashtextextended\(\s*\$1\s*,\s*120(?:1[2-9]|[2-9]\d)\s*\)\s*\)/.test(
             node.getText(source),
-          )
+          ) ||
+            // The database's funding-serialization triggers fix this exact seed-0 key. Its 'raid:funding-reference:'
+            // prefix is not an identity lock class or a fixed global key, so it cannot alias identity labels.
+            /pg_advisory_xact_lock\(\s*hashtextextended\(\s*'raid:funding-reference:'\s*\|\|\s*\$1\s*,\s*0\s*\)\s*\)/.test(
+              node.getText(source),
+            ))
         )
       )
         report(source, node, 'advisory acquisition bypasses the shared key/class builder');

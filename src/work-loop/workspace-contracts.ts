@@ -18,6 +18,31 @@ const OfferViewSchema = z.strictObject({
   /** Evaluated against the database clock; a stored PENDING offer can already be unusable. */
   expired: z.boolean(),
 });
+/** The terms the member accepted (the effective snapshot), read-only; includes no other account's private data. */
+const AcceptedTermsViewSchema = z.strictObject({
+  termsVersionId: z.string(),
+  revision: z.number().int(),
+  scope: z.string(),
+  requiredSkills: z.array(z.strictObject({ skillId: z.string(), minimumRank: z.string() })).max(50),
+  roster: z.array(z.strictObject({ participantId: z.uuid(), responsibility: z.string() })).max(50),
+  rewards: z
+    .array(
+      z.strictObject({
+        policy: z.unknown(),
+        amount: z.unknown(),
+        beneficiaryParticipantId: z.uuid(),
+      }),
+    )
+    .max(10),
+  deadlines: z.strictObject({
+    preparation: UtcTimestamp,
+    submission: UtcTimestamp,
+    review: UtcTimestamp,
+    operationalClosure: UtcTimestamp,
+  }),
+});
+/** Derived from persisted state: PENDING until the member starts (ACCESS_PENDING), NOT_APPLICABLE once ended unstarted. */
+export const SetupStatusSchema = z.enum(['PENDING', 'READY', 'NOT_APPLICABLE']);
 export const EngagementCardSchema = z.strictObject({
   engagementId: z.uuid(),
   title,
@@ -34,6 +59,8 @@ export const EngagementCardSchema = z.strictObject({
   ]),
   /** True only while this engagement still holds the member's participant reservation. */
   capacityHeld: z.boolean(),
+  acceptedTerms: AcceptedTermsViewSchema,
+  setup: z.strictObject({ status: SetupStatusSchema, preparationDeadline: UtcTimestamp }),
   nextStep: NextStepSchema,
   deadlines: z.strictObject({
     submission: UtcTimestamp,
@@ -73,6 +100,13 @@ export const ApplicationCardSchema = z.strictObject({
 });
 export const MyRaidsSchema = z.strictObject({
   version: z.literal('v1'),
+  /** R13: at most one active Raid per participant; this is the member's own slot only. */
+  capacity: z.strictObject({
+    limit: z.literal(1),
+    held: z.boolean(),
+    engagementId: z.uuid().nullable(),
+    title: title.nullable(),
+  }),
   engagements: z.array(EngagementCardSchema).max(50),
   applications: z.array(ApplicationCardSchema).max(50),
 });
@@ -122,3 +156,8 @@ export const ApplicantQueueSchema = z.strictObject({
 export type MyRaids = z.infer<typeof MyRaidsSchema>;
 export type ReviewQueue = z.infer<typeof ReviewQueueSchema>;
 export type ApplicantQueue = z.infer<typeof ApplicantQueueSchema>;
+/** The one Raid currently holding the member's participant capacity (R13), or null; drives the site-wide indicator. */
+export const ActiveRaidSchema = z
+  .strictObject({ version: z.literal('v1'), engagementId: z.uuid(), title })
+  .nullable();
+export type ActiveRaid = z.infer<typeof ActiveRaidSchema>;

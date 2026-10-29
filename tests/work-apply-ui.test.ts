@@ -1,7 +1,12 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
-import { ApplyToRaid, createApplyRunner, submitApply } from '../src/components/work-apply';
+import {
+  ApplyToRaid,
+  ApplyView,
+  createApplyRunner,
+  submitApply,
+} from '../src/components/work-apply';
 import { WorkClientError } from '../src/work-http/workspace-client';
 
 const slotId = '11111111-1111-4111-8111-111111111111';
@@ -94,6 +99,45 @@ describe('apply to a Raid', () => {
     await submitApply({ apply: async () => ({ kind: 'DONE' as const }) }, input, ui);
     expect(busy).toEqual([true, true, false]);
     expect(outcomes).toEqual([{ kind: 'DONE' }]);
+  });
+  it('answers that the Raid is no longer available when it was taken or closed, not a generic failure', async () => {
+    for (const code of ['NOT_FOUND', 'NO_LONGER_OPEN']) {
+      const submitApplication = vi.fn().mockRejectedValue(new WorkClientError(code, 409, null));
+      const runner = createApplyRunner({ submitApplication }, () => 'key-1');
+      expect(await runner.apply(input), code).toEqual({
+        kind: 'GONE',
+        message: 'This Raid is no longer available.',
+      });
+    }
+  });
+  it('replaces the stale form with "no longer available" and no Apply button after that answer', () => {
+    const html = renderToStaticMarkup(
+      createElement(ApplyView, {
+        outcome: { kind: 'GONE', message: 'This Raid is no longer available.' },
+        busy: false,
+        ready: true,
+        signInHref: '/creator/account',
+        onSubmit: () => {},
+      }),
+    );
+    expect(html).toContain('This Raid is no longer available.');
+    expect(html).toContain('href="/raids"');
+    expect(html).not.toContain('Apply to this Raid');
+    expect(html).not.toContain('<button');
+  });
+  it('links a signed-out failure to sign in and come back to this brief', () => {
+    const back = '/creator/account?returnTo=%2Fraids%2Fwork%2Fx';
+    const html = renderToStaticMarkup(
+      createElement(ApplyView, {
+        outcome: { kind: 'SIGN_IN', message: 'Sign in again to continue.' },
+        busy: false,
+        ready: true,
+        signInHref: back,
+        onSubmit: () => {},
+      }),
+    );
+    expect(html).toContain(`href="${back}"`);
+    expect(html).toContain('Apply to this Raid');
   });
   it('says so, instead of offering the form again, when the person already applied', () => {
     const html = renderToStaticMarkup(

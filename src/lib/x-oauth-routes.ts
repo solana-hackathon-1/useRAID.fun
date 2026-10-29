@@ -32,7 +32,11 @@ const RETURNS: Record<string, string> = {
 function returnDestination(value: string | null | undefined) {
   if (!value) return null;
   if (Object.hasOwn(RETURNS, value)) return RETURNS[value];
-  return /^raid:[a-z0-9]{20,40}$/.test(value) ? `/raids/${value.slice(5)}` : null;
+  if (/^raid:[a-z0-9]{20,40}$/.test(value)) return `/raids/${value.slice(5)}`;
+  // A public Raid brief, by its exact lowercase uuid only.
+  return /^work:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(value)
+    ? `/raids/work/${value.slice(5)}`
+    : null;
 }
 function result(status: string, dest = '/creator') {
   // Destinations come from a fixed table or a strict id pattern, never from the request itself.
