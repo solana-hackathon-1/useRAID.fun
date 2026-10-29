@@ -155,14 +155,29 @@ try {
     [actor.sessionHash, actor.accountId],
   );
   await pool.query('INSERT INTO "HostGuildAuthority" VALUES ($1,$2)', [guild, actor.accountId]);
+  // One account-level rule (current guild authority, not suspended) behind both the session-bound `authorize` and the
+  // session-less `authorizeProposer`, so the two cannot drift.
+  const accountGuildAuthority = async (
+    tx: CommandReceiptTransaction,
+    accountId: string,
+    guildId: string,
+  ) =>
+    (
+      await tx.query(
+        'SELECT 1 FROM "User" u JOIN "HostGuildAuthority" g ON g."accountId"=u."id" WHERE u."id"=$1 AND g."guildId"=$2 AND NOT u."suspended" FOR SHARE OF u,g',
+        [accountId, guildId],
+      )
+    ).length === 1;
   const host: WorkHost = {
     allowNewWrites: true,
     async authorize(tx, a, g) {
-      const rows = await tx.query(
-        'SELECT u."id" FROM "User" u JOIN "HostSession" s ON s."accountId"=u."id" JOIN "HostGuildAuthority" g ON g."accountId"=u."id" WHERE u."id"=$1 AND s."hash"=$2 AND g."guildId"=$3 AND NOT u."suspended" AND s."expiresAt">clock_timestamp() FOR SHARE OF u,s,g',
-        [a.accountId, a.sessionHash, g],
+      // Account row first, then the session, as before.
+      if (!(await accountGuildAuthority(tx, a.accountId, g))) return false;
+      const sessions = await tx.query(
+        'SELECT 1 FROM "HostSession" WHERE "accountId"=$1 AND "hash"=$2 AND "expiresAt">clock_timestamp() FOR SHARE',
+        [a.accountId, a.sessionHash],
       );
-      return rows.length === 1;
+      return sessions.length === 1;
     },
     async reserveSimulatedFunding(tx, b) {
       // Explicit synthetic reservation, not a real balance or claimed on-chain funding.
@@ -495,14 +510,9 @@ try {
   const amendments: AmendmentHost = {
     allowNewWrites: true,
     authorize: (tx, a, target) => host.authorize(tx, a, target.guildId, 'MANAGE_LISTING'),
-    // Account-level Founder authority of the proposer at consent: current guild authority and not suspended.
-    async authorizeProposer(tx, proposer, target) {
-      const found = await tx.query(
-        'SELECT 1 FROM "User" u JOIN "HostGuildAuthority" g ON g."accountId"=u."id" WHERE u."id"=$1 AND g."guildId"=$2 AND NOT u."suspended" FOR SHARE OF u,g',
-        [proposer.accountId, target.guildId],
-      );
-      return found.length === 1;
-    },
+    // Account-level Founder authority of the proposer at consent: the same rule as `authorize`, without a session.
+    authorizeProposer: (tx, proposer, target) =>
+      accountGuildAuthority(tx, proposer.accountId, target.guildId),
     async reserveAdditionalFunding(tx, b) {
       await tx.query(
         'INSERT INTO "HostAmendmentReservation" VALUES ($1::uuid,$2) RETURNING "amendmentId"',
