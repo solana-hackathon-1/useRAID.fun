@@ -714,9 +714,11 @@ export async function revokeGuildRole(
         founder: boolean;
         grantedBy: string | null;
         grantee: string | null;
+        revoked: boolean | null;
       }>(
         tx,
-        `SELECT g."founderAccountId"=$3 AS founder,r."grantedByAccountId" AS "grantedBy",r."granteeAccountId" AS grantee
+        `SELECT g."founderAccountId"=$3 AS founder,r."grantedByAccountId" AS "grantedBy",r."granteeAccountId" AS grantee,
+           r."revokedAt" IS NOT NULL AS revoked
          FROM "Guild" g LEFT JOIN "GuildRoleGrant" r ON r."id"=$2::uuid AND r."guildId"=g."id" WHERE g."id"=$1::uuid`,
         [input.guildId, input.grantId, actor.accountId],
       );
@@ -729,6 +731,8 @@ export async function revokeGuildRole(
         )
       )
         fail('FORBIDDEN');
+      // The caller is involved, so naming the revoked state leaks nothing and needs no Guild lock.
+      if (standing[0].revoked) fail('GRANT_REVOKED');
       // The Guild row serializes revocation with profile edits, grants and other revocations.
       const guilds = await query<{ founderAccountId: string; revision: number }>(
         tx,
@@ -805,7 +809,13 @@ export async function revokeGuildRole(
     [input.grantId, input.guildId, actor.accountId],
   );
   if (again.length !== 1 || !involved(again[0])) fail('FORBIDDEN');
-  return { status: result.status, grant: await loadGrant(tx, input.guildId, result.resultRef) };
+  const grant = await loadGrant(tx, input.guildId, result.resultRef);
+  // Only the Founder and profile managers may learn who issued the grant (the Founder id for non-profile kinds).
+  const { kinds } = await authorityKinds(tx, actor.accountId, input.guildId);
+  return {
+    status: result.status,
+    grant: kinds.includes('PROFILE') ? grant : { ...grant, grantedByAccountId: null },
+  };
 }
 async function loadTransfer(
   tx: CommandReceiptTransaction,
