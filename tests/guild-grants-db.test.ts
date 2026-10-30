@@ -8,6 +8,8 @@ import {
   editGuildProfile,
   grantGuildRole,
   hasGuildAuthority,
+  proposeOwnershipTransfer,
+  respondOwnershipTransfer,
   revokeGuildRole,
   GUILD_GRANT_LIMIT,
   type GuildActor,
@@ -751,6 +753,133 @@ integration('T009 Guild role grants and revocation', () => {
     );
   });
 
+  it('keeps the issuer id for the Founder, for replays of it and for a non-Founder profile manager (#318)', async () => {
+    const { founder, guild: g } = await guild('redact-keep');
+    const lead = await person();
+    const helper = await person();
+    const manager = await person();
+    const leadGrant = (
+      await giveRole(founder, g.id, {
+        granteeAccountId: lead.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+        canDelegate: true,
+      })
+    ).grant;
+    // A delegate who still holds profile authority sees who issued the grant they revoke: themselves.
+    const passedOn = (
+      await giveRole(lead, g.id, {
+        granteeAccountId: helper.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+      })
+    ).grant;
+    expect(passedOn.grantedByAccountId).toBe(lead.accountId);
+    const byIssuer = await takeRole(lead, g.id, passedOn.id);
+    expect(byIssuer.grant.grantedByAccountId).toBe(lead.accountId);
+    // A manager who surrenders one of two profile grants keeps profile authority and sees the Founder as issuer.
+    const first = (
+      await giveRole(founder, g.id, {
+        granteeAccountId: manager.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+      })
+    ).grant;
+    await giveRole(founder, g.id, {
+      granteeAccountId: manager.accountId,
+      kind: 'PROFILE',
+      fields: ['description'],
+    });
+    const surrendered = await takeRole(manager, g.id, first.id, 'manager-surrender');
+    expect(await can(manager, g.id, 'PROFILE')).toBe(true);
+    expect(surrendered.grant.grantedByAccountId).toBe(founder.accountId);
+    expect((await takeRole(manager, g.id, first.id, 'manager-surrender')).grant).toMatchObject({
+      grantedByAccountId: founder.accountId,
+    });
+    // The Founder sees the issuer on the first answer and on its replay.
+    const done = await takeRole(founder, g.id, leadGrant.id, 'founder-revoke');
+    expect(done.grant.grantedByAccountId).toBe(founder.accountId);
+    const replay = await takeRole(founder, g.id, leadGrant.id, 'founder-revoke');
+    expect(replay.status).toBe('REPLAYED');
+    expect(replay.grant.grantedByAccountId).toBe(founder.accountId);
+  });
+
+  it('redacts the issuer from a former Founder who issued the grant (#318)', async () => {
+    const { founder, guild: g } = await guild('redact-former');
+    const grantee = await person();
+    const successor = await person();
+    const made = (
+      await giveRole(founder, g.id, {
+        granteeAccountId: grantee.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+      })
+    ).grant;
+    const ownerHost = { allowNewWrites: true, authorizeOwnershipTransfer: async () => true };
+    const proposed = await run((tx) =>
+      proposeOwnershipTransfer(
+        tx,
+        cmd(founder, {
+          guildId: g.id,
+          toAccountId: successor.accountId,
+          expiresAt: future(86400000),
+        }),
+        ownerHost,
+      ),
+    );
+    await run((tx) =>
+      respondOwnershipTransfer(
+        tx,
+        cmd(successor, { guildId: g.id, transferId: proposed.transfer.id, decision: 'ACCEPT' }),
+        ownerHost,
+      ),
+    );
+    expect(await can(founder, g.id, 'PROFILE')).toBe(false);
+    // Still the issuer, so still involved, but no longer a profile manager: the id is withheld.
+    const former = await takeRole(founder, g.id, made.id, 'former-revoke');
+    expect(former.status).toBe('EXECUTED');
+    expect(former.grant.grantedByAccountId).toBeNull();
+    const replay = await takeRole(founder, g.id, made.id, 'former-revoke');
+    expect(replay.status).toBe('REPLAYED');
+    expect(replay.grant.grantedByAccountId).toBeNull();
+  });
+
+  it('redacts the issuer when the only profile grant the caller held is expired or revoked (#318)', async () => {
+    const { founder, guild: g } = await guild('redact-lapsed');
+    const expired = await person();
+    const surrendering = await person();
+    await db.$executeRawUnsafe(
+      `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","validFrom","expiresAt","grantedByAccountId") VALUES ($1::uuid,$2,'PROFILE',ARRAY['name'],clock_timestamp()-interval '2 hours',clock_timestamp()-interval '1 hour',$3)`,
+      g.id,
+      expired.accountId,
+      founder.accountId,
+    );
+    const lapsed = (
+      await db.$queryRawUnsafe<{ id: string }[]>(
+        `SELECT "id"::text FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2`,
+        g.id,
+        expired.accountId,
+      )
+    )[0];
+    expect(await can(expired, g.id, 'PROFILE')).toBe(false);
+    expect((await takeRole(expired, g.id, lapsed.id)).grant.grantedByAccountId).toBeNull();
+    // A profile grant surrendered by its grantee no longer confers authority, on the first answer or its replay.
+    const own = (
+      await giveRole(founder, g.id, {
+        granteeAccountId: surrendering.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+      })
+    ).grant;
+    expect(own.grantedByAccountId).toBe(founder.accountId);
+    expect(
+      (await takeRole(surrendering, g.id, own.id, 'profile-surrender')).grant.grantedByAccountId,
+    ).toBeNull();
+    const replay = await takeRole(surrendering, g.id, own.id, 'profile-surrender');
+    expect(replay.status).toBe('REPLAYED');
+    expect(replay.grant.grantedByAccountId).toBeNull();
+  });
+
   it('answers GRANT_REVOKED to an involved caller without taking the Guild row lock (#321)', async () => {
     const { founder, guild: g } = await guild('prelock-a');
     const holder = await person();
@@ -780,11 +909,17 @@ integration('T009 Guild role grants and revocation', () => {
         new Promise((resolve) => setTimeout(() => resolve('blocked'), 1500)),
       ]);
       expect(outcomes).toBe('GRANT_REVOKED');
-      // A stranger still learns nothing.
+      // A stranger still learns nothing, and is answered without the Guild lock too: a regression fails here instead of
+      // hanging until the test timeout with the lock held.
       const stranger = await person();
-      await expect(takeRole(stranger, g.id, grant.id, 'nosy')).rejects.toMatchObject({
-        code: 'FORBIDDEN',
-      });
+      const strangerOutcome = await Promise.race([
+        takeRole(stranger, g.id, grant.id, 'nosy').then(
+          () => 'resolved',
+          (error: { code?: string }) => error.code,
+        ),
+        new Promise((resolve) => setTimeout(() => resolve('blocked'), 1500)),
+      ]);
+      expect(strangerOutcome).toBe('FORBIDDEN');
     } finally {
       release();
       await blocker;
