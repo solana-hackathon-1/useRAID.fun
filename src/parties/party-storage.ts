@@ -285,6 +285,14 @@ export async function recordPartyMemberConsent(
     },
     async ({ receiptId }) => {
       if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      // Listing then slot, then identity, as propose and acceptance do. A proposal's slot never changes, so it is read
+      // before locking; the locks keep the state below, and the consent guard's own reads, stable until commit.
+      const slots = await tx.query<{ slotId: string }>(
+        'SELECT "slotId"::text FROM "PartyProposal" WHERE "id"=$1::uuid',
+        [value.proposalId],
+      );
+      if (slots.length !== 1) fail('NOT_FOUND');
+      await source(tx, slots[0].slotId);
       auth = await currentHuman(tx, actor);
       // Someone outside the roster learns nothing about the proposal.
       const rows = await tx.query<{

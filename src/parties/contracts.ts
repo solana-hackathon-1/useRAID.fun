@@ -10,6 +10,11 @@ export interface PartyHost {
   /** Default off. Original receipts and current authorized reads remain available when off. */
   allowNewWrites: boolean;
 }
+/**
+ * Id inputs are canonicalized to lowercase like guild contracts: they are hashed into the roster digest and compared
+ * with the database's `id::text`, so a non-canonical spelling must not change the digest or fail at the guard.
+ */
+const uuid = z.uuid().transform((value) => value.toLowerCase());
 const digest = z.string().regex(/^[0-9a-f]{64}$/);
 /** Integer base units, bounded like the database check (78 digits, no sign, no leading zero). */
 const units = z.string().regex(/^(0|[1-9][0-9]{0,77})$/);
@@ -23,7 +28,7 @@ const trimmed = (max: number) =>
     });
 export const CreatePartyInput = z.strictObject({ name: trimmed(200) });
 export const MemberProposalSchema = z.strictObject({
-  participantId: z.uuid(),
+  participantId: uuid,
   role: trimmed(100),
   /** One exact allocation per reward leg of the terms, in leg order. */
   allocations: z
@@ -32,14 +37,14 @@ export const MemberProposalSchema = z.strictObject({
     .max(10),
 });
 export const ProposePartyRosterInput = z.strictObject({
-  partyId: z.uuid(),
-  slotId: z.uuid(),
-  termsVersionId: z.uuid(),
+  partyId: uuid,
+  slotId: uuid,
+  termsVersionId: uuid,
   termsDigest: digest,
   members: z.array(MemberProposalSchema).min(1).max(20),
 });
 export const RecordPartyConsentInput = z.strictObject({
-  proposalId: z.uuid(),
+  proposalId: uuid,
   snapshotDigest: digest,
 });
 export const PartySchema = z.strictObject({

@@ -15,6 +15,7 @@ import {
 import { raidTerms } from './helpers/raid-terms-fixture';
 import { seedWorkHuman, seedWorkSlot } from './helpers/work-loop-db';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import { matchesBlockingObservation } from './helpers/lock-observation';
 
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 const db = new PrismaClient();
@@ -30,6 +31,14 @@ const cmd = (actor: Actor, input: unknown, key: string = randomUUID()) => ({
 const on: PartyHost = { allowNewWrites: true };
 const off: PartyHost = { allowNewWrites: false };
 const POOL = 1000000000n;
+const txOptions = { transaction: { timeout: 15000, maxWait: 15000 } };
+function deferred<T>() {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((r) => {
+    resolve = r;
+  });
+  return { promise, resolve };
+}
 
 type Tx = Parameters<Parameters<typeof db.$transaction>[0]>[0];
 // The replication role skips only triggers (immutability, slot/listing state machines) for this transaction.
@@ -169,10 +178,13 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
       allocations: [...m.allocations, { amount: '0' }],
     }));
     await rejects(t.propose(t.leader.actor, t.proposal(twoLegs)), 'INVALID_INPUT');
+    // The total is exact, so the sum check passes and only the duplicate-participant rule can refuse this roster.
+    // (The known-participant count and the member primary key would also stop it: defense in depth, not the rule under test.)
     const duplicate = [
       ...t.split(500000000n, 300000000n, 0n).slice(0, 2),
-      t.split(0n, 0n, 200000000n)[1],
+      { ...t.split(0n, 200000000n, 0n)[1] },
     ];
+    expect(duplicate.reduce((sum, m) => sum + BigInt(m.allocations[0].amount), 0n)).toBe(POOL);
     await rejects(t.propose(t.leader.actor, t.proposal(duplicate)), 'INVALID_INPUT');
     const unknown = [
       { participantId: randomUUID(), role: 'Ghost', allocations: [{ amount: String(POOL) }] },
@@ -180,6 +192,48 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
     await rejects(t.propose(t.leader.actor, t.proposal(unknown)), 'INVALID_INPUT');
     await rejects(t.propose(t.leader.actor, t.proposal([], {})), 'INVALID_INPUT');
     expect(await db.$queryRawUnsafe('SELECT 1 FROM "PartyProposal"')).toHaveLength(0);
+  });
+
+  it('splits every reward leg exactly under multi-leg terms', async () => {
+    const [first] = raidTerms().rewards;
+    const second = {
+      ...first,
+      policy: {
+        ...first.policy,
+        assetId: { ...first.policy.assetId, networkIdentity: 'synthetic-work-2' },
+      },
+      amount: '777',
+    };
+    const t = await setup('PARTY', { rewards: [first, second] });
+    const legs = (...rows: [bigint, bigint][]) =>
+      t.split(0n, 0n, 0n).map((m, i) => ({
+        ...m,
+        allocations: rows[i].map((amount) => ({ amount: String(amount) })),
+      }));
+    // Each leg short by one while the other is exact: a rule that only checked one leg would accept these.
+    await rejects(
+      t.propose(
+        t.leader.actor,
+        t.proposal(legs([500000000n, 0n], [300000000n, 500n], [200000000n, 276n])),
+      ),
+      'INVALID_INPUT',
+    );
+    await rejects(
+      t.propose(
+        t.leader.actor,
+        t.proposal(legs([500000000n, 0n], [300000000n, 500n], [199999999n, 277n])),
+      ),
+      'INVALID_INPUT',
+    );
+    const ok = await t.propose(
+      t.leader.actor,
+      t.proposal(legs([500000000n, 0n], [300000000n, 500n], [200000000n, 277n])),
+    );
+    expect(ok.status).toBe('EXECUTED');
+    for (const [index, total] of [POOL, 777n].entries())
+      expect(
+        ok.proposal.members.reduce((sum, m) => sum + BigInt(m.allocations[index].amount), 0n),
+      ).toBe(total);
   });
 
   it('lets only the Party leader propose, and only for current PARTY terms at the exact digest', async () => {
@@ -237,35 +291,6 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
     expect((await t.read(t.ana.actor, proposal.id)).allConsented).toBe(false);
     await t.consent(t.ben.actor, input);
     expect((await t.read(t.ben.actor, proposal.id)).allConsented).toBe(true);
-  });
-
-  it('rejects, in the database, a consent row whose commanding account does not own the participant', async () => {
-    const t = await setup();
-    const { proposal } = await t.propose(
-      t.leader.actor,
-      t.proposal(t.split(500000000n, 300000000n, 200000000n)),
-    );
-    // A receipt of the leader's own consent command, reused to try to consent as Ana.
-    const lead = await t.consent(t.leader.actor, {
-      proposalId: proposal.id,
-      snapshotDigest: proposal.snapshotDigest,
-    });
-    const [receipt] = (await db.$queryRawUnsafe(
-      `SELECT r."id"::text FROM "CommandReceipt" r WHERE r."commandKind"='RecordPartyMemberConsent' AND r."resultRef"=$1`,
-      lead.consent.id,
-    )) as { id: string }[];
-    const forge = (receiptId: string, participantId: string, digest = proposal.snapshotDigest) =>
-      db.$executeRawUnsafe(
-        `INSERT INTO "PartyMemberConsent" ("proposalId","participantId","snapshotDigest","receiptId") VALUES ($1::uuid,$2::uuid,$3,$4::uuid)`,
-        proposal.id,
-        participantId,
-        digest,
-        receiptId,
-      );
-    await expect(forge(receipt.id, t.ana.participantId)).rejects.toThrow(/consenting member/);
-    // Not a roster member: the composite foreign key refuses it before any guard matters.
-    await expect(forge(receipt.id, t.outsider.participantId)).rejects.toThrow();
-    await expect(db.$executeRawUnsafe('DELETE FROM "PartyMemberConsent"')).rejects.toThrow();
   });
 
   it('refuses rows that are not the snapshot or do not sum exactly, even written directly', async () => {
@@ -619,6 +644,36 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
       );
     });
 
+    it('consent guard: a leader’s fresh, unused consent receipt cannot record consent for another member', async () => {
+      const { t, proposal, input } = await proposed();
+      const leaderReceipt = (tx: Tx) =>
+        receiptFor(tx, t.leader.actor.accountId, 'RecordPartyMemberConsent');
+      // Control: the same kind of fresh receipt records the leader's own consent, so no other constraint is in the way.
+      await dry(async (tx) =>
+        insertConsent(tx, t, proposal, await leaderReceipt(tx), t.leader.participantId),
+      );
+      await guardRejects(
+        dry(async (tx) =>
+          insertConsent(tx, t, proposal, await leaderReceipt(tx), t.ana.participantId),
+        ),
+        /recorded only by the consenting member/,
+      );
+      // Not a roster member: with their own fresh receipt the guard passes and the composite foreign key refuses it.
+      await expect(
+        dry(async (tx) =>
+          insertConsent(
+            tx,
+            t,
+            proposal,
+            await receiptFor(tx, t.outsider.actor.accountId, 'RecordPartyMemberConsent'),
+            t.outsider.participantId,
+          ),
+        ),
+      ).rejects.toThrow(/foreign key/i);
+      await t.consent(t.ben.actor, input);
+      await expect(db.$executeRawUnsafe('DELETE FROM "PartyMemberConsent"')).rejects.toThrow();
+    });
+
     it.each(Object.keys(stale))(
       'consent guard: refuses a consent row when %s',
       async (condition) => {
@@ -703,6 +758,154 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
         'DEADLINE_PASSED',
       );
       await noConsent();
+    });
+  });
+
+  describe('consent serializes with a concurrent slot or terms change', () => {
+    const pid = async (tx: Tx) =>
+      (await tx.$queryRawUnsafe<{ pid: number }[]>('SELECT pg_backend_pid() AS pid'))[0].pid;
+    async function waitFor(waiter: number, blocker: number, statement: RegExp) {
+      const until = Date.now() + 5000;
+      while (Date.now() < until) {
+        const [row] = await db.$queryRawUnsafe<{ query: string; blockers: number[] }[]>(
+          'SELECT query,pg_blocking_pids(pid) AS blockers FROM pg_stat_activity WHERE pid=$1::int',
+          waiter,
+        );
+        if (matchesBlockingObservation(row, blocker, statement)) return;
+        await new Promise((r) => setTimeout(r, 10));
+      }
+      throw Error('Expected database blocking relationship was not observed.');
+    }
+    it.each([
+      [
+        'the slot is filled',
+        `UPDATE "RaidSlot" SET "state"='FILLED' WHERE "id"=$1::uuid`,
+        'slot',
+        'SLOT_FILLED',
+      ],
+      [
+        'the listing is closed',
+        `UPDATE "WorkListing" SET "state"='DRAFT' WHERE "id"=$1::uuid`,
+        'listing',
+        'PUBLICATION_BLOCKED',
+      ],
+    ])(
+      'waits for a writer holding the listing, then refuses when %s',
+      async (_name, change, target, code) => {
+        const t = await setup();
+        const { proposal } = await t.propose(
+          t.leader.actor,
+          t.proposal(t.split(500000000n, 300000000n, 200000000n)),
+        );
+        const ready = deferred<number>(),
+          waiter = deferred<number>(),
+          release = deferred<void>();
+        // The same order every source writer uses (listing, then slot), changing state only once it holds both.
+        const writer = db.$transaction(
+          async (tx) => {
+            await tx.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
+            await tx.$queryRawUnsafe(
+              'SELECT "id" FROM "WorkListing" WHERE "id"=$1::uuid FOR UPDATE',
+              t.slot.listingId,
+            );
+            await tx.$queryRawUnsafe(
+              'SELECT "id" FROM "RaidSlot" WHERE "id"=$1::uuid FOR UPDATE',
+              t.slot.slotId,
+            );
+            await tx.$executeRawUnsafe(
+              change,
+              target === 'slot' ? t.slot.slotId : t.slot.listingId,
+            );
+            ready.resolve(await pid(tx));
+            await release.promise;
+          },
+          { timeout: 15000 },
+        );
+        let pending: Promise<unknown> | undefined;
+        try {
+          const blocker = await Promise.race([
+            ready.promise,
+            writer.then(() => {
+              throw Error('Writer ended before its barrier.');
+            }),
+          ]);
+          pending = runCommandTransaction(
+            db,
+            async (port, tx) => {
+              waiter.resolve(await pid(tx));
+              return recordPartyMemberConsent(
+                port,
+                cmd(t.ana.actor, {
+                  proposalId: proposal.id,
+                  snapshotDigest: proposal.snapshotDigest,
+                }),
+                on,
+              );
+            },
+            txOptions,
+          );
+          const results = Promise.allSettled([writer, pending]);
+          await waitFor(await waiter.promise, blocker, /WorkListing.*FOR UPDATE/);
+          release.resolve();
+          const settled = await results;
+          expect(settled[0].status).toBe('fulfilled');
+          expect(settled[1]).toMatchObject({ status: 'rejected', reason: { code } });
+          expect(await db.$queryRawUnsafe('SELECT 1 FROM "PartyMemberConsent"')).toHaveLength(0);
+        } finally {
+          release.resolve();
+          await Promise.allSettled([writer, ...(pending ? [pending] : [])]);
+        }
+      },
+    );
+  });
+
+  describe('UUID inputs are canonicalized to lowercase', () => {
+    it('stores an uppercase member participantId as the same participant, not a storage failure', async () => {
+      const t = await setup();
+      const members = t
+        .split(500000000n, 300000000n, 200000000n)
+        .map((m) => ({ ...m, participantId: m.participantId.toUpperCase() }));
+      const { proposal } = await t.propose(t.leader.actor, t.proposal(members));
+      expect(proposal.members.map((m) => m.participantId)).toEqual(
+        [t.leader.participantId, t.ana.participantId, t.ben.participantId].sort(),
+      );
+    });
+    it('leaves the digest recomputable from the stored fields when party and slot ids are uppercase', async () => {
+      const t = await setup();
+      const { proposal } = await t.propose(
+        t.leader.actor,
+        t.proposal(t.split(500000000n, 300000000n, 200000000n), {
+          partyId: t.party.id.toUpperCase(),
+          slotId: t.slot.slotId.toUpperCase(),
+        }),
+      );
+      const [row] = (await db.$queryRawUnsafe(
+        `SELECT "partyId"::text,"slotId"::text,"termsVersionId"::text,"termsDigest","snapshot"->'members' AS "members" FROM "PartyProposal" WHERE "id"=$1::uuid`,
+        proposal.id,
+      )) as Record<string, unknown>[];
+      expect(canonicalRequestDigest(row)).toBe(proposal.snapshotDigest);
+    });
+    it('treats an uppercase proposalId as the same consent request when the key is retried', async () => {
+      const t = await setup();
+      const { proposal } = await t.propose(
+        t.leader.actor,
+        t.proposal(t.split(500000000n, 300000000n, 200000000n)),
+      );
+      const key = randomUUID();
+      const first = await t.consent(
+        t.ana.actor,
+        { proposalId: proposal.id, snapshotDigest: proposal.snapshotDigest },
+        on,
+        key,
+      );
+      const again = await t.consent(
+        t.ana.actor,
+        { proposalId: proposal.id.toUpperCase(), snapshotDigest: proposal.snapshotDigest },
+        on,
+        key,
+      );
+      expect(again.status).toBe('REPLAYED');
+      expect(again.consent.id).toBe(first.consent.id);
     });
   });
 

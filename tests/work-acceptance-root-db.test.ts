@@ -239,6 +239,61 @@ integration('Root acceptance: explicit consent and verified skills', { timeout: 
       run((tx) => commitEngagement(tx, cmd(person, request, key), operator)),
     ).rejects.toMatchObject({ code: 'SLOT_FILLED' });
   });
+  it('keeps an offer that is not bound on a fresh execution an operator-visible STORAGE_CONTRACT, not SLOT_FILLED', async () => {
+    await setup();
+    const founder = await seedWorkHuman(db as never, 'founder-' + randomUUID());
+    const { slot, digest } = await raid(
+      'D',
+      undefined,
+      { admission: 'APPLICATION' },
+      founder.actor.accountId,
+    );
+    const admission = {
+      allowNewWrites: true,
+      applicationLimit: 5,
+      authorize: async (_tx: unknown, a: Actor) => a.accountId === founder.actor.accountId,
+    };
+    const application = await run((tx) =>
+      submitApplication(
+        tx,
+        cmd(person, {
+          slotId: slot.slotId,
+          termsVersionId: slot.termsVersionId,
+          evidenceRefs: ['synthetic:portfolio'],
+        }),
+        admission,
+      ),
+    );
+    const offer = await run((tx) =>
+      issueOffer(
+        tx,
+        cmd(founder.actor, {
+          applicationId: application.application.id,
+          expiresAt: new Date(Date.now() + 3600000).toISOString(),
+        }),
+        admission,
+      ),
+    );
+    await consent(person, slot, digest);
+    const operator = host({ isOperator: (id: string) => id === founder.actor.accountId });
+    // Simulate an integrity bug: the accepting update leaves the offer unbound to the new engagement.
+    await db.$executeRawUnsafe(
+      `CREATE FUNCTION test_unbind_offer() RETURNS trigger AS $$ BEGIN NEW."state" := 'REVOKED'; NEW."acceptedEngagementId" := NULL; RETURN NEW; END $$ LANGUAGE plpgsql`,
+    );
+    await db.$executeRawUnsafe(
+      `CREATE TRIGGER test_unbind_offer BEFORE UPDATE ON "RaidOffer" FOR EACH ROW EXECUTE FUNCTION test_unbind_offer()`,
+    );
+    try {
+      await expect(accept(person, slot, operator, offer.offer.id)).rejects.toMatchObject({
+        code: 'STORAGE_CONTRACT',
+      });
+    } finally {
+      await db.$executeRawUnsafe(`DROP TRIGGER test_unbind_offer ON "RaidOffer"`);
+      await db.$executeRawUnsafe(`DROP FUNCTION test_unbind_offer()`);
+    }
+    // The failed command committed nothing.
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "Engagement"')).toEqual([]);
+  });
   it('requires every one of several required skills against the real verified evidence', async () => {
     await setup();
     // A second current taxonomy skill the person has no assessment for.

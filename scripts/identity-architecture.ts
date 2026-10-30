@@ -19,6 +19,28 @@ const mutations = new Set([
   'deleteMany',
   'upsert',
 ]);
+const advisoryCall = /pg_(?:try_)?advisory_xact_lock/g;
+// A reviewed lock is the whole SQL literal: the domain seed range 12012-12099, or the database funding-serialization
+// triggers' fixed seed-0 key (its 'raid:funding-reference:' prefix is not an identity class or fixed global key).
+const reviewedAdvisoryLiteral = new RegExp(
+  String.raw`^\s*SELECT\s+pg_advisory_xact_lock\(\s*hashtextextended\(\s*(?:\$1\s*,\s*120(?:1[2-9]|[2-9]\d)|'raid:funding-reference:'\s*\|\|\s*\$1\s*,\s*0)\s*\)\s*\)(?:::text)?(?:\s+AS\s+\w+)?\s*;?\s*$`,
+  'i',
+);
+// Every advisory-lock mention in the node (comments included) must sit in its own fully reviewed SQL literal.
+function reviewedAdvisorySql(node: ts.Node, source: ts.SourceFile) {
+  const mentions = node.getText(source).match(advisoryCall)?.length ?? 0;
+  let reviewed = 0;
+  const walk = (n: ts.Node) => {
+    if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) {
+      if ((n.text.match(advisoryCall)?.length ?? 0) === 1 && reviewedAdvisoryLiteral.test(n.text))
+        reviewed++;
+      return;
+    }
+    ts.forEachChild(n, walk);
+  };
+  walk(node);
+  return mentions > 0 && reviewed === mentions;
+}
 export function identityArchitecture(
   root: string,
   files: string[],
@@ -216,14 +238,7 @@ export function identityArchitecture(
         // so they can never alias the identity key space (seed 0 labels and fixed 729102-729104).
         !(
           trusted(source, node, manifest.trustedAdvisoryFunctions!) &&
-          (/pg_advisory_xact_lock\(\s*hashtextextended\(\s*\$1\s*,\s*120(?:1[2-9]|[2-9]\d)\s*\)\s*\)/.test(
-            node.getText(source),
-          ) ||
-            // The database's funding-serialization triggers fix this exact seed-0 key. Its 'raid:funding-reference:'
-            // prefix is not an identity lock class or a fixed global key, so it cannot alias identity labels.
-            /pg_advisory_xact_lock\(\s*hashtextextended\(\s*'raid:funding-reference:'\s*\|\|\s*\$1\s*,\s*0\s*\)\s*\)/.test(
-              node.getText(source),
-            ))
+          reviewedAdvisorySql(node, source)
         )
       )
         report(source, node, 'advisory acquisition bypasses the shared key/class builder');
