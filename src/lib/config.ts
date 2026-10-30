@@ -22,6 +22,8 @@ export const workClosureEnabled = () => process.env.WORK_CLOSURE_ENABLED === 'tr
  */
 export const partyRosterWritesEnabled = () =>
   !config.demo && process.env.PARTY_ROSTER_WRITES_ENABLED === 'true';
+/** T025 root composition: propose / consent / withdraw a change to accepted work terms. Off unless exactly 'true'; simulated funds only. */
+export const workAmendmentsEnabled = () => process.env.WORK_AMENDMENTS_ENABLED === 'true';
 export const trackingEnabled = () => process.env.X_TRACKING_V2_ENABLED !== 'false';
 // Automatic folding of an activity-free duplicate account (X callback, wallet link) is off unless
 // exactly "true". Its lock order is unsafe under concurrency (deadlocks and stale merges were

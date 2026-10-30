@@ -2,6 +2,9 @@ import assert from 'node:assert/strict';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { MyRaidsWorkspace, WorkDesk } from './components/work-workspace';
+import { AmendmentPanel } from './components/work-amendments';
+import { createAmendmentClient, describeAmendmentFailure } from './work-http/amendment-client';
+import { AmendmentDeskSchema } from './work-loop/amendment-desk-contracts';
 import {
   WorkClientError,
   createWorkClient,
@@ -76,6 +79,77 @@ const transport: WorkTransport = {
   },
 };
 const api = createWorkClient(transport);
+// A synthetic proposed change, supplied as already-authorized server data; consent goes through the injected transport.
+const terms = {
+  id: '44444444-4444-4444-8444-444444444444',
+  guildId: 'synthetic-guild',
+  revision: 1,
+  scope: 'Synthetic scope.',
+  acceptanceCriteria: ['It works.'],
+  requiredSkills: [],
+  roster: [
+    {
+      participantId: '33333333-3333-4333-8333-333333333333',
+      responsibility: 'Author',
+      consentRef: 'consent-1',
+    },
+  ],
+  rewards: [],
+  deadlines: {
+    preparation: '2026-11-03T00:00:00.000Z',
+    submission: '2026-11-04T00:00:00.000Z',
+    review: '2026-11-05T00:00:00.000Z',
+    operationalClosure: '2026-11-06T00:00:00.000Z',
+  },
+  eligibilityPolicyVersion: 'e1',
+  allowedToolsPolicyVersion: 't1',
+  revisionPolicyVersion: 'r1',
+  withdrawalPolicyVersion: 'w1',
+  terminationPolicyVersion: 'x1',
+  rubricVersion: null,
+  rightsPolicyVersion: 'g1',
+  reviewPolicyVersion: 'v1',
+  disputePolicyVersion: 'd1',
+  finalityPolicyVersion: 'f1',
+  createdAt: '2026-10-30T00:00:00.000Z',
+};
+const amendmentDesk = AmendmentDeskSchema.parse({
+  version: 'v1',
+  proposalsAvailable: true,
+  engagements: [
+    {
+      engagementId,
+      title: 'Synthetic task',
+      state: 'IN_PROGRESS',
+      role: 'MEMBER',
+      effectiveTerms: terms,
+      amendments: [
+        {
+          id: '77777777-7777-4777-8777-777777777777',
+          engagementId,
+          sequence: 1,
+          state: 'PROPOSED',
+          digest: 'a'.repeat(64),
+          terms: { ...terms, scope: 'Synthetic scope, extended.' },
+          expiresAt: '2026-11-03T00:00:00.000Z',
+          requiresFunding: false,
+        },
+      ],
+    },
+  ],
+});
+const amendmentApi = createAmendmentClient({
+  request: async () => {
+    dispatched++;
+    return {
+      status: 409,
+      body: { error: { code: 'NO_LONGER_OPEN', message: 'x', retryable: false, requestId: 'r' } },
+    };
+  },
+});
+const consent = renderToStaticMarkup(
+  createElement(AmendmentPanel, { role: 'MEMBER', initial: amendmentDesk, api: amendmentApi }),
+);
 const mine = renderToStaticMarkup(
   createElement(MyRaidsWorkspace, {
     initial: view,
@@ -117,6 +191,9 @@ const conflict = await api
   )
   .catch((e: unknown) => e);
 const unreachable = await api.me().catch((e: unknown) => e);
+const stale = await amendmentApi
+  .accept('77777777-7777-4777-8777-777777777777', 'a'.repeat(64), 'synthetic-key')
+  .catch((e: unknown) => e);
 console.log(
   JSON.stringify({
     synthetic: true,
@@ -132,5 +209,10 @@ console.log(
     conflictRefreshes:
       conflict instanceof WorkClientError && describeWorkFailure(conflict).kind === 'REFRESH',
     unreachableRetriesSameRequest: describeWorkFailure(unreachable).kind === 'RETRY_SAME_REQUEST',
+    amendmentConsentRenders:
+      consent.includes('Agree to this change') &&
+      consent.includes('Your current terms stay in force until you agree') &&
+      consent.includes('Synthetic scope, extended.'),
+    amendmentStaleRefreshes: describeAmendmentFailure(stale).kind === 'REFRESH',
   }),
 );
