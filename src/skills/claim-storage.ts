@@ -10,6 +10,7 @@ import {
 import { prepareSkillClaim } from './index';
 import { SkillClaimContractError } from './contracts';
 import { readPublishedSkillTaxonomy } from './taxonomy-storage';
+import { EVIDENCE_FINGERPRINT_VERSION, fingerprintEvidenceReference } from './evidence-fingerprint';
 import {
   SkillClaimActorSchema,
   SaveSkillClaimInputSchema,
@@ -261,6 +262,16 @@ export async function saveSkillClaim(
         if (versions.length !== 1 || !z.uuid().safeParse(versions[0].id).success)
           fail('STORAGE_CONTRACT');
         const versionId = versions[0].id;
+        // Advisory reuse hints (07.5): one digest per distinct normalized reference. Same transaction as the
+        // version, so a replay or rolled-back save can never leave a fingerprint behind. Never restricts.
+        for (const digest of new Set(
+          prepared.supportingReferences.map(fingerprintEvidenceReference),
+        ))
+          await query(
+            tx,
+            'INSERT INTO "SkillEvidenceFingerprint"("skillClaimVersionId","fingerprintVersion","fingerprint") VALUES($1::uuid,$2,$3) ON CONFLICT DO NOTHING',
+            [versionId, EVIDENCE_FINGERPRINT_VERSION, digest],
+          );
         const projections = await query<{ id: string }>(
           tx,
           current.length === 0

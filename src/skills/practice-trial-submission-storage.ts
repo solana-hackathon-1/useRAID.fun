@@ -95,6 +95,11 @@ export interface SubmitPracticeTrialCommand {
   readonly idempotencyKey: string;
   readonly requestId: string;
 }
+/** Per-account ceiling on accepted submissions in a trailing window. A host-configured DEFAULT, not owner policy (O09). */
+export interface PracticeSubmissionRateLimit {
+  readonly max: number;
+  readonly windowSeconds: number;
+}
 export class PracticeTrialSubmissionStorageError extends Error {
   constructor(
     readonly code:
@@ -105,9 +110,12 @@ export class PracticeTrialSubmissionStorageError extends Error {
       | 'RESOURCE_UNAVAILABLE'
       | 'REVISION_CHANGED'
       | 'ALREADY_SUBMITTED'
+      | 'RATE_LIMITED'
       | 'WRITES_DISABLED'
       | 'STORAGE_CONTRACT'
       | 'STORAGE_UNAVAILABLE',
+    /** Whole seconds until the account may submit again; only present with RATE_LIMITED. */
+    readonly retryAfterSeconds?: number,
   ) {
     super(code);
     this.name = 'PracticeTrialSubmissionStorageError';
@@ -261,12 +269,26 @@ function same(
 export async function submitPracticeTrial(
   tx: CommandReceiptTransaction,
   command: SubmitPracticeTrialCommand,
-  options: { readonly allowNewWrites: boolean; readonly canSubmit?: () => boolean },
+  options: {
+    readonly allowNewWrites: boolean;
+    readonly canSubmit?: () => boolean;
+    readonly submissionRateLimit?: PracticeSubmissionRateLimit;
+  },
 ): Promise<{ status: 'EXECUTED' | 'REPLAYED'; submission: PracticeTrialSubmissionRecord }> {
   const actor = actorValid(command?.actor);
+  const limit = options?.submissionRateLimit;
   if (
     typeof options?.allowNewWrites !== 'boolean' ||
-    (options.canSubmit !== undefined && typeof options.canSubmit !== 'function')
+    (options.canSubmit !== undefined && typeof options.canSubmit !== 'function') ||
+    (limit !== undefined &&
+      (typeof limit !== 'object' ||
+        limit === null ||
+        !Number.isSafeInteger(limit.max) ||
+        limit.max < 1 ||
+        limit.max > 1000 ||
+        !Number.isSafeInteger(limit.windowSeconds) ||
+        limit.windowSeconds < 1 ||
+        limit.windowSeconds > 86400))
   )
     fail('STORAGE_CONTRACT');
   const parsed = SubmitPracticeTrialInputSchema.safeParse(command.input);
@@ -321,6 +343,21 @@ export async function submitPracticeTrial(
           [input.startId],
         );
         if (prior.length) fail('ALREADY_SUBMITTED');
+        if (limit) {
+          // The account row is already locked, so concurrent submissions by one account are serialized here
+          // and each sees every earlier committed submission. Replays never reach this callback.
+          const [window] = await query<{ n: number; retry: number }>(
+            tx,
+            `SELECT count(*)::int AS n,ceil(greatest(1,extract(epoch FROM (min(t."submittedAt")+make_interval(secs=>$2::int)-clock_timestamp()))))::int AS retry FROM (SELECT "submittedAt" FROM "PracticeTrialSubmission" WHERE "accountId"=$1 AND "submittedAt">clock_timestamp()-make_interval(secs=>$2::int) ORDER BY "submittedAt" DESC LIMIT $3::int) t`,
+            [actor.accountId, String(limit.windowSeconds), String(limit.max)],
+          );
+          if (!window) fail('STORAGE_CONTRACT');
+          if (window.n >= limit.max)
+            throw new PracticeTrialSubmissionStorageError(
+              'RATE_LIMITED',
+              Math.min(limit.windowSeconds, Math.max(1, window.retry)),
+            );
+        }
         const [clock] = await query<{ now: Date; id: string }>(
           tx,
           "SELECT date_trunc('milliseconds',clock_timestamp()) AS now,gen_random_uuid()::text AS id",
