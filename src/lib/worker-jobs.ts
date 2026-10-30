@@ -20,6 +20,7 @@ import { reconcileLaunch } from './pump-launch';
 import { usdcSettings } from './usdc';
 import { reconcileUsdc, reconciliationJson } from './usdc-reconcile';
 import { runNotificationDispatch } from './notifications-host';
+import { runWorkClosureWorker } from './work-closure-host';
 export async function step(name: string, fn: () => Promise<unknown>) {
   try {
     await fn();
@@ -45,6 +46,7 @@ export async function assertSchemaCurrent(
 let reconciledHour = 0;
 export async function schedule(now = new Date()) {
   await step('notifications', () => runNotificationDispatch());
+  await step('work-closure', () => runWorkClosureWorker());
   await step('finance-readiness', () => updateFinanceReadiness());
   await step('status-transitions', async () => {
     await db.raid.updateMany({

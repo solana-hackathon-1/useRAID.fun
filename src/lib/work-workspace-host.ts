@@ -45,6 +45,8 @@ function operators() {
       .filter(Boolean),
   );
 }
+/** True for an account on the synthetic operator allowlist (not Guild or production authority). */
+export const isWorkOperator = (accountId: string) => operators().has(accountId);
 /** The one published skill taxonomy Raid terms refer to; acceptance stays closed until it is configured. */
 function acceptanceTaxonomy() {
   return (process.env.WORK_ACCEPTANCE_TAXONOMY_ID ?? '').trim();

@@ -108,3 +108,89 @@ it('allows only reviewed, hash-pinned domain-seed advisory locks outside the sha
     'trustedAdvisoryFunctions',
   );
 }, 30000);
+
+it('rejects near-miss, extra-lock and commented advisory shapes even when the function is registered', async () => {
+  const { writeFile, unlink } = await import('node:fs/promises');
+  const { default: ts } = await import('typescript');
+  const { astHash } = await import('../scripts/identity-architecture');
+  const root = process.cwd(),
+    rel = 'src/identity-fence-advisory-near-miss-probe.ts',
+    file = path.join(root, rel);
+  const body = (
+    call: string,
+  ) => `export async function domainLock(tx: { q(sql: string, args?: string[]): Promise<void> }) {
+  ${call}
+}
+`;
+  const reviewed = `"SELECT pg_advisory_xact_lock(hashtextextended('raid:funding-reference:'||$1,0))"`;
+  const domain = `'SELECT pg_advisory_xact_lock(hashtextextended($1,12012))'`;
+  const advisory = (errors: string[]) => errors.filter((e) => e.includes('advisory'));
+  const registered = (text: string) => {
+    const source = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true);
+    const fn = source.statements.find(ts.isFunctionDeclaration)!;
+    return { trustedAdvisoryFunctions: { [`${rel}#domainLock`]: astHash(fn, source) } };
+  };
+  const accepted = [
+    ['funding-reference key', `await tx.q(${reviewed}, [ref]);`],
+    ['domain seed', `await tx.q(${domain}, [id]);`],
+  ];
+  const rejected = [
+    [
+      'funding seed other than 0',
+      `await tx.q("SELECT pg_advisory_xact_lock(hashtextextended('raid:funding-reference:'||$1,1))", [ref]);`,
+    ],
+    [
+      'funding key from $2',
+      `await tx.q("SELECT pg_advisory_xact_lock(hashtextextended('raid:funding-reference:'||$2,0))", [ref]);`,
+    ],
+    [
+      'funding swapped operands',
+      `await tx.q("SELECT pg_advisory_xact_lock(hashtextextended($1||'raid:funding-reference:',0))", [ref]);`,
+    ],
+    [
+      'funding try variant',
+      `await tx.q("SELECT pg_try_advisory_xact_lock(hashtextextended('raid:funding-reference:'||$1,0))", [ref]);`,
+    ],
+    [
+      'domain try variant',
+      `await tx.q('SELECT pg_try_advisory_xact_lock(hashtextextended($1,12012))', [id]);`,
+    ],
+    [
+      'domain seed swapped',
+      `await tx.q('SELECT pg_advisory_xact_lock(hashtextextended(12012,$1))', [id]);`,
+    ],
+    [
+      'funding plus an identity-range lock in one string',
+      `await tx.q("SELECT pg_advisory_xact_lock(hashtextextended('raid:funding-reference:'||$1,0)), pg_advisory_xact_lock(hashtextextended($1,729103))", [ref]);`,
+    ],
+    [
+      'domain plus a second lock in one string',
+      `await tx.q('SELECT pg_advisory_xact_lock(hashtextextended($1,12012)), pg_advisory_xact_lock($2)', [id]);`,
+    ],
+    [
+      'funding shape in a comment beside another lock',
+      `await tx.q('SELECT pg_advisory_xact_lock($1)' /* pg_advisory_xact_lock(hashtextextended('raid:funding-reference:'||$1,0)) */, [ref]);`,
+    ],
+    [
+      'domain shape in a comment beside another lock',
+      `await tx.q('SELECT pg_advisory_xact_lock($1)' /* pg_advisory_xact_lock(hashtextextended($1,12012)) */, [id]);`,
+    ],
+  ];
+  try {
+    for (const [name, call] of accepted) {
+      await writeFile(file, body(call));
+      expect(advisory(identityArchitecture(root, [file], registered(body(call)))), name).toEqual(
+        [],
+      );
+    }
+    for (const [name, call] of rejected) {
+      await writeFile(file, body(call));
+      expect(
+        advisory(identityArchitecture(root, [file], registered(body(call)))),
+        `registered but rejected: ${name}`,
+      ).not.toEqual([]);
+    }
+  } finally {
+    await unlink(file).catch(() => undefined);
+  }
+}, 30000);

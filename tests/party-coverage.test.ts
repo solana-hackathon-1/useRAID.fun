@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { PartyCoverageError, evaluatePartyCoverage } from '../src/parties';
-import type { SkillEligibilityContext } from '../src/skills/eligibility';
+import {
+  SkillEligibilityContractError,
+  type SkillEligibilityContext,
+} from '../src/skills/eligibility';
 
 const now = '2026-10-14T01:00:00.000Z';
 const taxonomy = {
@@ -92,6 +95,29 @@ describe('Party skill coverage uses each member’s own evidence', () => {
       ),
     ).toThrow(PartyCoverageError);
   });
+  it.each([
+    ['null', null],
+    ['an empty object', {}],
+    ['participants that are not an array', { version: 'v1', now, taxonomy, participants: 'alice' }],
+    ['a participant without evidence', context({ participant: { id: 'alice' } })],
+  ])(
+    'validates the context shape first: %s is a typed contract error, not a TypeError',
+    (_name, bad) => {
+      let thrown: unknown;
+      try {
+        evaluatePartyCoverage(
+          bad as unknown as SkillEligibilityContext,
+          ['alice'],
+          required,
+          'ONE_MEMBER',
+        );
+      } catch (error) {
+        thrown = error;
+      }
+      expect(thrown).toBeInstanceOf(SkillEligibilityContractError);
+      expect(thrown).toMatchObject({ code: 'INVALID_HOST_CONTRACT' });
+    },
+  );
   it('is met when the terms require no skills', () => {
     expect(
       evaluatePartyCoverage(context(member('alice', [])), ['alice'], [], 'EVERY_MEMBER').status,

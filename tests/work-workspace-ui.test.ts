@@ -187,6 +187,43 @@ describe('T022 My Raid workspace markup', () => {
     expect(html).toContain('does not');
     expect(html).toContain('unsettled');
   });
+  it('states honestly that closure released capacity, left the money question open and settled nothing', () => {
+    const closure = {
+      engagementId: id(1),
+      finalState: 'TERMINATED',
+      reason: 'SUBMISSION_TIMEOUT',
+      financialResolution: 'OPEN',
+      closedAt: '2026-11-07T00:00:00.000Z',
+    };
+    const claims = [
+      {
+        policy: raidTerms().rewards[0].policy,
+        amount: '1000000000',
+        beneficiaryParticipantId: id(2),
+        status: 'UNSETTLED',
+      },
+    ];
+    const released = workspace(
+      mine([
+        card({ state: 'TERMINATED', capacityHeld: false, nextStep: 'CLOSED', closure, claims }),
+      ]),
+    );
+    expect(released).toContain('Capacity released');
+    expect(released).toContain('Financial resolution: open');
+    expect(released).toContain('no payout, refund or fault');
+    expect(released).toContain('Simulated funds');
+    // Never claim a release the server did not report, and never imply a decision for an open Raid.
+    const held = workspace(
+      mine([
+        card({ state: 'TERMINATED', capacityHeld: true, nextStep: 'CLOSED', closure, claims }),
+      ]),
+    );
+    expect(held).not.toContain('Capacity released');
+    expect(held).toContain('Financial resolution: open');
+    const open = workspace(mine([card()]));
+    expect(open).not.toContain('Capacity released');
+    expect(open).not.toContain('Financial resolution');
+  });
   it('lists applications and offers without offering unsupported acceptance, and escapes text', () => {
     const html = workspace(
       mine(
