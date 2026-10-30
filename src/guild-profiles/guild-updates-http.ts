@@ -1,8 +1,14 @@
 import { z } from 'zod';
-import { InternalId } from '../contracts/ids';
-import { createErrorEnvelope, type ErrorCode } from '../contracts/protocol';
-import { CommandReceiptError } from '../command-receipts/contracts';
-import { JsonBodyFailure, readBoundedJson } from '../http-contracts/json';
+import { JsonBodyFailure } from '../http-contracts/json';
+import {
+  assertGuildHttpHost,
+  GuildHttpAuthorityError,
+  guildCorrelation,
+  guildHttpFailure,
+  guildHttpHeaders,
+  guildStorageCodes,
+  readGuildCommand,
+} from './guild-http-shared';
 import {
   DraftGuildUpdateInputSchema,
   GuildStorageError,
@@ -11,9 +17,9 @@ import {
   type GuildCommand,
 } from './guild-storage-contracts';
 
-export class GuildUpdatesHttpError extends Error {
-  constructor(readonly status: 401 | 403 | 429) {
-    super('HTTP_AUTHORITY_DENIED');
+export class GuildUpdatesHttpError extends GuildHttpAuthorityError {
+  constructor(status: 401 | 403 | 429) {
+    super(status);
     this.name = 'GuildUpdatesHttpError';
   }
 }
@@ -30,10 +36,7 @@ export interface GuildUpdatesHttpHost {
   publish(command: GuildCommand): Promise<unknown>;
   withdraw(command: GuildCommand): Promise<unknown>;
 }
-export const guildUpdatesHeaders = Object.freeze({
-  'Cache-Control': 'private, no-store',
-  Vary: 'Cookie',
-});
+export const guildUpdatesHeaders = guildHttpHeaders;
 const StateSchema = z
   .strictObject({
     version: z.literal('v1'),
@@ -50,54 +53,8 @@ const StepBodySchema = z.strictObject({
   guildId: z.uuid(),
   action: z.enum(['PUBLISH', 'WITHDRAW']),
 });
-// Keyed by every storage code, so a new code is a compile error here instead of a silent 503.
-const STORAGE_CODES: Readonly<Record<GuildStorageError['code'], ErrorCode>> = {
-  UNAUTHENTICATED: 'AUTHENTICATION_REQUIRED',
-  ACCOUNT_RESTRICTED: 'ACCOUNT_RESTRICTED',
-  FORBIDDEN: 'FORBIDDEN',
-  NOT_FOUND: 'NOT_FOUND',
-  REVISION_CONFLICT: 'REVISION_CHANGED',
-  UPDATE_LIMIT: 'GUILD_UPDATE_LIMIT_REACHED',
-  WRITES_DISABLED: 'NOT_AVAILABLE',
-  INVALID_INPUT: 'INVALID_COMMAND',
-  // Not reachable from this route (no revoke, create, grant or transfer here); a leak would be a 503, never detail.
-  GRANT_REVOKED: 'SERVICE_UNAVAILABLE',
-  GUILD_EXISTS: 'SERVICE_UNAVAILABLE',
-  SLUG_UNAVAILABLE: 'SERVICE_UNAVAILABLE',
-  GRANT_LIMIT: 'SERVICE_UNAVAILABLE',
-  TRANSFER_PENDING: 'SERVICE_UNAVAILABLE',
-  STORAGE_CONTRACT: 'SERVICE_UNAVAILABLE',
-  STORAGE_UNAVAILABLE: 'SERVICE_UNAVAILABLE',
-};
-function failure(error: unknown, requestId: string) {
-  let code: ErrorCode = 'SERVICE_UNAVAILABLE',
-    status: number | undefined;
-  if (error instanceof JsonBodyFailure) {
-    code = 'INVALID_COMMAND';
-    status = error.status;
-  } else if (error instanceof GuildUpdatesHttpError) {
-    code =
-      error.status === 401
-        ? 'AUTHENTICATION_REQUIRED'
-        : error.status === 403
-          ? 'FORBIDDEN'
-          : 'RATE_LIMITED';
-  } else if (error instanceof GuildStorageError) {
-    code = STORAGE_CODES[error.code];
-  } else if (error instanceof CommandReceiptError) {
-    code =
-      error.code === 'IDEMPOTENCY_KEY_REUSED'
-        ? 'IDEMPOTENCY_KEY_REUSED'
-        : error.code === 'INVALID_INPUT'
-          ? 'INVALID_COMMAND'
-          : 'SERVICE_UNAVAILABLE';
-  }
-  const result = createErrorEnvelope(code, requestId);
-  return Response.json(result.body, {
-    status: status ?? result.status,
-    headers: guildUpdatesHeaders,
-  });
-}
+// Not reachable from this route (no revoke, create, grant or transfer here); a leak would be a 503, never detail.
+const STORAGE_CODES = guildStorageCodes({ UPDATE_LIMIT: 'GUILD_UPDATE_LIMIT_REACHED' });
 /** A fresh step must land exactly; a replay may find the update already moved on, never backwards. */
 function stateAllowed(
   status: 'EXECUTED' | 'REPLAYED',
@@ -110,26 +67,18 @@ function stateAllowed(
 }
 const contract = () => new GuildStorageError('STORAGE_CONTRACT');
 export function createGuildUpdatesHandlers(host: GuildUpdatesHttpHost) {
-  if (
-    host?.version !== 'v1' ||
-    ['requestId', 'actor', 'checkOrigin', 'rateLimit', 'list', 'draft', 'publish', 'withdraw'].some(
-      (name) => typeof host[name as keyof GuildUpdatesHttpHost] !== 'function',
-    )
-  )
-    throw contract();
-  function correlation() {
-    try {
-      const id = InternalId.safeParse(host.requestId());
-      if (id.success) return id.data;
-    } catch {}
-    return crypto.randomUUID();
-  }
-  /** Idempotency key and bounded strict JSON, read only after origin, session and throttle passed. */
-  async function readCommand(request: Request) {
-    const key = InternalId.safeParse(request.headers.get('idempotency-key'));
-    if (!key.success) throw new JsonBodyFailure(422);
-    return { key: key.data, json: await readBoundedJson(request) };
-  }
+  assertGuildHttpHost(host, [
+    'requestId',
+    'actor',
+    'checkOrigin',
+    'rateLimit',
+    'list',
+    'draft',
+    'publish',
+    'withdraw',
+  ]);
+  const correlation = () => guildCorrelation(host);
+  const readCommand = readGuildCommand;
   return {
     async LIST(request: Request) {
       const id = correlation();
@@ -148,7 +97,7 @@ export function createGuildUpdatesHandlers(host: GuildUpdatesHttpHost) {
           throw contract();
         return Response.json(value.data, { headers: guildUpdatesHeaders });
       } catch (error) {
-        return failure(error, id);
+        return guildHttpFailure(error, id, STORAGE_CODES);
       }
     },
     async DRAFT(request: Request) {
@@ -176,7 +125,7 @@ export function createGuildUpdatesHandlers(host: GuildUpdatesHttpHost) {
           throw contract();
         return Response.json(value.data, { headers: guildUpdatesHeaders });
       } catch (error) {
-        return failure(error, id);
+        return guildHttpFailure(error, id, STORAGE_CODES);
       }
     },
     async STEP(request: Request, updateId: string | Promise<string>) {
@@ -210,7 +159,7 @@ export function createGuildUpdatesHandlers(host: GuildUpdatesHttpHost) {
           throw contract();
         return Response.json(value.data, { headers: guildUpdatesHeaders });
       } catch (error) {
-        return failure(error, id);
+        return guildHttpFailure(error, id, STORAGE_CODES);
       }
     },
   };
