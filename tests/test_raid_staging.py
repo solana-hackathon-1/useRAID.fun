@@ -2,6 +2,7 @@
 from pathlib import Path
 import json
 import os
+import re
 import subprocess
 import tempfile
 import unittest
@@ -139,6 +140,14 @@ class StagingConsumingHost(unittest.TestCase):
         self.assertIn('contents: read', workflow)
         self.assertIn('staging-publish.sh useraid:publish', workflow)
         self.assertNotIn('ssh ', workflow)
+
+    def test_publish_timeout_leaves_headroom_over_the_unreused_check_path(self):
+        # Runs 40998285983 and 41019398546 (30 Oct 2026) spent about 29.5 minutes on checks and suites before the
+        # image build, so a 30-minute limit cancelled the build whenever no Checks run could be reused.
+        workflow = (ROOT / '.github/workflows/staging-image.yml').read_text()
+        publish = workflow.split('\n  publish:', 1)[1]
+        limit = int(re.search(r'timeout-minutes: (\d+)', publish).group(1))
+        self.assertGreaterEqual(limit, 45)
 
     def test_rendered_compose_is_private_and_limits_updates_to_application(self):
         with tempfile.TemporaryDirectory() as directory:
