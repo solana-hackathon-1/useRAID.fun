@@ -3,29 +3,54 @@ import { WorkError } from '../work-loop/contracts';
 import {
   FeedQuerySchema,
   type Detail,
+  type FeedEligibility,
   type FeedPage,
   type FeedQuery,
+  type FeedViewerState,
 } from '../work-loop/feed-contracts';
 import { cookies } from 'next/headers';
 import { currentUser, hash } from './auth';
 import type { ApplyMode } from './work-apply-mode';
 import { sessionCookie } from './studio-mode';
 import { readMyRaidsFromHost, workWorkspaceConfiguration } from './work-workspace-host';
-import { readDetailFromHost, readFeedFromHost, workFeedAvailable } from './work-feed-host';
+import {
+  readDetailFromHost,
+  readFeedForViewerFromHost,
+  readFeedFromHost,
+  workFeedAvailable,
+  workFeedEligibilityAvailable,
+} from './work-feed-host';
 
 type Params = Record<string, string | string[] | undefined>;
 export type LoadedFeed =
   | { status: 'UNAVAILABLE' }
   | { status: 'INVALID'; query: Partial<FeedQuery> }
-  | { status: 'READY'; page: FeedPage; query: FeedQuery };
+  | { status: 'READY'; page: FeedPage; query: FeedQuery; viewer: FeedViewerState };
+/** The signed-in session as a work actor, or null. Any failure reads as signed out. */
+async function sessionActor() {
+  try {
+    const user = await currentUser(),
+      cookie = (await cookies()).get(sessionCookie())?.value;
+    return user && cookie ? { accountId: user.id, sessionHash: hash(cookie) } : null;
+  } catch {
+    return null;
+  }
+}
 /** Server-side first paint of the public feed. Failures never expose detail. */
 export async function loadFeed(params: Params): Promise<LoadedFeed> {
   if (!workFeedAvailable()) return { status: 'UNAVAILABLE' };
   const raw: Record<string, string | number> = {};
+  let eligibleOnly = false;
   for (const [name, value] of Object.entries(params)) {
     if (value === undefined || value === '') continue;
     // A repeated parameter is refused, never silently reduced to one of its values.
     if (Array.isArray(value)) return { status: 'INVALID', query: {} };
+    // "Eligible for me" is the viewer's own filter, not part of the public feed query or API.
+    if (name === 'eligible') {
+      if (value !== '1') return { status: 'INVALID', query: {} };
+      eligibleOnly = true;
+      continue;
+    }
     raw[name] =
       name === 'limit' && /^\d{1,3}$/.test(value)
         ? Number(value)
@@ -36,7 +61,29 @@ export async function loadFeed(params: Params): Promise<LoadedFeed> {
   const query = FeedQuerySchema.safeParse(raw);
   if (!query.success) return { status: 'INVALID', query: {} };
   try {
-    return { status: 'READY', page: await readFeedFromHost(query.data), query: query.data };
+    let viewer: FeedViewerState = { status: 'OFF' };
+    if (workFeedEligibilityAvailable()) {
+      const actor = await sessionActor();
+      if (!actor) viewer = { status: 'SIGNED_OUT' };
+      else {
+        try {
+          const page = await readFeedForViewerFromHost(query.data, actor, eligibleOnly);
+          const { viewer: facts, ...rest } = page as FeedPage & {
+            viewer?: { eligibility: Record<string, FeedEligibility> };
+          };
+          return {
+            status: 'READY',
+            page: rest,
+            query: query.data,
+            viewer: { status: 'READY', eligibleOnly, eligibility: facts?.eligibility ?? {} },
+          };
+        } catch {
+          // The check failing never takes the public feed down; the person is told it is unavailable.
+          viewer = { status: 'UNAVAILABLE' };
+        }
+      }
+    }
+    return { status: 'READY', page: await readFeedFromHost(query.data), query: query.data, viewer };
   } catch {
     return { status: 'UNAVAILABLE' };
   }

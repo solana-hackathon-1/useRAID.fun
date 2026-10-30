@@ -13,6 +13,7 @@ import {
   type FeedCard,
   type FeedPage,
   type FeedQuery,
+  type FeedEligibility,
 } from './feed-contracts';
 
 /** Candidate rows read per request. The feed is a bounded window of the newest live work, never an unbounded scan. */
@@ -34,6 +35,17 @@ interface Candidate {
   terms: RaidTerms;
   key: bigint;
 }
+/**
+ * A signed-in viewer, supplied by the host. `evaluate` is the host's pure, informational per-Raid verdict from the
+ * person's current facts; it is never an authorization, and acceptance rechecks everything when the person acts.
+ */
+export interface FeedViewer {
+  evaluate(terms: RaidTerms): FeedEligibility;
+  eligibleOnly: boolean;
+}
+export type ViewerFeedPage = FeedPage & {
+  viewer?: { eligibility: Record<string, FeedEligibility> };
+};
 interface Cursor {
   s: FeedQuery['sort'];
   a: string | null;
@@ -157,10 +169,15 @@ function candidate(row: Row, query: FeedQuery): Candidate | null {
 }
 /**
  * Public, read-only Raid feed (blueprint §18.1–18.2). Lists open, publicly visible work with a currently funded
- * (simulated) available slot and an unexpired commitment window. It takes no actor, grants no permission and
- * decides nothing about the viewer's eligibility: that is rechecked by the server at the action.
+ * (simulated) available slot and an unexpired commitment window. It takes no actor and grants no permission. A host
+ * may pass a `viewer` evaluator to annotate or filter by the signed-in person's informational eligibility; without
+ * one nothing about any person is read or returned. Eligibility is always rechecked by the server at the action.
  */
-export async function readWorkFeed(tx: Tx, input: unknown): Promise<FeedPage> {
+export async function readWorkFeed(
+  tx: Tx,
+  input: unknown,
+  viewer?: FeedViewer,
+): Promise<ViewerFeedPage> {
   port(tx);
   const parsed = FeedQuerySchema.safeParse(input ?? {});
   if (!parsed.success) return fail('INVALID_INPUT');
@@ -170,10 +187,18 @@ export async function readWorkFeed(tx: Tx, input: unknown): Promise<FeedPage> {
     `${LIVE_SELECT} ORDER BY l."createdAt" DESC,l."id" DESC LIMIT ${WINDOW}`,
     [],
   );
+  const verdicts = new Map<string, FeedEligibility>();
   const live = rows
     .filter((row) => row.availableSlots >= 1)
     .map((row) => candidate(row, query))
     .filter((c): c is Candidate => c !== null)
+    .filter((c) => {
+      if (!viewer) return true;
+      const verdict = viewer.evaluate(c.terms);
+      verdicts.set(c.card.listingId, verdict);
+      // The filter runs before paging, so a cursor never lands on an empty page of hidden Raids.
+      return !viewer.eligibleOnly || verdict === 'ELIGIBLE';
+    })
     .sort((a, b) => (before(a, { key: b.key, id: b.card.listingId }, query.sort) ? -1 : 1));
   const after = cursor
     ? live.filter((c) => follows(c, { key: BigInt(cursor.k), id: cursor.i }, query.sort))
@@ -181,7 +206,7 @@ export async function readWorkFeed(tx: Tx, input: unknown): Promise<FeedPage> {
   const window = after.slice(0, query.limit + 1);
   const items = window.slice(0, query.limit);
   const last = items[items.length - 1];
-  return FeedPageSchema.parse({
+  const result = FeedPageSchema.parse({
     items: items.map((c) => c.card),
     nextCursor:
       window.length > query.limit && last
@@ -195,6 +220,17 @@ export async function readWorkFeed(tx: Tx, input: unknown): Promise<FeedPage> {
     sort: query.sort,
     rewardComparable: query.assetKey !== undefined,
   });
+  // Viewer facts stay beside the strict public page, never inside a card, and only for this viewer's own request.
+  return viewer
+    ? {
+        ...result,
+        viewer: {
+          eligibility: Object.fromEntries(
+            items.map((c) => [c.card.listingId, verdicts.get(c.card.listingId) ?? 'UNKNOWN']),
+          ),
+        },
+      }
+    : result;
 }
 /** The full public brief of one live Raid. Missing, unlisted, filled, expired and non-public listings are one `NOT_FOUND`. */
 export async function readWorkDetail(tx: Tx, listingId: unknown): Promise<Detail> {

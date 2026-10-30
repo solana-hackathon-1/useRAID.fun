@@ -523,6 +523,38 @@ export async function listPublicGuilds(
   return { guilds, nextCursor: rows.length > limit ? guilds[guilds.length - 1].slug : null };
 }
 /**
+ * Public name and slug of several active Guilds by stable id, for labelling other public surfaces. Each row goes
+ * through the same approved projection as `readPublicGuild`; an id with no active Guild (including one that is not a
+ * Guild id at all) is simply absent. Nothing but the slug and name leaves, and at most 50 ids are looked up.
+ */
+export async function readPublicGuildLabels(
+  tx: CommandReceiptTransaction,
+  guildIds: readonly string[],
+): Promise<Map<string, { slug: string; name: string }>> {
+  const ids = [...new Set(guildIds)].slice(0, 50);
+  const labels = new Map<string, { slug: string; name: string }>();
+  if (ids.length === 0) return labels;
+  const rows = await query<{ id: string; slug: string; name: string; description: string }>(
+    tx,
+    `SELECT g."id"::text,g."slug",v."name",v."description" FROM "Guild" g JOIN "GuildProfileVersion" v ON v."id"=g."currentVersionId" WHERE g."id"::text IN (SELECT jsonb_array_elements_text($1::jsonb))`,
+    [JSON.stringify(ids)],
+  );
+  for (const row of rows) {
+    try {
+      const guild = projectPublicGuildProfile({
+        version: 'v1',
+        guild: { id: row.id, founderAccountId: 'redacted', revision: 1, primaryToken: null },
+        publicProfile: { ...row, primaryToken: null },
+        publicProfileApproved: true,
+      });
+      labels.set(guild.id, { slug: guild.slug, name: guild.name });
+    } catch {
+      // A row the approved projection rejects has no public page.
+    }
+  }
+  return labels;
+}
+/**
  * The private management view: the Guild plus only the authority the caller actually holds. The Founder's account id
  * is shown only to the Founder and to profile managers; a caller whose authority is only work, treasury or dispute
  * sees `founderAccountId: null`.
