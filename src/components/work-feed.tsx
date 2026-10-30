@@ -4,7 +4,16 @@ import { AcceptRaid } from './work-accept';
 import { ApplyToRaid } from './work-apply';
 import type { ApplyMode } from '../lib/work-apply-mode';
 import { signInHref } from '../lib/return-to';
-import type { Detail, FeedCard, FeedPage, FeedQuery } from '../work-loop/feed-contracts';
+import type {
+  Detail,
+  FeedCard,
+  FeedEligibility,
+  FeedPage,
+  FeedQuery,
+  FeedViewerState,
+} from '../work-loop/feed-contracts';
+
+export type { FeedViewerState };
 
 const FEED_PATH = '/raids';
 const RANKS = ['E', 'D', 'C', 'B', 'A', 'S'] as const;
@@ -13,7 +22,7 @@ const KINDS: Readonly<Record<string, string>> = {
   AI_AGENT: 'AI agents',
   AI_INFLUENCER: 'AI influencers',
 };
-type Filters = Partial<Omit<FeedQuery, 'cursor'>> & { cursor?: string | null };
+type Filters = Partial<Omit<FeedQuery, 'cursor'>> & { cursor?: string | null; eligible?: boolean };
 const ORDER = [
   'category',
   'skillId',
@@ -26,6 +35,7 @@ const ORDER = [
   'sort',
   'limit',
   'cursor',
+  'eligible',
 ] as const;
 /** The feed URL for a set of filters. Defaults are omitted so a cleared feed is just the path. */
 export function feedHref(query: Filters) {
@@ -34,6 +44,10 @@ export function feedHref(query: Filters) {
     const value = query[name];
     if (value === undefined || value === null || value === '') continue;
     if ((name === 'sort' && value === 'newest') || (name === 'limit' && value === 20)) continue;
+    if (name === 'eligible') {
+      if (value === true) params.set('eligible', '1');
+      continue;
+    }
     params.set(name, String(value));
   }
   const text = params.toString();
@@ -50,10 +64,34 @@ const clock = new Intl.DateTimeFormat('en-GB', {
   hour12: false,
 });
 const when = (iso: string) => `${day.format(new Date(iso))}, ${clock.format(new Date(iso))} UTC`;
+/**
+ * The public Guild name linking to its page, only when the server found an approved public page for it. Otherwise a
+ * neutral label: the internal Guild id is never shown or linked.
+ */
+function GuildLine({ guild }: { guild: FeedCard['guild'] }) {
+  return (
+    <p className="raid-feed-guild">
+      {guild ? <Link href={`/guilds/${guild.slug}`}>{guild.name}</Link> : 'Posted by a Guild'}
+    </p>
+  );
+}
+const ELIGIBILITY_LABEL: Readonly<Record<FeedEligibility, string>> = {
+  ELIGIBLE: 'Eligible for me',
+  NOT_ELIGIBLE: 'Not eligible yet: your verified skills do not meet this Raid',
+  UNKNOWN: 'Eligibility unknown: not confirmable from your verified skills alone',
+};
 function Option({ value, label }: { value: string; label: string }) {
   return <option value={value}>{label}</option>;
 }
-function Filter({ query, assets }: { query: Filters; assets: Map<string, string> }) {
+function Filter({
+  query,
+  assets,
+  viewer,
+}: {
+  query: Filters;
+  assets: Map<string, string>;
+  viewer: FeedViewerState;
+}) {
   return (
     <form className="raid-feed-filters" method="get" action={FEED_PATH}>
       <label>
@@ -123,6 +161,12 @@ function Filter({ query, assets }: { query: Filters; assets: Map<string, string>
           <Option value="reward" label="Largest reward (one asset)" />
         </select>
       </label>
+      {viewer.status === 'READY' ? (
+        <label className="raid-feed-check">
+          <input type="checkbox" name="eligible" value="1" defaultChecked={viewer.eligibleOnly} />{' '}
+          Eligible for me
+        </label>
+      ) : null}
       <div className="raid-feed-actions">
         <button className="button" type="submit">
           Apply filters
@@ -134,13 +178,19 @@ function Filter({ query, assets }: { query: Filters; assets: Map<string, string>
     </form>
   );
 }
-function Card({ item }: { item: FeedCard }) {
+function Card({ item, eligibility }: { item: FeedCard; eligibility?: FeedEligibility }) {
   return (
     <li className="raid-feed-card">
       <h2>
         <Link href={`/raids/work/${item.listingId}`}>{item.title}</Link>
       </h2>
-      <p className="raid-feed-guild">Guild {item.guildId}</p>
+      <GuildLine guild={item.guild} />
+      {eligibility ? (
+        <p className="raid-feed-eligibility" data-eligibility={eligibility}>
+          {eligibility === 'ELIGIBLE' ? '✓ ' : eligibility === 'NOT_ELIGIBLE' ? '✗ ' : '? '}
+          {ELIGIBILITY_LABEL[eligibility]}
+        </p>
+      ) : null}
       <p>{item.publicSummary}</p>
       <ul className="raid-feed-tags" aria-label="Details">
         <li>{item.category}</li>
@@ -170,7 +220,16 @@ function Card({ item }: { item: FeedCard }) {
   );
 }
 /** Server-rendered public Raid feed. Filters are a plain GET form, so it works without JavaScript. */
-export function WorkFeed({ page, query }: { page: FeedPage; query: Filters }) {
+export function WorkFeed({
+  page,
+  query,
+  viewer = { status: 'OFF' },
+}: {
+  page: FeedPage;
+  query: Filters;
+  viewer?: FeedViewerState;
+}) {
+  const eligibleOnly = viewer.status === 'READY' && viewer.eligibleOnly;
   const assets = new Map<string, string>();
   for (const item of page.items)
     for (const reward of item.rewards) assets.set(reward.assetKey, assetLabel(reward.assetId));
@@ -182,24 +241,60 @@ export function WorkFeed({ page, query }: { page: FeedPage; query: Filters }) {
         Funded, open work from Guilds. Eligibility is checked when you apply; nothing here grants
         access. Reward order needs one asset: amounts in different assets are not comparable.
       </p>
-      <Filter query={query} assets={assets} />
+      {viewer.status === 'SIGNED_OUT' ? (
+        <p className="raid-feed-viewer">
+          Sign in to see which Raids fit your verified skills.{' '}
+          <Link className="inline-link" href="/creator/account">
+            Sign in
+          </Link>
+        </p>
+      ) : null}
+      {viewer.status === 'UNAVAILABLE' ? (
+        <p className="raid-feed-viewer" role="status">
+          We could not check your skills right now, so every live Raid is listed without an Eligible
+          label. Eligibility is still checked when you apply.
+        </p>
+      ) : null}
+      {viewer.status === 'READY' ? (
+        <p className="raid-feed-viewer">
+          Labels use your current verified assessments. They are informational and rechecked when
+          you apply or accept; they never hold a place for you.
+        </p>
+      ) : null}
+      <Filter query={{ ...query, eligible: eligibleOnly }} assets={assets} viewer={viewer} />
       {page.items.length ? (
         <ul className="raid-feed-grid">
           {page.items.map((item) => (
-            <Card key={item.listingId} item={item} />
+            <Card
+              key={item.listingId}
+              item={item}
+              eligibility={
+                viewer.status === 'READY' ? viewer.eligibility[item.listingId] : undefined
+              }
+            />
           ))}
         </ul>
       ) : (
         <div className="raid-feed-empty" role="status">
-          <p>No live Raids match these filters.</p>
-          <Link className="button secondary" href={FEED_PATH}>
-            Show all live Raids
+          <p>
+            {eligibleOnly
+              ? 'Of the live Raids, none match your verified skills and these filters.'
+              : 'No live Raids match these filters.'}
+          </p>
+          <Link
+            className="button secondary"
+            href={eligibleOnly ? feedHref({ ...query, eligible: false }) : FEED_PATH}
+          >
+            {eligibleOnly ? 'Show Raids without the Eligible for me filter' : 'Show all live Raids'}
           </Link>
         </div>
       )}
       {page.nextCursor ? (
         <p>
-          <Link className="button secondary" href={feedHref({ ...query, cursor: page.nextCursor })}>
+          <Link
+            className="button secondary"
+            href={feedHref({ ...query, cursor: page.nextCursor, eligible: eligibleOnly })}
+          >
             Next Raids
           </Link>
         </p>
@@ -255,7 +350,7 @@ export function WorkDetail({
         </Link>
       </p>
       <h1 id="raid-detail-title">{detail.title}</h1>
-      <p className="raid-feed-guild">Guild {detail.guildId}</p>
+      <GuildLine guild={detail.guild} />
       <p>{detail.publicSummary}</p>
       <ul className="raid-feed-tags" aria-label="Details">
         <li>{detail.category}</li>

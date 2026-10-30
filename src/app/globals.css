@@ -2770,6 +2770,37 @@ footer {
   font-size: 13px;
   color: var(--warning);
 }
+.raid-feed-guild a {
+  color: inherit;
+  text-decoration: underline;
+}
+.raid-feed-eligibility {
+  font-size: 14px;
+  font-weight: 600;
+}
+.raid-feed-eligibility[data-eligibility='ELIGIBLE'] {
+  color: var(--mint);
+}
+.raid-feed-eligibility[data-eligibility='NOT_ELIGIBLE'],
+.raid-feed-eligibility[data-eligibility='UNKNOWN'] {
+  color: var(--muted);
+}
+.raid-feed-viewer {
+  margin: 0 0 12px;
+  font-size: 14px;
+  color: var(--muted);
+}
+.raid-feed-filters .raid-feed-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+}
+.raid-feed-filters .raid-feed-check input {
+  width: 22px;
+  min-height: 22px;
+  height: 22px;
+}
 .raid-feed-empty {
   display: grid;
   gap: 12px;

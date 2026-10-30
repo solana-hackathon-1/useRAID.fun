@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { InternalId, UtcTimestamp } from '../contracts/ids';
-import { SkillRankSchema } from '../contracts/entities';
+import { PublicGuildSchema, SkillRankSchema } from '../contracts/entities';
 import { AmountSchema, AssetIdSchema, AssetDecimals } from '../contracts/assets';
 
 /** Public Raid feed (blueprint §18.1–18.2, R08): safe cards of live, funded, open, public work. Read only. */
@@ -33,11 +33,34 @@ export const FeedRewardSchema = z.strictObject({
   decimals: AssetDecimals,
   amount: AmountSchema,
 });
+/**
+ * The only Guild facts a card may carry: the approved public projection's stable slug and name. Present only when the
+ * Guild has an active public page and public Guild reads are on; never the Guild id, founder, description or token.
+ */
+export const FeedGuildSchema = z.strictObject({
+  slug: PublicGuildSchema.shape.slug,
+  name: PublicGuildSchema.shape.name,
+});
+export type FeedGuild = z.infer<typeof FeedGuildSchema>;
+/** What the server concluded about the signed-in viewer for one card. Informational: acceptance rechecks. */
+export const FEED_ELIGIBILITY = ['ELIGIBLE', 'NOT_ELIGIBLE', 'UNKNOWN'] as const;
+export type FeedEligibility = (typeof FEED_ELIGIBILITY)[number];
+/**
+ * What the feed knows about the viewer. `OFF` shows nothing extra; `SIGNED_OUT` and `UNAVAILABLE` explain why there
+ * is no per-Raid answer; `READY` carries the server's informational verdicts for the Raids on this page.
+ */
+export type FeedViewerState =
+  | { status: 'OFF' }
+  | { status: 'SIGNED_OUT' }
+  | { status: 'UNAVAILABLE' }
+  | { status: 'READY'; eligibleOnly: boolean; eligibility: Record<string, FeedEligibility> };
+
 /** Only fields a visitor may see: no reviewer, outcome, deliverables, policies, funding references or creator. */
 export const FeedCardSchema = z.strictObject({
   listingId: z.uuid(),
   termsVersionId: z.uuid(),
   guildId: InternalId,
+  guild: FeedGuildSchema.optional(),
   title: z.string().min(1).max(200),
   publicSummary: z.string().min(1).max(1000),
   category: InternalId,
