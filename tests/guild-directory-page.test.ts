@@ -102,6 +102,10 @@ describe('T015 Guild directory page', () => {
     });
     expect(second).toContain('Back to first Guilds');
     expect(second).not.toContain('Load more');
+    expect(second).toMatch(/<nav class="detail-actions guild-directory-nav"/);
+    expect(second).toMatch(
+      /<a class="guild-directory-back" href="\/guilds">Back to first Guilds<\/a>/,
+    );
   });
 
   it('shows an empty state with no Load more link', async () => {

@@ -77,7 +77,7 @@ export default async function GuildDirectoryPage({ searchParams }: Props) {
           <p>{after ? 'No more Guilds.' : 'No Guilds are listed yet.'}</p>
         )}
         {(nextCursor || after) && (
-          <nav className="detail-actions" aria-label="Guild pages">
+          <nav className="detail-actions guild-directory-nav" aria-label="Guild pages">
             {nextCursor && (
               <Link
                 className="button secondary"
@@ -87,7 +87,11 @@ export default async function GuildDirectoryPage({ searchParams }: Props) {
                 Load more Guilds
               </Link>
             )}
-            {after && <Link href="/guilds">Back to first Guilds</Link>}
+            {after && (
+              <Link className="guild-directory-back" href="/guilds">
+                Back to first Guilds
+              </Link>
+            )}
           </nav>
         )}
       </section>

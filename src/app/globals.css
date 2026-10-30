@@ -1632,6 +1632,22 @@ footer {
 .guild-directory .campaign-copy {
   margin: 8px 0 0;
 }
+.guild-directory-nav {
+  align-items: center;
+  margin-top: 20px;
+}
+.guild-directory-back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent-text);
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.guild-directory-back:hover {
+  color: var(--text);
+}
 .guild-entry {
   display: flex;
   align-items: center;
