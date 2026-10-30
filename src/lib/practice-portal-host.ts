@@ -87,11 +87,35 @@ export async function startPracticeTrialFromPortal(command: StartPracticeTrialCo
   requireRead();
   return { version: 'v1' as const, ...result, ...writeConfig('PRACTICE_TRIAL_ATTEMPTS_ENABLED') };
 }
+// DEFAULT, not owner policy (blueprint O09 leaves numeric thresholds open): generous enough for an honest
+// newcomer retrying a few trials, strict enough to stop scripted flooding. Deployments tune it per environment.
+export const DEFAULT_SUBMISSION_RATE_LIMIT = Object.freeze({ max: 10, windowSeconds: 3600 });
+function positiveInteger(name: string, fallback: number, maximum: number) {
+  const raw = process.env[name]?.trim();
+  if (!raw || !/^[0-9]{1,6}$/.test(raw)) return fallback;
+  const value = Number(raw);
+  return value >= 1 && value <= maximum ? value : fallback;
+}
+export function practiceSubmissionRateLimit() {
+  return {
+    max: positiveInteger(
+      'PRACTICE_SUBMISSION_RATE_LIMIT_MAX',
+      DEFAULT_SUBMISSION_RATE_LIMIT.max,
+      1000,
+    ),
+    windowSeconds: positiveInteger(
+      'PRACTICE_SUBMISSION_RATE_LIMIT_WINDOW_SECONDS',
+      DEFAULT_SUBMISSION_RATE_LIMIT.windowSeconds,
+      86400,
+    ),
+  };
+}
 export async function submitPracticeTrialFromPortal(command: SubmitPracticeTrialCommand) {
   requireRead();
   const result = await runCommandTransaction(db, (tx) =>
     submitPracticeTrial(tx, command, {
       allowNewWrites: writeConfig('PRACTICE_TRIAL_SUBMISSIONS_ENABLED').writesAvailable,
+      submissionRateLimit: practiceSubmissionRateLimit(),
       canSubmit: () =>
         practicePortalReadConfiguration().readsAvailable &&
         writeConfig('PRACTICE_TRIAL_SUBMISSIONS_ENABLED').writesAvailable,

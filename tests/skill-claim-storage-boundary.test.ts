@@ -142,6 +142,12 @@ it('contains only owned ports and no app/provider/assessment singleton', async (
     './taxonomy-storage',
     './taxonomy-storage-contracts',
     './claim-storage-contracts',
+    './evidence-fingerprint',
+  ]);
+  // The fingerprint helper is pure: Node's digest only, no app, database or provider import.
+  const fingerprint = await readFile('src/skills/evidence-fingerprint.ts', 'utf8');
+  expect([...fingerprint.matchAll(/from\s+['"]([^'"]+)['"]/g)].map((m) => m[1])).toEqual([
+    'node:crypto',
   ]);
   for (const file of ['claim-storage.ts', 'claim-storage-contracts.ts']) {
     const source = await readFile('src/skills/' + file, 'utf8');

@@ -914,11 +914,24 @@ model SkillClaimVersion {
   recordedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
   claim SkillClaim @relation("SkillClaimHistory", fields: [skillClaimId, participantId, accountId, skillId, skillDomain, taxonomyId], references: [id, participantId, accountId, skillId, skillDomain, taxonomyId], onDelete: Restrict, onUpdate: Restrict, map: "SkillClaimVersion_claim_fkey")
   currentFor SkillClaim[] @relation("SkillClaimPointer")
+  evidenceFingerprints SkillEvidenceFingerprint[]
   participant Participant @relation(fields: [participantId, accountId], references: [id, accountId], onDelete: Restrict, onUpdate: Restrict, map: "SkillClaimVersion_participant_fkey")
   taxonomyVersion SkillTaxonomyVersion @relation(fields: [taxonomyVersionId, taxonomyId, taxonomyRevision], references: [id, taxonomyId, revision], onDelete: Restrict, onUpdate: Restrict, map: "SkillClaimVersion_taxonomy_fkey")
   receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillClaimVersion_receipt_fkey")
   @@unique([skillClaimId, revision], map: "SkillClaimVersion_revision_key")
   @@unique([id, skillClaimId, participantId, accountId, skillId, skillDomain, taxonomyId, revision], map: "SkillClaimVersion_pointer_key")
+}
+
+// Advisory, append-only duplicate-evidence hints for private claim references. Never an authority or a restriction.
+model SkillEvidenceFingerprint {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  skillClaimVersionId String @db.Uuid
+  fingerprintVersion String
+  fingerprint String
+  recordedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
+  claimVersion SkillClaimVersion @relation(fields: [skillClaimVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillEvidenceFingerprint_version_fkey")
+  @@unique([skillClaimVersionId, fingerprintVersion, fingerprint], map: "SkillEvidenceFingerprint_version_digest_key")
+  @@index([fingerprintVersion, fingerprint], map: "SkillEvidenceFingerprint_digest_idx")
 }
 
 // Safe admin-published practice definitions/rubrics; no attempts, assessments or rank grants.

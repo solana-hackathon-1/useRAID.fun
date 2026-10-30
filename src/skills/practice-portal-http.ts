@@ -98,7 +98,8 @@ function correlation(host: PracticePortalHttpHost) {
 }
 function failure(e: unknown, id: string) {
   let code: ErrorCode = 'SERVICE_UNAVAILABLE',
-    status: number | undefined;
+    status: number | undefined,
+    retryAfter: number | undefined;
   if (e instanceof JsonBodyFailure) {
     code = 'INVALID_COMMAND';
     status = e.status;
@@ -129,7 +130,11 @@ function failure(e: unknown, id: string) {
     else if (c === 'INVALID_INPUT') code = 'INVALID_COMMAND';
     else if (['RESOURCE_UNAVAILABLE', 'DEFINITION_UNAVAILABLE', 'SKILL_UNAVAILABLE'].includes(c))
       code = 'NOT_FOUND';
-    else if (c === 'ATTEMPT_LIMIT_REACHED') code = 'PRACTICE_ATTEMPT_LIMIT_REACHED';
+    else if (c === 'RATE_LIMITED') {
+      code = 'RATE_LIMITED';
+      const seconds = e instanceof PracticeTrialSubmissionStorageError ? e.retryAfterSeconds : 0;
+      if (Number.isSafeInteger(seconds) && seconds! >= 1) retryAfter = seconds;
+    } else if (c === 'ATTEMPT_LIMIT_REACHED') code = 'PRACTICE_ATTEMPT_LIMIT_REACHED';
     else if (c === 'COOLDOWN_ACTIVE') code = 'PRACTICE_COOLDOWN_ACTIVE';
     else if (c === 'ALREADY_SUBMITTED') code = 'PRACTICE_ALREADY_SUBMITTED';
     else if (c === 'ACCOMMODATION_UNAVAILABLE') code = 'PRACTICE_ACCOMMODATION_UNAVAILABLE';
@@ -137,7 +142,10 @@ function failure(e: unknown, id: string) {
   const result = createErrorEnvelope(code, id);
   return Response.json(result.body, {
     status: status ?? result.status,
-    headers: practicePortalPrivateHeaders,
+    headers:
+      retryAfter === undefined
+        ? practicePortalPrivateHeaders
+        : { ...practicePortalPrivateHeaders, 'Retry-After': String(retryAfter) },
   });
 }
 /** No Root state: host owns actual SQL/identity/current gates and durable command receipts. */

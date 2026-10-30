@@ -9,6 +9,7 @@ try {
     'migrations/receipts.sql',
     'migrations/taxonomy.sql',
     'migrations/claims.sql',
+    'migrations/evidence-fingerprints.sql',
   ])
     await client.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   console.log(
