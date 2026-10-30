@@ -11,8 +11,11 @@ import {
   amountText,
   assetLabel,
   buildProposal,
+  canAnswer,
   describeChanges,
   formFrom,
+  isLapsed,
+  termsKey,
   type ProposalForm,
 } from '../work-http/amendment-form';
 import { newRequestKey, type FailureKind } from '../work-http/workspace-client';
@@ -21,6 +24,14 @@ const defaultClient = createAmendmentClient();
 const subscribeReady = () => () => {};
 const clientReady = () => true;
 const serverReady = () => false;
+/** Wall clock in coarse steps so a proposal lapses on screen without a reload; unknown on the server. */
+const CLOCK_STEP = 15_000;
+const subscribeClock = (notify: () => void) => {
+  const timer = setInterval(notify, CLOCK_STEP);
+  return () => clearInterval(timer);
+};
+const clockNow = () => Math.floor(Date.now() / CLOCK_STEP) * CLOCK_STEP;
+const serverClock = () => null;
 const wrap = { whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' } as const;
 type Engagement = AmendmentDeskView['engagements'][number];
 
@@ -45,11 +56,11 @@ interface Notice {
   text: string;
 }
 /** One idempotency key per unchanged intent, kept across unconfirmed failures so a retry cannot duplicate. */
-function useRunner(reload: () => Promise<void>) {
+function useRunner(reload: () => Promise<void>, seed: Notice | null = null) {
   const keys = useRef(new Map<string, string>());
   const inFlight = useRef(false);
   const [busy, setBusy] = useState<string | null>(null);
-  const [notice, setNotice] = useState<Notice | null>(null);
+  const [notice, setNotice] = useState<Notice | null>(seed);
   const [done, setDone] = useState<string | null>(null);
   async function run(
     intent: string,
@@ -89,33 +100,30 @@ function useRunner(reload: () => Promise<void>) {
       setBusy(null);
     }
   }
-  return { run, busy, notice, done };
+  return { run, busy, notice, done, dismiss: () => setNotice(null) };
 }
 type Runner = ReturnType<typeof useRunner>;
-function Feedback({
-  runner,
-  intent,
-  refresh,
-}: {
-  runner: Runner;
-  intent: string;
-  refresh: () => void;
-}) {
-  const n = runner.notice && runner.notice.intent === intent ? runner.notice : null;
+function NoticeText({ n, refresh }: { n: Notice; refresh?: () => void }) {
   return (
-    n && (
-      <p role="alert">
-        {n.text}{' '}
-        {n.kind === 'REFRESH' && (
-          <button type="button" className="button secondary" onClick={refresh}>
-            Refresh
-          </button>
-        )}
-        {n.kind === 'SIGN_IN' && <a href="/creator/account">Sign in</a>}
-        {n.kind === 'RETRY_SAME_REQUEST' && ' Press the same button again to retry.'}
-      </p>
-    )
+    <p role="alert">
+      {n.text}{' '}
+      {n.kind === 'REFRESH' && refresh && (
+        <button type="button" className="button secondary" onClick={refresh}>
+          Refresh
+        </button>
+      )}
+      {n.kind === 'SIGN_IN' && <a href="/creator/account">Sign in</a>}
+      {n.kind === 'RETRY_SAME_REQUEST' && ' Press the same button again to retry.'}
+    </p>
   );
+}
+/**
+ * A card-local notice for its own action. "Refresh" notices are shown once at the top of the panel instead, because
+ * the reload they trigger can remove the card that raised them.
+ */
+function Feedback({ runner, intent }: { runner: Runner; intent: string }) {
+  const n = runner.notice && runner.notice.intent === intent ? runner.notice : null;
+  return n && n.kind !== 'REFRESH' ? <NoticeText n={n} /> : null;
 }
 function Changes({
   current,
@@ -161,7 +169,7 @@ function MemberCard({
   ready,
   runner,
   api,
-  refresh,
+  now,
 }: {
   engagement: Engagement;
   open: AmendmentView;
@@ -169,18 +177,30 @@ function MemberCard({
   ready: boolean;
   runner: Runner;
   api: AmendmentClient;
-  refresh: () => void;
+  now: number | null;
 }) {
   const acceptIntent = 'agree:' + open.id;
   const declineIntent = 'decline:' + open.id;
-  const disabled = !ready || !available || runner.busy !== null;
+  const lapsed = isLapsed(open.expiresAt, now);
+  const disabled = !canAnswer({ ready, available, busy: runner.busy !== null, lapsed });
   return (
     <section className="orientation-card" aria-label={'Proposed change: ' + engagement.title}>
       <h3>{'Proposed change: ' + engagement.title}</h3>
       <p>
         <strong>Your current terms stay in force until you agree.</strong> The Founder cannot change
-        them alone. Answer by <time dateTime={open.expiresAt}>{when(open.expiresAt)}</time>; after
-        that this proposal lapses and nothing changes.
+        them alone.{' '}
+        {lapsed ? (
+          <>
+            This proposal has lapsed (it expired{' '}
+            <time dateTime={open.expiresAt}>{when(open.expiresAt)}</time>
+            ). Nothing changed and it can no longer be agreed.
+          </>
+        ) : (
+          <>
+            Answer by <time dateTime={open.expiresAt}>{when(open.expiresAt)}</time>; after that this
+            proposal lapses and nothing changes.
+          </>
+        )}
       </p>
       <Changes current={engagement.effectiveTerms} proposed={open} />
       <p className="orientation-hint">
@@ -223,8 +243,8 @@ function MemberCard({
           </button>
         </div>
       </fieldset>
-      <Feedback runner={runner} intent={acceptIntent} refresh={refresh} />
-      <Feedback runner={runner} intent={declineIntent} refresh={refresh} />
+      <Feedback runner={runner} intent={acceptIntent} />
+      <Feedback runner={runner} intent={declineIntent} />
     </section>
   );
 }
@@ -248,7 +268,7 @@ function FounderCard({
   ready,
   runner,
   api,
-  refresh,
+  now,
 }: {
   engagement: Engagement;
   open: AmendmentView | undefined;
@@ -256,13 +276,14 @@ function FounderCard({
   ready: boolean;
   runner: Runner;
   api: AmendmentClient;
-  refresh: () => void;
+  now: number | null;
 }) {
   const current = engagement.effectiveTerms;
   const intent = 'propose:' + engagement.engagementId;
   const withdrawIntent = 'withdraw:' + (open?.id ?? engagement.engagementId);
   const [form, setForm] = useState<ProposalForm>(() => formFrom(current));
   const [problem, setProblem] = useState('');
+  const lapsed = open ? isLapsed(open.expiresAt, now) : false;
   const disabled = !ready || !available || runner.busy !== null;
   function submit(event: FormEvent) {
     event.preventDefault();
@@ -290,11 +311,19 @@ function FounderCard({
       </p>
       {open ? (
         <>
-          <p role="status">
-            Your proposal is waiting for the member to agree. It takes effect only if they agree to
-            exactly this version; it lapses on{' '}
-            <time dateTime={open.expiresAt}>{when(open.expiresAt)}</time>.
-          </p>
+          {lapsed ? (
+            <p role="status">
+              Your proposal has lapsed (it expired{' '}
+              <time dateTime={open.expiresAt}>{when(open.expiresAt)}</time>) and the member can no
+              longer agree to it. Withdraw it to propose a new change.
+            </p>
+          ) : (
+            <p role="status">
+              Your proposal is waiting for the member to agree. It takes effect only if they agree
+              to exactly this version; it lapses on{' '}
+              <time dateTime={open.expiresAt}>{when(open.expiresAt)}</time>.
+            </p>
+          )}
           <Changes current={current} proposed={open} />
           <button
             type="button"
@@ -312,7 +341,7 @@ function FounderCard({
             Withdraw proposal
           </button>
           {!available && <p role="status">Withdrawing is currently unavailable.</p>}
-          <Feedback runner={runner} intent={withdrawIntent} refresh={refresh} />
+          <Feedback runner={runner} intent={withdrawIntent} />
         </>
       ) : (
         <form onSubmit={submit} noValidate aria-label={'Propose a change: ' + engagement.title}>
@@ -382,7 +411,7 @@ function FounderCard({
             </label>
           </fieldset>
           {problem && <p role="alert">{problem}</p>}
-          <Feedback runner={runner} intent={intent} refresh={refresh} />
+          <Feedback runner={runner} intent={intent} />
           <div className="orientation-actions">
             <button className="button" type="submit" disabled={disabled}>
               {runner.busy === intent ? 'Sending…' : 'Propose change'}
@@ -402,12 +431,20 @@ export function AmendmentPanel({
   role,
   initial,
   api = defaultClient,
+  now: fixedNow,
+  initialNotice,
 }: {
   role: 'MEMBER' | 'FOUNDER';
   initial?: AmendmentDeskView;
   api?: AmendmentClient;
+  /** A fixed clock (epoch ms) for a deterministic render; omitted, the browser clock is used. */
+  now?: number;
+  /** A notice already showing, used to render a known state without an action. */
+  initialNotice?: Notice;
 }) {
   const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
+  const clock = useSyncExternalStore(subscribeClock, clockNow, serverClock);
+  const now = fixedNow ?? clock;
   const [desk, setDesk] = useState<AmendmentDeskView | null>(initial ?? null);
   const [failure, setFailure] = useState('');
   async function reload() {
@@ -430,7 +467,11 @@ export function AmendmentPanel({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const runner = useRunner(reload);
+  const runner = useRunner(reload, initialNotice ?? null);
+  const refreshNotice = () => {
+    runner.dismiss();
+    refresh();
+  };
   const mine = (desk?.engagements ?? []).filter((e) => e.role === role);
   const available = desk?.proposalsAvailable ?? false;
   const heading =
@@ -439,6 +480,9 @@ export function AmendmentPanel({
     <section aria-labelledby={'amendments-' + role}>
       <h2 id={'amendments-' + role}>{heading}</h2>
       {runner.done && <p role="status">{runner.done}</p>}
+      {runner.notice?.kind === 'REFRESH' && (
+        <NoticeText n={runner.notice} refresh={refreshNotice} />
+      )}
       {!desk && !failure && <p role="status">Loading changes to accepted terms…</p>}
       {failure && <p role="alert">{failure}</p>}
       {desk && role === 'MEMBER' && (
@@ -458,7 +502,7 @@ export function AmendmentPanel({
                     ready={ready}
                     runner={runner}
                     api={api}
-                    refresh={refresh}
+                    now={now}
                   />
                 ) : (
                   <p>
@@ -480,13 +524,14 @@ export function AmendmentPanel({
           {mine.map((e) => (
             <div key={e.engagementId}>
               <FounderCard
+                key={termsKey(e.effectiveTerms)}
                 engagement={e}
                 open={e.amendments.find((a) => a.state === 'PROPOSED')}
                 available={available}
                 ready={ready}
                 runner={runner}
                 api={api}
-                refresh={refresh}
+                now={now}
               />
               <History amendments={e.amendments} />
             </div>

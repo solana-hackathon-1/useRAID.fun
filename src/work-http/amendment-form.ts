@@ -163,3 +163,16 @@ export function buildProposal(
     ? { ok: true, input: parsed.data }
     : { ok: false, problem: 'Check the form fields and try again.' };
 }
+
+/** A waiting proposal is lapsed once its expiry has passed; an unknown clock never claims a lapse. */
+export const isLapsed = (expiresAt: string, now: number | null) =>
+  now !== null && Date.parse(expiresAt) <= now;
+/** Whether the person can answer a proposal now: hydrated, switched on, idle and not lapsed. */
+export const canAnswer = (state: {
+  ready: boolean;
+  available: boolean;
+  busy: boolean;
+  lapsed: boolean;
+}) => state.ready && state.available && !state.busy && !state.lapsed;
+/** Identity of the terms a form was prefilled from: a new agreed version must start a fresh form. */
+export const termsKey = (terms: TermsSnapshot) => JSON.stringify(terms);

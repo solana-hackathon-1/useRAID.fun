@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { InternalId } from '../contracts/ids';
 import { readBoundedJson } from '../http-contracts/json';
-import { canonicalRequestDigest } from '../command-receipts';
+import { canonicalRequestDigest, CommandReceiptError } from '../command-receipts';
 import type { WorkActor, WorkCommand } from '../work-loop/contracts';
 import {
   AmendmentResultSchema,
@@ -171,12 +171,22 @@ export function createAmendmentHandlers(host: AmendmentHttpHost) {
         const input = { amendmentId: id, decision: decided.decision };
         const expected = decided.decision === 'ACCEPT' ? decided.digest : null;
         // Decided proposals are terminal, so a replay reports the same state the first answer did.
+        const raw = await host.respond({ actor, input, idempotencyKey, requestId }, expected);
+        const state = decided.decision === 'ACCEPT' ? 'ACCEPTED' : 'DECLINED';
+        // The same key replayed with another version's digest is a reused key, not a service fault; nothing is written.
+        const recorded = AmendmentResultSchema.safeParse(raw);
+        if (
+          recorded.success &&
+          intact(recorded.data.amendment) &&
+          recorded.data.amendment.id === id &&
+          recorded.data.amendment.state === state &&
+          expected !== null &&
+          recorded.data.amendment.digest !== expected
+        )
+          throw new CommandReceiptError('IDEMPOTENCY_KEY_REUSED');
         return result(
-          await host.respond({ actor, input, idempotencyKey, requestId }, expected),
-          (a) =>
-            a.id === id &&
-            a.state === (decided.decision === 'ACCEPT' ? 'ACCEPTED' : 'DECLINED') &&
-            (expected === null || a.digest === expected),
+          raw,
+          (a) => a.id === id && a.state === state && (expected === null || a.digest === expected),
         );
       });
     },

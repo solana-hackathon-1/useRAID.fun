@@ -5,8 +5,11 @@ import { AmendmentPanel } from '../src/components/work-amendments';
 import { MyRaidsWorkspace, WorkDesk } from '../src/components/work-workspace';
 import {
   buildProposal,
+  canAnswer,
   describeChanges,
   formFrom,
+  isLapsed,
+  termsKey,
   type ProposalForm,
 } from '../src/work-http/amendment-form';
 import { describeAmendmentFailure } from '../src/work-http/amendment-client';
@@ -93,8 +96,14 @@ const desk = (
       amendments: e.amendments ?? [],
     })),
   });
-const panel = (role: 'MEMBER' | 'FOUNDER', initial?: ReturnType<typeof desk>) =>
-  renderToStaticMarkup(createElement(AmendmentPanel, { role, initial }));
+const panel = (
+  role: 'MEMBER' | 'FOUNDER',
+  initial?: ReturnType<typeof desk>,
+  extra: { now?: number; initialNotice?: { intent: string; kind: 'REFRESH'; text: string } } = {},
+) => renderToStaticMarkup(createElement(AmendmentPanel, { role, initial, ...extra }));
+/** The synthetic proposal expires 2026-11-05T00:00Z. */
+const BEFORE = Date.parse('2026-11-04T00:00:00.000Z');
+const AFTER = Date.parse('2026-11-06T00:00:00.000Z');
 
 describe('T025 amendment change description', () => {
   it('lists only what changed, with exact amounts and direction', () => {
@@ -294,5 +303,71 @@ describe('T025 workspace embedding', () => {
       }),
     );
     expect(deskHtml).toContain('Propose a change to accepted terms');
+  });
+});
+
+describe('T025 fix pass: lapsed proposals (M2)', () => {
+  it('treats a proposal as lapsed only at or after its expiry, and never before the clock is known', () => {
+    const at = '2026-11-05T00:00:00.000Z';
+    expect(isLapsed(at, BEFORE)).toBe(false);
+    expect(isLapsed(at, Date.parse(at))).toBe(true);
+    expect(isLapsed(at, AFTER)).toBe(true);
+    expect(isLapsed(at, null)).toBe(false);
+  });
+  it('allows an answer only when ready, available, idle and not lapsed', () => {
+    const base = { ready: true, available: true, busy: false, lapsed: false };
+    expect(canAnswer(base)).toBe(true);
+    for (const off of ['ready', 'available', 'lapsed'] as const)
+      expect(canAnswer({ ...base, [off]: off === 'lapsed' })).toBe(false);
+    expect(canAnswer({ ...base, busy: true })).toBe(false);
+  });
+  it('tells the member a past-expiry proposal lapsed and offers no live answer window', () => {
+    const d = desk([{ role: 'MEMBER', amendments: [amendment('PROPOSED')] }]);
+    const live = panel('MEMBER', d, { now: BEFORE });
+    expect(live).toContain('Answer by');
+    expect(live).not.toContain('has lapsed');
+    const html = panel('MEMBER', d, { now: AFTER });
+    expect(html).toContain('This proposal has lapsed');
+    expect(html).toContain('Nothing changed');
+    expect(html).not.toContain('Answer by');
+  });
+  it('tells the Founder a past-expiry proposal lapsed and to withdraw it before proposing again', () => {
+    const d = desk([{ role: 'FOUNDER', amendments: [amendment('PROPOSED')] }]);
+    const html = panel('FOUNDER', d, { now: AFTER });
+    expect(html).toContain('has lapsed');
+    expect(html).toMatch(/Withdraw it to propose/);
+    expect(html).not.toContain('lapses on');
+    expect(html).toContain('Withdraw proposal');
+    expect(panel('FOUNDER', d, { now: BEFORE })).toContain('lapses on');
+  });
+});
+
+describe('T025 fix pass: Founder form follows the agreed terms (M1)', () => {
+  it('changes the form key when the effective terms change and keeps it for identical terms', () => {
+    expect(termsKey(current)).toBe(termsKey(terms()));
+    expect(termsKey(current)).not.toBe(termsKey(raised));
+  });
+});
+
+describe('T025 fix pass: the explanation outlives the reload (D0)', () => {
+  const stale = {
+    intent: 'agree:' + id(7),
+    kind: 'REFRESH' as const,
+    text: 'This proposal is no longer open: it was already answered, withdrawn or has expired. Nothing changed.',
+  };
+  it('keeps the alert and a Refresh control after the card has gone, for member and Founder', () => {
+    for (const role of ['MEMBER', 'FOUNDER'] as const) {
+      const gone = desk([{ role }]); // the reload removed the proposal, so no card owns the notice any more
+      const html = panel(role, gone, { initialNotice: stale });
+      expect(html).toContain('no longer open');
+      expect(html).toContain('Nothing changed');
+      expect(html).toMatch(/role="alert"/);
+      expect(html).toContain('Refresh');
+    }
+  });
+  it('shows a refresh notice once, above the cards, not again inside a card that is still present', () => {
+    const d = desk([{ role: 'MEMBER', amendments: [amendment('PROPOSED')] }]);
+    const html = panel('MEMBER', d, { initialNotice: stale });
+    expect(html.match(/no longer open/g)).toHaveLength(1);
   });
 });

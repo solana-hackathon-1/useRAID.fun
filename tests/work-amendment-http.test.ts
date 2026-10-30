@@ -302,17 +302,29 @@ describe('T025 amendment HTTP boundary', () => {
       }),
     );
     expect((await wrongId.RESPOND(post({ decision: 'ACCEPT', digest }), otherId)).status).toBe(503);
-    const wrongDigest = createAmendmentHandlers(host());
-    expect(
-      (await wrongDigest.RESPOND(post({ decision: 'ACCEPT', digest: 'b'.repeat(64) }), amendmentId))
-        .status,
-    ).toBe(503);
     const notWithdrawn = createAmendmentHandlers(
       host({ withdraw: async () => ({ status: 'EXECUTED', amendment: amendment('ACCEPTED') }) }),
     );
     expect((await notWithdrawn.WITHDRAW(post({}), amendmentId)).status).toBe(503);
     const badDesk = createAmendmentHandlers(host({ desk: async () => ({ version: 'v1' }) }));
     expect((await badDesk.DESK(get())).status).toBe(503);
+  });
+  it('answers a replayed ACCEPT under another digest with a non-retryable key-reuse conflict', async () => {
+    // The recorded answer is for `digest`; the same key now arrives claiming another version was read.
+    const respond = vi.fn<AmendmentHttpHost['respond']>(async () => ({
+      status: 'REPLAYED',
+      amendment: amendment('ACCEPTED'),
+    }));
+    const h = createAmendmentHandlers(host({ respond }));
+    const r = await h.RESPOND(post({ decision: 'ACCEPT', digest: 'b'.repeat(64) }), amendmentId);
+    expect(r.status).toBe(409);
+    const e = await err(r);
+    expect(e.code).toBe('IDEMPOTENCY_KEY_REUSED');
+    expect(e.retryable).toBe(false);
+    expect(JSON.stringify(e)).not.toContain(digest);
+    // Only this exact mismatch is a key conflict: a record for another proposal is still a contract failure.
+    const other = '99999999-9999-4999-8999-999999999999';
+    expect((await h.RESPOND(post({ decision: 'ACCEPT', digest }), other)).status).toBe(503);
   });
   it('answers a replay with the recorded result even after the proposal has moved on', async () => {
     const h = createAmendmentHandlers(
