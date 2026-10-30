@@ -1,13 +1,20 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-const mocks = vi.hoisted(() => ({ run: vi.fn(), read: vi.fn(), edit: vi.fn() }));
+const mocks = vi.hoisted(() => ({
+  run: vi.fn(),
+  read: vi.fn(),
+  edit: vi.fn(),
+  list: vi.fn(),
+}));
 vi.mock('../src/lib/command-receipts-adapter', () => ({ runCommandTransaction: mocks.run }));
 vi.mock('../src/guild-profiles/guild-storage', () => ({
   readManagedGuild: mocks.read,
   editGuildProfile: mocks.edit,
+  listManagedGuilds: mocks.list,
 }));
 import {
   editProfile,
   guildProfileWriteConfiguration,
+  listManagedGuildsState,
   readProfileState,
 } from '../src/lib/guild-profile-host';
 import { config } from '../src/lib/config';
@@ -49,4 +56,22 @@ it('keeps the caller’s own read available while edits are disabled', async () 
     unavailableReason: 'DISABLED',
   });
   expect(mocks.read).toHaveBeenCalledWith({}, actor, guildId);
+});
+it('lists the caller’s own managed Guilds through the guarded transaction, with no flag needed and the profile-edit state attached', async () => {
+  vi.stubEnv('GUILD_PROFILE_EDITS_ENABLED', 'false');
+  const guilds = [{ guild: { slug: 'g' }, authority: { founder: true, kinds: ['PROFILE'] } }];
+  mocks.list.mockResolvedValue({ guilds });
+  expect(await listManagedGuildsState(actor)).toEqual({
+    version: 'v1',
+    guilds,
+    writesAvailable: false,
+    unavailableReason: 'DISABLED',
+  });
+  vi.stubEnv('GUILD_PROFILE_EDITS_ENABLED', 'true');
+  expect(await listManagedGuildsState(actor)).toMatchObject({
+    writesAvailable: true,
+    unavailableReason: null,
+  });
+  expect(mocks.list).toHaveBeenCalledWith({}, actor);
+  expect(mocks.edit).not.toHaveBeenCalled();
 });
