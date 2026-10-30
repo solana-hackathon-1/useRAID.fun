@@ -151,6 +151,7 @@ export function createRootAcceptanceHost(config: RootAcceptanceConfig): Acceptan
       // Tell the person what to do next; it is about their own consent only and reveals nothing about others.
       if (consent.length !== 1) throw new WorkError('CONSENT_REQUIRED');
       let taxonomy;
+      // Deliberately not wrapped by available(): the reader owns its errors, and its outage errors surface untyped as the same 503.
       try {
         taxonomy = await readPublishedSkillTaxonomy(tx, ctx.actor, config.taxonomyId);
       } catch (error) {

@@ -120,6 +120,23 @@ describe('T022 work workspace HTTP boundary', () => {
     expect(response.status).toBe(503);
     expect(await error(response)).toMatchObject({ code: 'SERVICE_UNAVAILABLE', retryable: true });
   });
+  it.each(['STORAGE_CONTRACT', 'INVALID_INPUT', 'RETRY_TRANSACTION'] as const)(
+    'reports a %s receipt error as SERVICE_UNAVAILABLE without leaking its code',
+    async (code) => {
+      const handlers = createWorkHandlers(
+        host({
+          commitEngagement: async () => {
+            throw new CommandReceiptError(code);
+          },
+        }),
+      );
+      const response = await handlers.ACCEPT(post('/x', { slotId, termsVersionId }));
+      expect(response.status).toBe(503);
+      const body = await error(response);
+      expect(body.code).toBe('SERVICE_UNAVAILABLE');
+      expect(JSON.stringify(body)).not.toContain(code);
+    },
+  );
   it('rejects query strings and foreign methods before reading', async () => {
     const me = vi.fn(async () => ({
       version: 'v1',
