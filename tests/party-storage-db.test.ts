@@ -163,7 +163,7 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
     await expect(db.$executeRawUnsafe('DELETE FROM "PartyProposalMember"')).rejects.toThrow();
   });
 
-  it('refuses dust, shortfall, wrong leg counts, duplicates and unknown or non-human members', async () => {
+  it('refuses dust, shortfall, wrong leg counts, duplicate rosters and unknown or non-human members', async () => {
     const t = await setup();
     await rejects(
       t.propose(t.leader.actor, t.proposal(t.split(500000000n, 300000000n, 199999999n))),
@@ -179,7 +179,8 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
     }));
     await rejects(t.propose(t.leader.actor, t.proposal(twoLegs)), 'INVALID_INPUT');
     // The total is exact, so the sum check passes and only the duplicate-participant rule can refuse this roster.
-    // (The known-participant count and the member primary key would also stop it: defense in depth, not the rule under test.)
+    // Removing only the duplicate rule keeps this case green: the known-participant count also refuses a repeated id
+    // (the query returns it once). It is a combined roster-validation case, not a lone-rule test.
     const duplicate = [
       ...t.split(500000000n, 300000000n, 0n).slice(0, 2),
       { ...t.split(0n, 200000000n, 0n)[1] },
@@ -761,7 +762,7 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
     });
   });
 
-  describe('consent serializes with a concurrent slot or terms change', () => {
+  describe('consent serializes with a concurrent slot or listing change', () => {
     const pid = async (tx: Tx) =>
       (await tx.$queryRawUnsafe<{ pid: number }[]>('SELECT pg_backend_pid() AS pid'))[0].pid;
     async function waitFor(waiter: number, blocker: number, statement: RegExp) {
@@ -778,20 +779,33 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
     }
     it.each([
       [
-        'the slot is filled',
+        'the slot is filled (writer holds listing and slot)',
         `UPDATE "RaidSlot" SET "state"='FILLED' WHERE "id"=$1::uuid`,
         'slot',
         'SLOT_FILLED',
+        'listing and slot',
+        /WorkListing.*FOR UPDATE/,
       ],
       [
-        'the listing is closed',
+        'the listing is closed (writer holds listing and slot)',
         `UPDATE "WorkListing" SET "state"='DRAFT' WHERE "id"=$1::uuid`,
         'listing',
         'PUBLICATION_BLOCKED',
+        'listing and slot',
+        /WorkListing.*FOR UPDATE/,
+      ],
+      // Only the slot lock is held, so consent passes the free listing lock and must then wait on the slot lock itself.
+      [
+        'the slot is filled (writer holds only the slot)',
+        `UPDATE "RaidSlot" SET "state"='FILLED' WHERE "id"=$1::uuid`,
+        'slot',
+        'SLOT_FILLED',
+        'only the slot',
+        /RaidSlot.*FOR UPDATE/,
       ],
     ])(
-      'waits for a writer holding the listing, then refuses when %s',
-      async (_name, change, target, code) => {
+      'waits for the writer, then refuses when %s',
+      async (_name, change, target, code, held, blockedOn) => {
         const t = await setup();
         const { proposal } = await t.propose(
           t.leader.actor,
@@ -800,14 +814,15 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
         const ready = deferred<number>(),
           waiter = deferred<number>(),
           release = deferred<void>();
-        // The same order every source writer uses (listing, then slot), changing state only once it holds both.
+        // The same order every source writer uses (listing, then slot), changing state only once it holds its locks.
         const writer = db.$transaction(
           async (tx) => {
             await tx.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
-            await tx.$queryRawUnsafe(
-              'SELECT "id" FROM "WorkListing" WHERE "id"=$1::uuid FOR UPDATE',
-              t.slot.listingId,
-            );
+            if (held === 'listing and slot')
+              await tx.$queryRawUnsafe(
+                'SELECT "id" FROM "WorkListing" WHERE "id"=$1::uuid FOR UPDATE',
+                t.slot.listingId,
+              );
             await tx.$queryRawUnsafe(
               'SELECT "id" FROM "RaidSlot" WHERE "id"=$1::uuid FOR UPDATE',
               t.slot.slotId,
@@ -845,7 +860,7 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
             txOptions,
           );
           const results = Promise.allSettled([writer, pending]);
-          await waitFor(await waiter.promise, blocker, /WorkListing.*FOR UPDATE/);
+          await waitFor(await waiter.promise, blocker, blockedOn);
           release.resolve();
           const settled = await results;
           expect(settled[0].status).toBe('fulfilled');

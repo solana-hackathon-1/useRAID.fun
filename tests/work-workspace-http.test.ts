@@ -120,13 +120,19 @@ describe('T022 work workspace HTTP boundary', () => {
     expect(response.status).toBe(503);
     expect(await error(response)).toMatchObject({ code: 'SERVICE_UNAVAILABLE', retryable: true });
   });
-  it.each(['STORAGE_CONTRACT', 'INVALID_INPUT', 'RETRY_TRANSACTION'] as const)(
-    'reports a %s receipt error as SERVICE_UNAVAILABLE without leaking its code',
-    async (code) => {
+  it.each([
+    ['STORAGE_CONTRACT', () => new CommandReceiptError('STORAGE_CONTRACT')],
+    ['INVALID_INPUT', () => new CommandReceiptError('INVALID_INPUT')],
+    ['RETRY_TRANSACTION', () => new CommandReceiptError('RETRY_TRANSACTION')],
+    // commitEngagement raises a WorkError (not a receipt error) for a broken storage contract: the WorkError branch.
+    ['STORAGE_CONTRACT', () => new WorkError('STORAGE_CONTRACT')],
+  ] as const)(
+    'reports a %s storage error as SERVICE_UNAVAILABLE without leaking its code',
+    async (code, make) => {
       const handlers = createWorkHandlers(
         host({
           commitEngagement: async () => {
-            throw new CommandReceiptError(code);
+            throw make();
           },
         }),
       );

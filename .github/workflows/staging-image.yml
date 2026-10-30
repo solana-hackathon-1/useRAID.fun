@@ -33,7 +33,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     # The owner-selected staging VM is aarch64; publish a native ARM64 image.
     runs-on: ubuntu-24.04-arm
-    timeout-minutes: 30
+    timeout-minutes: 45
     permissions:
       contents: read
       packages: write

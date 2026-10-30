@@ -283,8 +283,9 @@ export async function commitEngagement(
   const offerId = accepted.length === 1 ? accepted[0].id : null;
   if (accepted.length > 1) fail('STORAGE_CONTRACT');
   if (offerId !== (input.offerId ?? null)) {
-    // A replay: the slot is taken by an engagement that was not made through the requested offer. A fresh execution
-    // bound the offer in this transaction, so a mismatch there is an integrity bug for operators.
+    // A REPLAYED mismatch is reachable only through corruption or a foreign write: the slot is held by an engagement
+    // that was not made through the requested offer. A fresh execution bound the offer in this transaction, so a
+    // mismatch there is an integrity bug for operators.
     if (result.status === 'REPLAYED') fail('SLOT_FILLED');
     fail('STORAGE_CONTRACT');
   }
