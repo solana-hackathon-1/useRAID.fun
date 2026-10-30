@@ -34,6 +34,9 @@ import {
   PublicGuildDirectoryEntrySchema,
   PublicGuildUpdateSchema,
   type GuildRoleGrantView,
+  MANAGED_GUILD_LIST_MAX,
+  ManagedGuildListSchema,
+  type ManagedGuildList,
   type ManagedGuildUpdate,
   type PublicGuildDirectoryPage,
   type PublicGuildUpdate,
@@ -1451,4 +1454,40 @@ export async function listManagedGuildUpdates(
   const updates = rows.map(parseUpdate);
   await authorize(tx, actor);
   return { updates };
+}
+/**
+ * The Guilds this caller manages right now: founded, or holding any live grant. Authority is recomputed per Guild by
+ * the same function every command uses, so the list can never show more than a command would allow, and a Guild the
+ * caller holds nothing in is not distinguishable from one that does not exist. The Founder id is redacted exactly as
+ * in `readManagedGuild`.
+ */
+export async function listManagedGuilds(
+  tx: CommandReceiptTransaction,
+  actor: GuildActor,
+): Promise<ManagedGuildList> {
+  validateActor(actor);
+  await authorize(tx, actor);
+  const candidates = await query<{ id: string }>(
+    tx,
+    `SELECT g."id"::text FROM "Guild" g
+     WHERE g."founderAccountId"=$1 OR EXISTS (
+       SELECT 1 FROM "GuildRoleGrant" WHERE "guildId"=g."id" AND "granteeAccountId"=$1 AND ${LIVE})
+     ORDER BY g."slug" LIMIT ${MANAGED_GUILD_LIST_MAX}`,
+    [actor.accountId],
+  );
+  const guilds: ManagedGuildList['guilds'] = [];
+  for (const { id } of candidates) {
+    // The shared authority function decides; a grant that lapsed since the candidate query simply drops out.
+    const authority = await authorityKinds(tx, actor.accountId, id);
+    if (!authority.kinds.length) continue;
+    const loaded = await loadGuild(tx, id);
+    guilds.push({
+      guild: authority.kinds.includes('PROFILE') ? loaded : { ...loaded, founderAccountId: null },
+      authority,
+    });
+  }
+  await authorize(tx, actor);
+  const parsed = ManagedGuildListSchema.safeParse({ guilds });
+  if (!parsed.success) fail('STORAGE_CONTRACT');
+  return parsed.data;
 }

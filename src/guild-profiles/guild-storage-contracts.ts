@@ -226,3 +226,18 @@ export class GuildStorageError extends Error {
     this.name = 'GuildStorageError';
   }
 }
+/** Most Guilds one account's own management list returns (founded plus delegated); a hard cap, not a page. */
+export const MANAGED_GUILD_LIST_MAX = 50;
+/** One Guild the caller manages, with only the authority kinds that caller actually holds in it. */
+export const ManagedGuildListEntrySchema = z.strictObject({
+  guild: ManagedGuildSchema,
+  authority: z.strictObject({
+    founder: z.boolean(),
+    kinds: z.array(z.enum(GUILD_AUTHORITY_KINDS as [string, ...string[]])).max(4),
+  }),
+});
+export type ManagedGuildListEntry = z.infer<typeof ManagedGuildListEntrySchema>;
+export const ManagedGuildListSchema = z.strictObject({
+  guilds: z.array(ManagedGuildListEntrySchema).max(MANAGED_GUILD_LIST_MAX),
+});
+export type ManagedGuildList = z.infer<typeof ManagedGuildListSchema>;

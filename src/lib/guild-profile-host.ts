@@ -1,5 +1,9 @@
 import type { GuildActor, GuildCommand } from '../guild-profiles/guild-storage-contracts';
-import { editGuildProfile, readManagedGuild } from '../guild-profiles/guild-storage';
+import {
+  editGuildProfile,
+  listManagedGuilds,
+  readManagedGuild,
+} from '../guild-profiles/guild-storage';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { config } from './config';
 import { db } from './db';
@@ -21,3 +25,8 @@ export const editProfile = (command: GuildCommand) =>
       allowNewWrites: guildProfileWriteConfiguration().writesAvailable,
     }),
   );
+/** The caller's own managed Guilds. The read needs no flag; the edit availability is reported beside it. */
+export async function listManagedGuildsState(actor: GuildActor) {
+  const { guilds } = await runCommandTransaction(db, (tx) => listManagedGuilds(tx, actor));
+  return { version: 'v1' as const, guilds, ...guildProfileWriteConfiguration() };
+}

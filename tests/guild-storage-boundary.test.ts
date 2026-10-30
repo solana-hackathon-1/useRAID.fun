@@ -28,3 +28,29 @@ it('documents the authority model and keeps the module free of application depen
     expect.arrayContaining(['README.md', 'host.ts', 'migrate.ts', 'migrations', 'package.json']),
   );
 });
+
+it('documents the own-Guild list and management UI, and keeps the portable client free of application state', async () => {
+  const doc = await readFile('docs/raid-guild-storage.md', 'utf8');
+  for (const term of [
+    'listManagedGuilds',
+    'Guild management UI',
+    'GuildManageApi',
+    'no existence oracle',
+    'NOT VERIFIED',
+  ])
+    expect(doc).toContain(term);
+  expect(await readFile('docs/raid-module-reuse.md', 'utf8')).toContain('GuildManageApi');
+  for (const file of [
+    'src/guild-profiles/guild-manage-client.ts',
+    'src/components/guild-manage.tsx',
+  ]) {
+    const source = await readFile(file, 'utf8');
+    expect(source, file).not.toMatch(/process\.env|@prisma|from ['"]next|from ['"].*\/lib\//);
+  }
+  const host = await readFile('examples/guild-storage/host.ts', 'utf8');
+  expect(host).toContain('listManagedGuilds');
+  const ui = await readFile('examples/guild-storage/manage-example.tsx', 'utf8');
+  for (const term of ['GuildProfileEditor', 'GuildUpdatesManager', 'renderToStaticMarkup'])
+    expect(ui).toContain(term);
+  expect(ui).not.toMatch(/from ['"].*\/lib\//);
+});

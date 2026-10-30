@@ -2651,6 +2651,29 @@ footer {
 .orientation-card [role='alert'] {
   color: var(--negative);
 }
+/* Guild management: updates list. */
+.orientation-card .guild-update-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  display: grid;
+  gap: 16px;
+}
+.guild-update {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  min-width: 0;
+}
+.guild-update h3 {
+  margin: 0 0 6px;
+  overflow-wrap: anywhere;
+}
+.guild-update p {
+  white-space: pre-wrap;
+}
+.guild-update-state {
+  font-weight: 650;
+}
 @media (max-width: 640px) {
   .orientation-card {
     padding: 18px;
