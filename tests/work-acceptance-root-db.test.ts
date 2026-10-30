@@ -277,22 +277,31 @@ integration('Root acceptance: explicit consent and verified skills', { timeout: 
     await consent(person, slot, digest);
     const operator = host({ isOperator: (id: string) => id === founder.actor.accountId });
     // Simulate an integrity bug: the accepting update leaves the offer unbound to the new engagement.
-    await db.$executeRawUnsafe(
-      `CREATE FUNCTION test_unbind_offer() RETURNS trigger AS $$ BEGIN NEW."state" := 'REVOKED'; NEW."acceptedEngagementId" := NULL; RETURN NEW; END $$ LANGUAGE plpgsql`,
-    );
-    await db.$executeRawUnsafe(
-      `CREATE TRIGGER test_unbind_offer BEFORE UPDATE ON "RaidOffer" FOR EACH ROW EXECUTE FUNCTION test_unbind_offer()`,
-    );
     try {
+      // Created inside the try, replaceable and dropped with IF EXISTS so a killed run on a reused DB cannot wedge the next one.
+      await db.$executeRawUnsafe(
+        `CREATE OR REPLACE FUNCTION test_unbind_offer() RETURNS trigger AS $$ BEGIN NEW."state" := 'REVOKED'; NEW."acceptedEngagementId" := NULL; RETURN NEW; END $$ LANGUAGE plpgsql`,
+      );
+      await db.$executeRawUnsafe(`DROP TRIGGER IF EXISTS test_unbind_offer ON "RaidOffer"`);
+      await db.$executeRawUnsafe(
+        `CREATE TRIGGER test_unbind_offer BEFORE UPDATE ON "RaidOffer" FOR EACH ROW EXECUTE FUNCTION test_unbind_offer()`,
+      );
       await expect(accept(person, slot, operator, offer.offer.id)).rejects.toMatchObject({
         code: 'STORAGE_CONTRACT',
       });
     } finally {
-      await db.$executeRawUnsafe(`DROP TRIGGER test_unbind_offer ON "RaidOffer"`);
-      await db.$executeRawUnsafe(`DROP FUNCTION test_unbind_offer()`);
+      await db.$executeRawUnsafe(`DROP TRIGGER IF EXISTS test_unbind_offer ON "RaidOffer"`);
+      await db.$executeRawUnsafe(`DROP FUNCTION IF EXISTS test_unbind_offer() CASCADE`);
     }
     // The failed command committed nothing.
     expect(await db.$queryRawUnsafe('SELECT 1 FROM "Engagement"')).toEqual([]);
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "ActiveCommitment"')).toEqual([]);
+    expect(
+      await db.$queryRawUnsafe(
+        'SELECT "state","acceptedEngagementId" FROM "RaidOffer" WHERE "id"=$1::uuid',
+        offer.offer.id,
+      ),
+    ).toEqual([{ state: 'PENDING', acceptedEngagementId: null }]);
   });
   it('requires every one of several required skills against the real verified evidence', async () => {
     await setup();

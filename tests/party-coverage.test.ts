@@ -99,6 +99,12 @@ describe('Party skill coverage uses each member’s own evidence', () => {
     ['null', null],
     ['an empty object', {}],
     ['participants that are not an array', { version: 'v1', now, taxonomy, participants: 'alice' }],
+    // Without the up-front check, reading `entry.participant.id` would throw a TypeError for this entry.
+    [
+      'a participant entry without a participant',
+      { version: 'v1', now, taxonomy, participants: [{}] },
+    ],
+    // Not discriminating for the up-front check: explainSkillEligibility rejects it with the same error afterwards.
     ['a participant without evidence', context({ participant: { id: 'alice' } })],
   ])(
     'validates the context shape first: %s is a typed contract error, not a TypeError',
