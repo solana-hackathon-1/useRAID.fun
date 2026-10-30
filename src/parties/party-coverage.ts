@@ -1,5 +1,10 @@
 import { buildSkillRequirement } from '../skills/eligibility-requirement';
-import { explainSkillEligibility, type SkillEligibilityContext } from '../skills/eligibility';
+import {
+  explainSkillEligibility,
+  SkillEligibilityContextSchema,
+  SkillEligibilityContractError,
+  type SkillEligibilityContext,
+} from '../skills/eligibility';
 import type { SkillRank } from '../contracts/entities';
 
 export type PartyCoverageRule = 'ONE_MEMBER' | 'DISTRIBUTED_PARTY' | 'EVERY_MEMBER';
@@ -25,6 +30,9 @@ export function evaluatePartyCoverage(
   }[],
   coverage: PartyCoverageRule,
 ): ReturnType<typeof explainSkillEligibility> {
+  // The host's context is validated before any field is read, so a malformed one is the typed contract error.
+  if (!SkillEligibilityContextSchema.safeParse(context).success)
+    throw new SkillEligibilityContractError('INVALID_HOST_CONTRACT');
   const roster = new Set(rosterParticipantIds);
   const present = context.participants.map((entry) => entry.participant.id);
   if (

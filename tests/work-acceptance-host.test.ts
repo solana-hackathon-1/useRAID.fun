@@ -177,6 +177,19 @@ describe('Root acceptance host error boundaries', () => {
       ),
     ).rejects.toBe(retry);
   });
+  it.each(['STORAGE_CONTRACT', 'INVALID_INPUT'] as const)(
+    'does not mask a %s contract violation as a retryable outage',
+    async (code) => {
+      vi.mocked(readPublishedSkillTaxonomy).mockResolvedValueOnce(taxonomy);
+      const violation = new CommandReceiptError(code);
+      await expect(
+        host.assess(
+          tx((sql) => (sql.includes('SkillAssessment') ? violation : undefined)) as never,
+          context as never,
+        ),
+      ).rejects.toBe(violation);
+    },
+  );
   it('treats a malformed requirement as not approved but lets a broken host contract surface', async () => {
     vi.mocked(readPublishedSkillTaxonomy).mockResolvedValue(taxonomy);
     vi.mocked(explainSkillEligibility).mockImplementationOnce(() => {
