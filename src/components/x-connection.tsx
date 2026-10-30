@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { oauthMessage } from '@/lib/oauth-messages';
+import type { XReturnToken } from '@/lib/return-to';
 
 export function XConnection({
   account,
@@ -12,7 +13,7 @@ export function XConnection({
   account?: { username: string; displayName: string; profileImage: string | null } | null;
   status?: string;
   /** An X sign-in return token from the server-side allowlist, such as `account`. */
-  returnTo?: string;
+  returnTo?: XReturnToken;
   demo?: boolean;
 }) {
   const router = useRouter();

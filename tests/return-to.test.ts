@@ -26,6 +26,32 @@ describe('sign-in return path', () => {
     expect(accountReturn([`/raids/work/${listing}`])).toBeNull();
     expect(accountReturn([])).toBeNull();
   });
+  it('rejects dot segments and encoded slashes in the draft path', () => {
+    for (const bad of [
+      '/creator/../api/admin',
+      '/creator/a/../../api',
+      '/creator/./new',
+      '/creator/..',
+      '/creator/%2e%2e/api',
+      '/creator/%2E%2E/api',
+      '/creator/.%2e/api',
+      '/creator/a%2Fb',
+      '/creator/a%2fb',
+      '/creator/a%5Cb',
+      '/creator/a%5cb',
+      '/creator/a%252e%252e/b',
+      '/creator/new/..?draft=1',
+    ])
+      expect(accountReturn(bad), bad).toBeNull();
+  });
+  it('still allows dots and encoded characters that are not path traversal', () => {
+    for (const ok of [
+      '/creator/new?draft=a..b',
+      '/creator/new?next=%2Fx',
+      '/creator/guild-drafts/a.b',
+    ])
+      expect(accountReturn(ok), ok).not.toBeNull();
+  });
   it('ignores anything else, so the return link can never leave this site', () => {
     for (const bad of [
       undefined,
