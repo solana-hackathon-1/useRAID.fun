@@ -1,4 +1,8 @@
-import { listPublicGuildUpdates, readPublicGuild } from '../guild-profiles/guild-storage';
+import {
+  listPublicGuilds,
+  listPublicGuildUpdates,
+  readPublicGuild,
+} from '../guild-profiles/guild-storage';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { db } from './db';
 
@@ -14,4 +18,7 @@ export async function readGuildUpdatesFromHost(
   query: { limit?: number; before?: string },
 ) {
   return runCommandTransaction(db, (tx) => listPublicGuildUpdates(tx, slug, query));
+}
+export async function readGuildDirectoryFromHost(query: { limit?: number; after?: string }) {
+  return runCommandTransaction(db, (tx) => listPublicGuilds(tx, query));
 }

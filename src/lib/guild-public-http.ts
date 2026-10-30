@@ -6,6 +6,7 @@ import {
 } from '../guild-profiles/guild-public-http';
 import {
   guildPublicAvailable,
+  readGuildDirectoryFromHost,
   readGuildFromHost,
   readGuildUpdatesFromHost,
 } from './guild-public-host';
@@ -24,4 +25,5 @@ export const guildPublicHandlers = createGuildPublicHandlers({
   },
   guild: readGuildFromHost,
   updates: readGuildUpdatesFromHost,
+  guilds: readGuildDirectoryFromHost,
 });

@@ -156,6 +156,24 @@ export const PublicGuildUpdatesPageSchema = z.strictObject({
   updates: z.array(PublicGuildUpdateSchema).max(GUILD_UPDATE_PAGE_MAX),
   nextCursor: z.uuid().nullable(),
 });
+export const GUILD_DIRECTORY_PAGE_MAX = 20;
+export const ListPublicGuildsInputSchema = z.strictObject({
+  limit: z.number().int().min(1).max(GUILD_DIRECTORY_PAGE_MAX).optional(),
+  /** Keyset cursor: the slug of the last Guild already seen; the page continues strictly after it. */
+  after: PublicGuildSchema.shape.slug.optional(),
+});
+/** The whole directory projection of a Guild: no id, Founder, authority, token or state. */
+export const PublicGuildDirectoryEntrySchema = z.strictObject({
+  slug: PublicGuildSchema.shape.slug,
+  name: PublicGuildSchema.shape.name,
+  description: PublicGuildSchema.shape.description,
+});
+export type PublicGuildDirectoryEntry = z.infer<typeof PublicGuildDirectoryEntrySchema>;
+export const PublicGuildDirectoryPageSchema = z.strictObject({
+  guilds: z.array(PublicGuildDirectoryEntrySchema).max(GUILD_DIRECTORY_PAGE_MAX),
+  nextCursor: PublicGuildSchema.shape.slug.nullable(),
+});
+export type PublicGuildDirectoryPage = z.infer<typeof PublicGuildDirectoryPageSchema>;
 export const ActivateGuildInputSchema = z.strictObject({
   guildDraftId: uuid,
   expectedDraftRevision: z.number().int().min(1).max(2147483646),

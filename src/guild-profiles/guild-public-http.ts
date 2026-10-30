@@ -4,6 +4,8 @@ import { createErrorEnvelope, type ErrorCode } from '../contracts/protocol';
 import {
   GUILD_UPDATE_PAGE_MAX,
   GuildStorageError,
+  ListPublicGuildsInputSchema,
+  PublicGuildDirectoryPageSchema,
   PublicGuildUpdatesPageSchema,
 } from './guild-storage-contracts';
 import { z } from 'zod';
@@ -23,6 +25,8 @@ export interface GuildPublicHttpHost {
   rateLimit(request: Request): void | Promise<void>;
   guild(slug: string): Promise<unknown>;
   updates(slug: string, query: { limit?: number; before?: string }): Promise<unknown>;
+  /** Optional directory read (`GET /api/v1/guilds`); a host that omits it answers that route as not found. */
+  guilds?(query: { limit?: number; after?: string }): Promise<unknown>;
 }
 /** Public data, but a withdrawn update must disappear at once: never serve a stale or shared-cache copy. */
 export const guildPublicHeaders = Object.freeze({
@@ -55,7 +59,8 @@ export function createGuildPublicHandlers(host: GuildPublicHttpHost) {
     host?.version !== 'v1' ||
     ['requestId', 'available', 'rateLimit', 'guild', 'updates'].some(
       (name) => typeof host[name as keyof GuildPublicHttpHost] !== 'function',
-    )
+    ) ||
+    (host.guilds !== undefined && typeof host.guilds !== 'function')
   )
     throw new GuildStorageError('STORAGE_CONTRACT');
   function correlation() {
@@ -96,6 +101,17 @@ export function createGuildPublicHandlers(host: GuildPublicHttpHost) {
   }
   const unavailable = () => respond('SERVICE_UNAVAILABLE', correlation());
   return {
+    GUILDS(request: Request) {
+      return run(request, async () => {
+        if (!host.guilds) return respond('NOT_FOUND', correlation());
+        const query = ListPublicGuildsInputSchema.safeParse(readQuery(request));
+        if (!query.success) return respond('INVALID_COMMAND', correlation());
+        const result = PublicGuildDirectoryPageSchema.safeParse(await host.guilds(query.data));
+        return result.success
+          ? Response.json(result.data, { headers: guildPublicHeaders })
+          : unavailable();
+      });
+    },
     GUILD(request: Request, slug: string) {
       return run(request, async () => {
         const target = slugSchema.safeParse(slug);

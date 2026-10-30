@@ -1612,6 +1612,58 @@ footer {
 .panel .panel {
   background: var(--bg);
 }
+.guild-directory {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.guild-directory article {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+.guild-directory h3 a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.guild-directory .campaign-copy {
+  margin: 8px 0 0;
+}
+.guild-directory-nav {
+  align-items: center;
+  margin-top: 20px;
+}
+.guild-directory-back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent-text);
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.guild-directory-back:hover {
+  color: var(--text);
+}
+.guild-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  flex-wrap: wrap;
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+.guild-entry h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+.guild-entry p {
+  margin: 0;
+}
 .campaign-copy {
   white-space: pre-wrap;
   overflow-wrap: anywhere;

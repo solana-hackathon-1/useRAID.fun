@@ -4,18 +4,23 @@ import { z } from 'zod';
 import { PublicGuildSchema } from '../contracts/entities';
 import {
   GuildStorageError,
+  PublicGuildDirectoryPageSchema,
   PublicGuildUpdatesPageSchema,
+  type PublicGuildDirectoryEntry,
   type PublicGuildUpdate,
 } from '../guild-profiles/guild-storage-contracts';
 import { HttpError, publicRateLimit } from './auth';
 import {
   guildPublicAvailable,
+  readGuildDirectoryFromHost,
   readGuildFromHost,
   readGuildUpdatesFromHost,
 } from './guild-public-host';
 
 /** Updates shown per page; within the public API's page maximum. */
 export const GUILD_PUBLIC_PAGE_SIZE = 10;
+/** Guilds shown per directory page; within the public API's page maximum. */
+export const GUILD_DIRECTORY_PAGE_SIZE = 12;
 /** What the page may render: the approved projection minus the internal Guild id. */
 export interface GuildPublicPageProfile {
   slug: string;
@@ -51,7 +56,7 @@ export class GuildPublicPageThrottled extends Error {
  * Same budget and client key as `GET /api/v1/guilds/{slug}` (120 per 60 s per client). Spent once
  * per request: metadata and the page share this result.
  */
-const spendPageBudget = cache(async (): Promise<boolean> => {
+export const spendPageBudget = cache(async (): Promise<boolean> => {
   const request = new Request('http://guild-page.invalid/', { headers: await headers() });
   try {
     await publicRateLimit(request, 'guild-public', 120, 60, 600);
@@ -93,4 +98,27 @@ export async function loadGuildPublicPage(
   const page = PublicGuildUpdatesPageSchema.safeParse(raw);
   if (!page.success) throw new Error('GUILD_PUBLIC_CONTRACT');
   return { guild, ...page.data, before: cursor.data ?? null };
+}
+export interface GuildDirectoryView {
+  guilds: PublicGuildDirectoryEntry[];
+  nextCursor: string | null;
+  after: string | null;
+}
+const afterSchema = slugSchema.optional();
+/**
+ * One page of the Guild directory after the `after` slug cursor: same flag, budget, storage read and strict
+ * re-parse as `GET /api/v1/guilds`. Null for a malformed cursor. The caller checks the flag first to tell
+ * "not enabled" apart from "not found".
+ */
+export async function loadGuildDirectory(after: unknown): Promise<GuildDirectoryView | null> {
+  const cursor = afterSchema.safeParse(after);
+  if (!cursor.success || !guildPublicAvailable()) return null;
+  if (await spendPageBudget()) throw new GuildPublicPageThrottled();
+  const raw = await readGuildDirectoryFromHost({
+    limit: GUILD_DIRECTORY_PAGE_SIZE,
+    ...(cursor.data ? { after: cursor.data } : {}),
+  });
+  const page = PublicGuildDirectoryPageSchema.safeParse(raw);
+  if (!page.success) throw new Error('GUILD_PUBLIC_CONTRACT');
+  return { ...page.data, after: cursor.data ?? null };
 }
