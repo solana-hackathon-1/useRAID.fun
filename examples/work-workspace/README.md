@@ -1,6 +1,6 @@
 # Work workspace — consuming host
 
-Independent synthetic host for `MyRaidsWorkspace` and `WorkDesk`. It imports only the portable components, the
+Independent synthetic host for `MyRaidsWorkspace`, `WorkDesk` and the `AmendmentPanel` consent card. It imports only the portable components, the
 `workspace-client` and owned pure contracts (symlinked from `src/`), declares its own React/zod dependencies and
 renders with an injected transport. No RAID app, database, environment, session or network is used.
 

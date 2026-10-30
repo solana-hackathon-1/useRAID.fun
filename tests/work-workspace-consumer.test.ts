@@ -34,5 +34,7 @@ it('renders in an independent host with explicit dependencies and no dispatch', 
     noDispatchDuringSsr: true,
     conflictRefreshes: true,
     unreachableRetriesSameRequest: true,
+    amendmentConsentRenders: true,
+    amendmentStaleRefreshes: true,
   });
 }, 20000);
