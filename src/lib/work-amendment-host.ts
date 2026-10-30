@@ -8,6 +8,7 @@ import {
   readEffectiveTerms,
 } from '../work-loop/amendment-storage';
 import type { AmendmentDesk } from '../work-loop/amendment-desk-contracts';
+import { TermsSnapshotSchema } from '../contracts/entities';
 import { samePolicy, type RewardAsset } from '../work-loop/creation-form';
 import { assetKey } from '../contracts/assets';
 import { workAmendmentsEnabled } from './config';
@@ -81,6 +82,7 @@ interface Row {
   id: string;
   state: 'ACCESS_PENDING' | 'IN_PROGRESS';
   title: string;
+  terms?: unknown;
 }
 /**
  * The caller's own amendable engagements, as member and (for an allowlisted listing creator) as Founder, with every
@@ -101,7 +103,7 @@ export async function readAmendmentDeskFromHost(actor: WorkActor): Promise<Amend
     ),
     founder: isWorkOperator(actor.accountId)
       ? await tx.query<Row>(
-          `SELECT e."id"::text AS id,e."state",t."snapshot"->>'title' AS title FROM "Engagement" e
+          `SELECT e."id"::text AS id,e."state",t."snapshot"->>'title' AS title,raid_effective_terms(e."id") AS terms FROM "Engagement" e
            JOIN "RaidSlot" s ON s."id"=e."slotId" JOIN "WorkListing" l ON l."id"=s."listingId"
            JOIN "TermsVersion" t ON t."id"=e."termsVersionId"
            WHERE l."creatorAccountId"=$1 AND e."state" IN ('ACCESS_PENDING','IN_PROGRESS')
@@ -121,11 +123,12 @@ export async function readAmendmentDeskFromHost(actor: WorkActor): Promise<Amend
       const amendments = await runCommandTransaction(db, (tx) =>
         readEngagementAmendments(tx, actor, row.id, readHost),
       );
-      // Read after the history, so a consent in between shows the newer terms rather than a stale promise.
+      // Read after the history, so a consent in between shows the newer terms rather than a stale promise. The
+      // Founder's copy comes from the same listing-creator query that selected the engagement.
       const effectiveTerms =
         role === 'MEMBER'
           ? await runCommandTransaction(db, (tx) => readEffectiveTerms(tx, actor, row.id))
-          : null;
+          : TermsSnapshotSchema.parse(row.terms);
       engagements.push({
         engagementId: row.id,
         title: row.title,

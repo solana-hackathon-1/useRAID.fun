@@ -176,7 +176,7 @@ integration(
       expect(amendment).toMatchObject({ state: 'PROPOSED', requiresFunding: true });
       expect(canonicalRequestDigest(amendment.terms)).toBe(amendment.digest);
       expect(await effectiveAmount(engagementId)).toBe('1000000000');
-      // The member sees the proposal and their unchanged promise; the Founder sees it without a member's view of terms.
+      // Both sides see the proposal and the unchanged promise.
       const memberView = await (await desk(worker.actor)).json();
       expect(memberView.proposalsAvailable).toBe(true);
       expect(memberView.engagements).toHaveLength(1);
@@ -184,7 +184,8 @@ integration(
       expect(memberView.engagements[0].effectiveTerms.rewards[0].amount).toBe('1000000000');
       expect(memberView.engagements[0].amendments[0].id).toBe(amendment.id);
       const founderView = await (await desk(founder.actor)).json();
-      expect(founderView.engagements[0]).toMatchObject({ role: 'FOUNDER', effectiveTerms: null });
+      expect(founderView.engagements[0]).toMatchObject({ role: 'FOUNDER', engagementId });
+      expect(founderView.engagements[0].effectiveTerms.rewards[0].amount).toBe('1000000000');
       // Consent to a different version, or none, is refused and writes nothing.
       const wrong = await accept(worker.actor, amendment.id, 'f'.repeat(64));
       expect(wrong.status).toBe(409);

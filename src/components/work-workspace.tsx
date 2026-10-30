@@ -10,6 +10,8 @@ import {
   type MyRaidsView,
   type ReviewQueueView,
 } from '../work-http/workspace-client';
+import { AmendmentPanel } from './work-amendments';
+import type { AmendmentClient } from '../work-http/amendment-client';
 
 type Client = ReturnType<typeof createWorkClient>;
 const defaultClient = createWorkClient();
@@ -485,12 +487,14 @@ export function MyRaidsWorkspace({
   applicationsAvailable,
   startAvailable = false,
   api = defaultClient,
+  amendmentApi,
 }: {
   initial: MyRaidsView;
   submissionsAvailable: boolean;
   applicationsAvailable: boolean;
   startAvailable?: boolean;
   api?: Client;
+  amendmentApi?: AmendmentClient;
 }) {
   const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
   const [view, setView] = useState(initial);
@@ -588,6 +592,7 @@ export function MyRaidsWorkspace({
           );
         })}
       </section>
+      <AmendmentPanel role="MEMBER" api={amendmentApi} />
       {loadFailure && <p role="alert">{loadFailure}</p>}
     </div>
   );
@@ -859,12 +864,14 @@ export function WorkDesk({
   reviewsAvailable,
   offersAvailable,
   api = defaultClient,
+  amendmentApi,
 }: {
   initialReviews: ReviewQueueView;
   initialApplicants: ApplicantQueueView;
   reviewsAvailable: boolean;
   offersAvailable: boolean;
   api?: Client;
+  amendmentApi?: AmendmentClient;
 }) {
   const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
   const [reviews, setReviews] = useState(initialReviews);
@@ -930,6 +937,7 @@ export function WorkDesk({
           </section>
         ))}
       </section>
+      <AmendmentPanel role="FOUNDER" api={amendmentApi} />
       {loadFailure && <p role="alert">{loadFailure}</p>}
     </div>
   );
