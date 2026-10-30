@@ -125,6 +125,8 @@ async function permission(
     return fail('STORAGE_UNAVAILABLE');
   }
 }
+/** Shared reviewer-read authority (current assignment, purpose and scope); sibling advisory reads reuse it. */
+export { permission as lockPracticeReviewReadPermission };
 /** Same held transaction: current grant before private columns and again before returning any bytes. */
 export async function readPracticeTrialForReview(
   tx: CommandReceiptTransaction,

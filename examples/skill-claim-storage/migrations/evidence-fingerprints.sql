@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610300001_skill_evidence_fingerprints/migration.sql

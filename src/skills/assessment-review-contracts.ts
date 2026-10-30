@@ -143,6 +143,36 @@ export const SkillAssessmentReassessmentInputSchema = z.discriminatedUnion('acti
     reasonCategory: z.literal('FRAUDULENT_ASSESSMENT_EVIDENCE'),
   }).readonly(),
 ]);
+/**
+ * Closed list of reasons a participant may give when appealing an assessment decision (blueprint 09.7).
+ * DEFAULT starting set; there is deliberately no free-form OTHER. Extending it is an owner decision recorded
+ * with the contract, not a runtime option. Intake storage and adjudication are separate, undecided work.
+ */
+export const ASSESSMENT_APPEAL_REASON_CATEGORIES = Object.freeze([
+  'FACTUAL_ERROR',
+  'RUBRIC_MISAPPLIED',
+  'NEW_EVIDENCE',
+  'CONFLICT_OF_INTEREST',
+  'OWNERSHIP_DISPUTE',
+  'PROCESS_IRREGULARITY',
+  'SIGNAL_MISINTERPRETED',
+] as const);
+export const SkillAssessmentAppealReasonCategorySchema = z.enum(
+  ASSESSMENT_APPEAL_REASON_CATEGORIES,
+);
+/** A request names only its decided assessment version, a category and a statement; it grants or changes nothing. */
+export const SkillAssessmentAppealRequestSchema = z
+  .strictObject({
+    version: z.literal('v1'),
+    expectedAssessmentReference: SkillVersionReferenceSchema,
+    reasonCategory: SkillAssessmentAppealReasonCategorySchema,
+    statement: Reason,
+  })
+  .readonly();
+export type SkillAssessmentAppealReasonCategory = z.output<
+  typeof SkillAssessmentAppealReasonCategorySchema
+>;
+export type SkillAssessmentAppealRequest = z.output<typeof SkillAssessmentAppealRequestSchema>;
 export type SkillAssessmentReviewContext = z.output<typeof SkillAssessmentReviewContextSchema>;
 export type SkillAssessmentReviewInput = z.output<typeof SkillAssessmentReviewInputSchema>;
 export type SkillAssessmentReassessmentContext = z.output<
