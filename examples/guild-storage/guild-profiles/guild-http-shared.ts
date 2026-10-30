@@ -1,0 +1,1 @@
+../../../src/guild-profiles/guild-http-shared.ts

@@ -8,6 +8,7 @@ import {
 } from './command-receipts';
 import { saveGuildDraft } from './guild-profiles/draft-storage';
 import { createGuildPublicHandlers } from './guild-profiles/guild-public-http';
+import { createGuildRolesHandlers } from './guild-profiles/guild-roles-http';
 import { createGuildUpdatesHandlers } from './guild-profiles/guild-updates-http';
 import {
   activateGuild,
@@ -22,6 +23,7 @@ import {
   hasGuildAuthority,
   proposeOwnershipTransfer,
   respondOwnershipTransfer,
+  revokeGuildRole,
   readManagedGuild,
   readPublicGuild,
   GuildStorageError,
@@ -338,6 +340,74 @@ try {
     (await transaction((tx) => listPublicGuildUpdates(tx, slug, {}))).updates.map((u) => u.id),
     [news.update.id],
   );
+  // Roles and ownership over HTTP: same host session, host-supplied ownership policy, nothing from the body.
+  const rolesHttp = createGuildRolesHandlers({
+    version: 'v1',
+    requestId: randomUUID,
+    actor: async () => signedIn,
+    checkOrigin: () => undefined,
+    rateLimit: async () => undefined,
+    grant: (command) => transaction((tx) => grantGuildRole(tx, command, host)),
+    revoke: (command) => transaction((tx) => revokeGuildRole(tx, command, host)),
+    propose: (command) => transaction((tx) => proposeOwnershipTransfer(tx, command, host)),
+    respond: (command) =>
+      transaction((tx) =>
+        respondOwnershipTransfer(tx, command, {
+          ...host,
+          authorizeOwnershipTransfer: async () => true,
+        }),
+      ),
+  });
+  const deputy = await account('deputy');
+  const grantBody = {
+    guildId: active.guild.id,
+    granteeAccountId: deputy.accountId,
+    kind: 'PROFILE',
+    fields: ['name'],
+  };
+  signedIn = await account('role-stranger');
+  assert.equal((await rolesHttp.GRANT(send('/api/v1/guild-grants', grantBody, 'r-1'))).status, 403);
+  signedIn = founder;
+  const grantedByHttp = await rolesHttp.GRANT(send('/api/v1/guild-grants', grantBody, 'r-2'));
+  assert.equal(grantedByHttp.status, 200);
+  const roleId = ((await grantedByHttp.json()) as { grant: { id: string } }).grant.id;
+  signedIn = deputy;
+  assert.equal(await can(deputy, 'PROFILE'), true);
+  const surrender = await rolesHttp.REVOKE(
+    send(`/api/v1/guild-grants/${roleId}/revoke`, { guildId: active.guild.id }, 'r-3'),
+    roleId,
+  );
+  assert.equal(surrender.status, 200);
+  assert.equal(await can(deputy, 'PROFILE'), false);
+  signedIn = founder;
+  const offered = await rolesHttp.PROPOSE(
+    send(
+      '/api/v1/guild-ownership-transfers',
+      {
+        guildId: active.guild.id,
+        toAccountId: deputy.accountId,
+        expiresAt: new Date(Date.now() + 86400000).toISOString(),
+      },
+      'r-4',
+    ),
+  );
+  assert.equal(offered.status, 200);
+  const offeredId = ((await offered.json()) as { transfer: { id: string } }).transfer.id;
+  signedIn = deputy;
+  const declinedByHttp = await rolesHttp.RESPOND(
+    send(
+      `/api/v1/guild-ownership-transfers/${offeredId}`,
+      { guildId: active.guild.id, decision: 'DECLINE' },
+      'r-5',
+    ),
+    offeredId,
+  );
+  assert.equal(declinedByHttp.status, 200);
+  assert.equal(
+    ((await declinedByHttp.json()) as { transfer: { state: string } }).transfer.state,
+    'DECLINED',
+  );
+  signedIn = founder;
   // Ownership moves only when the Founder proposes, the recipient accepts and the host approves.
   const successor = await account('successor');
   const proposal = await transaction((tx) =>
@@ -383,7 +453,7 @@ try {
   assert.equal(moved.transfer.applied, true);
   assert.deepEqual([await can(founder, 'PROFILE'), await can(successor, 'PROFILE')], [false, true]);
   console.log(
-    'PASS: independent PG host Guild activation by approver, public allowlist, Founder edit, holder denied, treasury separate, consented ownership transfer, public updates, public HTTP reads, management HTTP; SIMULATED ONLY.',
+    'PASS: independent PG host Guild activation by approver, public allowlist, Founder edit, holder denied, treasury separate, consented ownership transfer, public updates, public HTTP reads, management HTTP, role and ownership HTTP; SIMULATED ONLY.',
   );
 } finally {
   await pool.end();
