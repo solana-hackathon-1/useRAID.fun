@@ -1,6 +1,6 @@
 # Party rosters, exact splits and member consent (T056)
 
-Module: `src/parties` (`createParty`, `proposePartyRoster`, `recordPartyMemberConsent`, `readPartyProposal`, `evaluatePartyCoverage`). Migration `202610290002_parties`. Consuming example: [`examples/parties`](../examples/parties/README.md) (pure contracts and coverage; the storage needs a host with the RAID work tables and is covered by the real-database tests only). Blueprint §§14.2–14.4, 13, 16; invariants P02, I01–I05, I08. Simulated funds only; no flag is added because no route or UI calls these commands yet. Writes take `PartyHost.allowNewWrites` (default off in any host that does not set it); replays and reads work while it is off.
+Module: `src/parties` (`createParty`, `proposePartyRoster`, `recordPartyMemberConsent`, `readPartyProposal`, `evaluatePartyCoverage`). Migration `202610290002_parties`. Consuming example: [`examples/parties`](../examples/parties/README.md) (pure contracts and coverage; the storage needs a host with the RAID work tables and is covered by the real-database tests only). Blueprint §§14.2–14.4, 13, 16; invariants P02, I01–I05, I08. Simulated funds only. Writes take `PartyHost.allowNewWrites` (default off in any host that does not set it); replays and reads work while it is off. The authenticated HTTP routes below are gated by `PARTY_ROSTER_WRITES_ENABLED` (default off); no UI calls them yet.
 
 ## What it does
 
@@ -12,12 +12,33 @@ Module: `src/parties` (`createParty`, `proposePartyRoster`, `recordPartyMemberCo
 
 None of it accepts work, holds capacity, binds funding, grants access or moves money. `allConsented` is not an acceptance.
 
+## HTTP transport (R15/R16)
+
+`createPartyHandlers(host)` (`src/parties/party-http.ts`) is the portable, authenticated Request/Response adapter over the four commands. Routes (Next host: `src/app/api/v1/parties/**`, `src/app/api/v1/party-proposals/**`):
+
+| Route                                                | Command                    | Body                                                                                        |
+| ---------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------- |
+| `POST /api/v1/parties`                               | `createParty`              | `{name}`                                                                                    |
+| `POST /api/v1/parties/{partyId}/proposals`           | `proposePartyRoster`       | `{slotId,termsVersionId,termsDigest,members:[{participantId,role,allocations:[{amount}]}]}` |
+| `POST /api/v1/party-proposals/{proposalId}/consents` | `recordPartyMemberConsent` | `{snapshotDigest}`                                                                          |
+| `GET /api/v1/party-proposals/{proposalId}`           | `readPartyProposal`        | none, no query string                                                                       |
+
+- **Host contract (`PartyHttpHost`)**, all explicit and replaceable: `requestId`, `actor` (the host's own cookie session, never the body), `checkOrigin`, `rateLimit(actor, 'READ' | 'WRITE')` (separate scopes so polling cannot block a consent), `create`, `propose`, `consent`, `read`. A host that is missing one fails closed at construction. The Next host is `src/lib/party-host.ts` + `src/lib/party-http.ts` (throttles `party-read:` 120/min and `party:` 30/min per account).
+- **Order**: POSTs check origin, then the session, then the throttle, then `Idempotency-Key` and a bounded (64 KiB) strict JSON body; GET authenticates and throttles and needs no origin. Ids in the path are the only source of `partyId`/`proposalId`; a body that also names one, a participant (consent) or any extra field is a schema failure. Uppercase UUIDs are canonicalized to lowercase before the digest is computed.
+- **Verified results**: every host result is re-parsed with its strict contract (nothing the contract does not name, such as a receipt id, can leave the process) and must describe the request: same Party, slot, terms version and digest, and a `snapshotDigest` that recomputes from the roster and amounts shown, so a substituted member, role or amount is a storage-contract failure (503, no detail). A replay returns the proposal as it stands now (consent state may have moved), so only the request-derived fields are compared.
+- **Errors**: storage codes map to stable public codes (`WRITES_DISABLED`→`NOT_AVAILABLE`, `REVISION_CONFLICT`→`REVISION_CHANGED`, `PUBLICATION_BLOCKED`/`DEADLINE_PASSED`→`NO_LONGER_OPEN`, `FORBIDDEN`, `NOT_FOUND`, `SLOT_FILLED`, `TERMS_VERSION_CHANGED`, `INVALID_INPUT`→`INVALID_COMMAND`); the map is keyed by every storage code so a new one is a compile error. Unknown or unreachable codes and database failures are a generic 503. Responses are `private, no-store` with `Vary: Cookie`.
+- **Flag**: `PARTY_ROSTER_WRITES_ENABLED` (exact `true`, default off, never in demo mode, `.env.example`) becomes `PartyHost.allowNewWrites`. With it off, a new write is `NOT_AVAILABLE`, while original receipts replay and a leader's or named member's own proposal read stays available.
+- **Host-supplied tables and ports**: the work tables the storage reads and writes (`"User"`, `"Session"`, `"Participant"`, `"WorkListing"`, `"RaidSlot"`, `"TermsVersion"`, `"CommandReceipt"`), the Party tables (`"Party"`, `"PartyProposal"`, `"PartyProposalMember"`, `"PartyMemberConsent"`, migration `202610290002_parties`), a `CommandReceiptTransaction` runner and the canonical identity locks. Nothing else is reached: no capacity, funding, treasury or notification port.
+- **Consuming example**: `examples/parties/host.ts` drives the handlers with `new Request` over an in-memory host, and `tests/party-http-boundary.test.ts` runs it in an independent install. Real storage: `tests/party-http-db.test.ts`; transport boundary: `tests/party-http.test.ts`; flag: `tests/party-host.test.ts`.
+
+Authority and effects: the leader is the creator's own participant, a member is the signed-in session, and a person outside the roster gets `NOT_FOUND` for reads and consents. No route accepts work, holds capacity, binds funding, grants access or moves money. Per-client throttling is per signed-in account; an IP throttle, browser UI, desktop/mobile behavior, independent review, UAT and production enablement are NOT VERIFIED.
+
 ## Limits and gaps (NOT VERIFIED or open)
 
 - Publication still refuses `PARTY` terms (`UNSUPPORTED_MODE`), and Party acceptance, atomic multi-member capacity, vacancy and replacement are separate tasks (T057, T025 follow-ups). Tests re-label the stored terms of a published slot to exercise the storage; no production path creates a `PARTY` listing yet.
 - Terms carry no coverage rule, so `evaluatePartyCoverage` takes it as input; where it is stored (terms version, listing) is an unmade decision. Nothing yet requires the coverage result before a proposal is accepted.
 - Only HUMAN members. An AI operator's consent for its registered worker is a later slice.
 - No percentage drafting or rounding policy: the blueprint requires a disclosed deterministic policy and none is recorded, so allocations must already be exact. Beneficiary identities and verified payout destinations are not frozen here (payout destinations do not exist yet).
-- No profile evolution (members added or removed on a reusable Party), no member replacement amendment, no dissolution, no HTTP route, UI, notification or per-member eligibility read from live evidence.
+- No profile evolution (members added or removed on a reusable Party), no member replacement amendment, no dissolution, no UI (the roster builder and consent screen are a separate slice), notification or per-member eligibility read from live evidence. The HTTP routes list no Parties a person leads or is named in; a client must keep the ids it received.
 - Suspension of a member is checked when the roster is proposed and by the member's own session at consent; acceptance must recheck current facts.
 - Independent review, UAT and business/release evidence are NOT VERIFIED.
