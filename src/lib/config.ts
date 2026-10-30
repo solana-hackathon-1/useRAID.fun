@@ -14,6 +14,12 @@ export const config = {
 
 /** Server-side switch for creating additional sign-in wallets (T006 B2). Existing credential resolution is independent. Off unless exactly 'true'. */
 export const walletLinksEnabled = () => process.env.WALLET_LINKS_ENABLED === 'true';
+/**
+ * New Party creation, roster proposals and member consents (T056 HTTP). Exact string 'true', default off, never in demo
+ * mode. It gates new writes only: original receipts replay and a leader's or member's own proposal read stay available.
+ */
+export const partyRosterWritesEnabled = () =>
+  !config.demo && process.env.PARTY_ROSTER_WRITES_ENABLED === 'true';
 export const trackingEnabled = () => process.env.X_TRACKING_V2_ENABLED !== 'false';
 // Automatic folding of an activity-free duplicate account (X callback, wallet link) is off unless
 // exactly "true". Its lock order is unsafe under concurrency (deadlocks and stale merges were
