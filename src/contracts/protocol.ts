@@ -127,6 +127,8 @@ export const ERROR_CONTRACT = {
     false,
   ],
   GUILD_UPDATE_LIMIT_REACHED: [409, 'The limit for saved updates has been reached.', false],
+  GUILD_GRANT_LIMIT_REACHED: [409, 'The limit for active role grants has been reached.', false],
+  GUILD_TRANSFER_PENDING: [409, 'An ownership transfer is already pending.', false],
   RATE_LIMITED: [429, 'Too many requests. Try again later.', true],
   SERVICE_UNAVAILABLE: [503, 'Service unavailable. Please try again.', true],
 } as const;
