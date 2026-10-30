@@ -16,6 +16,12 @@ export const config = {
 export const walletLinksEnabled = () => process.env.WALLET_LINKS_ENABLED === 'true';
 /** T024 root composition: operator closure route and worker pass. Off unless exactly 'true'; simulated funds only. */
 export const workClosureEnabled = () => process.env.WORK_CLOSURE_ENABLED === 'true';
+/**
+ * New Party creation, roster proposals and member consents (T056 HTTP). Exact string 'true', default off, never in demo
+ * mode. It gates new writes only: original receipts replay and a leader's or member's own proposal read stay available.
+ */
+export const partyRosterWritesEnabled = () =>
+  !config.demo && process.env.PARTY_ROSTER_WRITES_ENABLED === 'true';
 export const trackingEnabled = () => process.env.X_TRACKING_V2_ENABLED !== 'false';
 // Automatic folding of an activity-free duplicate account (X callback, wallet link) is off unless
 // exactly "true". Its lock order is unsafe under concurrency (deadlocks and stale merges were
