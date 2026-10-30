@@ -20,7 +20,9 @@ import {
   GUILD_UNPUBLISHED_UPDATE_LIMIT,
   GUILD_UPDATE_PAGE_MAX,
   GuildRoleGrantViewSchema,
+  GUILD_DIRECTORY_PAGE_MAX,
   GuildUpdateRefInputSchema,
+  ListPublicGuildsInputSchema,
   ListPublicGuildUpdatesInputSchema,
   ManagedGuildUpdateSchema,
   OWNERSHIP_TRANSFER_MAX_DAYS,
@@ -29,9 +31,11 @@ import {
   RespondOwnershipTransferInputSchema,
   RevokeGuildRoleInputSchema,
   type GuildOwnershipHost,
+  PublicGuildDirectoryEntrySchema,
   PublicGuildUpdateSchema,
   type GuildRoleGrantView,
   type ManagedGuildUpdate,
+  type PublicGuildDirectoryPage,
   type PublicGuildUpdate,
   type OwnershipTransferView,
   GuildStorageError,
@@ -477,6 +481,46 @@ export async function readPublicGuild(tx: CommandReceiptTransaction, slug: strin
     publicProfile: { ...row, primaryToken: null },
     publicProfileApproved: true,
   });
+}
+/**
+ * Active Guilds by slug (the unique index), the same approved projection as `readPublicGuild` minus ids and token:
+ * slug, name and description. `after` is the last slug already seen; a stale slug just continues after it.
+ */
+export async function listPublicGuilds(
+  tx: CommandReceiptTransaction,
+  options: unknown,
+): Promise<PublicGuildDirectoryPage> {
+  const parsed = ListPublicGuildsInputSchema.safeParse(options ?? {});
+  if (!parsed.success) fail('INVALID_INPUT');
+  const limit = parsed.data.limit ?? GUILD_DIRECTORY_PAGE_MAX;
+  const rows = await query<Record<string, unknown>>(
+    tx,
+    `SELECT g."id"::text,g."slug",v."name",v."description" FROM "Guild" g JOIN "GuildProfileVersion" v ON v."id"=g."currentVersionId"
+     WHERE ($1::text IS NULL OR g."slug">$1::text) ORDER BY g."slug" ASC LIMIT $2::int`,
+    [parsed.data.after ?? null, String(limit + 1)],
+  );
+  const guilds = rows.slice(0, limit).map((row) => {
+    const { id, slug, name, description } = row as {
+      id: string;
+      slug: string;
+      name: string;
+      description: string;
+    };
+    // The same host-approved projection as a single profile; only its public directory fields are kept.
+    const approved = projectPublicGuildProfile({
+      version: 'v1',
+      guild: { id, founderAccountId: 'redacted', revision: 1, primaryToken: null },
+      publicProfile: { id, slug, name, description, primaryToken: null },
+      publicProfileApproved: true,
+    });
+    const entry = PublicGuildDirectoryEntrySchema.safeParse({
+      slug: approved.slug,
+      name: approved.name,
+      description: approved.description,
+    });
+    return entry.success ? entry.data : fail('STORAGE_CONTRACT');
+  });
+  return { guilds, nextCursor: rows.length > limit ? guilds[guilds.length - 1].slug : null };
 }
 /**
  * The private management view: the Guild plus only the authority the caller actually holds. The Founder's account id

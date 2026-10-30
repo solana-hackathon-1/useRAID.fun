@@ -22,5 +22,8 @@ export function workEntryLinks(): WorkEntryLink[] {
 }
 /** Public main-navigation entries: visible to every visitor, but only while the feature's own flag is on. */
 export function publicNavLinks(): WorkEntryLink[] {
-  return on('WORK_FEED_READS_ENABLED') ? [{ label: 'Live Raids', href: '/raids' }] : [];
+  return [
+    ...(on('WORK_FEED_READS_ENABLED') ? [{ label: 'Live Raids', href: '/raids' }] : []),
+    ...(on('GUILD_PUBLIC_READS_ENABLED') ? [{ label: 'Guilds', href: '/guilds' }] : []),
+  ];
 }

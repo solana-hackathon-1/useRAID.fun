@@ -15,6 +15,7 @@ import {
   editGuildProfile,
   grantGuildRole,
   listManagedGuildUpdates,
+  listPublicGuilds,
   listPublicGuildUpdates,
   publishGuildUpdate,
   withdrawGuildUpdate,
@@ -231,6 +232,7 @@ try {
     rateLimit: () => undefined,
     guild: (name) => transaction((tx) => readPublicGuild(tx, name)),
     updates: (name, query) => transaction((tx) => listPublicGuildUpdates(tx, name, query)),
+    guilds: (query) => transaction((tx) => listPublicGuilds(tx, query)),
   });
   const visit = (path: string) => new Request(`https://host.example/api/v1/guilds/${path}`);
   const overHttp = await publicHttp.GUILD(visit(slug), slug);
@@ -253,6 +255,20 @@ try {
     'title',
   ]);
   assert.equal((await publicHttp.GUILD(visit('no-such-guild'), 'no-such-guild')).status, 404);
+  // The directory lists the active Guild by slug with name and description only: no id, Founder or token.
+  const directory = (await (
+    await publicHttp.GUILDS(new Request('https://host.example/api/v1/guilds'))
+  ).json()) as {
+    guilds: Record<string, unknown>[];
+    nextCursor: string | null;
+  };
+  assert.deepEqual(Object.keys(directory.guilds[0]).sort(), ['description', 'name', 'slug']);
+  assert.equal(directory.guilds[0].slug, slug);
+  assert.equal(directory.nextCursor, null);
+  assert.equal(
+    (await publicHttp.GUILDS(new Request('https://host.example/api/v1/guilds?unknown=1'))).status,
+    422,
+  );
   // A cursor that names no published update of this Guild is refused, not served as the end of the feed.
   const stale = randomUUID();
   assert.equal(
@@ -261,6 +277,10 @@ try {
   );
   open = false;
   assert.equal((await publicHttp.GUILD(visit(slug), slug)).status, 404);
+  assert.equal(
+    (await publicHttp.GUILDS(new Request('https://host.example/api/v1/guilds'))).status,
+    404,
+  );
   // Management over HTTP: the host's own session names the actor; the body never can.
   let signedIn: GuildActor = founder;
   const updatesHttp = createGuildUpdatesHandlers({
