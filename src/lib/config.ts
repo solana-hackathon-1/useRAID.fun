@@ -14,6 +14,8 @@ export const config = {
 
 /** Server-side switch for creating additional sign-in wallets (T006 B2). Existing credential resolution is independent. Off unless exactly 'true'. */
 export const walletLinksEnabled = () => process.env.WALLET_LINKS_ENABLED === 'true';
+/** T024 root composition: operator closure route and worker pass. Off unless exactly 'true'; simulated funds only. */
+export const workClosureEnabled = () => process.env.WORK_CLOSURE_ENABLED === 'true';
 export const trackingEnabled = () => process.env.X_TRACKING_V2_ENABLED !== 'false';
 // Automatic folding of an activity-free duplicate account (X callback, wallet link) is off unless
 // exactly "true". Its lock order is unsafe under concurrency (deadlocks and stale merges were

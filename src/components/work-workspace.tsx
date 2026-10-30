@@ -427,6 +427,12 @@ function EngagementCard({
             <time dateTime={card.closure.closedAt}>{when(card.closure.closedAt)}</time>. Closing
             work does not decide payment or fault.
           </p>
+          <p>
+            {!card.capacityHeld && <strong>Capacity released. </strong>}
+            Financial resolution: {card.closure.financialResolution.toLowerCase()}
+            {' — '}
+            no payout, refund or fault has been decided.
+          </p>
           {card.claims.map((c, i) => (
             <p key={i}>
               Reward claim: {units(c.amount, c.policy.verifiedDecimals)} ({c.policy.assetId.kind}) —{' '}

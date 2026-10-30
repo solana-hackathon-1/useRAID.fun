@@ -26,16 +26,19 @@ async function authority<T>(work: () => Promise<T> | T): Promise<T> {
     throw e;
   }
 }
+export { authority as workAuthority };
+/** The signed-in account and the hash of the session cookie it presented; no cookie is a 401. */
+export const requestActor = () =>
+  authority(async () => {
+    const u = await requireUser(),
+      cookie = (await cookies()).get(sessionCookie())?.value;
+    if (!cookie) throw new WorkHttpError(401);
+    return { accountId: u.id, sessionHash: hash(cookie) };
+  });
 export const workHandlers = createWorkHandlers({
   version: 'v1',
   requestId: randomUUID,
-  actor: () =>
-    authority(async () => {
-      const u = await requireUser(),
-        cookie = (await cookies()).get(sessionCookie())?.value;
-      if (!cookie) throw new WorkHttpError(401);
-      return { accountId: u.id, sessionHash: hash(cookie) };
-    }),
+  actor: requestActor,
   checkOrigin: (r) => authority(() => checkOrigin(r)),
   rateLimit: (a) => authority(() => rateLimit('work-workspace:' + a.accountId, 60, 60)),
   me: readMyRaidsFromHost,
