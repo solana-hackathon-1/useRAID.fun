@@ -439,6 +439,19 @@ integration('T021 applications and offers', () => {
       status: 'EXECUTED',
     });
   });
+  it('does not let an offer for one slot unlock consent for another application slot', async () => {
+    const { applicant, founder, slot, apply } = await setup();
+    const other = await seedWorkSlot(db, founder.actor.accountId, { admission: 'APPLICATION' });
+    const a = await applyTo(apply);
+    await offerTo(cmd(founder.actor, { applicationId: a.application.id, expiresAt: expiry() }));
+    await expect(
+      consentTo(applicant.actor, other, await digestOf(other.termsVersionId)),
+    ).rejects.toMatchObject({ code: 'ADMISSION_REQUIRED' });
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "WorkAcceptanceConsent"')).toEqual([]);
+    await expect(
+      consentTo(applicant.actor, slot, await digestOf(slot.termsVersionId)),
+    ).resolves.toMatchObject({ status: 'EXECUTED' });
+  });
   it('records consent for an open-admission Raid without any offer', async () => {
     const human = await seedWorkHuman(db);
     const slot = await seedWorkSlot(db);

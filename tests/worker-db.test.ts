@@ -9,6 +9,8 @@ import { assertSchemaCurrent, runJob, schedule, step } from '../src/lib/worker-j
 import { claimJob, enqueue } from '../src/lib/queue';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const gate = vi.hoisted(() => ({ on: false }));
+const closure = vi.hoisted(() => ({ run: vi.fn() }));
+vi.mock('../src/lib/work-closure-host', () => ({ runWorkClosureWorker: closure.run }));
 vi.mock('../src/lib/release', () => ({
   get launchpadsAvailable() {
     return gate.on;
@@ -54,6 +56,28 @@ suite('worker jobs module', () => {
     });
     await schedule(now);
     expect((await db.raid.findUniqueOrThrow({ where: { id: raidId } })).status).toBe('ACTIVE');
+  });
+  it('runs the work closure pass on every schedule and keeps the other steps when it fails', async () => {
+    closure.run.mockReset();
+    closure.run.mockRejectedValueOnce(new Error('closure pass failed'));
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const now = new Date();
+    await db.raid.update({
+      where: { id: raidId },
+      data: {
+        status: 'SCHEDULED',
+        startsAt: new Date(+now - 1000),
+        endsAt: new Date(+now + 86400000),
+      },
+    });
+    await schedule(now);
+    expect(closure.run).toHaveBeenCalledTimes(1);
+    expect(log).toHaveBeenCalledWith(expect.stringContaining('"step":"work-closure"'));
+    expect((await db.raid.findUniqueOrThrow({ where: { id: raidId } })).status).toBe('ACTIVE');
+    closure.run.mockResolvedValue(null);
+    await schedule(now);
+    expect(closure.run).toHaveBeenCalledTimes(2);
+    log.mockRestore();
   });
   it('ends ACTIVE v2 raids past endsAt and resets their finalization cursors', async () => {
     vi.stubEnv('X_TRACKING_V2_ENABLED', 'false');
