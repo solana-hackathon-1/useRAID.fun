@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { accountReturn, signInHref } from '../src/lib/return-to';
+import { accountReturn, creatorReturn, signInHref } from '../src/lib/return-to';
 
 const listing = '11111111-1111-4111-8111-111111111111';
 describe('sign-in return path', () => {
@@ -43,6 +43,42 @@ describe('sign-in return path', () => {
       '/creator/new/..?draft=1',
     ])
       expect(accountReturn(bad), bad).toBeNull();
+  });
+  it('rejects control characters and line separators that browsers strip before resolving dots', () => {
+    for (const bad of [
+      '/creator/.\t./api/x',
+      '/creator/.\n./api',
+      '/creator/\t../api',
+      '/creator/..\t',
+      '/creator/a/.\r./b',
+      '/creator/.\0./api',
+      '/creator/. ./api',
+      '/creator/. ./api',
+      '/creator/new?x=1\n',
+      '/creator/new\u007f',
+      '/creator/a b',
+      '/creator/%00',
+      '/creator/a%00b',
+    ])
+      expect(accountReturn(bad), JSON.stringify(bad)).toBeNull();
+  });
+  it('keeps a nested encoded returnTo working', () => {
+    const nested = `/creator/balance?returnTo=${encodeURIComponent('/creator/new?draft=abc')}`;
+    expect(accountReturn(nested)).toEqual({ href: nested, label: 'Return to draft' });
+  });
+  it('gives the balance page only a validated Creator Studio path', () => {
+    const nested = `/creator/balance?returnTo=${encodeURIComponent('/creator/new?draft=abc')}`;
+    expect(creatorReturn('/creator/new?draft=abc')).toBe('/creator/new?draft=abc');
+    expect(creatorReturn(nested)).toBe(nested);
+    for (const bad of [
+      undefined,
+      ['/creator/a', '/creator/b'],
+      '/creator/.\t./api',
+      '/creator/../api',
+      `/raids/work/${listing}`,
+      'https://evil.example',
+    ])
+      expect(creatorReturn(bad), JSON.stringify(bad)).toBeNull();
   });
   it('still allows dots and encoded characters that are not path traversal', () => {
     for (const ok of [
