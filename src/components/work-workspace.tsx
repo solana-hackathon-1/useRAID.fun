@@ -11,6 +11,7 @@ import {
   type ReviewQueueView,
 } from '../work-http/workspace-client';
 import { AmendmentPanel } from './work-amendments';
+import { ScopeText } from './scope-text';
 import type { AmendmentClient } from '../work-http/amendment-client';
 
 type Client = ReturnType<typeof createWorkClient>;
@@ -383,7 +384,7 @@ function EngagementCard({
         .
       </p>
       <h4>Accepted terms</h4>
-      <p style={wrap}>{card.acceptedTerms.scope}</p>
+      <ScopeText scope={card.acceptedTerms.scope} />
       <ul>
         {card.acceptedTerms.roster.map((m) => (
           <li key={m.participantId} style={wrap}>

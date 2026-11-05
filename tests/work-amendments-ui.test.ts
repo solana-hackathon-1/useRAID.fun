@@ -3,6 +3,9 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { AmendmentPanel, ConfirmAction, confirmStep } from '../src/components/work-amendments';
+import { FocusedStatus } from '../src/components/focus-status';
+import { ScopeText } from '../src/components/scope-text';
+import { readableScope } from '../src/work-http/scope-text';
 import { MyRaidsWorkspace, WorkDesk } from '../src/components/work-workspace';
 import {
   buildProposal,
@@ -82,7 +85,7 @@ const amendment = (state: string, over: Record<string, unknown> = {}, t = raised
   ...over,
 });
 const desk = (
-  engagements: { role: 'MEMBER' | 'FOUNDER'; amendments?: unknown[] }[],
+  engagements: { role: 'MEMBER' | 'FOUNDER'; amendments?: unknown[]; effectiveTerms?: unknown }[],
   proposalsAvailable = true,
 ) =>
   AmendmentDeskSchema.parse({
@@ -93,7 +96,7 @@ const desk = (
       title: 'Synthetic documentation task',
       state: 'IN_PROGRESS',
       role: e.role,
-      effectiveTerms: current,
+      effectiveTerms: e.effectiveTerms ?? current,
       amendments: e.amendments ?? [],
     })),
   });
@@ -433,5 +436,87 @@ describe('#361-6 Decline and Withdraw need a second, explicit step', () => {
     expect(readFileSync('src/components/work-amendments.tsx', 'utf8')).not.toMatch(
       /window\.confirm|\bconfirm\(/,
     );
+  });
+});
+
+describe('#384-1 a resolved action hands focus to its status message', () => {
+  it('renders the status as a focusable region and nothing when there is no message', () => {
+    const html = renderToStaticMarkup(
+      createElement(FocusedStatus, { message: 'You declined <b>it</b>.' }),
+    );
+    expect(html).toMatch(/<p[^>]*role="status"/);
+    expect(html).toMatch(/<p[^>]*tabindex="-1"/);
+    expect(html).toContain('You declined &lt;b&gt;it&lt;/b&gt;.');
+    expect(renderToStaticMarkup(createElement(FocusedStatus, { message: '' }))).toBe('');
+  });
+  it('shows the resolved message through the focusable status in the amendment panel', () => {
+    const source = readFileSync('src/components/work-amendments.tsx', 'utf8');
+    expect(source).toContain('<FocusedStatus message={runner.done');
+    expect(source).not.toMatch(/\{runner\.done && <p role="status">/);
+  });
+});
+
+describe('#384-2 scope is shown as readable text, never raw JSON', () => {
+  const stored = JSON.stringify({
+    outcome: 'Ship the guide',
+    deliverables: ['Guide PDF', 'Source files'],
+    exclusions: ['Translations'],
+    dependencies: [],
+  });
+  it('reads the structured scope the accepted terms store', () => {
+    expect(readableScope(stored)).toEqual({
+      outcome: 'Ship the guide',
+      sections: [
+        { label: 'Deliverables', items: ['Guide PDF', 'Source files'] },
+        { label: 'Not included', items: ['Translations'] },
+      ],
+    });
+  });
+  it('keeps an ordinary scope sentence as plain text', () => {
+    expect(readableScope('Write the installation guide.')).toBeNull();
+  });
+  it('falls back to the exact text for JSON that is not that shape', () => {
+    for (const odd of [
+      '{}',
+      '[]',
+      '123',
+      '"x"',
+      'null',
+      '{"outcome":5}',
+      '{"outcome":"a","deliverables":"b"}',
+      '{"outcome":"a","extra":["b"]}',
+      '{"deliverables":[1]}',
+      '{broken',
+    ])
+      expect(readableScope(odd), odd).toBeNull();
+  });
+  it('renders text only: outcome, labelled lists, escaped, no raw braces', () => {
+    const html = renderToStaticMarkup(createElement(ScopeText, { scope: stored }));
+    expect(html).toContain('Ship the guide');
+    expect(html).toContain('Deliverables');
+    expect(html).toMatch(/<li[^>]*>Guide PDF<\/li>/);
+    expect(html).toContain('Not included');
+    expect(html).not.toContain('Depends on');
+    expect(html).not.toContain('{');
+    expect(html).not.toContain('&quot;');
+    const hostile = JSON.stringify({
+      outcome: '<img src=x onerror=1>',
+      deliverables: ['<b>x</b>'],
+    });
+    const safe = renderToStaticMarkup(createElement(ScopeText, { scope: hostile }));
+    expect(safe).not.toContain('<img');
+    expect(safe).toContain('&lt;img src=x onerror=1&gt;');
+    expect(safe).toContain('&lt;b&gt;x&lt;/b&gt;');
+    const plain = renderToStaticMarkup(createElement(ScopeText, { scope: 'Plain <i>scope</i>' }));
+    expect(plain).toContain('Plain &lt;i&gt;scope&lt;/i&gt;');
+  });
+  it('shows the Founder their current scope readably', () => {
+    const t = terms({ scope: stored });
+    const html = panel('FOUNDER', desk([{ role: 'FOUNDER', effectiveTerms: t }]));
+    expect(html).toContain('Current scope');
+    expect(html).toContain('Ship the guide');
+    expect(html).toMatch(/<li[^>]*>Guide PDF<\/li>/);
+    // The editable "New scope" field keeps the stored text; the read-only display must not show it.
+    expect(html.replace(/<textarea[\s\S]*?<\/textarea>/g, '')).not.toContain('&quot;outcome&quot;');
   });
 });
