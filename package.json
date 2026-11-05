@@ -71,7 +71,10 @@
       "jayson": "5.0.0"
     },
     "deepmerge-ts": "^8.0.0",
-    "toml": "5.0.1"
+    "toml": "5.0.1",
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "^11.0.4"
+    }
   },
   "type": "module",
   "engines": {
