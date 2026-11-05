@@ -48,6 +48,17 @@ export async function recordAcceptanceConsent(
     async () => {
       if (!host.allowNewWrites) fail('WRITES_DISABLED');
       auth = await currentHuman(tx, actor);
+      // Share-lock the listing then the slot, the order every slot writer uses, so a concurrent fill queues behind this
+      // consent and one that already committed is read below. The database guard takes the same locks as a backstop.
+      const refs = await tx.query<{ listingId: string }>(
+        'SELECT "listingId"::text FROM "RaidSlot" WHERE "id"=$1::uuid',
+        [value.slotId],
+      );
+      if (refs.length !== 1) fail('NOT_FOUND');
+      await tx.query('SELECT "id" FROM "WorkListing" WHERE "id"=$1::uuid FOR SHARE', [
+        refs[0].listingId,
+      ]);
+      await tx.query('SELECT "id" FROM "RaidSlot" WHERE "id"=$1::uuid FOR SHARE', [value.slotId]);
       const rows = await tx.query<{
         state: string;
         listingState: string;
@@ -72,8 +83,8 @@ export async function recordAcceptanceConsent(
         slot.digest !== value.termsDigest
       )
         fail('TERMS_VERSION_CHANGED');
-      // Pre-screen with acceptance's own checks and codes. These reads take no lock: a concurrent accept, revoke or
-      // terms edit can still land before the insert, and acceptance rechecks everything under locks.
+      // Pre-screen with acceptance's own checks and codes. The Raid rows are share-locked above, but the offer and
+      // terms reads below take no lock: a concurrent revoke can still land, and acceptance rechecks everything.
       const terms = await definition(tx, value.termsVersionId);
       const now = await clock(tx);
       assertOpenForTaking(terms, now);
