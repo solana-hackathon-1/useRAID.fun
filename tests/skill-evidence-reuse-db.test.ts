@@ -14,7 +14,10 @@ import {
   type PracticeReviewAssignmentOptions,
 } from '../src/skills/practice-review-assignment-storage';
 import { saveSkillClaim } from '../src/skills/claim-storage';
-import { fingerprintEvidenceReference } from '../src/skills/evidence-fingerprint';
+import {
+  EVIDENCE_FINGERPRINT_VERSION,
+  fingerprintEvidenceReference,
+} from '../src/skills/evidence-fingerprint';
 import { readEvidenceReuseForReview } from '../src/skills/evidence-reuse-storage';
 import { definition as fixture } from '../examples/skill-assessments/fixtures';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
@@ -283,6 +286,32 @@ integration(
       // Identity of the other claimant is never part of the signal.
       expect(JSON.stringify(signalA)).not.toContain(b.accountId);
       expect(JSON.stringify(signalA)).not.toContain(b.participantId);
+    });
+
+    it('writes the current fingerprint version and ignores legacy v1 digests, so pre-v2 hash-route rows cannot false-match (#372)', async () => {
+      const a = await actor(),
+        b = await actor();
+      await claim(a, 'frontend', ['https://spa.example/#/u/alice']);
+      await claim(b, 'frontend', ['https://spa.example/#/u/bob']);
+      const versions = await db.$queryRawUnsafe<{ v: string }[]>(
+        'SELECT DISTINCT "fingerprintVersion" AS v FROM "SkillEvidenceFingerprint"',
+      );
+      expect(versions).toEqual([{ v: EVIDENCE_FINGERPRINT_VERSION }]);
+      expect(EVIDENCE_FINGERPRINT_VERSION).toBe('v2');
+      const [ca, cb] = [await reviewable(a), await reviewable(b)];
+      expect(await readReuse(ca)).toMatchObject({ possibleReuse: false });
+      // Legacy v1 rows (the old hash-route handling hashed both routes to the bare-root digest).
+      const legacy = 'a'.repeat(64);
+      await db.$executeRawUnsafe(
+        `INSERT INTO "SkillEvidenceFingerprint"("skillClaimVersionId","fingerprintVersion","fingerprint") SELECT "currentVersionId",'v1','${legacy}' FROM "SkillClaim"`,
+      );
+      expect(await readReuse(ca)).toMatchObject({ possibleReuse: false, matchedReferenceCount: 0 });
+      expect(await readReuse(cb)).toMatchObject({ possibleReuse: false });
+      // The same digest under the current version is a genuine match.
+      await db.$executeRawUnsafe(
+        `INSERT INTO "SkillEvidenceFingerprint"("skillClaimVersionId","fingerprintVersion","fingerprint") SELECT "currentVersionId",'${EVIDENCE_FINGERPRINT_VERSION}','${legacy}' FROM "SkillClaim"`,
+      );
+      expect(await readReuse(ca)).toMatchObject({ possibleReuse: true, otherParticipantCount: 1 });
     });
 
     it('does not flag the same participant reusing a portfolio link across their own skills', async () => {

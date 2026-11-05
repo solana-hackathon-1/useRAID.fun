@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { CommandReceiptTransaction } from '../command-receipts';
+import { EVIDENCE_FINGERPRINT_VERSION } from './evidence-fingerprint';
 import { SkillTaxonomyActorSchema, type SkillTaxonomyActor } from './taxonomy-storage';
 import type { PracticeReviewAssignmentUseScope } from './practice-review-assignment-storage';
 import {
@@ -59,8 +60,8 @@ export async function readEvidenceReuseForReview(
  JOIN "SkillEvidenceFingerprint" mine ON mine."skillClaimVersionId"=c."currentVersionId"
  JOIN "SkillEvidenceFingerprint" shared ON shared."fingerprintVersion"=mine."fingerprintVersion" AND shared."fingerprint"=mine."fingerprint" AND shared."skillClaimVersionId"<>mine."skillClaimVersionId"
  JOIN "SkillClaim" other ON other."currentVersionId"=shared."skillClaimVersionId" AND other."participantId"<>s."participantId"
- WHERE s."id"=$1::uuid`,
-      [assignment.submissionId],
+ WHERE s."id"=$1::uuid AND mine."fingerprintVersion"=$2`,
+      [assignment.submissionId, EVIDENCE_FINGERPRINT_VERSION],
     );
   } catch {
     return fail('STORAGE_UNAVAILABLE');
