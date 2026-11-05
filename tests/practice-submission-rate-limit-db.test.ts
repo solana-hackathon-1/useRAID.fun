@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { db } from '../src/lib/db';
 import { hash } from '../src/lib/auth-primitives';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
@@ -10,6 +10,8 @@ import {
   submitPracticeTrial,
   PracticeTrialSubmissionStorageError,
 } from '../src/skills/practice-trial-submission-storage';
+import { submitPracticeTrialFromPortal } from '../src/lib/practice-portal-host';
+import { createPracticePortalHandlers } from '../src/skills/practice-portal-http';
 import { definition as fixture } from '../examples/skill-assessments/fixtures';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 
@@ -168,6 +170,7 @@ integration('T014 per-account practice submission rate limit (#56, O09 default n
       ),
     );
   });
+  afterEach(() => vi.unstubAllEnvs());
   afterAll(() => db.$disconnect());
 
   it('refuses a submission over the account limit with RATE_LIMITED and a bounded retry delay, leaving no row or receipt', async () => {
@@ -248,6 +251,45 @@ integration('T014 per-account practice submission rate limit (#56, O09 default n
     ])
       expect(await limited(submit(a, s, bad))).toMatchObject({ code: 'STORAGE_CONTRACT' });
     expect(await submissions()).toBe(0);
+  });
+  it('answers 429 RATE_LIMITED with Retry-After from real storage through the portal host and HTTP handlers (#359 note 7)', async () => {
+    vi.stubEnv('PRACTICE_PORTAL_READS_ENABLED', 'true');
+    vi.stubEnv('PRACTICE_TRIAL_CATALOG_ID', catalogId);
+    vi.stubEnv('PRACTICE_TRIAL_SUBMISSIONS_ENABLED', 'true');
+    vi.stubEnv('PRACTICE_SUBMISSION_RATE_LIMIT_MAX', '1');
+    vi.stubEnv('PRACTICE_SUBMISSION_RATE_LIMIT_WINDOW_SECONDS', '3600');
+    const a = await actor();
+    const [first, second] = [await begin(a), await begin(a)];
+    const unused = async () => ({});
+    const handlers = createPracticePortalHandlers({
+      version: 'v1',
+      requestId: () => 'synthetic-request',
+      actor: async () => a,
+      checkOrigin: () => undefined,
+      rateLimit: () => undefined,
+      list: unused,
+      read: unused,
+      start: unused,
+      submit: submitPracticeTrialFromPortal,
+    });
+    const post = (startId: string) =>
+      handlers.SUBMIT(
+        new Request(`https://example.test/api/v1/practice/starts/${startId}/submit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Idempotency-Key': randomUUID() },
+          body: JSON.stringify(body(startId)),
+        }),
+        startId,
+      );
+    expect((await post(first)).status).toBeLessThan(300);
+    const refused = await post(second);
+    expect(refused.status).toBe(429);
+    const retryAfter = Number(refused.headers.get('retry-after'));
+    expect(retryAfter).toBeGreaterThanOrEqual(1);
+    expect(retryAfter).toBeLessThanOrEqual(3600);
+    expect(refused.headers.get('cache-control')).toBe('private, no-store');
+    expect((await refused.json()).error.code).toBe('RATE_LIMITED');
+    expect([await submissions(), await receipts()]).toEqual([1, 1]);
   });
   it('indexes the rate-limit count by account and newest submission so it does not scan the table (#359 item 1)', async () => {
     const rows = await db.$queryRawUnsafe<{ indexdef: string }[]>(
