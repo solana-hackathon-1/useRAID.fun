@@ -39,10 +39,23 @@ interface EngagementRow {
   guildId: string;
   termsVersionId: string;
   state: string;
-  acceptedTerms: {
-    acceptanceCriteria: string[];
-    deadlines: { submission: string; operationalClosure: string };
-  };
+}
+interface EffectiveTerms {
+  acceptanceCriteria: string[];
+  deadlines: { submission: string; operationalClosure: string };
+}
+/**
+ * Effective terms, read in a statement of their own after the engagement lock is held. An amendment accepted while
+ * the locking statement waited takes the engagement lock without writing an Engagement row, so terms selected in
+ * that statement would come from its older snapshot.
+ */
+async function effectiveTerms(tx: Tx, id: string) {
+  const rows = await tx.query<{ acceptedTerms: EffectiveTerms }>(
+    'SELECT raid_effective_terms("id") AS "acceptedTerms" FROM "Engagement" WHERE "id"=$1::uuid',
+    [id],
+  );
+  if (rows.length !== 1) fail('STORAGE_CONTRACT');
+  return rows[0].acceptedTerms;
 }
 const iso = (value: unknown) => (value instanceof Date ? value.toISOString() : value);
 async function readSubmission(tx: Tx, id: string) {
@@ -84,7 +97,7 @@ export async function submitWork(tx: Tx, command: WorkCommand, host: SubmissionH
       auth = await currentHuman(tx, actor);
       // Only the actual member sees this engagement; absent and foreign engagements are indistinguishable.
       const rows = await tx.query<EngagementRow>(
-        `SELECT e."id"::text,e."guildId",e."termsVersionId"::text,e."state",raid_effective_terms(e."id") AS "acceptedTerms" FROM "Engagement" e JOIN "EngagementMember" m ON m."engagementId"=e."id" WHERE e."id"=$1::uuid AND m."participantId"=$2::uuid FOR UPDATE OF e`,
+        `SELECT e."id"::text,e."guildId",e."termsVersionId"::text,e."state" FROM "Engagement" e JOIN "EngagementMember" m ON m."engagementId"=e."id" WHERE e."id"=$1::uuid AND m."participantId"=$2::uuid FOR UPDATE OF e`,
         [value.engagementId, auth.participantId],
       );
       if (rows.length !== 1) fail('NOT_FOUND');
@@ -97,7 +110,8 @@ export async function submitWork(tx: Tx, command: WorkCommand, host: SubmissionH
       if (value.expectedSubmissionNumber !== latest.n + 1) fail('REVISION_CONFLICT');
       const terms = await definition(tx, e.termsVersionId);
       if (latest.n + 1 > 1 + terms.review.maxRevisionRounds) fail('REVISION_LIMIT');
-      let due = Date.parse(e.acceptedTerms.deadlines.submission);
+      const accepted = await effectiveTerms(tx, e.id);
+      let due = Date.parse(accepted.deadlines.submission);
       if (e.state === 'REVISION_REQUESTED') {
         const [r] = await tx.query<{ due: Date }>(
           'SELECT r."revisionDeadline" AS due FROM "WorkReview" r JOIN "WorkSubmission" s ON s."id"=r."submissionId" WHERE s."engagementId"=$1::uuid AND s."submissionNumber"=$2::int',
@@ -191,7 +205,7 @@ export async function decideReview(tx: Tx, command: WorkCommand, host: Submissio
       );
       if (ref.length !== 1) fail('FORBIDDEN');
       const rows = await tx.query<EngagementRow>(
-        `SELECT e."id"::text,e."guildId",e."termsVersionId"::text,e."state",raid_effective_terms(e."id") AS "acceptedTerms" FROM "Engagement" e WHERE e."id"=$1::uuid FOR UPDATE`,
+        `SELECT e."id"::text,e."guildId",e."termsVersionId"::text,e."state" FROM "Engagement" e WHERE e."id"=$1::uuid FOR UPDATE`,
         [ref[0].engagementId],
       );
       if (rows.length !== 1) fail('STORAGE_CONTRACT');
@@ -211,8 +225,9 @@ export async function decideReview(tx: Tx, command: WorkCommand, host: Submissio
         value.submissionId,
       ]);
       if (prior.length) fail('REVIEW_EXISTS');
-      // Original accepted criteria only: every one is judged exactly once, none invented.
-      const total = e.acceptedTerms.acceptanceCriteria.length;
+      // The criteria in force once the lock is held: every one is judged exactly once, none invented.
+      const accepted = await effectiveTerms(tx, e.id);
+      const total = accepted.acceptanceCriteria.length;
       if (value.criteria.length !== total || value.criteria.some((c) => c.index >= total))
         fail('INVALID_INPUT');
       const terms = await definition(tx, e.termsVersionId);
@@ -221,7 +236,7 @@ export async function decideReview(tx: Tx, command: WorkCommand, host: Submissio
         if (ref[0].number > terms.review.maxRevisionRounds) fail('REVISION_LIMIT');
         const due = Date.parse(value.revisionDeadline as string);
         if (due <= now.getTime()) fail('DEADLINE_PASSED');
-        if (due > Date.parse(e.acceptedTerms.deadlines.operationalClosure)) fail('INVALID_INPUT');
+        if (due > Date.parse(accepted.deadlines.operationalClosure)) fail('INVALID_INPUT');
       }
       await currentActor(tx, actor, locks);
       const sortedCriteria = [...value.criteria].sort((a, b) => a.index - b.index);
