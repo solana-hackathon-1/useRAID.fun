@@ -13,6 +13,7 @@ import {
   closeEngagementFromHost,
   createRootClosureHost,
   runWorkClosureWorker,
+  WORK_CLOSURE_REALARM_MS,
 } from '../src/lib/work-closure-host';
 
 const actor = { accountId: 'operator-1', sessionHash: 'a'.repeat(64) };
@@ -107,4 +108,29 @@ it('reports a missing worker session once per outage, not on every tick, and aga
   await expect(runWorkClosureWorker()).rejects.toThrow('storage down');
   port.pass.mockResolvedValue(ok);
   await runWorkClosureWorker();
+});
+it('re-raises a persistent missing worker session at a bounded interval so a lost log line cannot hide the outage', async () => {
+  vi.stubEnv('WORK_CLOSURE_ENABLED', 'true');
+  vi.stubEnv('WORK_CLOSURE_WORKER_ACCOUNT_ID', 'operator-1');
+  const ok = { considered: 0, closed: 0, skipped: [], failed: [] };
+  let now = 1_000_000;
+  const clock = () => now;
+  port.pass.mockResolvedValueOnce(ok);
+  await runWorkClosureWorker(clock);
+  port.pass.mockRejectedValue(new WorkError('UNAUTHENTICATED'));
+  await expect(runWorkClosureWorker(clock)).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
+  // Within the interval every tick stays quiet and fails closed.
+  now += WORK_CLOSURE_REALARM_MS - 1;
+  expect(await runWorkClosureWorker(clock)).toBeNull();
+  // At the interval the same outage is raised again, then quiet for another interval.
+  now += 1;
+  await expect(runWorkClosureWorker(clock)).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
+  now += WORK_CLOSURE_REALARM_MS - 1;
+  expect(await runWorkClosureWorker(clock)).toBeNull();
+  now += 1;
+  await expect(runWorkClosureWorker(clock)).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
+  // Every tick still ran the pass, which is what fails closed.
+  expect(port.pass).toHaveBeenCalledTimes(6);
+  port.pass.mockResolvedValue(ok);
+  expect(await runWorkClosureWorker(clock)).toEqual(ok);
 });
