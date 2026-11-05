@@ -331,7 +331,7 @@ integration('T024 root composition: worker closure and operator closure route', 
     const fresh2 = await setup({ ...base, operationalClosure: at(9100) });
     await seedWorkHuman(db, operatorId);
     await untilPast(at(9100));
-    const broken = new Set([stale.engagementId, stale2.engagementId]);
+    const broken = new Set<string>([stale.engagementId, stale2.engagementId]);
     const host = {
       allowNewWrites: true,
       authorize: async (_tx: unknown, _actor: unknown, t: { engagementId: string }) =>
@@ -353,7 +353,7 @@ integration('T024 root composition: worker closure and operator closure route', 
     );
   }, 60000);
 
-  it('bounds a pass: at most `limit` failures and `limit` other attempts, deterministic oldest first', async () => {
+  it('bounds a pass by `maxFailures`, stepping over failures oldest first', async () => {
     const base = soon();
     const rows = [];
     for (const ms of [8800, 8850, 8900, 8950])
@@ -361,7 +361,7 @@ integration('T024 root composition: worker closure and operator closure route', 
     await seedWorkHuman(db, operatorId);
     await untilPast(at(8950));
     const host = { allowNewWrites: true, authorize: async () => false };
-    const pass = await closeOverdueBatch(ports({ host, limit: 2 }));
+    const pass = await closeOverdueBatch(ports({ host, limit: 2, maxFailures: 2 }));
     expect(pass).toMatchObject({ considered: 2, closed: 0, skipped: [] });
     expect(pass.failed.map((f) => f.engagementId)).toEqual([
       rows[0].engagementId,
