@@ -27,7 +27,12 @@ export default async function RaidsPage({
     );
   return (
     <div className="studio">
-      <WorkFeed page={loaded.page} query={loaded.query} viewer={loaded.viewer} />
+      <WorkFeed
+        page={loaded.page}
+        query={loaded.query}
+        viewer={loaded.viewer}
+        rewardFilter={loaded.rewardFilter}
+      />
     </div>
   );
 }

@@ -11,6 +11,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock('../src/lib/work-feed-host', () => ({
   workFeedAvailable: mocks.available,
   workFeedEligibilityAvailable: mocks.eligibility,
+  workFeedRewardFilterAvailable: () => false,
   readFeedFromHost: mocks.feed,
   readFeedForViewerFromHost: mocks.viewerFeed,
   readDetailFromHost: vi.fn(),

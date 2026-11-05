@@ -19,13 +19,21 @@ import {
   readFeedFromHost,
   workFeedAvailable,
   workFeedEligibilityAvailable,
+  workFeedRewardFilterAvailable,
 } from './work-feed-host';
 
 type Params = Record<string, string | string[] | undefined>;
 export type LoadedFeed =
   | { status: 'UNAVAILABLE' }
   | { status: 'INVALID'; query: Partial<FeedQuery> }
-  | { status: 'READY'; page: FeedPage; query: FeedQuery; viewer: FeedViewerState };
+  | {
+      status: 'READY';
+      page: FeedPage;
+      query: FeedQuery;
+      viewer: FeedViewerState;
+      /** Whether the minimum-reward control is open; closed by default behind its own flag. */
+      rewardFilter: boolean;
+    };
 /** The signed-in session as a work actor, or null. Any failure reads as signed out. */
 async function sessionActor() {
   try {
@@ -60,6 +68,9 @@ export async function loadFeed(params: Params): Promise<LoadedFeed> {
   }
   const query = FeedQuerySchema.safeParse(raw);
   if (!query.success) return { status: 'INVALID', query: {} };
+  // While its flag is off a minimum reward is refused, never silently ignored (that would list unfiltered Raids).
+  const rewardFilter = workFeedRewardFilterAvailable();
+  if ('minReward' in raw && !rewardFilter) return { status: 'INVALID', query: {} };
   try {
     let viewer: FeedViewerState = { status: 'OFF' };
     if (workFeedEligibilityAvailable()) {
@@ -76,6 +87,7 @@ export async function loadFeed(params: Params): Promise<LoadedFeed> {
             page: rest,
             query: query.data,
             viewer: { status: 'READY', eligibleOnly, eligibility: facts?.eligibility ?? {} },
+            rewardFilter,
           };
         } catch {
           // The check failing never takes the public feed down; the person is told it is unavailable.
@@ -83,7 +95,13 @@ export async function loadFeed(params: Params): Promise<LoadedFeed> {
         }
       }
     }
-    return { status: 'READY', page: await readFeedFromHost(query.data), query: query.data, viewer };
+    return {
+      status: 'READY',
+      page: await readFeedFromHost(query.data),
+      query: query.data,
+      viewer,
+      rewardFilter,
+    };
   } catch {
     return { status: 'UNAVAILABLE' };
   }

@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 const mocks = vi.hoisted(() => ({
   available: vi.fn(),
+  rewardFilter: vi.fn(),
   feed: vi.fn(),
   detail: vi.fn(),
   user: vi.fn(),
@@ -11,6 +12,7 @@ const mocks = vi.hoisted(() => ({
 vi.mock('../src/lib/work-feed-host', () => ({
   workFeedAvailable: mocks.available,
   workFeedEligibilityAvailable: () => false,
+  workFeedRewardFilterAvailable: mocks.rewardFilter,
   readFeedForViewerFromHost: vi.fn(),
   readFeedFromHost: mocks.feed,
   readDetailFromHost: mocks.detail,
@@ -34,6 +36,7 @@ beforeEach(() => {
   vi.resetAllMocks();
   mocks.available.mockReturnValue(true);
   mocks.feed.mockResolvedValue(page);
+  mocks.rewardFilter.mockReturnValue(false);
 });
 describe('loadFeed', () => {
   it('is unavailable while the feature flag is off and never reads', async () => {
@@ -64,6 +67,37 @@ describe('loadFeed', () => {
     mocks.feed.mockRejectedValue(new Error('postgres://secret'));
     const failed = await loadFeed({});
     expect(failed).toEqual({ status: 'UNAVAILABLE' });
+  });
+});
+describe('loadFeed: minimum reward within one asset (T097)', () => {
+  const key = '["SOLANA","synthetic-work","NATIVE_SOL"]';
+  it('refuses the minimum without reading while its feature flag is off', async () => {
+    expect(await loadFeed({ assetKey: key, minReward: '600' })).toMatchObject({
+      status: 'INVALID',
+    });
+    expect(mocks.feed).not.toHaveBeenCalled();
+    // Without the parameter the page is unchanged and tells the UI the control is closed.
+    expect(await loadFeed({ assetKey: key })).toMatchObject({
+      status: 'READY',
+      rewardFilter: false,
+    });
+  });
+  it('passes the base-unit minimum to the read, with its one asset, while the flag is on', async () => {
+    mocks.rewardFilter.mockReturnValue(true);
+    expect(await loadFeed({ assetKey: key, minReward: '600' })).toMatchObject({
+      status: 'READY',
+      rewardFilter: true,
+    });
+    expect(mocks.feed).toHaveBeenCalledWith({
+      assetKey: key,
+      minReward: '600',
+      sort: 'newest',
+      limit: 20,
+    });
+    expect(await loadFeed({ minReward: '600' })).toMatchObject({ status: 'INVALID' });
+    expect(await loadFeed({ assetKey: key, minReward: '1.5' })).toMatchObject({
+      status: 'INVALID',
+    });
   });
 });
 describe('loadDetail', () => {

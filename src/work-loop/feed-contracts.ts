@@ -17,6 +17,11 @@ export const FeedQuerySchema = z
     admission: z.enum(['INSTANT', 'APPLICATION']).optional(),
     /** The exact `assetKey` of a reward leg. Reward quantity is comparable only within one asset. */
     assetKey: z.string().min(1).max(400).optional(),
+    /**
+     * Minimum total reward, in base units, in the one `assetKey` selected. It compares only that asset's own legs:
+     * other assets are ignored, never converted or ranked against it. Needs `assetKey`.
+     */
+    minReward: AmountSchema.optional(),
     closesBefore: UtcTimestamp.optional(),
     sort: z.enum(FEED_SORTS).default('newest'),
     limit: z.number().int().min(1).max(FEED_MAX_LIMIT).default(20),
@@ -25,6 +30,10 @@ export const FeedQuerySchema = z
   .refine((q) => q.sort !== 'reward' || q.assetKey !== undefined, {
     message: 'Reward ordering needs one asset: amounts in different assets are not comparable.',
     path: ['sort'],
+  })
+  .refine((q) => q.minReward === undefined || q.assetKey !== undefined, {
+    message: 'A minimum reward needs one asset: amounts in different assets are not comparable.',
+    path: ['minReward'],
   });
 export type FeedQuery = z.infer<typeof FeedQuerySchema>;
 export const FeedRewardSchema = z.strictObject({
