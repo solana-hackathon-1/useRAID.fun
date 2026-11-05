@@ -32,10 +32,26 @@ CREATE TABLE "Guild" ("id" uuid PRIMARY KEY, "createdAt" timestamptz NOT NULL DE
 CREATE TABLE "Participant" ("id" uuid PRIMARY KEY, "createdAt" timestamptz NOT NULL DEFAULT clock_timestamp());
 CREATE TABLE "WorkListing" ("id" uuid PRIMARY KEY, "guildId" text NOT NULL);
 CREATE TABLE "RaidSlot" ("id" uuid PRIMARY KEY, "listingId" uuid NOT NULL, "fundingRef" text, "createdAt" timestamptz NOT NULL DEFAULT clock_timestamp());
-CREATE TABLE "Engagement" ("id" uuid PRIMARY KEY, "guildId" text NOT NULL);
-CREATE TABLE "EngagementClosure" ("engagementId" uuid PRIMARY KEY, "reason" text NOT NULL, "closedAt" timestamptz NOT NULL DEFAULT clock_timestamp());
+CREATE TABLE "Engagement" ("id" uuid PRIMARY KEY, "slotId" uuid NOT NULL, "guildId" text NOT NULL, "state" text NOT NULL, "terms" jsonb NOT NULL);
+CREATE TABLE "EngagementClosure" ("engagementId" uuid PRIMARY KEY, "reason" text NOT NULL, "financialResolution" text NOT NULL DEFAULT 'OPEN', "closedAt" timestamptz NOT NULL DEFAULT clock_timestamp());
 CREATE TABLE "EngagementMember" ("engagementId" uuid NOT NULL, "participantId" uuid NOT NULL);
-CREATE TABLE "RaidApplication" ("participantId" uuid NOT NULL, "slotId" uuid NOT NULL);`;
+CREATE TABLE "RaidApplication" ("participantId" uuid NOT NULL, "slotId" uuid NOT NULL);
+CREATE TABLE "WorkSubmission" ("id" uuid PRIMARY KEY, "engagementId" uuid NOT NULL, "createdAt" timestamptz NOT NULL DEFAULT clock_timestamp());
+CREATE TABLE "WorkReview" ("submissionId" uuid PRIMARY KEY, "engagementId" uuid NOT NULL, "decision" text NOT NULL, "createdAt" timestamptz NOT NULL DEFAULT clock_timestamp());
+-- The host's own rule for an engagement's current terms (here its stored terms; the application applies amendments).
+CREATE FUNCTION raid_effective_terms(target uuid) RETURNS jsonb LANGUAGE sql STABLE AS $$ SELECT "terms" FROM "Engagement" WHERE "id"=target $$;`;
+const SOL = { chain: 'SOLANA', networkIdentity: 'example', kind: 'NATIVE_SOL' };
+const TOKEN = {
+  chain: 'SOLANA',
+  networkIdentity: 'example',
+  kind: 'TOKEN',
+  mint: 'So11111111111111111111111111111111111111112',
+  tokenProgram: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+};
+const leg = (assetId: object, decimals: number, amount: string) => ({
+  policy: { assetId, verifiedDecimals: decimals },
+  amount,
+});
 
 async function transaction<T>(work: (client: PgClient) => Promise<T>) {
   const client = await pool.connect();
@@ -78,17 +94,70 @@ try {
       listing,
       'synthetic:funding',
     );
+    const engagementSql =
+      'INSERT INTO "Engagement" ("id","slotId","guildId","state","terms") VALUES ($1,$2,$3,$4,$5::jsonb)';
     await insert(
       client,
-      'INSERT INTO "Engagement" ("id","guildId") VALUES ($1,$2)',
+      engagementSql,
       engagement,
+      slot,
       guildA,
+      'ACCEPTED',
+      JSON.stringify({ rewards: [leg(SOL, 9, '100'), leg(TOKEN, 6, '5')] }),
     );
     await insert(client, 'INSERT INTO "EngagementMember" VALUES ($1,$2)', engagement, raider);
     await insert(
       client,
       `INSERT INTO "EngagementClosure" ("engagementId","reason") VALUES ($1,'ACCEPTED')`,
       engagement,
+    );
+    // A second funded slot whose engagement was submitted and disputed: still open, 7 of the token at stake.
+    const [slot2, disputed, submission, submission2] = [
+      randomUUID(),
+      randomUUID(),
+      randomUUID(),
+      randomUUID(),
+    ];
+    await insert(
+      client,
+      'INSERT INTO "RaidSlot" ("id","listingId","fundingRef") VALUES ($1,$2,$3)',
+      slot2,
+      listing,
+      'synthetic:funding-2',
+    );
+    await insert(
+      client,
+      engagementSql,
+      disputed,
+      slot2,
+      guildA,
+      'SUBMITTED',
+      JSON.stringify({ rewards: [leg(TOKEN, 6, '7')] }),
+    );
+    for (const [id, owner, decision] of [
+      [submission, engagement, 'ACCEPT'],
+      [submission2, disputed, 'DISPUTE'],
+    ] as const) {
+      await insert(
+        client,
+        `INSERT INTO "WorkSubmission" ("id","engagementId","createdAt") VALUES ($1,$2,clock_timestamp()-interval '2 hours')`,
+        id,
+        owner,
+      );
+      await insert(
+        client,
+        'INSERT INTO "WorkReview" ("submissionId","engagementId","decision") VALUES ($1,$2,$3)',
+        id,
+        owner,
+        decision,
+      );
+    }
+    // A listing that was only ever drafted.
+    await insert(
+      client,
+      'INSERT INTO "WorkListing" ("id","guildId") VALUES ($1,$2)',
+      randomUUID(),
+      guildA,
     );
     await insert(client, 'INSERT INTO "RaidApplication" VALUES ($1,$2)', newcomer, slot);
     // Work under an unknown Guild id is left out of every figure and counted as excluded.
@@ -137,6 +206,18 @@ try {
   const ok = await call();
   const body = await ok.json();
   const text = JSON.stringify({ ...body, notMeasured: undefined });
+  const tokenKey = JSON.stringify(['SOLANA', 'example', 'TOKEN', TOKEN.mint, TOKEN.tokenProgram]);
+  const dueToken = metrics.settlement.byAsset.find((row) => row.assetKey === tokenKey);
+  const disputedToken = metrics.disputes.byAsset.find((row) => row.assetKey === tokenKey);
+  const moneyField = (value: unknown): boolean =>
+    Array.isArray(value)
+      ? value.some(moneyField)
+      : value && typeof value === 'object'
+        ? Object.entries(value).some(
+            ([key, child]) =>
+              /usd|dollar|price|total|volume|worth|sum/i.test(key) || moneyField(child),
+          )
+        : false;
 
   console.log(
     JSON.stringify(
@@ -152,8 +233,23 @@ try {
         newcomerCountedInDenominatorOnly:
           metrics.raiderActivation.numerator === 1 && metrics.raiderActivation.denominator === 2,
         unverifiedGuildWorkExcluded: metrics.excluded.listingsWithoutVerifiedGuild === 1,
-        noMoneyAccountOrValuation:
-          !/usd|dollar|price|amount|volume|total/i.test(text) && !text.includes(operator),
+        funnelSeparatesDraftedFundedAcceptedWorkAcceptedAndPaid:
+          metrics.launchConversion.drafted.count === 2 &&
+          metrics.launchConversion.fundedFromDrafted.numerator === 1 &&
+          metrics.launchConversion.workAcceptedFromAccepted.numerator === 1 &&
+          metrics.launchConversion.paid === null,
+        settlementAndDisputesStayPerAssetAndUnvalued:
+          metrics.settlement.byAsset.length === 2 &&
+          dueToken?.dueAmount === '5' &&
+          disputedToken?.openAmount === '7' &&
+          metrics.settlement.valuation === 'NOT_VALUED' &&
+          metrics.disputes.valuation === 'NOT_VALUED',
+        reviewDelayIsADecidedOnlyDistribution:
+          metrics.reviewDelay.decided.numerator === 2 &&
+          metrics.reviewDelay.decided.denominator === 2 &&
+          metrics.reviewDelay.distribution.find((b) => b.bucket === 'LE_3D')?.count === 0 &&
+          metrics.reviewDelay.distribution.find((b) => b.bucket === 'LE_4H')?.count === 2,
+        noPriceDollarTotalFieldOrAccount: !moneyField(body) && !text.includes(operator),
       },
       null,
       2,
