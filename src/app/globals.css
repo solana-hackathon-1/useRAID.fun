@@ -2824,6 +2824,11 @@ footer {
   min-height: 22px;
   height: 22px;
 }
+.raid-feed-help {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted);
+}
 .raid-feed-empty {
   display: grid;
   gap: 12px;

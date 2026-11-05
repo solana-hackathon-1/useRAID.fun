@@ -1,6 +1,6 @@
 import { readWorkDetail, readWorkFeed } from '../work-loop/feed-storage';
 import { attachPublicGuilds } from './work-feed-guilds';
-import type { WorkActor } from '../work-loop/contracts';
+import { WorkError, type WorkActor } from '../work-loop/contracts';
 import { guildPublicAvailable } from './guild-public-host';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { db } from './db';
@@ -18,6 +18,22 @@ function eligibilityTaxonomy() {
 export function workFeedEligibilityAvailable() {
   return process.env.WORK_FEED_ELIGIBILITY_ENABLED === 'true' && eligibilityTaxonomy() !== '';
 }
+/**
+ * Exact-string flag, default off: the minimum-reward filter (one asset, base units). While off, a request that names
+ * `minReward` is refused as invalid input rather than silently ignored; every other query is unchanged.
+ */
+export function workFeedRewardFilterAvailable() {
+  return process.env.WORK_FEED_REWARD_FILTER_ENABLED === 'true';
+}
+function guardRewardFilter(query: unknown) {
+  if (
+    typeof query === 'object' &&
+    query !== null &&
+    (query as { minReward?: unknown }).minReward !== undefined &&
+    !workFeedRewardFilterAvailable()
+  )
+    throw new WorkError('INVALID_INPUT');
+}
 /** Guild names and links appear only while public Guild reads are on, exactly as the Guild page itself. */
 async function withGuilds<T extends { guildId: string }>(
   tx: Parameters<typeof attachPublicGuilds>[0],
@@ -26,6 +42,7 @@ async function withGuilds<T extends { guildId: string }>(
   return guildPublicAvailable() ? attachPublicGuilds(tx, cards) : cards;
 }
 export async function readFeedFromHost(query: unknown) {
+  guardRewardFilter(query);
   return runCommandTransaction(db, async (tx) => {
     const page = await readWorkFeed(tx, query);
     return { ...page, items: await withGuilds(tx, page.items) };
@@ -40,6 +57,7 @@ export async function readFeedForViewerFromHost(
   actor: WorkActor,
   eligibleOnly: boolean,
 ) {
+  guardRewardFilter(query);
   return runCommandTransaction(db, async (tx) => {
     const evaluate = await createViewerEvaluator(tx, actor, eligibilityTaxonomy());
     const page = await readWorkFeed(tx, query, { evaluate, eligibleOnly });

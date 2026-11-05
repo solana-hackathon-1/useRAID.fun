@@ -150,6 +150,11 @@ function candidate(row: Row, query: FeedQuery): Candidate | null {
   if (query.execution && terms.execution !== query.execution) return null;
   if (query.admission && terms.admission !== query.admission) return null;
   if (query.assetKey && !rewards.some((r) => r.assetKey === query.assetKey)) return null;
+  // Only this asset's own legs count toward the minimum; nothing is converted from or compared with another asset.
+  const inAsset = rewards
+    .filter((r) => r.assetKey === query.assetKey)
+    .reduce((sum, r) => sum + fromJsonAmount(r.amount), 0n);
+  if (query.minReward !== undefined && inAsset < BigInt(query.minReward)) return null;
   if (
     query.closesBefore &&
     Date.parse(terms.deadlines.commitment) >= Date.parse(query.closesBefore)
@@ -162,9 +167,7 @@ function candidate(row: Row, query: FeedQuery): Candidate | null {
       ? BigInt(row.createdMicros)
       : query.sort === 'deadline'
         ? BigInt(Date.parse(terms.deadlines.commitment))
-        : rewards
-            .filter((r) => r.assetKey === query.assetKey)
-            .reduce((sum, r) => sum + fromJsonAmount(r.amount), 0n);
+        : inAsset;
   return { card: card.data, terms, key };
 }
 /**

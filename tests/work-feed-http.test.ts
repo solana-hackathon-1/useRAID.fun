@@ -83,6 +83,27 @@ describe('public Raid feed HTTP boundary', () => {
     expect(await body(response)).toEqual(page);
     expect(seen).toEqual([{ category: 'design', sort: 'deadline', limit: 5, difficulty: 'D' }]);
   });
+  it('passes a base-unit minimum reward only with one asset and refuses it otherwise', async () => {
+    const { value, seen } = host();
+    const handlers = createFeedHandlers(value);
+    const key = encodeURIComponent('["SOLANA","synthetic-work","NATIVE_SOL"]');
+    expect((await handlers.GET(get(`?assetKey=${key}&minReward=600`))).status).toBe(200);
+    expect(seen).toEqual([
+      {
+        assetKey: '["SOLANA","synthetic-work","NATIVE_SOL"]',
+        minReward: '600',
+        sort: 'newest',
+        limit: 20,
+      },
+    ]);
+    for (const query of [
+      '?minReward=600',
+      `?assetKey=${key}&minReward=1.5`,
+      `?assetKey=${key}&minReward=-1`,
+    ])
+      expect((await handlers.GET(get(query))).status, query).toBe(422);
+    expect(seen).toHaveLength(1);
+  });
   it('rejects unknown, repeated, malformed and over-long parameters before the host is asked', async () => {
     const { value, seen } = host();
     const handlers = createFeedHandlers(value);

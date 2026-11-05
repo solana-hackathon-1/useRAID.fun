@@ -22,7 +22,12 @@ const KINDS: Readonly<Record<string, string>> = {
   AI_AGENT: 'AI agents',
   AI_INFLUENCER: 'AI influencers',
 };
-type Filters = Partial<Omit<FeedQuery, 'cursor'>> & { cursor?: string | null; eligible?: boolean };
+type Filters = Partial<Omit<FeedQuery, 'cursor' | 'minReward'>> & {
+  cursor?: string | null;
+  eligible?: boolean;
+  /** Base units as typed or parsed; the server validates it. */
+  minReward?: string;
+};
 const ORDER = [
   'category',
   'skillId',
@@ -31,6 +36,7 @@ const ORDER = [
   'execution',
   'admission',
   'assetKey',
+  'minReward',
   'closesBefore',
   'sort',
   'limit',
@@ -87,10 +93,12 @@ function Filter({
   query,
   assets,
   viewer,
+  rewardFilter,
 }: {
   query: Filters;
   assets: Map<string, string>;
   viewer: FeedViewerState;
+  rewardFilter: boolean;
 }) {
   return (
     <form className="raid-feed-filters" method="get" action={FEED_PATH}>
@@ -145,6 +153,23 @@ function Filter({
           ))}
         </select>
       </label>
+      {rewardFilter ? (
+        <label>
+          Minimum reward, in the asset&rsquo;s smallest units
+          <input
+            name="minReward"
+            inputMode="numeric"
+            pattern="(0|[1-9][0-9]*)"
+            maxLength={40}
+            defaultValue={query.minReward ?? ''}
+            aria-describedby="raid-feed-min-reward-help"
+          />
+          <span id="raid-feed-min-reward-help" className="raid-feed-help">
+            Whole numbers only (for SOL, lamports). Choose a reward asset too: amounts in different
+            assets are never compared or converted.
+          </span>
+        </label>
+      ) : null}
       <label>
         Apply before
         <input
@@ -224,10 +249,12 @@ export function WorkFeed({
   page,
   query,
   viewer = { status: 'OFF' },
+  rewardFilter = false,
 }: {
   page: FeedPage;
   query: Filters;
   viewer?: FeedViewerState;
+  rewardFilter?: boolean;
 }) {
   const eligibleOnly = viewer.status === 'READY' && viewer.eligibleOnly;
   const assets = new Map<string, string>();
@@ -261,7 +288,12 @@ export function WorkFeed({
           you apply or accept; they never hold a place for you.
         </p>
       ) : null}
-      <Filter query={{ ...query, eligible: eligibleOnly }} assets={assets} viewer={viewer} />
+      <Filter
+        query={{ ...query, eligible: eligibleOnly }}
+        assets={assets}
+        viewer={viewer}
+        rewardFilter={rewardFilter}
+      />
       {page.items.length ? (
         <ul className="raid-feed-grid">
           {page.items.map((item) => (

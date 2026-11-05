@@ -89,6 +89,22 @@ describe('R08 public Raid feed markup', () => {
     expect(out).toContain('name="assetKey"');
     expect(out).toContain('SOL');
   });
+  it('shows the minimum-reward control only while its flag is on, says it is one asset in base units and keeps it on paging', () => {
+    expect(html()).not.toContain('name="minReward"');
+    const on = renderToStaticMarkup(
+      createElement(WorkFeed, {
+        page: page([card(1)], 'abc_-123'),
+        query: { assetKey: 'k', minReward: '600' },
+        rewardFilter: true,
+      }),
+    );
+    expect(on).toContain('name="minReward"');
+    expect(on).toContain('value="600"');
+    expect(on).toContain('smallest units');
+    expect(on).toContain('Choose a reward asset');
+    expect(on).toContain('minReward=600');
+    expect(feedHref({ assetKey: 'k', minReward: '600' })).toBe('/raids?assetKey=k&minReward=600');
+  });
   it('links to the next page with the cursor and the current filters, and to a cleared feed when empty', () => {
     const out = html(page([card(1)], 'abc_-123'), { category: 'design' });
     expect(out).toContain('cursor=abc_-123');
