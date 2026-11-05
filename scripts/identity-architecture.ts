@@ -19,21 +19,48 @@ const mutations = new Set([
   'deleteMany',
   'upsert',
 ]);
-const advisoryCall = /pg_(?:try_)?advisory_xact_lock/g;
+const advisoryCall = /pg_(?:try_)?advisory_xact_lock/gi;
+const mentionCount = (text: string) => text.match(advisoryCall)?.length ?? 0;
+// SQL keywords are case-insensitive, but the funding prefix is part of the key the database triggers hash, so the
+// whole literal cannot be matched case-insensitively.
+const keyword = (word: string) =>
+  [...word].map((c) => `[${c.toLowerCase()}${c.toUpperCase()}]`).join('');
 // A reviewed lock is the whole SQL literal: the domain seed range 12012-12099, or the database funding-serialization
 // triggers' fixed seed-0 key (its 'raid:funding-reference:' prefix is not an identity class or fixed global key).
-const reviewedAdvisoryLiteral = new RegExp(
-  String.raw`^\s*SELECT\s+pg_advisory_xact_lock\(\s*hashtextextended\(\s*(?:\$1\s*,\s*120(?:1[2-9]|[2-9]\d)|'raid:funding-reference:'\s*\|\|\s*\$1\s*,\s*0)\s*\)\s*\)(?:::text)?(?:\s+AS\s+\w+)?\s*;?\s*$`,
-  'i',
+export const reviewedAdvisoryLiteral = new RegExp(
+  String.raw`^\s*${keyword('select')}\s+pg_advisory_xact_lock\(\s*hashtextextended\(\s*(?:\$1\s*,\s*120(?:1[2-9]|[2-9]\d)|'raid:funding-reference:'\s*\|\|\s*\$1\s*,\s*0)\s*\)\s*\)(?:::${keyword('text')})?(?:\s+${keyword('as')}\s+\w+)?\s*(?:;\s*)?$`,
 );
-// Every advisory-lock mention in the node (comments included) must sit in its own fully reviewed SQL literal.
+// The unescaped value of every string piece in the node, joined, so an escape sequence or a concatenation cannot hide
+// a lock name from the raw source text.
+function cookedLiterals(node: ts.Node) {
+  let text = '';
+  const walk = (n: ts.Node) => {
+    if (
+      ts.isStringLiteral(n) ||
+      ts.isNoSubstitutionTemplateLiteral(n) ||
+      ts.isTemplateHead(n) ||
+      ts.isTemplateMiddle(n) ||
+      ts.isTemplateTail(n)
+    )
+      text += n.text;
+    ts.forEachChild(n, walk);
+  };
+  walk(node);
+  return text;
+}
+// Lint-level fence: a lock name built at run time, referenced through a constant declared elsewhere (for example
+// assessment-lock.ts) or a session-level pg_advisory_lock is not seen here.
+export function mentionsAdvisoryLock(node: ts.Node, source: ts.SourceFile) {
+  return mentionCount(node.getText(source)) + mentionCount(cookedLiterals(node)) > 0;
+}
+// Every advisory-lock mention in the node (comments, escapes and concatenations included) must sit in its own fully
+// reviewed SQL literal.
 function reviewedAdvisorySql(node: ts.Node, source: ts.SourceFile) {
-  const mentions = node.getText(source).match(advisoryCall)?.length ?? 0;
+  const mentions = Math.max(mentionCount(node.getText(source)), mentionCount(cookedLiterals(node)));
   let reviewed = 0;
   const walk = (n: ts.Node) => {
     if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) {
-      if ((n.text.match(advisoryCall)?.length ?? 0) === 1 && reviewedAdvisoryLiteral.test(n.text))
-        reviewed++;
+      if (mentionCount(n.text) === 1 && reviewedAdvisoryLiteral.test(n.text)) reviewed++;
       return;
     }
     ts.forEachChild(n, walk);
@@ -232,7 +259,7 @@ export function identityArchitecture(
       }
       if (
         (ts.isTaggedTemplateExpression(node) || ts.isCallExpression(node)) &&
-        /pg_(?:try_)?advisory_xact_lock/.test(node.getText(source)) &&
+        mentionsAdvisoryLock(node, source) &&
         !source.fileName.endsWith('/src/identity-locks/index.ts') &&
         // Reviewed non-identity domain locks: hash-pinned function and the reserved seed range only,
         // so they can never alias the identity key space (seed 0 labels and fixed 729102-729104).

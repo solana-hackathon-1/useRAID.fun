@@ -294,6 +294,28 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
     expect((await t.read(t.ben.actor, proposal.id)).allConsented).toBe(true);
   });
 
+  it('gives each member consent event its own aggregate identity, so consumers deduping on id and version keep every member (#340 note 11)', async () => {
+    const t = await setup();
+    const { proposal } = await t.propose(
+      t.leader.actor,
+      t.proposal(t.split(500000000n, 300000000n, 200000000n)),
+    );
+    const input = { proposalId: proposal.id, snapshotDigest: proposal.snapshotDigest };
+    const consents = [
+      await t.consent(t.leader.actor, input),
+      await t.consent(t.ana.actor, input),
+      await t.consent(t.ben.actor, input),
+    ];
+    const events = await db.$queryRawUnsafe<{ aggregateId: string; aggregateVersion: number }[]>(
+      `SELECT "aggregateId","aggregateVersion" FROM "AuditEvent" WHERE "eventType"='work.party_member_consented.v1'`,
+    );
+    expect(events).toHaveLength(3);
+    expect(new Set(events.map((e) => `${e.aggregateId}:${e.aggregateVersion}`)).size).toBe(3);
+    expect(events.map((e) => e.aggregateId).sort()).toEqual(
+      consents.map((c) => c.consent.id).sort(),
+    );
+  });
+
   it('refuses rows that are not the snapshot or do not sum exactly, even written directly', async () => {
     const t = await setup();
     const { proposal } = await t.propose(

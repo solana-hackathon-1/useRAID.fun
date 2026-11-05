@@ -363,6 +363,61 @@ integration(
       expect(await readReuse(review)).toBeNull();
     });
 
+    it('stores no fingerprint for a bare site root, so two claimants citing the same site are not flagged (#359 item 3)', async () => {
+      const a = await actor(),
+        b = await actor();
+      await claim(a, 'frontend', ['https://github.com/', 'https://repo.example/a']);
+      await claim(b, 'frontend', ['https://www.github.com', 'https://elsewhere.example/b']);
+      expect(await rows()).toHaveLength(2);
+      expect(await readReuse(await reviewable(a))).toMatchObject({
+        possibleReuse: false,
+        matchedReferenceCount: 0,
+      });
+    });
+
+    it('indexes the claim pointer so the reviewer read does not scan every claim (#359 item 2)', async () => {
+      const rows = await db.$queryRawUnsafe<{ indexdef: string }[]>(
+        `SELECT indexdef FROM pg_indexes WHERE tablename='SkillClaim'`,
+      );
+      expect(rows.some((r) => /\("currentVersionId"\)/.test(r.indexdef))).toBe(true);
+    });
+
+    it('rechecks the assignment after the reuse lookup: a read revoked between the two checks returns nothing (#359 item 4)', async () => {
+      const a = await actor(),
+        b = await actor();
+      await claim(a, 'frontend', ['https://public.example/portfolio']);
+      await claim(b, 'frontend', ['https://public.example/portfolio']);
+      const review = await reviewable(a);
+      let allowed = true,
+        lookups = 0;
+      const signal = await runCommandTransaction(db, (tx) =>
+        readEvidenceReuseForReview(
+          {
+            ...tx,
+            async query<Row>(sql: string, bindings: readonly (string | null)[]) {
+              const result = await tx.query<Row>(sql, bindings);
+              if (sql.includes('"SkillEvidenceFingerprint"')) {
+                // Permission is revoked after the first check and the lookup have both completed.
+                allowed = false;
+                lookups++;
+              }
+              return result;
+            },
+          },
+          identity(evaluator),
+          {
+            version: 'v1',
+            assignmentId: review.assignmentId,
+            submissionId: review.submissionId,
+            purpose: 'ASSESSMENT_REVIEW',
+          },
+          () => allowed,
+        ),
+      );
+      expect(lookups).toBe(1);
+      expect(signal).toBeNull();
+    });
+
     it('is append-only and refuses malformed digests at the database boundary', async () => {
       const a = await actor();
       await claim(a, 'frontend', ['https://public.example/portfolio']);

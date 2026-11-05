@@ -10,7 +10,11 @@ import {
 import { prepareSkillClaim } from './index';
 import { SkillClaimContractError } from './contracts';
 import { readPublishedSkillTaxonomy } from './taxonomy-storage';
-import { EVIDENCE_FINGERPRINT_VERSION, fingerprintEvidenceReference } from './evidence-fingerprint';
+import {
+  EVIDENCE_FINGERPRINT_VERSION,
+  fingerprintEvidenceReference,
+  isDistinctiveEvidenceReference,
+} from './evidence-fingerprint';
 import {
   SkillClaimActorSchema,
   SaveSkillClaimInputSchema,
@@ -265,7 +269,9 @@ export async function saveSkillClaim(
         // Advisory reuse hints (07.5): one digest per distinct normalized reference. Same transaction as the
         // version, so a replay or rolled-back save can never leave a fingerprint behind. Never restricts.
         for (const digest of new Set(
-          prepared.supportingReferences.map(fingerprintEvidenceReference),
+          prepared.supportingReferences
+            .filter(isDistinctiveEvidenceReference)
+            .map(fingerprintEvidenceReference),
         ))
           await query(
             tx,

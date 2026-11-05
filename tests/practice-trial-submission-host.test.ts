@@ -47,5 +47,19 @@ it('passes disabled new-write policy inside SQL and preserves authorized origina
     writesAvailable: false,
     unavailableReason: 'DISABLED',
   });
-  expect(storage.submit).toHaveBeenCalledWith(storage.port, command, { allowNewWrites: false });
+  expect(storage.submit).toHaveBeenCalledWith(storage.port, command, {
+    allowNewWrites: false,
+    submissionRateLimit: { max: 10, windowSeconds: 3600 },
+  });
+});
+it('always passes the published per-account submission rate limit, honoring the same bounded overrides as the portal (#359 item 5)', async () => {
+  vi.stubEnv('PRACTICE_TRIAL_SUBMISSIONS_ENABLED', 'true');
+  vi.stubEnv('PRACTICE_SUBMISSION_RATE_LIMIT_MAX', '3');
+  vi.stubEnv('PRACTICE_SUBMISSION_RATE_LIMIT_WINDOW_SECONDS', '120');
+  storage.submit.mockResolvedValue({ status: 'EXECUTED', submission: {} });
+  await submitPracticeTrialFromHost(command);
+  expect(storage.submit).toHaveBeenCalledWith(storage.port, command, {
+    allowNewWrites: true,
+    submissionRateLimit: { max: 3, windowSeconds: 120 },
+  });
 });

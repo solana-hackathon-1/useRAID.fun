@@ -340,7 +340,9 @@ export async function recordPartyMemberConsent(
         events: [
           {
             type: 'work.party_member_consented.v1',
-            aggregateId: value.proposalId,
+            // One aggregate per member consent: a shared proposal id at version 1 would let an id+version
+            // consumer drop members 2..n.
+            aggregateId: id,
             aggregateVersion: 1,
             guildId: proposal.guildId,
             payload: { raidSlotId: proposal.slotId, termsVersionId: proposal.termsVersionId },

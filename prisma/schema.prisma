@@ -894,6 +894,7 @@ model SkillClaim {
   versions SkillClaimVersion[] @relation("SkillClaimHistory")
   @@unique([participantId, skillId], map: "SkillClaim_subject_skill_key")
   @@unique([id, participantId, accountId, skillId, skillDomain, taxonomyId], map: "SkillClaim_owner_key")
+  @@index([currentVersionId], map: "SkillClaim_currentVersion_idx")
 }
 model SkillClaimVersion {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -1040,6 +1041,7 @@ model PracticeTrialSubmission {
   receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "PracticeTrialSubmission_receipt_fkey")
   reviewAssignments PracticeTrialReviewAssignment[]
   @@unique([id, revision], map: "PracticeTrialSubmission_reference_key")
+  @@index([accountId, submittedAt(sort: Desc)], map: "PracticeTrialSubmission_account_submitted_idx")
 }
 
 model PracticeTrialReviewAssignment {

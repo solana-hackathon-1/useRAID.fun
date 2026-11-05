@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import { globSync } from 'node:fs';
 import path from 'node:path';
-import { identityArchitecture } from '../scripts/identity-architecture';
+import { identityArchitecture, reviewedAdvisoryLiteral } from '../scripts/identity-architecture';
 it('every identity writer enters the shared protocol boundary', () => {
   const root = process.cwd();
   const files = globSync('src/**/*.ts').map((file) => path.join(root, file));
@@ -175,6 +175,39 @@ it('rejects near-miss, extra-lock and commented advisory shapes even when the fu
       'domain shape in a comment beside another lock',
       `await tx.q('SELECT pg_advisory_xact_lock($1)' /* pg_advisory_xact_lock(hashtextextended($1,12012)) */, [id]);`,
     ],
+    // #349 item 1: the funding prefix is part of the key the database triggers hash, so its case is significant.
+    [
+      'funding prefix in another case',
+      `await tx.q("SELECT pg_advisory_xact_lock(hashtextextended('RAID:FUNDING-REFERENCE:'||$1,0))", [ref]);`,
+    ],
+    // #349 item 2: a second lock hidden from the raw-text count by an escape, a case change or a concatenation.
+    [
+      'second lock in a separate escaped literal',
+      `await tx.q('SELECT pg_advisory_xact_lock(hashtextextended($1,12012))', ['pg_advisory_xact_\\x6cock(729103)']);`,
+    ],
+    ['escaped lock name alone', `await tx.q('pg_advisory_xact_\\x6cock(729103)', [id]);`],
+    ['uppercase lock name', `await tx.q('SELECT PG_ADVISORY_XACT_LOCK(729103)', [id]);`],
+    [
+      'lock name split across a concatenation',
+      `await tx.q('pg_advisory_' + 'xact_lock(729103)', [id]);`,
+    ],
+    // #349 item 3: trailing SQL after an otherwise reviewed lock expression.
+    [
+      'trailing FROM clause',
+      `await tx.q('SELECT pg_advisory_xact_lock(hashtextextended($1,12012)) FROM "User"', [id]);`,
+    ],
+    [
+      'trailing second select item',
+      `await tx.q('SELECT pg_advisory_xact_lock(hashtextextended($1,12012)) AS x, 1', [id]);`,
+    ],
+    [
+      'trailing line comment',
+      `await tx.q('SELECT pg_advisory_xact_lock(hashtextextended($1,12012))\\n-- x', [id]);`,
+    ],
+    [
+      'trailing statement',
+      `await tx.q('SELECT pg_advisory_xact_lock(hashtextextended($1,12012)); DELETE FROM "User"', [id]);`,
+    ],
   ];
   try {
     for (const [name, call] of accepted) {
@@ -194,3 +227,13 @@ it('rejects near-miss, extra-lock and commented advisory shapes even when the fu
     await unlink(file).catch(() => undefined);
   }
 }, 30000);
+
+it('matches a reviewed lock literal in linear time even with a very long non-matching tail (#349 item 5)', () => {
+  const lock = 'SELECT pg_advisory_xact_lock(hashtextextended($1,12012))';
+  expect(reviewedAdvisoryLiteral.test(`${lock} AS held ; `)).toBe(true);
+  expect(reviewedAdvisoryLiteral.test(`${lock}   `)).toBe(true);
+  expect(reviewedAdvisoryLiteral.test(lock.replace('SELECT', 'select'))).toBe(true);
+  const started = performance.now();
+  expect(reviewedAdvisoryLiteral.test(`${lock}${' '.repeat(100000)}x`)).toBe(false);
+  expect(performance.now() - started).toBeLessThan(500);
+});
