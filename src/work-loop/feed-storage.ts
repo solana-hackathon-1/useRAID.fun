@@ -10,6 +10,7 @@ import {
   type Detail,
   FeedPageSchema,
   FeedQuerySchema,
+  type FeedAsset,
   type FeedCard,
   type FeedPage,
   type FeedQuery,
@@ -234,6 +235,37 @@ export async function readWorkFeed(
         },
       }
     : result;
+}
+/**
+ * The reward assets of the live window with their published decimals, for a display-unit amount control. It reads the
+ * same live work as the feed, unfiltered, so choosing a filter never removes an asset or its precision from the form.
+ * Decimals come from each listing's own policy snapshot; if listings disagree about one asset they are reported as
+ * null rather than guessed. Nothing here values or ranks an asset.
+ */
+export async function readFeedAssets(tx: Tx): Promise<FeedAsset[]> {
+  port(tx);
+  const rows = await tx.query<Row>(
+    `${LIVE_SELECT} ORDER BY l."createdAt" DESC,l."id" DESC LIMIT ${WINDOW}`,
+    [],
+  );
+  const found = new Map<string, FeedAsset>();
+  for (const row of rows) {
+    if (row.availableSlots < 1) continue;
+    const parsed = RaidTermsSchema.safeParse(row.snapshot);
+    if (!parsed.success || parsed.data.visibility !== 'PUBLIC') continue;
+    for (const leg of parsed.data.rewards) {
+      const key = assetKey(leg.policy.assetId);
+      const known = found.get(key);
+      if (!known)
+        found.set(key, {
+          assetKey: key,
+          assetId: leg.policy.assetId,
+          decimals: leg.policy.verifiedDecimals,
+        });
+      else if (known.decimals !== leg.policy.verifiedDecimals) known.decimals = null;
+    }
+  }
+  return [...found.values()].sort((a, b) => (a.assetKey < b.assetKey ? -1 : 1));
 }
 /** The full public brief of one live Raid. Missing, unlisted, filled, expired and non-public listings are one `NOT_FOUND`. */
 export async function readWorkDetail(tx: Tx, listingId: unknown): Promise<Detail> {
