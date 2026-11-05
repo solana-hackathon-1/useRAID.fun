@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState, useSyncExternalStore, type FormEvent } from 'react';
+import { useEffect, useId, useRef, useState, useSyncExternalStore, type FormEvent } from 'react';
 import {
   createAmendmentClient,
   describeAmendmentFailure,
@@ -125,6 +125,103 @@ function Feedback({ runner, intent }: { runner: Runner; intent: string }) {
   const n = runner.notice && runner.notice.intent === intent ? runner.notice : null;
   return n && n.kind !== 'REFRESH' ? <NoticeText n={n} /> : null;
 }
+export type ConfirmEvent = 'ARM' | 'CONFIRM' | 'CANCEL';
+/**
+ * The two-step rule, kept pure: the first press only arms; the action fires only from the armed state; cancelling
+ * hands focus back to the control that opened the prompt.
+ */
+export function confirmStep(armed: boolean, event: ConfirmEvent) {
+  if (event === 'ARM') return { armed: true, fire: false, restoreFocus: false };
+  if (event === 'CONFIRM') return { armed: false, fire: armed, restoreFocus: armed };
+  return { armed: false, fire: false, restoreFocus: armed };
+}
+/**
+ * An action that cannot be undone asks first. The trigger is replaced by an inline prompt (no browser dialog): focus
+ * moves to the safe "cancel" button, the prompt names the group for screen readers, Escape, Cancel or a confirm
+ * return focus to the trigger as soon as it is usable again, and the buttons stack full-width on a narrow screen via `.orientation-actions`.
+ */
+export function ConfirmAction({
+  label,
+  prompt,
+  confirmLabel,
+  cancelLabel,
+  disabled,
+  onConfirm,
+  initiallyArmed = false,
+}: {
+  label: string;
+  prompt: string;
+  confirmLabel: string;
+  cancelLabel: string;
+  disabled: boolean;
+  onConfirm: () => void;
+  /** Renders the prompt already open, used to show a known state without a click. */
+  initiallyArmed?: boolean;
+}) {
+  const [armed, setArmed] = useState(initiallyArmed);
+  const promptId = useId();
+  const trigger = useRef<HTMLButtonElement>(null);
+  const cancel = useRef<HTMLButtonElement>(null);
+  const returnFocus = useRef(false);
+  // Another action started or the proposal lapsed: a half-open question must not survive and fire later.
+  if (disabled && armed) setArmed(false);
+  const open = armed && !disabled;
+  useEffect(() => {
+    if (open) cancel.current?.focus();
+    else if (returnFocus.current && !disabled) {
+      // Waits while the trigger is disabled by the running action; if the action succeeds the card is replaced.
+      returnFocus.current = false;
+      trigger.current?.focus();
+    }
+  }, [open, disabled]);
+  function step(event: ConfirmEvent) {
+    const next = confirmStep(open, event);
+    returnFocus.current = next.restoreFocus;
+    setArmed(next.armed);
+    if (next.fire) onConfirm();
+  }
+  if (!open)
+    return (
+      <button
+        ref={trigger}
+        type="button"
+        className="button secondary"
+        disabled={disabled}
+        onClick={() => step('ARM')}
+      >
+        {label}
+      </button>
+    );
+  return (
+    <div
+      role="group"
+      aria-labelledby={promptId}
+      onKeyDown={(e) => {
+        if (e.key === 'Escape') {
+          e.stopPropagation();
+          step('CANCEL');
+        }
+      }}
+    >
+      <p id={promptId} style={wrap}>
+        {prompt}
+      </p>
+      <div className="orientation-actions">
+        <button type="button" className="button" onClick={() => step('CONFIRM')}>
+          {confirmLabel}
+        </button>
+        <button
+          ref={cancel}
+          type="button"
+          className="button secondary"
+          onClick={() => step('CANCEL')}
+        >
+          {cancelLabel}
+        </button>
+      </div>
+    </div>
+  );
+}
 function Changes({
   current,
   proposed,
@@ -226,11 +323,13 @@ function MemberCard({
           >
             {runner.busy === acceptIntent ? 'Saving…' : 'Agree to this change'}
           </button>
-          <button
-            type="button"
-            className="button secondary"
+          <ConfirmAction
+            label={runner.busy === declineIntent ? 'Saving…' : 'Decline'}
+            prompt="Decline this change? Your current terms stay as they are, and this proposal can no longer be agreed."
+            confirmLabel="Yes, decline"
+            cancelLabel="Go back"
             disabled={disabled}
-            onClick={() =>
+            onConfirm={() =>
               void runner.run(
                 declineIntent,
                 open.id,
@@ -238,9 +337,7 @@ function MemberCard({
                 'You declined the change. Your terms are unchanged.',
               )
             }
-          >
-            {runner.busy === declineIntent ? 'Saving…' : 'Decline'}
-          </button>
+          />
         </div>
       </fieldset>
       <Feedback runner={runner} intent={acceptIntent} />
@@ -325,11 +422,13 @@ function FounderCard({
             </p>
           )}
           <Changes current={current} proposed={open} />
-          <button
-            type="button"
-            className="button secondary"
+          <ConfirmAction
+            label={runner.busy === withdrawIntent ? 'Saving…' : 'Withdraw proposal'}
+            prompt="Withdraw this proposal? The member can no longer agree to it. Their terms stay as they are."
+            confirmLabel="Yes, withdraw"
+            cancelLabel="Keep proposal"
             disabled={disabled}
-            onClick={() =>
+            onConfirm={() =>
               void runner.run(
                 withdrawIntent,
                 open.id,
@@ -337,9 +436,7 @@ function FounderCard({
                 'Proposal withdrawn. The member’s terms are unchanged.',
               )
             }
-          >
-            Withdraw proposal
-          </button>
+          />
           {!available && <p role="status">Withdrawing is currently unavailable.</p>}
           <Feedback runner={runner} intent={withdrawIntent} />
         </>
