@@ -300,9 +300,10 @@ integration('T009 Guild ownership transfer', () => {
     await expect(respond(next, g.id, t2, 'ACCEPT', 'late-2')).rejects.toMatchObject({
       code: 'REVISION_CONFLICT',
     });
+    // A recipient naming a transfer that is not theirs is a stranger to it: the same answer as for any unknown id.
     await expect(
       respond(next, g.id, '00000000-0000-4000-8000-000000000000', 'ACCEPT'),
-    ).rejects.toMatchObject({ code: 'NOT_FOUND' });
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
     const [{ founderAccountId }] = await db.$queryRawUnsafe<{ founderAccountId: string }[]>(
       `SELECT "founderAccountId" FROM "Guild" WHERE "id"=$1::uuid`,
       g.id,
@@ -482,9 +483,11 @@ integration('T009 Guild ownership transfer', () => {
     );
     const id = (await propose(founder, g.id, next.accountId, { expiresAt: at.toISOString() }))
       .transfer.id;
+    let hookCalls = 0;
     const slowHost = {
       allowNewWrites: true,
       authorizeOwnershipTransfer: async () => {
+        hookCalls++;
         await new Promise((resolve) => setTimeout(resolve, at.getTime() - Date.now() + 300));
         return true;
       },
@@ -496,6 +499,8 @@ integration('T009 Guild ownership transfer', () => {
         slowHost,
       ),
     );
+    // On a slow runner the proposal may already have lapsed before the hook; the crossing is only covered if it ran.
+    expect(hookCalls, 'the host hook ran, so the decision crossed expiresAt').toBe(1);
     expect(result).toMatchObject({
       status: 'EXECUTED',
       transfer: { state: 'EXPIRED', applied: false },
@@ -602,5 +607,105 @@ integration('T009 Guild ownership transfer', () => {
       transfer: { state: 'EXPIRED', applied: false },
     });
     expect(await founderOf(g.id)).toBe(founder.accountId);
+  });
+
+  it('#355-1: propose and respond judge standing before the Guild lock and tell a stranger nothing', async () => {
+    const { founder, guild: g } = await guild('prelock-t');
+    const next = await person();
+    const stranger = await person();
+    const transferId = (await propose(founder, g.id, next.accountId, {}, 'p-pre')).transfer.id;
+    // Hold the Guild row as a competing writer would; a refused account must not queue behind it.
+    let release!: () => void, locked!: () => void;
+    const held = new Promise<void>((r) => (release = r));
+    const ready = new Promise<void>((r) => (locked = r));
+    const holder = db.$transaction(
+      async (t) => {
+        await t.$queryRawUnsafe('SELECT 1 FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE', g.id);
+        locked();
+        await held;
+      },
+      { timeout: 30000 },
+    );
+    await ready;
+    const outcome = (work: Promise<unknown>) =>
+      Promise.race([
+        work.then(
+          () => 'EXECUTED',
+          (e: { code?: string }) => e.code ?? 'ERROR',
+        ),
+        new Promise<string>((r) => setTimeout(() => r('BLOCKED'), 3000)),
+      ]);
+    try {
+      const unknownGuild = crypto.randomUUID();
+      const unknownTransfer = crypto.randomUUID();
+      // A stranger gets one answer for a real Guild, a missing Guild, a real transfer and a missing one.
+      expect(await outcome(propose(stranger, g.id, next.accountId, {}, 's-1'))).toBe('FORBIDDEN');
+      expect(await outcome(propose(stranger, unknownGuild, next.accountId, {}, 's-2'))).toBe(
+        'FORBIDDEN',
+      );
+      for (const decision of ['ACCEPT', 'DECLINE', 'WITHDRAW']) {
+        expect(await outcome(respond(stranger, g.id, transferId, decision, 's-3' + decision))).toBe(
+          'FORBIDDEN',
+        );
+        expect(
+          await outcome(respond(stranger, g.id, unknownTransfer, decision, 's-4' + decision)),
+        ).toBe('FORBIDDEN');
+        expect(
+          await outcome(
+            respond(stranger, unknownGuild, unknownTransfer, decision, 's-5' + decision),
+          ),
+        ).toBe('FORBIDDEN');
+      }
+      // A party with the wrong role is refused without the lock too: the recipient cannot withdraw, the Founder cannot accept.
+      expect(await outcome(respond(next, g.id, transferId, 'WITHDRAW', 'w-1'))).toBe('FORBIDDEN');
+      expect(await outcome(respond(founder, g.id, transferId, 'ACCEPT', 'w-2'))).toBe('FORBIDDEN');
+      // A recipient naming a transfer that is not theirs is turned away without waiting.
+      expect(await outcome(respond(next, g.id, unknownTransfer, 'ACCEPT', 'w-3'))).toBe(
+        'FORBIDDEN',
+      );
+    } finally {
+      release();
+      await holder;
+    }
+    // The Founder naming a missing transfer still learns it is missing; the real parties still act.
+    await expect(
+      respond(founder, g.id, crypto.randomUUID(), 'WITHDRAW', 'f-1'),
+    ).rejects.toMatchObject({
+      code: 'NOT_FOUND',
+    });
+    expect((await respond(next, g.id, transferId, 'ACCEPT', 'ok-1')).transfer.applied).toBe(true);
+  });
+
+  it('#320-2: only unrevoked, unexpired treasury or dispute grants bar a recipient; a future-dated one counts', async () => {
+    const { founder, guild: g } = await guild('separate-kinds');
+    const lapsed = await person();
+    const upcoming = await person();
+    const arbiter = await person();
+    const row = (who: GuildActor, kind: string, from: string, until: string | null) =>
+      db.$executeRawUnsafe(
+        `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","validFrom","expiresAt","grantedByAccountId") VALUES ($1::uuid,$2,$3,ARRAY[]::text[],clock_timestamp()+$4::interval,CASE WHEN $5::text IS NULL THEN NULL ELSE clock_timestamp()+$5::interval END,$6)`,
+        g.id,
+        who.accountId,
+        kind,
+        from,
+        until,
+        founder.accountId,
+      );
+    await row(lapsed, 'TREASURY', '-2 hours', '-1 hour');
+    await row(upcoming, 'DISPUTE', '1 hour', null);
+    // An expired grant is history: the transfer is allowed and accepted.
+    const ok = (await propose(founder, g.id, lapsed.accountId, {}, 'p-lapsed')).transfer.id;
+    expect((await respond(lapsed, g.id, ok, 'ACCEPT', 'a-lapsed')).transfer.applied).toBe(true);
+    // A grant that has not started yet would be live under the new Founder, so it bars the proposal.
+    await expect(propose(lapsed, g.id, upcoming.accountId, {}, 'p-up')).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
+    // A dispute grant issued after the proposal is caught at acceptance, like a treasury one.
+    const id = (await propose(lapsed, g.id, arbiter.accountId, {}, 'p-arb')).transfer.id;
+    await row(arbiter, 'DISPUTE', '-1 minute', null);
+    await expect(respond(arbiter, g.id, id, 'ACCEPT', 'a-arb')).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
+    expect(await founderOf(g.id)).toBe(lapsed.accountId);
   });
 });

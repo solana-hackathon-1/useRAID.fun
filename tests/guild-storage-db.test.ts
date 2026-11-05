@@ -593,4 +593,52 @@ integration('T009 persisted Guild storage', () => {
     ])
       expect(leading, fk).toContain(fk);
   });
+
+  it('replays an activation as revision one, not the Guild head after later edits (#290 item 6)', async () => {
+    const founder = await person();
+    const operator = await person();
+    operators.add(operator.accountId);
+    const draft = await draftFor(founder, 'replay-head');
+    const input = {
+      guildDraftId: draft.id,
+      expectedDraftRevision: draft.revision,
+      activationRef: 'evidence-replay',
+    };
+    const first = await run((tx) => activateGuild(tx, cmd(operator, input, 'act-1'), host()));
+    await edit(founder, first.guild.id, 1, { name: 'Renamed later' });
+    const replay = await run((tx) => activateGuild(tx, cmd(operator, input, 'act-1'), host()));
+    expect(replay.status).toBe('REPLAYED');
+    expect(replay.guild).toMatchObject({
+      id: first.guild.id,
+      revision: 1,
+      name: 'Synthetic replay-head',
+    });
+    expect(replay.guild).toEqual(first.guild);
+  });
+
+  it('refuses at commit a profile version that is not backed by its own audited command (#290 item 4)', async () => {
+    const { founder, guild: g } = await guild();
+    // A privileged writer borrows a genuine, audited receipt of another command (the Founder's draft save) to add the
+    // next revision directly, leaving the Guild pointer where it was.
+    const [{ receiptId }] = await db.$queryRawUnsafe<{ receiptId: string }[]>(
+      `SELECT "receiptId"::text FROM "GuildDraftVersion" WHERE "ownerAccountId"=$1`,
+      founder.accountId,
+    );
+    await expect(
+      db.$executeRawUnsafe(
+        `INSERT INTO "GuildProfileVersion" ("guildId","revision","name","description","receiptId","actorAccountId","requestId") VALUES ($1::uuid,2,'Forged','',$2::uuid,$3,'request-draft-synthetic-guild')`,
+        g.id,
+        receiptId,
+        founder.accountId,
+      ),
+    ).rejects.toThrow(/Guild profile version/);
+    // Real commands still work and the Guild keeps its genuine history.
+    await edit(founder, g.id, 1, { name: 'Genuine' }, 'e-1');
+    await edit(founder, g.id, 2, { description: 'Still fine' }, 'e-2');
+    const rows = await db.$queryRawUnsafe<{ revision: number }[]>(
+      `SELECT "revision" FROM "GuildProfileVersion" WHERE "guildId"=$1::uuid ORDER BY "revision"`,
+      g.id,
+    );
+    expect(rows.map((r) => r.revision)).toEqual([1, 2, 3]);
+  });
 });

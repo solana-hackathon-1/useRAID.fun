@@ -304,7 +304,15 @@ export async function activateGuild(
   );
   // A replay skips the handler and must still prove the approver's current authority.
   await approved();
-  return { status: result.status, guild: await loadGuild(tx, result.resultRef) };
+  // The Guild as this activation recorded it (revision one), never the head: a replay after later edits must not read
+  // newer profile revisions, and the approver is not a profile manager.
+  const first = await query<{ id: string }>(
+    tx,
+    'SELECT "id"::text FROM "GuildProfileVersion" WHERE "guildId"=$1::uuid AND "revision"=1',
+    [result.resultRef],
+  );
+  if (first.length !== 1) fail('STORAGE_CONTRACT');
+  return { status: result.status, guild: await loadVersion(tx, result.resultRef, first[0].id) };
 }
 /**
  * Asks the pure policy whether the actor may take a profile action over these fields, from facts rebuilt here under the
@@ -839,7 +847,7 @@ export async function revokeGuildRole(
       if (grant.revoked) fail('GRANT_REVOKED');
       await query(
         tx,
-        'UPDATE "GuildRoleGrant" SET "revokedAt"=clock_timestamp() WHERE "id"=$1::uuid AND "revokedAt" IS NULL RETURNING "id"',
+        'UPDATE "GuildRoleGrant" SET "revokedAt"=GREATEST(clock_timestamp(),"validFrom") WHERE "id"=$1::uuid AND "revokedAt" IS NULL RETURNING "id"',
         [input.grantId],
       );
       const passedOn: string[] = [];
@@ -849,7 +857,7 @@ export async function revokeGuildRole(
         // are not counted by any cap and stay as history, so they cannot inflate the audit events of this command.
         const cascaded = await query<{ id: string }>(
           tx,
-          `UPDATE "GuildRoleGrant" s SET "revokedAt"=clock_timestamp()
+          `UPDATE "GuildRoleGrant" s SET "revokedAt"=GREATEST(clock_timestamp(),s."validFrom")
            WHERE s."guildId"=$1::uuid AND s."grantedByAccountId"=$2 AND s."kind"='PROFILE' AND s."revokedAt" IS NULL
              AND (s."expiresAt" IS NULL OR s."expiresAt">clock_timestamp())
              AND EXISTS (
@@ -964,6 +972,14 @@ export async function proposeOwnershipTransfer(
     async ({ receiptId }) => {
       await authorize(tx, actor);
       if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      // Standing first, without a lock: only the Founder proposes, so a stranger cannot queue behind the Guild row and
+      // a missing Guild answers the same FORBIDDEN as an existing one. Judged again under the lock below.
+      const standing = await query<{ founder: boolean }>(
+        tx,
+        'SELECT "founderAccountId"=$2 AS founder FROM "Guild" WHERE "id"=$1::uuid',
+        [input.guildId, actor.accountId],
+      );
+      if (standing.length !== 1 || !standing[0].founder) fail('FORBIDDEN');
       const guilds = await query<{ founderAccountId: string; revision: number }>(
         tx,
         'SELECT "founderAccountId","revision" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
@@ -1069,6 +1085,25 @@ export async function respondOwnershipTransfer(
     async ({ receiptId }) => {
       await authorize(tx, actor);
       if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      // Standing first, without a lock: only the right party of this transfer (or the Founder, who may learn that a
+      // transfer id is missing) may take it further, so a stranger cannot queue behind the Guild row and learns nothing
+      // about which Guilds or transfers exist (all answer FORBIDDEN). The same rule is judged again under the lock.
+      const standing = await query<{ founder: string; from: string | null; to: string | null }>(
+        tx,
+        `SELECT g."founderAccountId" AS founder,t."fromAccountId" AS "from",t."toAccountId" AS "to"
+         FROM "Guild" g LEFT JOIN "GuildOwnershipTransfer" t ON t."id"=$2::uuid AND t."guildId"=g."id" WHERE g."id"=$1::uuid`,
+        [input.guildId, input.transferId],
+      );
+      if (standing.length !== 1) fail('FORBIDDEN');
+      const early = standing[0];
+      if (
+        early.to === null
+          ? early.founder !== actor.accountId
+          : input.decision === 'WITHDRAW'
+            ? early.from !== actor.accountId || early.founder !== actor.accountId
+            : early.to !== actor.accountId
+      )
+        fail('FORBIDDEN');
       const guilds = await query<{ founderAccountId: string; revision: number }>(
         tx,
         'SELECT "founderAccountId","revision" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',

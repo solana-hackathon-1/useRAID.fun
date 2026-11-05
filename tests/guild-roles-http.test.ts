@@ -321,6 +321,75 @@ describe('Guild role and ownership management HTTP boundary', () => {
     expect(
       (await createGuildRolesHandlers(wrongId.value).RESPOND(respondRequest(), transferId)).status,
     ).toBe(503);
+    // #355-2: each binding check is covered on its own. A result for another Guild, or an undecided one, is a contract
+    // failure, and so is a decision that carries no decision time.
+    const otherGuild = host({
+      respond: async () => ({
+        status: 'EXECUTED',
+        transfer: transferView({
+          guildId: '66666666-6666-4666-8666-666666666666',
+          toAccountId: 'founder-1',
+          state: 'ACCEPTED',
+          applied: true,
+          decidedAt: decided,
+        }),
+      }),
+      actor: async () => ({ ...actor, accountId: 'founder-1' }),
+    });
+    expect(
+      (await createGuildRolesHandlers(otherGuild.value).RESPOND(respondRequest(), transferId))
+        .status,
+    ).toBe(503);
+    const undecided = host({
+      respond: async () => ({
+        status: 'EXECUTED',
+        transfer: transferView({
+          toAccountId: 'founder-1',
+          state: 'ACCEPTED',
+          applied: true,
+          decidedAt: null,
+        }),
+      }),
+      actor: async () => ({ ...actor, accountId: 'founder-1' }),
+    });
+    expect(
+      (await createGuildRolesHandlers(undecided.value).RESPOND(respondRequest(), transferId))
+        .status,
+    ).toBe(503);
+    // A result for another transfer is refused even when every other field would pass.
+    const otherTransfer = host({
+      respond: async () => ({
+        status: 'EXECUTED',
+        transfer: transferView({
+          id: '55555555-5555-4555-8555-555555555555',
+          toAccountId: 'founder-1',
+          state: 'ACCEPTED',
+          applied: true,
+          decidedAt: decided,
+        }),
+      }),
+      actor: async () => ({ ...actor, accountId: 'founder-1' }),
+    });
+    expect(
+      (await createGuildRolesHandlers(otherTransfer.value).RESPOND(respondRequest(), transferId))
+        .status,
+    ).toBe(503);
+    // Control: the same view with its own Guild, id and decision time is accepted.
+    const bound = host({
+      respond: async () => ({
+        status: 'EXECUTED',
+        transfer: transferView({
+          toAccountId: 'founder-1',
+          state: 'ACCEPTED',
+          applied: true,
+          decidedAt: decided,
+        }),
+      }),
+      actor: async () => ({ ...actor, accountId: 'founder-1' }),
+    });
+    expect(
+      (await createGuildRolesHandlers(bound.value).RESPOND(respondRequest(), transferId)).status,
+    ).toBe(200);
   });
 
   it('uses one command throttle scope for every command', async () => {

@@ -925,4 +925,56 @@ integration('T009 Guild role grants and revocation', () => {
       await blocker;
     }
   });
+
+  it('#290-9: a grant cannot be revoked before it starts, yet a future-dated one stays revocable by command', async () => {
+    const { founder, guild: g } = await guild('revoke-window');
+    const early = await person();
+    const [future] = await db.$queryRawUnsafe<{ id: string }[]>(
+      `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","validFrom","grantedByAccountId") VALUES ($1::uuid,$2,'WORK',ARRAY[]::text[],clock_timestamp()+interval '1 hour',$3) RETURNING "id"::text`,
+      g.id,
+      early.accountId,
+      founder.accountId,
+    );
+    // A direct writer cannot back-date the revocation of a grant that has not started...
+    await expect(
+      db.$executeRawUnsafe(
+        `UPDATE "GuildRoleGrant" SET "revokedAt"=clock_timestamp() WHERE "id"=$1::uuid`,
+        future.id,
+      ),
+    ).rejects.toThrow(/GuildRoleGrant_revoked_check/);
+    // ...but the command still takes the authority away, recording the revocation no earlier than the start.
+    const revoked = await takeRole(founder, g.id, future.id, 'revoke-future');
+    expect(revoked.status).toBe('EXECUTED');
+    expect(Date.parse(revoked.grant.revokedAt!)).toBeGreaterThanOrEqual(
+      Date.parse(revoked.grant.validFrom),
+    );
+    expect(await can(early, g.id, 'WORK')).toBe(false);
+  });
+
+  it('#292-6: two concurrent grants at the cap issue exactly one', async () => {
+    const { founder, guild: g } = await guild('cap-race');
+    const holders = [await person(), await person()];
+    await db.$executeRawUnsafe(
+      `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","validFrom","grantedByAccountId")
+       SELECT $1::uuid,$2,'WORK',ARRAY[]::text[],clock_timestamp()-interval '1 minute',$3 FROM generate_series(1,$4::int)`,
+      g.id,
+      (await person()).accountId,
+      founder.accountId,
+      String(GUILD_GRANT_LIMIT - 1),
+    );
+    const outcomes = await Promise.allSettled(
+      holders.map((who, i) =>
+        giveRole(founder, g.id, { granteeAccountId: who.accountId, kind: 'WORK' }, 'race-' + i),
+      ),
+    );
+    expect(outcomes.filter((o) => o.status === 'fulfilled')).toHaveLength(1);
+    const refused = outcomes.filter((o) => o.status === 'rejected') as PromiseRejectedResult[];
+    expect(refused).toHaveLength(1);
+    expect(refused[0].reason).toMatchObject({ code: 'GRANT_LIMIT' });
+    const [{ n }] = await db.$queryRawUnsafe<{ n: number }[]>(
+      `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "revokedAt" IS NULL`,
+      g.id,
+    );
+    expect(n).toBe(GUILD_GRANT_LIMIT);
+  });
 });
