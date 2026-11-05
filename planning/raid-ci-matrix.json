@@ -275,6 +275,7 @@
     "tests/metrics-product-db.test.ts",
     "tests/metrics-product-host.test.ts",
     "tests/metrics-product-http.test.ts",
+    "tests/v1-idempotency-guard.test.ts",
     "tests/work-feed-storage.test.ts",
     "tests/work-acceptance-host.test.ts",
     "tests/work-acceptance-root-db.test.ts",
@@ -446,6 +447,7 @@
         "tests/shared-contracts-review.test.ts",
         "tests/shared-contracts.test.ts",
         "tests/submit-route.test.ts",
+        "tests/v1-idempotency-guard.test.ts",
         "tests/wallet-link-credentials.test.ts",
         "tests/wallet-link-proof.test.ts",
         "tests/wallet-origin-db.test.ts"
