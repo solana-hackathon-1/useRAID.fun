@@ -81,6 +81,10 @@ pg_restore --dbname="$RESTORE_DATABASE_URL" --no-owner --no-privileges raid-back
 psql "$RESTORE_DATABASE_URL" -c 'SELECT count(*) FROM "Raid"; SELECT count(*) FROM "Post";'
 ```
 
+Restore the whole dump (schema and data) into an empty database, as above. `pg_restore` then loads each table's data before it creates that table's triggers and constraints, so the immutability and insert guards on engagement history (closures, amendments, replacements; migrations `202610260005` and `202610260006`) do not run over restored rows and no extra privilege is needed.
+
+Do not restore with `--data-only` into a database that already has the migrated schema unless you can bypass triggers: the insert guards would run over every restored row, restamp `closedAt` on closures and reject amendments whose proposal or amended deadlines have since passed. Bypassing needs a superuser, either `pg_restore --data-only --disable-triggers` or a session with `SET session_replication_role = replica` (logical replication applies changes this way). There is no non-superuser path for a data-only load; use a full restore instead. If you must do a data-only load, order it as follows: (1) run `prisma migrate deploy` so the schema matches the dump's migration level; (2) load as the superuser with triggers disabled, in one `pg_restore --data-only --disable-triggers --single-transaction` run so foreign-key order and the circular references are satisfied together; (3) re-enable by ending the session, then run the count checks above and `SELECT count(*) FROM "EngagementClosure"` against the source (#326, #270).
+
 Encrypt backup storage and restrict access because it includes sessions and creator identities. Delete the temporary dump according to your retention policy. Do not log database URLs.
 
 ## Administrator access and review

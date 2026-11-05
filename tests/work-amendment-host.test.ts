@@ -89,6 +89,15 @@ describe('T025 root amendment host ports', () => {
       catalog: [{ label: 'SOL', policy, funded: false }],
     });
     expect(await lapsed.fundingAvailable(tx, binding)).toBe(false);
+    // #361-7: coverage that now reaches only some of several increased legs is not coverage at consent either.
+    const partial = {
+      ...binding,
+      increase: [
+        { policy, amount: '5' },
+        { policy: otherPolicy, amount: '5' },
+      ],
+    };
+    expect(await host.fundingAvailable(tx, partial)).toBe(false);
   });
   it('records consent only when the member named the exact digest of this proposal', async () => {
     const digest = 'a'.repeat(64);

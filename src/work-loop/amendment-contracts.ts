@@ -20,7 +20,11 @@ export interface AmendmentHost {
   ): Promise<boolean>;
   /** Required to accept an amendment (consent fails closed without it); proposing, declining and withdrawing do not
    * need it. The same Founder authority asked of the proposing account at the member's consent. The proposer has no
-   * session in the member's request: judge the account's current scoped authority (and standing), never a session. */
+   * session in the member's request: judge the account's current scoped authority (and standing), never a session.
+   * Lock scope (#326): storage calls this, and every other host callback, while the member's identity locks, the
+   * engagement row and the amendment row are held, and again just before the decision is written. A callback must
+   * answer from the transaction it is handed, must not wait on another session or re-enter the amendment commands, and
+   * must not take locks that sort before those rows; a callback that blocks stalls every writer of the engagement. */
   authorizeProposer?(
     tx: CommandReceiptTransaction,
     proposer: { accountId: string },

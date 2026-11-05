@@ -279,6 +279,38 @@ integration(
       ]);
     });
 
+    it('#361-7: refuses consent after the proposer leaves the allowlist or coverage is withdrawn, while a decline still works', async () => {
+      const { founder, worker, engagementId } = await setup();
+      const made = await (await propose(founder.actor, engagementId, raise)).json();
+      const { id, digest } = made.amendment;
+      // The Founder is dropped from the synthetic allowlist after proposing: consent is no longer available.
+      vi.stubEnv('RAID_WORK_OPERATOR_ACCOUNT_IDS', 'someone-else');
+      const noAuthority = await accept(worker.actor, id, digest);
+      expect([noAuthority.status, await code(noAuthority)]).toEqual([409, 'NO_LONGER_OPEN']);
+      // Funding coverage is withdrawn between proposing and consenting: the increase is not verified.
+      vi.stubEnv('RAID_WORK_OPERATOR_ACCOUNT_IDS', [...operators].join(','));
+      vi.stubEnv(
+        'WORK_REWARD_ASSETS_JSON',
+        JSON.stringify([{ label: 'SOL', policy: base.rewards[0].policy, funded: false }]),
+      );
+      const unfunded = await accept(worker.actor, id, digest);
+      expect([unfunded.status, await code(unfunded)]).toEqual([409, 'FUNDING_NOT_VERIFIED']);
+      expect((await amendments())[0].state).toBe('PROPOSED');
+      expect(await effectiveAmount(engagementId)).toBe('1000000000');
+      // Neither refusal stops the member from declining.
+      vi.stubEnv('RAID_WORK_OPERATOR_ACCOUNT_IDS', 'someone-else');
+      expect((await decline(worker.actor, id)).status).toBe(200);
+      expect((await amendments())[0].state).toBe('DECLINED');
+    });
+
+    it('#361-7: refuses a proposal from the listing creator once they are not on the allowlist', async () => {
+      const { founder, engagementId } = await setup();
+      vi.stubEnv('RAID_WORK_OPERATOR_ACCOUNT_IDS', 'someone-else');
+      const r = await propose(founder.actor, engagementId, raise);
+      expect([r.status, await code(r)]).toEqual([403, 'FORBIDDEN']);
+      expect(await amendments()).toEqual([]);
+    });
+
     it('refuses writes when the flag is off but still answers replays and reads', async () => {
       const { founder, worker, engagementId } = await setup();
       const key = randomUUID();
