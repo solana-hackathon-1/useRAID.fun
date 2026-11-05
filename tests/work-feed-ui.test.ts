@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
@@ -133,6 +134,29 @@ describe('R08 public Raid feed markup', () => {
     expect(out).not.toContain('aria-invalid');
     expect(out).not.toContain('smallest units');
     expect(out).toContain('never compared or converted');
+  });
+  it('keeps the minimum-reward label short and puts the help and error in descriptions only (#385-2)', () => {
+    const labelOf = (out: string) =>
+      out.match(/<label[^>]*>(?:(?!<\/label>)[\s\S])*minRewardAmount[\s\S]*?<\/label>/)?.[0] ?? '';
+    const asset = render({ query: { assetKey: solKey }, reward: { ...reward, amount: '1.5' } });
+    expect(labelOf(asset).replace(/<input[^>]*>/, '')).toBe('<label>Minimum reward in SOL</label>');
+    const none = render({});
+    expect(labelOf(none).replace(/<input[^>]*>/, '')).toBe('<label>Minimum reward</label>');
+    expect(none).toContain('Choose a reward asset first');
+    expect(none).toMatch(/<[^>]*id="raid-feed-min-reward-help"[^>]*>Choose a reward asset first/);
+    const bad = render({
+      query: { assetKey: solKey },
+      reward: { ...reward, amount: 'x', problem: 'Enter a number.' },
+    });
+    expect(labelOf(bad)).not.toContain('Enter a number.');
+    expect(bad).toContain('id="raid-feed-min-reward-error"');
+  });
+  it('lets the minimum-reward help span the filter row instead of stretching its cells (#385-1)', () => {
+    const out = render({ query: {} });
+    expect(out).toContain('raid-feed-min');
+    const css = readFileSync('src/app/globals.css', 'utf8');
+    expect(css).toMatch(/\.raid-feed-min\s*\{[^}]*grid-column:\s*1\s*\/\s*-1/);
+    expect(css).toMatch(/\.raid-feed-filters\s*\{[^}]*align-items:\s*start/);
   });
   it('uses the token precision for a token and says when no asset is chosen yet', () => {
     expect(render({ query: { assetKey: tokenKey } })).toContain('at most 6 decimal places');

@@ -164,20 +164,24 @@ function Filter({
         </select>
       </label>
       {reward.enabled ? (
-        <label>
-          {unit ? `Minimum reward in ${unit}` : 'Minimum reward'}
-          <input
-            name="minRewardAmount"
-            type="text"
-            inputMode="decimal"
-            autoComplete="off"
-            spellCheck={false}
-            maxLength={40}
-            defaultValue={reward.amount}
-            aria-invalid={reward.problem ? true : undefined}
-            aria-describedby={describedBy}
-            autoFocus={reward.problem ? true : undefined}
-          />
+        // The help and error sit beside the label, not inside it: the label stays the field's short name and the
+        // text is read as its description. The field takes the whole row so long help never sets a cell's height.
+        <div className="raid-feed-min">
+          <label>
+            {unit ? `Minimum reward in ${unit}` : 'Minimum reward'}
+            <input
+              name="minRewardAmount"
+              type="text"
+              inputMode="decimal"
+              autoComplete="off"
+              spellCheck={false}
+              maxLength={40}
+              defaultValue={reward.amount}
+              aria-invalid={reward.problem ? true : undefined}
+              aria-describedby={describedBy}
+              autoFocus={reward.problem ? true : undefined}
+            />
+          </label>
           <span id={MIN_HELP} className="raid-feed-help">
             {unit
               ? chosen?.decimals === null || !chosen
@@ -192,7 +196,7 @@ function Filter({
               {reward.problem}
             </span>
           ) : null}
-        </label>
+        </div>
       ) : null}
       <label>
         Apply before

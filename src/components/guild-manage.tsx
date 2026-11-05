@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { FocusedStatus } from './focus-status';
 import {
   createManageRunner,
   fetchGuildManageApi,
@@ -149,7 +150,7 @@ export function GuildProfileEditor({
             {message}
           </p>
         )}
-        {notice && <p role="status">{notice}</p>}
+        <FocusedStatus message={notice} />
         <div className="orientation-actions">
           <button
             className="button"
@@ -301,7 +302,7 @@ export function GuildUpdatesManager({
           {message}
         </p>
       )}
-      {notice && <p role="status">{notice}</p>}
+      <FocusedStatus message={notice} />
       {updates.length === 0 ? (
         <p>No updates yet.</p>
       ) : (

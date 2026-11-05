@@ -1,5 +1,7 @@
 'use client';
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type FormEvent } from 'react';
+import { FocusedStatus } from './focus-status';
+import { ScopeText } from './scope-text';
 import {
   createAmendmentClient,
   describeAmendmentFailure,
@@ -401,7 +403,10 @@ function FounderCard({
   return (
     <section className="orientation-card" aria-label={'Propose change: ' + engagement.title}>
       <h3>{'Propose change: ' + engagement.title}</h3>
-      <p style={wrap}>Current scope: {current.scope}</p>
+      <p>
+        <strong>Current scope</strong>
+      </p>
+      <ScopeText scope={current.scope} />
       <p>
         Current reward: {current.rewards.map(amountText).join(', ')}. Submission due{' '}
         <time dateTime={current.deadlines.submission}>{when(current.deadlines.submission)}</time>.
@@ -576,7 +581,7 @@ export function AmendmentPanel({
   return (
     <section aria-labelledby={'amendments-' + role}>
       <h2 id={'amendments-' + role}>{heading}</h2>
-      {runner.done && <p role="status">{runner.done}</p>}
+      <FocusedStatus message={runner.done ?? ''} />
       {runner.notice?.kind === 'REFRESH' && (
         <NoticeText n={runner.notice} refresh={refreshNotice} />
       )}

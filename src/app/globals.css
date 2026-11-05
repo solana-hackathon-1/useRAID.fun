@@ -2701,6 +2701,7 @@ footer {
 .raid-feed-filters {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  align-items: start;
   gap: 14px;
   padding: 18px;
   background: var(--surface);
@@ -2709,6 +2710,7 @@ footer {
 }
 .raid-feed-filters label {
   display: grid;
+  align-content: start;
   gap: 6px;
   font-size: 14px;
   color: var(--muted);
@@ -2823,6 +2825,12 @@ footer {
   width: 22px;
   min-height: 22px;
   height: 22px;
+}
+.raid-feed-min {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 6px;
+  min-width: 0;
 }
 .raid-feed-help {
   font-size: 13px;

@@ -1,6 +1,7 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
+import { readFileSync } from 'node:fs';
 import { GuildProfileEditor, GuildUpdatesManager } from '../src/components/guild-manage';
 import type { GuildManageApi } from '../src/guild-profiles/guild-manage-client';
 
@@ -122,5 +123,13 @@ describe('Guild updates manager', () => {
     );
     expect(html).not.toMatch(/<button[^>]*aria-label="Withdraw update: Update b"[^>]*disabled/);
     expect(html).not.toMatch(/<button[^>]*disabled[^>]*aria-label="Withdraw update: Update b"/);
+  });
+});
+
+describe('#385-3 a successful save hands focus to its status message', () => {
+  it('shows profile and update notices through the focusable status, not a plain paragraph', () => {
+    const source = readFileSync('src/components/guild-manage.tsx', 'utf8');
+    expect(source.match(/<FocusedStatus message=\{notice\}/g)).toHaveLength(2);
+    expect(source).not.toMatch(/\{notice && <p role="status">/);
   });
 });

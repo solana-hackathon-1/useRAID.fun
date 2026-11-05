@@ -97,6 +97,21 @@ describe('T022 My Raid workspace markup', () => {
     });
     expect(workspace(held)).toContain('Active Raid capacity: 1 of 1 in use');
   });
+  it('shows the accepted scope as readable text, not raw JSON (#384-2)', () => {
+    const scope = JSON.stringify({
+      outcome: 'Ship the guide',
+      deliverables: ['Guide PDF'],
+      exclusions: [],
+      dependencies: ['Access to the staging site'],
+    });
+    const base = card();
+    const html = workspace(mine([card({ acceptedTerms: { ...base.acceptedTerms, scope } })]));
+    expect(html).toContain('Ship the guide');
+    expect(html).toMatch(/<li[^>]*>Guide PDF<\/li>/);
+    expect(html).toContain('Depends on');
+    expect(html).toMatch(/<li[^>]*>Access to the staging site<\/li>/);
+    expect(html).not.toContain('&quot;outcome&quot;');
+  });
   it('shows a plain unavailable notice instead of an enabled form when writes are off', () => {
     const html = workspace(mine([card()]), { submissionsAvailable: false });
     expect(html).toContain('Submitting is currently unavailable');
