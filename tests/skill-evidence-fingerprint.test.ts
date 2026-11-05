@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   EVIDENCE_FINGERPRINT_VERSION,
   fingerprintEvidenceReference,
+  isDistinctiveEvidenceReference,
   normalizeEvidenceReference,
 } from '../src/skills/evidence-fingerprint';
 
@@ -41,5 +42,27 @@ describe('T014 evidence reference fingerprint (07.5 duplicate/portfolio reuse si
       normalizeEvidenceReference('https://WWW.Public.Example:443/a/?b=2&utm_medium=m&a=1#x'),
     ).toBe('https://public.example/a?a=1&b=2');
     expect(normalizeEvidenceReference('https://public.example/')).toBe('https://public.example/');
+  });
+  it('keeps hash-routed single-page-app routes distinct instead of dropping the route as a fragment (#359 item 3)', () => {
+    different('https://spa.example/#/u/alice', 'https://spa.example/#/u/bob');
+    different('https://spa.example/app#!/u/alice', 'https://spa.example/app#!/u/bob');
+    same('https://spa.example/#/u/alice', 'https://SPA.example/#/u/alice/');
+    // An ordinary in-page anchor is still cosmetic.
+    same('https://public.example/portfolio#projects', 'https://public.example/portfolio');
+  });
+  it('does not treat a bare site root as distinctive evidence, so two claimants citing the same site are not flagged (#359 item 3)', () => {
+    for (const root of [
+      'https://github.com',
+      'https://github.com/',
+      'https://www.github.com/#top',
+      'https://github.com/?utm_source=x',
+    ])
+      expect(isDistinctiveEvidenceReference(root), root).toBe(false);
+    for (const specific of [
+      'https://github.com/alice',
+      'https://github.com/?tab=repositories&user=alice',
+      'https://spa.example/#/u/alice',
+    ])
+      expect(isDistinctiveEvidenceReference(specific), specific).toBe(true);
   });
 });

@@ -249,4 +249,10 @@ integration('T014 per-account practice submission rate limit (#56, O09 default n
       expect(await limited(submit(a, s, bad))).toMatchObject({ code: 'STORAGE_CONTRACT' });
     expect(await submissions()).toBe(0);
   });
+  it('indexes the rate-limit count by account and newest submission so it does not scan the table (#359 item 1)', async () => {
+    const rows = await db.$queryRawUnsafe<{ indexdef: string }[]>(
+      `SELECT indexdef FROM pg_indexes WHERE tablename='PracticeTrialSubmission'`,
+    );
+    expect(rows.some((r) => /\("accountId", "submittedAt" DESC\)/.test(r.indexdef))).toBe(true);
+  });
 });
