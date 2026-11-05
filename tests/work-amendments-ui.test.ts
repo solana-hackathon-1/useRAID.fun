@@ -1,7 +1,8 @@
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
-import { AmendmentPanel } from '../src/components/work-amendments';
+import { readFileSync } from 'node:fs';
+import { AmendmentPanel, ConfirmAction, confirmStep } from '../src/components/work-amendments';
 import { MyRaidsWorkspace, WorkDesk } from '../src/components/work-workspace';
 import {
   buildProposal,
@@ -369,5 +370,68 @@ describe('T025 fix pass: the explanation outlives the reload (D0)', () => {
     const d = desk([{ role: 'MEMBER', amendments: [amendment('PROPOSED')] }]);
     const html = panel('MEMBER', d, { initialNotice: stale });
     expect(html.match(/no longer open/g)).toHaveLength(1);
+  });
+});
+
+describe('#361-6 Decline and Withdraw need a second, explicit step', () => {
+  it('only a deliberate confirm fires the action; arming, cancelling and a stray confirm do not', () => {
+    expect(confirmStep(false, 'ARM')).toEqual({ armed: true, fire: false, restoreFocus: false });
+    // The prompt's own buttons vanish on confirm, so focus is handed back to the trigger once it is usable again
+    // (the keyboard user is not dropped at the top of the page when a failed attempt re-enables it).
+    expect(confirmStep(true, 'CONFIRM')).toEqual({ armed: false, fire: true, restoreFocus: true });
+    // A confirm that arrives without a prior arm (stale or double event) never fires.
+    expect(confirmStep(false, 'CONFIRM')).toMatchObject({ fire: false, restoreFocus: false });
+    // Cancel (button or Escape) closes the prompt and hands focus back to the trigger.
+    expect(confirmStep(true, 'CANCEL')).toEqual({ armed: false, fire: false, restoreFocus: true });
+    expect(confirmStep(false, 'CANCEL').restoreFocus).toBe(false);
+  });
+  const render = (armed: boolean, disabled = false) =>
+    renderToStaticMarkup(
+      createElement(ConfirmAction, {
+        label: 'Decline',
+        prompt: 'Decline this change?',
+        confirmLabel: 'Yes, decline',
+        cancelLabel: 'Go back',
+        disabled,
+        onConfirm: () => {},
+        initiallyArmed: armed,
+      }),
+    );
+  it('shows only the trigger until armed, then a labelled group with confirm and cancel', () => {
+    const idle = render(false);
+    expect(idle).toContain('Decline');
+    expect(idle).not.toContain('Yes, decline');
+    expect(idle).not.toContain('role="group"');
+    const armed = render(true);
+    expect(armed).toContain('Yes, decline');
+    expect(armed).toContain('Go back');
+    expect(armed).toMatch(/role="group"[^>]*aria-labelledby="([^"]+)"/);
+    const labelled = /aria-labelledby="([^"]+)"/.exec(armed)![1];
+    expect(armed).toContain(`id="${labelled}"`);
+    expect(armed).toContain('Decline this change?');
+    // The trigger gives way to the prompt so the answer is never one click from the original button.
+    expect(armed.match(/<button/g)).toHaveLength(2);
+  });
+  it('does not open the prompt while the controls are disabled', () => {
+    expect(render(true, true)).not.toContain('Yes, decline');
+  });
+  it('wires Decline and Withdraw through the confirmation in the cards, never window.confirm', () => {
+    const member = panel(
+      'MEMBER',
+      desk([{ role: 'MEMBER', amendments: [amendment('PROPOSED')] }]),
+      { now: BEFORE },
+    );
+    expect(member).toContain('Decline');
+    expect(member).not.toContain('Yes, decline');
+    const founder = panel(
+      'FOUNDER',
+      desk([{ role: 'FOUNDER', amendments: [amendment('PROPOSED')] }]),
+      { now: BEFORE },
+    );
+    expect(founder).toContain('Withdraw proposal');
+    expect(founder).not.toContain('Yes, withdraw');
+    expect(readFileSync('src/components/work-amendments.tsx', 'utf8')).not.toMatch(
+      /window\.confirm|\bconfirm\(/,
+    );
   });
 });

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { OPEN_SLOT, readWorkDetail } from '../src/work-loop/feed-storage';
+import { OPEN_SLOT, readFeedAssets, readWorkDetail } from '../src/work-loop/feed-storage';
+import { assetKey } from '../src/contracts/assets';
 import { canonicalRequestDigest } from '../src/command-receipts';
 import { raidTerms } from './helpers/raid-terms-fixture';
 
@@ -73,5 +74,48 @@ describe('public brief under a concurrent fill', () => {
         listingId,
       ),
     ).rejects.toMatchObject({ code: 'NOT_FOUND' });
+  });
+});
+
+describe('T097 reward assets present in the live feed (decimals for the display-unit minimum)', () => {
+  const nativeLeg = raidTerms().rewards[0];
+  const withDecimals = (decimals: number) => ({
+    ...raidTerms(),
+    rewards: [{ ...nativeLeg, policy: { ...nativeLeg.policy, verifiedDecimals: decimals } }],
+  });
+  const row = (n: number, snapshot: unknown, availableSlots = 1) => ({
+    listingId: `11111111-1111-4111-8111-11111111111${n}`,
+    guildId: 'synthetic-guild',
+    termsVersionId: `22222222-2222-4222-8222-22222222222${n}`,
+    snapshot,
+    digest: 'd',
+    createdMicros: String(n),
+    availableSlots,
+  });
+  const port = (rows: unknown[]) =>
+    ({
+      dialect: 'POSTGRESQL',
+      isolation: 'READ_COMMITTED',
+      query: async () => rows,
+    }) as never;
+  it('lists each live asset once with its verified decimals', async () => {
+    const assets = await readFeedAssets(port([row(1, withDecimals(9)), row(2, withDecimals(9))]));
+    expect(assets).toEqual([
+      {
+        assetKey: assetKey(nativeLeg.policy.assetId as Parameters<typeof assetKey>[0]),
+        assetId: nativeLeg.policy.assetId,
+        decimals: 9,
+      },
+    ]);
+  });
+  it('ignores listings with no open slot and corrupt stored terms', async () => {
+    expect(
+      await readFeedAssets(port([row(1, withDecimals(9), 0), row(2, { not: 'terms' })])),
+    ).toEqual([]);
+  });
+  it('reports unknown decimals, never a guess, when live listings disagree about one asset', async () => {
+    const assets = await readFeedAssets(port([row(1, withDecimals(9)), row(2, withDecimals(6))]));
+    expect(assets).toHaveLength(1);
+    expect(assets[0].decimals).toBeNull();
   });
 });

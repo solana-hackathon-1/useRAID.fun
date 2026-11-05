@@ -31,7 +31,7 @@ export default async function RaidsPage({
         page={loaded.page}
         query={loaded.query}
         viewer={loaded.viewer}
-        rewardFilter={loaded.rewardFilter}
+        reward={loaded.reward}
       />
     </div>
   );

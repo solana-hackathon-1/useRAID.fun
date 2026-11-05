@@ -1,8 +1,9 @@
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
-import { readWorkFeed } from '../src/work-loop/feed-storage';
-import { readFeedFromHost } from '../src/lib/work-feed-host';
+import { readFeedAssets, readWorkFeed } from '../src/work-loop/feed-storage';
+import { readFeedAssetsFromHost, readFeedFromHost } from '../src/lib/work-feed-host';
+import { parseRewardMinimum } from '../src/work-loop/feed-reward-input';
 import { FeedQuerySchema } from '../src/work-loop/feed-contracts';
 import { assetKey } from '../src/contracts/assets';
 import { raidTerms } from './helpers/raid-terms-fixture';
@@ -126,6 +127,46 @@ integration('T097 minimum reward within one asset', { timeout: 60000 }, () => {
       process.env.WORK_FEED_REWARD_FILTER_ENABLED = 'true';
       const on = await readFeedFromHost(query);
       expect(on.items.map((i) => i.listingId)).toEqual(list(mixed, big));
+    } finally {
+      if (was === undefined) delete process.env.WORK_FEED_REWARD_FILTER_ENABLED;
+      else process.env.WORK_FEED_REWARD_FILTER_ENABLED = was;
+    }
+  });
+  it('converts a typed display amount with the decimals the live listings were published with, per asset', async () => {
+    const { tokenBig, mixed } = await seed();
+    const assets = await run((tx) => readFeedAssets(tx));
+    expect(assets.map((a) => [a.assetKey, a.decimals])).toEqual(
+      [
+        [nativeKey, native.policy.verifiedDecimals],
+        [tokenKey, 6],
+      ].sort((a, b) => ((a[0] as string) < (b[0] as string) ? -1 : 1)),
+    );
+    const unit = (key: string) => {
+      const found = assets.find((a) => a.assetKey === key)!;
+      return { label: key === tokenKey ? 'token' : 'SOL', decimals: found.decimals };
+    };
+    // 0.000009 of a 6-decimal token is 9 base units: it keeps the two token Raids and no SOL-only Raid.
+    const parsed = parseRewardMinimum('0.000009', unit(tokenKey));
+    if (!parsed.ok) throw new Error(parsed.problem);
+    expect(parsed.baseUnits).toBe('9');
+    expect(await ids({ assetKey: tokenKey, minReward: parsed.baseUnits })).toEqual(
+      list(mixed, tokenBig),
+    );
+    // The same typed text means a different quantity in another asset: it is never carried across assets.
+    const sol = parseRewardMinimum('0.000009', unit(nativeKey));
+    if (!sol.ok) throw new Error(sol.problem);
+    expect(sol.baseUnits).not.toBe(parsed.baseUnits);
+  });
+  it('keeps the asset list closed on the host until the reward filter flag is exactly true', async () => {
+    await seed();
+    const was = process.env.WORK_FEED_REWARD_FILTER_ENABLED;
+    try {
+      delete process.env.WORK_FEED_REWARD_FILTER_ENABLED;
+      await expect(readFeedAssetsFromHost()).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+      process.env.WORK_FEED_REWARD_FILTER_ENABLED = 'true';
+      expect((await readFeedAssetsFromHost()).map((a) => a.assetKey).sort()).toEqual(
+        [nativeKey, tokenKey].sort(),
+      );
     } finally {
       if (was === undefined) delete process.env.WORK_FEED_REWARD_FILTER_ENABLED;
       else process.env.WORK_FEED_REWARD_FILTER_ENABLED = was;

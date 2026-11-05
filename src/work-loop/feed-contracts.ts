@@ -90,6 +90,16 @@ export const FeedCardSchema = z.strictObject({
   confidentiality: z.literal('PUBLIC'),
 });
 export type FeedCard = z.infer<typeof FeedCardSchema>;
+/**
+ * A reward asset present in the live feed, with the decimals its listings were published with. `decimals` is null when
+ * live listings disagree about one asset, so no display amount is converted for it. Identity is the exact `assetKey`.
+ */
+export const FeedAssetSchema = z.strictObject({
+  assetKey: z.string().min(1).max(400),
+  assetId: AssetIdSchema,
+  decimals: AssetDecimals.nullable(),
+});
+export type FeedAsset = z.infer<typeof FeedAssetSchema>;
 export const FeedPageSchema = z.strictObject({
   items: z.array(FeedCardSchema).max(FEED_MAX_LIMIT),
   nextCursor: z.string().min(1).max(600).nullable(),

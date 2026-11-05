@@ -16,7 +16,7 @@ describe('T014 evidence reference fingerprint (07.5 duplicate/portfolio reuse si
     expect(fingerprintEvidenceReference('https://public.example/portfolio')).toMatch(
       /^[0-9a-f]{64}$/,
     );
-    expect(EVIDENCE_FINGERPRINT_VERSION).toBe('v1');
+    expect(EVIDENCE_FINGERPRINT_VERSION).toBe('v2');
   });
   it('ignores cosmetic differences: host case, www, fragment, trailing slash, default port', () => {
     same('https://Public.Example/portfolio', 'https://public.example/portfolio/');
@@ -49,6 +49,20 @@ describe('T014 evidence reference fingerprint (07.5 duplicate/portfolio reuse si
     same('https://spa.example/#/u/alice', 'https://SPA.example/#/u/alice/');
     // An ordinary in-page anchor is still cosmetic.
     same('https://public.example/portfolio#projects', 'https://public.example/portfolio');
+  });
+  it('strips tracking parameters and sorts the rest inside a hash route, keeping meaningful ones (#372)', () => {
+    same('https://spa.example/#/u?utm_source=x', 'https://spa.example/#/u');
+    same(
+      'https://spa.example/#/u/alice?tab=1&utm_medium=m&fbclid=z',
+      'https://spa.example/#/u/alice?tab=1',
+    );
+    same('https://spa.example/#/p?b=2&a=1', 'https://spa.example/#/p?a=1&b=2');
+    different('https://spa.example/#/p?id=1', 'https://spa.example/#/p?id=2');
+    expect(normalizeEvidenceReference('https://spa.example/#/u?utm_source=x')).toBe(
+      'https://spa.example/#/u',
+    );
+    // A route that is only tracking parameters on the root names no resource.
+    expect(isDistinctiveEvidenceReference('https://spa.example/#/?utm_source=x')).toBe(false);
   });
   it('does not treat a bare site root as distinctive evidence, so two claimants citing the same site are not flagged (#359 item 3)', () => {
     for (const root of [

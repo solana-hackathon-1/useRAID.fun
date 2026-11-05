@@ -82,13 +82,21 @@ interface Row {
   id: string;
   state: 'ACCESS_PENDING' | 'IN_PROGRESS';
   title: string;
-  terms?: unknown;
 }
 /**
  * The caller's own amendable engagements, as member and (for an allowlisted listing creator) as Founder, with every
  * recorded version of their terms. Reads stay available when writes are off; they need the workspace read switch.
  * Each storage read presents the caller's own current Session in its own transaction (one identity lock set per
  * transaction), so a lapsed Session fails the desk closed; the list query alone grants nothing.
+ *
+ * Known behaviour (#361-5): the desk is NOT one snapshot. It is one list transaction plus, per engagement (at most
+ * LIMIT = 20), one history transaction and, for a member, one effective-terms transaction: up to 41 in all. They
+ * cannot share a transaction because an identity lock set is prepared once per transaction and then sealed
+ * (`prepareModuleIdentity`), and each storage read prepares its own. Authority is therefore re-proven per engagement,
+ * and an engagement whose member was removed, or whose Founder left the operator allowlist, between the list and its
+ * read fails the whole desk closed (FORBIDDEN/NOT_FOUND) instead of omitting that one row. This is safe, never
+ * widens access and a reload shows the current set; merging the reads would need a storage entry that accepts a
+ * prepared lock capability, which is a storage-contract change outside this host.
  */
 export async function readAmendmentDeskFromHost(actor: WorkActor): Promise<AmendmentDesk> {
   if (!workWorkspaceConfiguration().readsAvailable) throw new WorkError('STORAGE_CONTRACT');
@@ -103,7 +111,7 @@ export async function readAmendmentDeskFromHost(actor: WorkActor): Promise<Amend
     ),
     founder: isWorkOperator(actor.accountId)
       ? await tx.query<Row>(
-          `SELECT e."id"::text AS id,e."state",t."snapshot"->>'title' AS title,raid_effective_terms(e."id") AS terms FROM "Engagement" e
+          `SELECT e."id"::text AS id,e."state",t."snapshot"->>'title' AS title FROM "Engagement" e
            JOIN "RaidSlot" s ON s."id"=e."slotId" JOIN "WorkListing" l ON l."id"=s."listingId"
            JOIN "TermsVersion" t ON t."id"=e."termsVersionId"
            WHERE l."creatorAccountId"=$1 AND e."state" IN ('ACCESS_PENDING','IN_PROGRESS')
@@ -120,15 +128,26 @@ export async function readAmendmentDeskFromHost(actor: WorkActor): Promise<Amend
   ] as const)
     for (const row of rows) {
       if (engagements.length >= LIMIT) break;
-      const amendments = await runCommandTransaction(db, (tx) =>
-        readEngagementAmendments(tx, actor, row.id, readHost),
-      );
-      // Read after the history, so a consent in between shows the newer terms rather than a stale promise. The
-      // Founder's copy comes from the same listing-creator query that selected the engagement.
+      // Both copies are read AFTER the history, so a consent in between shows the newer terms rather than a stale
+      // promise. The member's copy has its own authorized storage read. The Founder's is read in the history's own
+      // transaction, once `readEngagementAmendments` has proven Founder authority there (the Session identity locks
+      // it takes are held to the end of that transaction), so it cannot be older than the history beside it.
+      let founderTerms: unknown;
+      const amendments = await runCommandTransaction(db, async (tx) => {
+        const history = await readEngagementAmendments(tx, actor, row.id, readHost);
+        if (role === 'FOUNDER') {
+          const read = await tx.query<{ terms: unknown }>(
+            'SELECT raid_effective_terms($1::uuid) AS terms',
+            [row.id],
+          );
+          founderTerms = read[0]?.terms;
+        }
+        return history;
+      });
       const effectiveTerms =
         role === 'MEMBER'
           ? await runCommandTransaction(db, (tx) => readEffectiveTerms(tx, actor, row.id))
-          : TermsSnapshotSchema.parse(row.terms);
+          : TermsSnapshotSchema.parse(founderTerms);
       engagements.push({
         engagementId: row.id,
         title: row.title,

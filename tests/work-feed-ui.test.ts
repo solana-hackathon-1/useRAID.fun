@@ -60,6 +60,32 @@ const page = (
 ) => FeedPageSchema.parse({ items, nextCursor: next, sort: 'newest', rewardComparable: false });
 const html = (p = page(), query = {}) =>
   renderToStaticMarkup(createElement(WorkFeed, { page: p, query }));
+const solKey = JSON.stringify(['SOLANA', 'synthetic-work', 'NATIVE_SOL']);
+const tokenKey = JSON.stringify([
+  'SOLANA',
+  'synthetic-work',
+  'TOKEN',
+  token.mint,
+  token.tokenProgram,
+]);
+const reward = {
+  enabled: true,
+  assets: [
+    { assetKey: solKey, assetId: sol, decimals: 9 },
+    { assetKey: tokenKey, assetId: token, decimals: 6 },
+  ],
+  amount: '',
+  problem: null,
+};
+const input = (markup: string) => markup.match(/<input[^>]*minRewardAmount[^>]*>/)?.[0] ?? '';
+const render = (props: { page?: unknown; query?: Record<string, unknown>; reward?: unknown }) =>
+  renderToStaticMarkup(
+    createElement(WorkFeed, {
+      page: (props.page ?? page()) as never,
+      query: (props.query ?? {}) as never,
+      reward: (props.reward ?? reward) as never,
+    }),
+  );
 
 describe('R08 public Raid feed markup', () => {
   it('shows safe cards with exact rewards, honest simulated funding and escaped text', () => {
@@ -89,21 +115,84 @@ describe('R08 public Raid feed markup', () => {
     expect(out).toContain('name="assetKey"');
     expect(out).toContain('SOL');
   });
-  it('shows the minimum-reward control only while its flag is on, says it is one asset in base units and keeps it on paging', () => {
+  it('shows the minimum-reward control only while its flag is on', () => {
+    expect(html()).not.toContain('minRewardAmount');
     expect(html()).not.toContain('name="minReward"');
-    const on = renderToStaticMarkup(
-      createElement(WorkFeed, {
-        page: page([card(1)], 'abc_-123'),
-        query: { assetKey: 'k', minReward: '600' },
-        rewardFilter: true,
-      }),
+    expect(render({ reward: { ...reward, enabled: false } })).not.toContain('minRewardAmount');
+  });
+  it('asks for the minimum in the selected asset display units, with labelled, described, mobile-friendly markup', () => {
+    const out = render({ query: { assetKey: solKey }, reward: { ...reward, amount: '1.5' } });
+    expect(out).toContain('name="minRewardAmount"');
+    expect(out).toContain('value="1.5"');
+    expect(out).toContain('Minimum reward in SOL');
+    expect(out).toContain('at most 9 decimal places');
+    // Decimal keypad on mobile, no autofill, no browser-side rewriting of what was typed.
+    expect(input(out)).toMatch(/inputmode="decimal"/i);
+    expect(input(out)).toMatch(/autocomplete="off"/i);
+    expect(out).toContain('aria-describedby="raid-feed-min-reward-help"');
+    expect(out).not.toContain('aria-invalid');
+    expect(out).not.toContain('smallest units');
+    expect(out).toContain('never compared or converted');
+  });
+  it('uses the token precision for a token and says when no asset is chosen yet', () => {
+    expect(render({ query: { assetKey: tokenKey } })).toContain('at most 6 decimal places');
+    const none = render({});
+    expect(none).toContain('Minimum reward');
+    expect(none).toContain('Choose a reward asset first');
+  });
+  it('keeps every live asset selectable even when the filter leaves no Raids', () => {
+    const out = render({ page: page([]), query: { assetKey: solKey } });
+    expect(out).toContain(`<option value="${solKey.replaceAll('"', '&quot;')}" selected`);
+    expect(out).toContain('So11…1112');
+  });
+  it('names a problem in an alert tied to the field, keeps what was typed and lists no Raids', () => {
+    const out = render({
+      page: page([]),
+      query: { assetKey: solKey },
+      reward: {
+        ...reward,
+        amount: '0.00000000001',
+        problem: 'SOL allows at most 9 decimal places.',
+      },
+    });
+    expect(out).toContain('value="0.00000000001"');
+    expect(out).toMatch(
+      /<[^>]*id="raid-feed-min-reward-error"[^>]*role="alert"|<[^>]*role="alert"[^>]*id="raid-feed-min-reward-error"/,
     );
-    expect(on).toContain('name="minReward"');
-    expect(on).toContain('value="600"');
-    expect(on).toContain('smallest units');
-    expect(on).toContain('Choose a reward asset');
-    expect(on).toContain('minReward=600');
-    expect(feedHref({ assetKey: 'k', minReward: '600' })).toBe('/raids?assetKey=k&minReward=600');
+    expect(out).toContain('SOL allows at most 9 decimal places.');
+    expect(out).toContain('aria-invalid="true"');
+    expect(out).toContain(
+      'aria-describedby="raid-feed-min-reward-help raid-feed-min-reward-error"',
+    );
+    expect(input(out)).toMatch(/autofocus/i);
+    expect(out).toContain('Fix the minimum reward');
+    expect(out).not.toContain('No live Raids match');
+    expect(out).not.toContain('Synthetic task');
+  });
+  it('announces an active minimum in a status region and explains an empty result without converting anything', () => {
+    const active = { ...reward, amount: '1.5' };
+    const some = render({ page: page([card(1)]), query: { assetKey: solKey }, reward: active });
+    expect(some).toContain('role="status"');
+    expect(some).toContain('at least 1.5 SOL');
+    expect(some).toContain('other assets are not converted');
+    const none = render({ page: page([]), query: { assetKey: solKey }, reward: active });
+    expect(none).toContain('No live Raids pay at least 1.5 SOL');
+    expect(none).toContain('href="/raids"');
+  });
+  it('keeps the typed display amount in the URL and on paging, never a base-unit value', () => {
+    const out = render({
+      page: page([card(1)], 'abc_-123'),
+      query: { assetKey: solKey },
+      reward: { ...reward, amount: '1.5' },
+    });
+    expect(out).toContain('minRewardAmount=1.5');
+    expect(out).toContain('cursor=abc_-123');
+    expect(out).not.toContain('minReward=');
+    expect(feedHref({ assetKey: 'k', minRewardAmount: '1.5' })).toBe(
+      '/raids?assetKey=k&minRewardAmount=1.5',
+    );
+    // A query carrying the converted base units (as the loader passes) never leaks them into a link.
+    expect(feedHref({ assetKey: 'k', minReward: '1500000000' } as never)).toBe('/raids?assetKey=k');
   });
   it('links to the next page with the cursor and the current filters, and to a cleared feed when empty', () => {
     const out = html(page([card(1)], 'abc_-123'), { category: 'design' });

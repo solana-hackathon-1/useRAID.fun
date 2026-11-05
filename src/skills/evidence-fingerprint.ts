@@ -1,8 +1,29 @@
 import { createHash } from 'node:crypto';
 
-/** Bump only with a documented backfill; stored digests are comparable only within one version. */
-export const EVIDENCE_FINGERPRINT_VERSION = 'v1';
+/**
+ * Stored digests are comparable only within one version, and the reviewer read matches only this version.
+ * Any change to normalization MUST bump it (v2: hash-route handling, #359/#372) so old and new digests never mix;
+ * rows of earlier versions are retained but no longer matched, and nothing is backfilled.
+ */
+export const EVIDENCE_FINGERPRINT_VERSION = 'v2';
 const TRACKING = /^(utm_[a-z0-9_]+|fbclid|gclid|mc_cid|mc_eid)$/i;
+
+const cleanParams = (search: URLSearchParams) =>
+  [...search.entries()]
+    .filter(([name]) => !TRACKING.test(name))
+    .sort(([a, x], [b, y]) => (a === b ? (x < y ? -1 : x > y ? 1 : 0) : a < b ? -1 : 1));
+const serializeParams = (params: [string, string][]) =>
+  params.length ? '?' + new URLSearchParams(params).toString() : '';
+
+/** A hash-routed SPA route (`#/u/alice?tab=1`) with the same tracking/ordering rules as the real query; else ''. */
+function hashRoute(hash: string): string {
+  if (!/^#!?\//.test(hash)) return '';
+  const at = hash.indexOf('?');
+  const path = (at < 0 ? hash : hash.slice(0, at)).replace(/\/+$/, '');
+  const route =
+    path + (at < 0 ? '' : serializeParams(cleanParams(new URLSearchParams(hash.slice(at + 1)))));
+  return /^#!?$/.test(route) ? '' : route;
+}
 
 /**
  * Canonical form of an already-validated https evidence reference, used only to compare references.
@@ -16,11 +37,9 @@ export function normalizeEvidenceReference(reference: string): string {
   const host = url.hostname.toLowerCase().replace(/^www\./, '');
   const port = url.port && url.port !== '443' ? ':' + url.port : '';
   const path = url.pathname.length > 1 ? url.pathname.replace(/\/+$/, '') || '/' : url.pathname;
-  const params = [...url.searchParams.entries()]
-    .filter(([name]) => !TRACKING.test(name))
-    .sort(([a, x], [b, y]) => (a === b ? (x < y ? -1 : x > y ? 1 : 0) : a < b ? -1 : 1));
-  const query = params.length ? '?' + new URLSearchParams(params).toString() : '';
-  const route = /^#!?\//.test(url.hash) ? url.hash.replace(/\/+$/, '') : '';
+  const params = cleanParams(url.searchParams);
+  const query = serializeParams(params);
+  const route = hashRoute(url.hash);
   return `https://${host}${port}${path}${query}${route}`;
 }
 
