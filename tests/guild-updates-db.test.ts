@@ -605,4 +605,38 @@ integration('T009 Guild public updates', () => {
     ).rejects.toThrow(/Guild/);
     expect((await run((tx) => listPublicGuildUpdates(tx, 'news-d', {}))).updates).toEqual([]);
   });
+
+  it('#296-5: publication time is the database clock whatever a direct writer supplies', async () => {
+    const { founder, guild: g } = await guild('news-pin');
+    const id = (await draft(founder, g.id)).update.id;
+    const stamped = async (supplied: string) => {
+      let seen = 0;
+      // Inspect inside the transaction, then roll back: the forged publication never commits.
+      await db
+        .$transaction(async (tx) => {
+          await tx.$executeRawUnsafe(
+            `UPDATE "GuildUpdate" SET "state"='PUBLISHED',"publishedAt"=$2::timestamptz,"publishedByAccountId"=$3,"publishReceiptId"="draftReceiptId" WHERE "id"=$1::uuid`,
+            id,
+            supplied,
+            founder.accountId,
+          );
+          const [row] = await tx.$queryRawUnsafe<{ at: Date }[]>(
+            `SELECT "publishedAt" AS at FROM "GuildUpdate" WHERE "id"=$1::uuid`,
+            id,
+          );
+          seen = row.at.getTime();
+          throw new Error('rollback');
+        })
+        .catch((e: Error) => {
+          if (e.message !== 'rollback') throw e;
+        });
+      return seen;
+    };
+    for (const supplied of ['2020-01-01T00:00:00Z', '2099-01-01T00:00:00Z']) {
+      expect(Math.abs((await stamped(supplied)) - Date.now()), supplied).toBeLessThan(60_000);
+    }
+    // The real command is unaffected.
+    const published = await publish(founder, g.id, id);
+    expect(Math.abs(Date.parse(published.update.publishedAt!) - Date.now())).toBeLessThan(60_000);
+  });
 });

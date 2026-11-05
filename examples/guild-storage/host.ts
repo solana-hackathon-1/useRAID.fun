@@ -61,15 +61,16 @@ async function transaction<T>(work: (tx: CommandReceiptTransaction) => Promise<T
     }
   });
 }
-async function account(label: string): Promise<GuildActor> {
+/** `via` is the sign-in method the host recorded for the session; the module accepts both 'wallet' and 'x'. */
+async function account(label: string, via: 'wallet' | 'x' = 'wallet'): Promise<GuildActor> {
   const id = `synthetic-${label}-${randomUUID()}`;
   const sessionHash = createHash('sha256').update(id).digest('hex');
   const client = await pool.connect();
   try {
     await client.query('INSERT INTO "User" (id) VALUES ($1)', [id]);
     await client.query(
-      `INSERT INTO "Session" ("tokenHash","userId","expiresAt") VALUES ($1,$2,(clock_timestamp() AT TIME ZONE 'UTC')+interval '1 hour')`,
-      [sessionHash, id],
+      `INSERT INTO "Session" ("tokenHash","userId","expiresAt","via") VALUES ($1,$2,(clock_timestamp() AT TIME ZONE 'UTC')+interval '1 hour',$3)`,
+      [sessionHash, id, via],
     );
   } finally {
     client.release();
@@ -78,7 +79,8 @@ async function account(label: string): Promise<GuildActor> {
 }
 const founder = await account('founder');
 const operator = await account('operator');
-const delegate = await account('delegate');
+// A delegate who signed in with X, so the example exercises both session methods the module accepts.
+const delegate = await account('delegate', 'x');
 const stranger = await account('holder');
 // The host owns this policy: here only the operator account may record a project's verified activation.
 const host = {
