@@ -16,6 +16,7 @@ import {
   editGuildProfile,
   grantGuildRole,
   listManagedGuildUpdates,
+  listManagedGuilds,
   listPublicGuilds,
   listPublicGuildUpdates,
   publishGuildUpdate,
@@ -203,6 +204,19 @@ try {
   assert.deepEqual(managed.authority, { founder: false, kinds: ['TREASURY'] });
   // A treasury-only manager does not see the Founder's account id.
   assert.equal(managed.guild.founderAccountId, null);
+  // The caller's own management list shows each Guild with only the authority held, and a stranger sees nothing.
+  const ownList = await transaction((tx) => listManagedGuilds(tx, founder));
+  assert.deepEqual(
+    ownList.guilds.map((g) => [g.guild.id, g.authority.founder]),
+    [[active.guild.id, true]],
+  );
+  const asTreasury = await transaction((tx) => listManagedGuilds(tx, delegate));
+  assert.deepEqual(
+    asTreasury.guilds.map((g) => g.authority.kinds),
+    [['TREASURY']],
+  );
+  assert.equal(asTreasury.guilds[0].guild.founderAccountId, null);
+  assert.deepEqual((await transaction((tx) => listManagedGuilds(tx, stranger))).guilds, []);
   // A public update is drafted, then published only by the Founder; the public list shows text and time alone.
   const news = await transaction((tx) =>
     draftGuildUpdate(
