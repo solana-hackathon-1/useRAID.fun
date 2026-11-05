@@ -164,6 +164,7 @@
     "tests/browser-practice-review-inbox/practice-review-inbox.spec.ts",
     "tests/browser-practice-review/practice-review.spec.ts",
     "tests/browser-practice-ownership/practice-ownership.spec.ts",
+    "tests/outbound-fetch-allowlist.test.ts",
     "tests/practice-trial-assessment-boundary.test.ts",
     "tests/practice-trial-assessment-db.test.ts",
     "tests/practice-trial-assessment-host.test.ts",
@@ -1388,6 +1389,7 @@
       "existing_test_files": [
         "tests/browser-live/security.spec.ts",
         "tests/browser/security.spec.ts",
+        "tests/outbound-fetch-allowlist.test.ts",
         "tests/security-headers.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
