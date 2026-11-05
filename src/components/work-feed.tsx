@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { formatDisplayAmount } from '../contracts/assets';
+import { decimalPlaces, feedAssetLabel, type RewardControl } from '../work-loop/feed-reward-input';
 import { AcceptRaid } from './work-accept';
 import { ApplyToRaid } from './work-apply';
 import type { ApplyMode } from '../lib/work-apply-mode';
@@ -25,9 +26,13 @@ const KINDS: Readonly<Record<string, string>> = {
 type Filters = Partial<Omit<FeedQuery, 'cursor' | 'minReward'>> & {
   cursor?: string | null;
   eligible?: boolean;
-  /** Base units as typed or parsed; the server validates it. */
-  minReward?: string;
+  /**
+   * The minimum reward as typed, in the selected asset's display units (for example `1.5`). The URL keeps this, never
+   * the converted base units: those depend on the asset's decimals and belong to the API's `minReward`.
+   */
+  minRewardAmount?: string;
 };
+const NO_REWARD_CONTROL: RewardControl = { enabled: false, assets: [], amount: '', problem: null };
 const ORDER = [
   'category',
   'skillId',
@@ -36,7 +41,7 @@ const ORDER = [
   'execution',
   'admission',
   'assetKey',
-  'minReward',
+  'minRewardAmount',
   'closesBefore',
   'sort',
   'limit',
@@ -59,9 +64,7 @@ export function feedHref(query: Filters) {
   const text = params.toString();
   return text ? `${FEED_PATH}?${text}` : FEED_PATH;
 }
-function assetLabel(asset: FeedCard['rewards'][number]['assetId']) {
-  return asset.kind === 'NATIVE_SOL' ? 'SOL' : `${asset.mint.slice(0, 4)}…${asset.mint.slice(-4)}`;
-}
+const assetLabel = feedAssetLabel;
 const day = new Intl.DateTimeFormat('en-GB', { timeZone: 'UTC', dateStyle: 'medium' });
 const clock = new Intl.DateTimeFormat('en-GB', {
   timeZone: 'UTC',
@@ -86,6 +89,8 @@ const ELIGIBILITY_LABEL: Readonly<Record<FeedEligibility, string>> = {
   NOT_ELIGIBLE: 'Not eligible yet: your verified skills do not meet this Raid',
   UNKNOWN: 'Eligibility unknown: not confirmable from your verified skills alone',
 };
+const MIN_HELP = 'raid-feed-min-reward-help';
+const MIN_ERROR = 'raid-feed-min-reward-error';
 function Option({ value, label }: { value: string; label: string }) {
   return <option value={value}>{label}</option>;
 }
@@ -93,13 +98,18 @@ function Filter({
   query,
   assets,
   viewer,
-  rewardFilter,
+  reward,
 }: {
   query: Filters;
   assets: Map<string, string>;
   viewer: FeedViewerState;
-  rewardFilter: boolean;
+  reward: RewardControl;
 }) {
+  const chosen = query.assetKey
+    ? (reward.assets.find((asset) => asset.assetKey === query.assetKey) ?? null)
+    : null;
+  const unit = query.assetKey ? (chosen ? assetLabel(chosen.assetId) : 'the selected asset') : null;
+  const describedBy = reward.problem ? `${MIN_HELP} ${MIN_ERROR}` : MIN_HELP;
   return (
     <form className="raid-feed-filters" method="get" action={FEED_PATH}>
       <label>
@@ -153,21 +163,35 @@ function Filter({
           ))}
         </select>
       </label>
-      {rewardFilter ? (
+      {reward.enabled ? (
         <label>
-          Minimum reward, in the asset&rsquo;s smallest units
+          {unit ? `Minimum reward in ${unit}` : 'Minimum reward'}
           <input
-            name="minReward"
-            inputMode="numeric"
-            pattern="(0|[1-9][0-9]*)"
+            name="minRewardAmount"
+            type="text"
+            inputMode="decimal"
+            autoComplete="off"
+            spellCheck={false}
             maxLength={40}
-            defaultValue={query.minReward ?? ''}
-            aria-describedby="raid-feed-min-reward-help"
+            defaultValue={reward.amount}
+            aria-invalid={reward.problem ? true : undefined}
+            aria-describedby={describedBy}
+            autoFocus={reward.problem ? true : undefined}
           />
-          <span id="raid-feed-min-reward-help" className="raid-feed-help">
-            Whole numbers only (for SOL, lamports). Choose a reward asset too: amounts in different
-            assets are never compared or converted.
+          <span id={MIN_HELP} className="raid-feed-help">
+            {unit
+              ? chosen?.decimals === null || !chosen
+                ? 'Enter an amount such as 1.5, or leave it empty. '
+                : `Enter an amount such as 1.5 (${decimalPlaces(chosen.decimals)}), or leave it empty. `
+              : 'Choose a reward asset first, then enter the amount in that asset\u2019s own units. '}
+            It applies to that one asset only: Raids paying in other assets are hidden, and amounts
+            in different assets are never compared or converted.
           </span>
+          {reward.problem ? (
+            <span id={MIN_ERROR} className="raid-feed-error" role="alert">
+              {reward.problem}
+            </span>
+          ) : null}
         </label>
       ) : null}
       <label>
@@ -249,18 +273,27 @@ export function WorkFeed({
   page,
   query,
   viewer = { status: 'OFF' },
-  rewardFilter = false,
+  reward = NO_REWARD_CONTROL,
 }: {
   page: FeedPage;
   query: Filters;
   viewer?: FeedViewerState;
-  rewardFilter?: boolean;
+  reward?: RewardControl;
 }) {
   const eligibleOnly = viewer.status === 'READY' && viewer.eligibleOnly;
   const assets = new Map<string, string>();
+  // With the minimum open, the choices are every live reward asset, so a filter never removes the asset it uses.
+  if (reward.enabled)
+    for (const asset of reward.assets) assets.set(asset.assetKey, assetLabel(asset.assetId));
   for (const item of page.items)
-    for (const reward of item.rewards) assets.set(reward.assetKey, assetLabel(reward.assetId));
+    for (const leg of item.rewards) assets.set(leg.assetKey, assetLabel(leg.assetId));
   if (query.assetKey && !assets.has(query.assetKey)) assets.set(query.assetKey, 'Selected asset');
+  const chosen = query.assetKey ? assets.get(query.assetKey) : undefined;
+  const typed = reward.enabled ? reward.amount : '';
+  // The typed display amount is what the URL keeps; links below never carry converted base units.
+  const links: Filters = { ...query, minRewardAmount: typed };
+  const minimum =
+    typed !== '' && !reward.problem && chosen ? `at least ${typed.trim()} ${chosen}` : null;
   return (
     <section className="raid-feed" aria-labelledby="raid-feed-title">
       <h1 id="raid-feed-title">Live Raids</h1>
@@ -292,9 +325,22 @@ export function WorkFeed({
         query={{ ...query, eligible: eligibleOnly }}
         assets={assets}
         viewer={viewer}
-        rewardFilter={rewardFilter}
+        reward={reward}
       />
-      {page.items.length ? (
+      {minimum ? (
+        <p className="raid-feed-viewer" role="status">
+          Showing Raids that pay {minimum}. Raids paying only in other assets are hidden; other
+          assets are not converted or compared.
+        </p>
+      ) : null}
+      {reward.problem ? (
+        <div className="raid-feed-empty" role="status">
+          <p>Fix the minimum reward above to see Raids. Nothing is listed until it is valid.</p>
+          <Link className="button secondary" href={feedHref({ ...links, minRewardAmount: '' })}>
+            Ignore the minimum reward
+          </Link>
+        </div>
+      ) : page.items.length ? (
         <ul className="raid-feed-grid">
           {page.items.map((item) => (
             <Card
@@ -311,11 +357,13 @@ export function WorkFeed({
           <p>
             {eligibleOnly
               ? 'Of the live Raids, none match your verified skills and these filters.'
-              : 'No live Raids match these filters.'}
+              : minimum
+                ? `No live Raids pay ${minimum}. Amounts in other assets are never converted to this one.`
+                : 'No live Raids match these filters.'}
           </p>
           <Link
             className="button secondary"
-            href={eligibleOnly ? feedHref({ ...query, eligible: false }) : FEED_PATH}
+            href={eligibleOnly ? feedHref({ ...links, eligible: false }) : FEED_PATH}
           >
             {eligibleOnly ? 'Show Raids without the Eligible for me filter' : 'Show all live Raids'}
           </Link>
@@ -325,7 +373,7 @@ export function WorkFeed({
         <p>
           <Link
             className="button secondary"
-            href={feedHref({ ...query, cursor: page.nextCursor, eligible: eligibleOnly })}
+            href={feedHref({ ...links, cursor: page.nextCursor, eligible: eligibleOnly })}
           >
             Next Raids
           </Link>

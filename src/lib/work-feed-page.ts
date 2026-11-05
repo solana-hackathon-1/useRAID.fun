@@ -8,6 +8,11 @@ import {
   type FeedQuery,
   type FeedViewerState,
 } from '../work-loop/feed-contracts';
+import {
+  feedAssetLabel,
+  parseRewardMinimum,
+  type RewardControl,
+} from '../work-loop/feed-reward-input';
 import { cookies } from 'next/headers';
 import { currentUser, hash } from './auth';
 import type { ApplyMode } from './work-apply-mode';
@@ -15,6 +20,7 @@ import { sessionCookie } from './studio-mode';
 import { readMyRaidsFromHost, workWorkspaceConfiguration } from './work-workspace-host';
 import {
   readDetailFromHost,
+  readFeedAssetsFromHost,
   readFeedForViewerFromHost,
   readFeedFromHost,
   workFeedAvailable,
@@ -31,8 +37,7 @@ export type LoadedFeed =
       page: FeedPage;
       query: FeedQuery;
       viewer: FeedViewerState;
-      /** Whether the minimum-reward control is open; closed by default behind its own flag. */
-      rewardFilter: boolean;
+      reward: RewardControl;
     };
 /** The signed-in session as a work actor, or null. Any failure reads as signed out. */
 async function sessionActor() {
@@ -49,6 +54,7 @@ export async function loadFeed(params: Params): Promise<LoadedFeed> {
   if (!workFeedAvailable()) return { status: 'UNAVAILABLE' };
   const raw: Record<string, string | number> = {};
   let eligibleOnly = false;
+  let amount: string | undefined;
   for (const [name, value] of Object.entries(params)) {
     if (value === undefined || value === '') continue;
     // A repeated parameter is refused, never silently reduced to one of its values.
@@ -57,6 +63,11 @@ export async function loadFeed(params: Params): Promise<LoadedFeed> {
     if (name === 'eligible') {
       if (value !== '1') return { status: 'INVALID', query: {} };
       eligibleOnly = true;
+      continue;
+    }
+    // The minimum reward as typed, in the selected asset's display units; converted exactly below.
+    if (name === 'minRewardAmount') {
+      amount = value;
       continue;
     }
     raw[name] =
@@ -68,26 +79,48 @@ export async function loadFeed(params: Params): Promise<LoadedFeed> {
   }
   const query = FeedQuerySchema.safeParse(raw);
   if (!query.success) return { status: 'INVALID', query: {} };
-  // While its flag is off a minimum reward is refused, never silently ignored (that would list unfiltered Raids).
-  const rewardFilter = workFeedRewardFilterAvailable();
-  if ('minReward' in raw && !rewardFilter) return { status: 'INVALID', query: {} };
+  // While its flag is off a minimum is refused, never silently ignored (that would list unfiltered Raids). The page
+  // takes display units only (`minRewardAmount`); the base-unit `minReward` belongs to the API and is not a page URL.
+  const enabled = workFeedRewardFilterAvailable();
+  if ((amount !== undefined || 'minReward' in raw) && !enabled)
+    return { status: 'INVALID', query: {} };
+  if ('minReward' in raw) return { status: 'INVALID', query: {} };
   try {
+    const assets = enabled ? await readFeedAssetsFromHost() : [];
+    let problem: string | null = null;
+    let filtered: FeedQuery = query.data;
+    if (amount !== undefined) {
+      const selected = assets.find((a) => a.assetKey === query.data.assetKey);
+      const converted = parseRewardMinimum(
+        amount,
+        query.data.assetKey === undefined
+          ? null
+          : {
+              label: selected ? feedAssetLabel(selected.assetId) : 'the selected asset',
+              decimals: selected?.decimals ?? null,
+            },
+      );
+      if (converted.ok) filtered = { ...query.data, minReward: converted.baseUnits };
+      else problem = converted.message;
+    }
+    const reward = { enabled, assets, amount: amount ?? '', problem };
     let viewer: FeedViewerState = { status: 'OFF' };
     if (workFeedEligibilityAvailable()) {
       const actor = await sessionActor();
       if (!actor) viewer = { status: 'SIGNED_OUT' };
+      else if (problem) viewer = { status: 'READY', eligibleOnly, eligibility: {} };
       else {
         try {
-          const page = await readFeedForViewerFromHost(query.data, actor, eligibleOnly);
+          const page = await readFeedForViewerFromHost(filtered, actor, eligibleOnly);
           const { viewer: facts, ...rest } = page as FeedPage & {
             viewer?: { eligibility: Record<string, FeedEligibility> };
           };
           return {
             status: 'READY',
             page: rest,
-            query: query.data,
+            query: filtered,
             viewer: { status: 'READY', eligibleOnly, eligibility: facts?.eligibility ?? {} },
-            rewardFilter,
+            reward,
           };
         } catch {
           // The check failing never takes the public feed down; the person is told it is unavailable.
@@ -95,13 +128,16 @@ export async function loadFeed(params: Params): Promise<LoadedFeed> {
         }
       }
     }
-    return {
-      status: 'READY',
-      page: await readFeedFromHost(query.data),
-      query: query.data,
-      viewer,
-      rewardFilter,
-    };
+    // An amount that cannot be converted lists nothing: showing unfiltered Raids beside the error would mislead.
+    const page: FeedPage = problem
+      ? {
+          items: [],
+          nextCursor: null,
+          sort: query.data.sort,
+          rewardComparable: query.data.assetKey !== undefined,
+        }
+      : await readFeedFromHost(filtered);
+    return { status: 'READY', page, query: filtered, viewer, reward };
   } catch {
     return { status: 'UNAVAILABLE' };
   }

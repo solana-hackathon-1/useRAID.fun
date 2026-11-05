@@ -1,4 +1,4 @@
-import { readWorkDetail, readWorkFeed } from '../work-loop/feed-storage';
+import { readFeedAssets, readWorkDetail, readWorkFeed } from '../work-loop/feed-storage';
 import { attachPublicGuilds } from './work-feed-guilds';
 import { WorkError, type WorkActor } from '../work-loop/contracts';
 import { guildPublicAvailable } from './guild-public-host';
@@ -40,6 +40,11 @@ async function withGuilds<T extends { guildId: string }>(
   cards: T[],
 ) {
   return guildPublicAvailable() ? attachPublicGuilds(tx, cards) : cards;
+}
+/** The live reward assets and their decimals for the display-unit minimum; closed while the reward filter is off. */
+export async function readFeedAssetsFromHost() {
+  if (!workFeedRewardFilterAvailable()) throw new WorkError('INVALID_INPUT');
+  return runCommandTransaction(db, (tx) => readFeedAssets(tx));
 }
 export async function readFeedFromHost(query: unknown) {
   guardRewardFilter(query);

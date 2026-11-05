@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const mocks = vi.hoisted(() => ({
   available: vi.fn(),
   rewardFilter: vi.fn(),
+  assets: vi.fn(),
   feed: vi.fn(),
   detail: vi.fn(),
   user: vi.fn(),
@@ -13,6 +14,7 @@ vi.mock('../src/lib/work-feed-host', () => ({
   workFeedAvailable: mocks.available,
   workFeedEligibilityAvailable: () => false,
   workFeedRewardFilterAvailable: mocks.rewardFilter,
+  readFeedAssetsFromHost: mocks.assets,
   readFeedForViewerFromHost: vi.fn(),
   readFeedFromHost: mocks.feed,
   readDetailFromHost: mocks.detail,
@@ -69,34 +71,102 @@ describe('loadFeed', () => {
     expect(failed).toEqual({ status: 'UNAVAILABLE' });
   });
 });
-describe('loadFeed: minimum reward within one asset (T097)', () => {
-  const key = '["SOLANA","synthetic-work","NATIVE_SOL"]';
-  it('refuses the minimum without reading while its feature flag is off', async () => {
-    expect(await loadFeed({ assetKey: key, minReward: '600' })).toMatchObject({
-      status: 'INVALID',
-    });
+describe('loadFeed: display-unit minimum reward within one asset (T097)', () => {
+  const sol = { chain: 'SOLANA', networkIdentity: 'synthetic-work', kind: 'NATIVE_SOL' } as const;
+  const solKey = '["SOLANA","synthetic-work","NATIVE_SOL"]';
+  const token = {
+    chain: 'SOLANA',
+    networkIdentity: 'synthetic-work',
+    kind: 'TOKEN',
+    mint: 'So11111111111111111111111111111111111111112',
+    tokenProgram: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+  } as const;
+  const tokenKey = `["SOLANA","synthetic-work","TOKEN","${token.mint}","${token.tokenProgram}"]`;
+  const assets = [
+    { assetKey: solKey, assetId: sol, decimals: 9 },
+    { assetKey: tokenKey, assetId: token, decimals: 6 },
+  ];
+  beforeEach(() => {
+    mocks.assets.mockResolvedValue(assets);
+  });
+  it('refuses a minimum without reading while its feature flag is off, and reports the control closed', async () => {
+    for (const params of [
+      { assetKey: solKey, minRewardAmount: '1.5' },
+      { assetKey: solKey, minReward: '600' },
+    ])
+      expect(await loadFeed(params)).toMatchObject({ status: 'INVALID' });
     expect(mocks.feed).not.toHaveBeenCalled();
-    // Without the parameter the page is unchanged and tells the UI the control is closed.
-    expect(await loadFeed({ assetKey: key })).toMatchObject({
+    expect(mocks.assets).not.toHaveBeenCalled();
+    expect(await loadFeed({ assetKey: solKey })).toMatchObject({
       status: 'READY',
-      rewardFilter: false,
+      reward: { enabled: false, assets: [], amount: '', problem: null },
     });
   });
-  it('passes the base-unit minimum to the read, with its one asset, while the flag is on', async () => {
+  it('converts the typed display amount with the selected asset decimals before the read', async () => {
     mocks.rewardFilter.mockReturnValue(true);
-    expect(await loadFeed({ assetKey: key, minReward: '600' })).toMatchObject({
+    const loaded = await loadFeed({ assetKey: solKey, minRewardAmount: '1.5' });
+    expect(loaded).toMatchObject({
       status: 'READY',
-      rewardFilter: true,
+      reward: { enabled: true, assets, amount: '1.5', problem: null },
     });
     expect(mocks.feed).toHaveBeenCalledWith({
-      assetKey: key,
-      minReward: '600',
+      assetKey: solKey,
+      minReward: '1500000000',
       sort: 'newest',
       limit: 20,
     });
-    expect(await loadFeed({ minReward: '600' })).toMatchObject({ status: 'INVALID' });
-    expect(await loadFeed({ assetKey: key, minReward: '1.5' })).toMatchObject({
+  });
+  it('scopes the same typed amount to each asset, never carrying a quantity across assets', async () => {
+    mocks.rewardFilter.mockReturnValue(true);
+    await loadFeed({ assetKey: tokenKey, minRewardAmount: '1.5' });
+    expect(mocks.feed).toHaveBeenLastCalledWith(
+      expect.objectContaining({ assetKey: tokenKey, minReward: '1500000' }),
+    );
+  });
+  it('shows the form with an actionable problem and does not read when the amount cannot be converted', async () => {
+    mocks.rewardFilter.mockReturnValue(true);
+    const cases: [Record<string, string>, string][] = [
+      [{ minRewardAmount: '1.5' }, 'reward asset'],
+      [{ assetKey: solKey, minRewardAmount: '0.0000000001' }, '9 decimal places'],
+      [{ assetKey: tokenKey, minRewardAmount: '-1' }, 'cannot be negative'],
+      [{ assetKey: tokenKey, minRewardAmount: '   ' }, 'clear the field'],
+      [{ assetKey: tokenKey, minRewardAmount: '99999999999999999999' }, 'more than'],
+      [{ assetKey: tokenKey, minRewardAmount: '1,5' }, 'period'],
+      [{ assetKey: 'some-other-asset', minRewardAmount: '1' }, 'not confirmed'],
+    ];
+    for (const [params, text] of cases) {
+      const loaded = await loadFeed(params);
+      expect(loaded, JSON.stringify(params)).toMatchObject({
+        status: 'READY',
+        page: { items: [], nextCursor: null },
+        reward: { enabled: true, amount: params.minRewardAmount },
+      });
+      expect(loaded.status === 'READY' && loaded.reward.problem, JSON.stringify(params)).toContain(
+        text,
+      );
+    }
+    expect(mocks.feed).not.toHaveBeenCalled();
+  });
+  it('never accepts the API base-unit parameter on the page, even with the flag on', async () => {
+    mocks.rewardFilter.mockReturnValue(true);
+    expect(await loadFeed({ assetKey: solKey, minReward: '600' })).toMatchObject({
       status: 'INVALID',
+    });
+    expect(await loadFeed({ assetKey: solKey, minRewardAmount: ['1', '2'] })).toMatchObject({
+      status: 'INVALID',
+    });
+    expect(mocks.feed).not.toHaveBeenCalled();
+  });
+  it('treats an empty field as no minimum and keeps the plain asset filter', async () => {
+    mocks.rewardFilter.mockReturnValue(true);
+    await loadFeed({ assetKey: solKey, minRewardAmount: '' });
+    expect(mocks.feed).toHaveBeenCalledWith({ assetKey: solKey, sort: 'newest', limit: 20 });
+  });
+  it('is unavailable, not silently unfiltered, when the asset list cannot be read', async () => {
+    mocks.rewardFilter.mockReturnValue(true);
+    mocks.assets.mockRejectedValue(new Error('down'));
+    expect(await loadFeed({ assetKey: solKey, minRewardAmount: '1' })).toEqual({
+      status: 'UNAVAILABLE',
     });
   });
 });
