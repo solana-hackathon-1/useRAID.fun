@@ -20,6 +20,8 @@ import { seedWorkHuman, seedWorkSlot, syntheticAcceptanceHost } from './helpers/
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 const db = new PrismaClient();
+/** A second connection pool, used to observe locks held by the connection under test. */
+const gate = new PrismaClient();
 const run = <T>(work: Parameters<typeof runCommandTransaction<T>>[1]) =>
   runCommandTransaction(db, work);
 type Actor = { accountId: string; sessionHash: string };
@@ -129,6 +131,12 @@ const later = (tx: Tx, ms: number): Tx => ({
 });
 const respondLater = (ms: number, actor: Actor, input: unknown) =>
   run((tx) => respondToAmendment(later(tx, ms), cmd(actor, input), host));
+/** Waits on the database clock until the instant has passed. */
+const untilPast = (instant: string) =>
+  db.$queryRawUnsafe(
+    `SELECT pg_sleep(GREATEST(0, extract(epoch FROM $1::timestamptz-clock_timestamp()))+0.05)::text AS slept`,
+    instant,
+  );
 /** Waits until another backend is blocked on an advisory (funding-reference) lock. */
 async function advisoryWaiter() {
   for (let i = 0; i < 100; i++) {
@@ -148,7 +156,10 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
     funded = consenting = true;
     revoked.clear();
   });
-  afterAll(() => db.$disconnect());
+  afterAll(async () => {
+    await gate.$disconnect();
+    await db.$disconnect();
+  });
   it('keeps the accepted version effective until the affected member consents, then versions it with funding', async () => {
     const { founder, worker, engagementId } = await setup();
     await start(engagementId);
@@ -595,6 +606,109 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
         amendmentId: proposed.amendment.id,
         decision: 'ACCEPT',
       }),
+    ).rejects.toMatchObject({ code: 'AMENDMENT_UNAVAILABLE' });
+    expect(await row('SELECT 1 FROM "EngagementAmendment" WHERE "state"=\'ACCEPTED\'')).toEqual([]);
+  });
+  it('#326-1: expires a proposal on the real database clock with no injected time', async () => {
+    const { founder, worker, engagementId } = await setup();
+    await start(engagementId);
+    const brief = await propose(
+      founder.actor,
+      change(engagementId, { scope: 'Brief scope.' }, at(1500)),
+    );
+    // Nothing is shifted here: the command's own clock read, the proposal's expiry and the guard all use the real clock.
+    await untilPast(brief.amendment.expiresAt);
+    await expect(
+      respond(worker.actor, { amendmentId: brief.amendment.id, decision: 'ACCEPT' }),
+    ).rejects.toMatchObject({ code: 'AMENDMENT_UNAVAILABLE' });
+    expect([calls.consent, calls.available]).toEqual([0, 0]);
+    expect(
+      await row<{ state: string }>(
+        'SELECT "state" FROM "EngagementAmendment" WHERE "id"=$1::uuid',
+        brief.amendment.id,
+      ),
+    ).toEqual([{ state: 'PROPOSED' }]);
+    // An expired proposal still counts as open until withdrawn (the Founder desk says so); then a new one is answered.
+    await expect(
+      propose(founder.actor, change(engagementId, { scope: 'Open scope.' })),
+    ).rejects.toMatchObject({ code: 'AMENDMENT_EXISTS' });
+    await withdraw(founder.actor, { amendmentId: brief.amendment.id });
+    const open = await propose(founder.actor, change(engagementId, { scope: 'Open scope.' }));
+    const agreed = await respond(worker.actor, {
+      amendmentId: open.amendment.id,
+      decision: 'ACCEPT',
+    });
+    expect(agreed.amendment.state).toBe('ACCEPTED');
+  });
+  it('#326-2: judges the proposer while the engagement and amendment rows are locked, so host callbacks must not wait on other sessions', async () => {
+    const { founder, worker, engagementId } = await setup();
+    await start(engagementId);
+    const proposed = await propose(
+      founder.actor,
+      change(engagementId, { acceptanceCriteria: ['Only the agreed criterion.'] }),
+    );
+    const probes: string[] = [];
+    const probe = async (sql: string, id: string) => {
+      try {
+        await gate.$transaction(async (other) => {
+          await other.$queryRawUnsafe(sql, id);
+        });
+        return 'FREE';
+      } catch (error) {
+        return /55P03|could not obtain lock/.test(String(error)) ? 'LOCKED' : String(error);
+      }
+    };
+    const observing: AmendmentHost = {
+      ...host,
+      authorizeProposer: async (tx, proposer, target) => {
+        probes.push(
+          await probe(
+            'SELECT 1 FROM "Engagement" WHERE "id"=$1::uuid FOR UPDATE NOWAIT',
+            engagementId,
+          ),
+          await probe(
+            'SELECT 1 FROM "EngagementAmendment" WHERE "id"=$1::uuid FOR UPDATE NOWAIT',
+            proposed.amendment.id,
+          ),
+        );
+        return host.authorizeProposer!(tx, proposer, target);
+      },
+    };
+    const agreed = await respond(
+      worker.actor,
+      { amendmentId: proposed.amendment.id, decision: 'ACCEPT' },
+      observing,
+    );
+    expect(agreed.amendment.state).toBe('ACCEPTED');
+    // Asked before the consent callbacks and again before the decision is written; both with both rows still locked.
+    expect(probes).toEqual(['LOCKED', 'LOCKED', 'LOCKED', 'LOCKED']);
+  });
+  it('#361-7: refuses consent to a proposal that expired before the engagement closed, and leaves the closed work alone', async () => {
+    const deadlines = {
+      commitment: at(1000),
+      preparation: at(1500),
+      submission: at(3000),
+      review: at(3500),
+      operationalClosure: at(4000),
+    };
+    const { founder, worker, engagementId } = await setup({ deadlines });
+    await start(engagementId);
+    const proposed = await propose(
+      founder.actor,
+      change(engagementId, { scope: 'A narrower scope.' }, at(2000)),
+    );
+    await untilPast(deadlines.operationalClosure);
+    const ops = await seedWorkHuman(db, 'ops-' + randomUUID());
+    await run((tx) =>
+      closeOverdueEngagement(tx, cmd(ops.actor, { engagementId, expectedRevision: 2 }), {
+        allowNewWrites: true,
+        authorize: async () => true,
+      }),
+    );
+    expect((await engagement(engagementId)).state).toBe('TERMINATED');
+    // A proposal's expiry precedes the submission deadline, which precedes closure, so consent cannot overtake a closure.
+    await expect(
+      respond(worker.actor, { amendmentId: proposed.amendment.id, decision: 'ACCEPT' }),
     ).rejects.toMatchObject({ code: 'AMENDMENT_UNAVAILABLE' });
     expect(await row('SELECT 1 FROM "EngagementAmendment" WHERE "state"=\'ACCEPTED\'')).toEqual([]);
   });
