@@ -265,12 +265,17 @@ integration('T024 root composition: worker closure and operator closure route', 
     const hold = new Promise<void>((resolve) => (release = resolve));
     let locked!: () => void;
     const ready = new Promise<void>((resolve) => (locked = resolve));
+    let holderPid = 0;
     // What an accepted amendment does: it takes the engagement lock and commits, without writing an Engagement row.
     const amending = db.$transaction(
       async (t) => {
         await t.$queryRawUnsafe(
           'SELECT 1 FROM "Engagement" WHERE "id"=$1::uuid FOR UPDATE',
           engagementId,
+        );
+        holderPid = Number(
+          ((await t.$queryRawUnsafe('SELECT pg_backend_pid()::int AS pid')) as { pid: number }[])[0]
+            .pid,
         );
         await t.$executeRawUnsafe(
           `INSERT INTO "EngagementAmendment" ("engagementId","sequence","snapshot","digest","proposedByAccountId","expiresAt")
@@ -304,12 +309,14 @@ integration('T024 root composition: worker closure and operator closure route', 
       (error: unknown) => ({ error }),
     );
     let blocked = false;
+    // Only a session waiting on this test's own lock holder counts, so no unrelated session can satisfy the wait.
     for (let i = 0; i < 100 && !blocked; i++) {
       blocked =
         (
-          await row(
-            `SELECT 1 FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid() AND wait_event_type='Lock' AND query LIKE '%"Engagement"%FOR UPDATE%'`,
-          )
+          (await db.$queryRawUnsafe(
+            `SELECT 1 FROM pg_stat_activity WHERE datname=current_database() AND $1::int = ANY(pg_blocking_pids(pid))`,
+            holderPid,
+          )) as unknown[]
         ).length > 0;
       if (!blocked) await new Promise((resolve) => setTimeout(resolve, 50));
     }

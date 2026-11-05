@@ -26,14 +26,17 @@ export async function closeEngagementFromHost(command: WorkCommand) {
   const host = createRootClosureHost(workClosureEnabled());
   return runCommandTransaction(db, (tx) => closeOverdueEngagement(tx, command, host));
 }
-let sessionOutageReported = false;
+/** A persistent missing-session outage is raised again after this long, so one lost log line cannot hide it. */
+export const WORK_CLOSURE_REALARM_MS = 15 * 60 * 1000;
+let sessionOutageReportedAt: number | null = null;
 /**
  * Worker entry: one bounded pass. Off unless `WORK_CLOSURE_ENABLED` is exactly true and `WORK_CLOSURE_WORKER_ACCOUNT_ID`
  * names an operator account; the pass presents that account's own current Session and fails closed without one.
  * Failures that need an operator are thrown after the pass so the worker logs them; a missing worker session is
- * thrown once per outage (the pass keeps failing closed) and again after it has recovered.
+ * thrown once per outage (the pass keeps failing closed), again every `WORK_CLOSURE_REALARM_MS` while it persists, and
+ * again after it has recovered. The injectable clock is for tests.
  */
-export async function runWorkClosureWorker() {
+export async function runWorkClosureWorker(now: () => number = Date.now) {
   const workerAccountId = (process.env.WORK_CLOSURE_WORKER_ACCOUNT_ID ?? '').trim();
   if (!workClosureEnabled() || !workerAccountId) return null;
   let result;
@@ -44,15 +47,21 @@ export async function runWorkClosureWorker() {
       workerAccountId,
     });
   } catch (error) {
-    // No live session for the worker account: the pass fails closed on every tick. Raise it once per outage so the
-    // log stays readable; any other failure is always raised.
+    // No live session for the worker account: the pass fails closed on every tick. Raise it once per outage and then
+    // at a bounded interval, so the log stays readable but a lost line cannot hide a persistent outage; any other
+    // failure is always raised.
     if (error instanceof WorkError && error.code === 'UNAUTHENTICATED') {
-      if (sessionOutageReported) return null;
-      sessionOutageReported = true;
+      const at = now();
+      if (
+        sessionOutageReportedAt !== null &&
+        at - sessionOutageReportedAt < WORK_CLOSURE_REALARM_MS
+      )
+        return null;
+      sessionOutageReportedAt = at;
     }
     throw error;
   }
-  sessionOutageReported = false;
+  sessionOutageReportedAt = null;
   if (result.failed.length)
     throw new Error(
       `Work closure pass left ${result.failed.length} engagement(s) open: ${[
