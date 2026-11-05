@@ -48,7 +48,8 @@ function cookedLiterals(node: ts.Node) {
   walk(node);
   return text;
 }
-// Lint-level fence: a lock name built at run time, referenced through a constant declared elsewhere (for example
+// Lint-level fence: a lock name built at run time (including array fragments joined with `.join(separator)`, whose
+// separator is not reconstructed), referenced through a constant declared elsewhere (for example
 // assessment-lock.ts) or a session-level pg_advisory_lock is not seen here.
 export function mentionsAdvisoryLock(node: ts.Node, source: ts.SourceFile) {
   return mentionCount(node.getText(source)) + mentionCount(cookedLiterals(node)) > 0;
