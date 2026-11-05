@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient, type Prisma } from '@prisma/client';
+import type { CommandReceiptTransaction as Tx } from '../src/command-receipts';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
 import { commitEngagement } from '../src/work-loop/engagement-storage';
 import { submitWork, decideReview } from '../src/work-loop/submission-storage';
@@ -108,6 +109,100 @@ async function waitFor(waiter: number, blocker: number, statement: RegExp) {
     await new Promise((r) => setTimeout(r, 10));
   }
   throw Error('Expected database blocking relationship was not observed.');
+}
+/**
+ * An amendment acceptance that takes the engagement lock, writes the amendment (not an Engagement row) and stays
+ * uncommitted until released. With `guarded` the real triggers run (engagement must be IN_PROGRESS); otherwise
+ * they are bypassed to model an accepted amendment landing while the engagement is in another state.
+ */
+function holdAcceptedAmendment(
+  engagementId: string,
+  proposer: string,
+  decider: string,
+  patch: { deadlines?: Record<string, string>; acceptanceCriteria?: string[] },
+  guarded: boolean,
+) {
+  const locked = deferred<number>(),
+    release = deferred<void>();
+  const done = db.$transaction(async (t) => {
+    await t.$queryRawUnsafe(
+      'SELECT 1 FROM "Engagement" WHERE "id"=$1::uuid FOR UPDATE',
+      engagementId,
+    );
+    if (!guarded) await t.$executeRawUnsafe('SET LOCAL session_replication_role = replica');
+    const snapshot = `s.eff || jsonb_build_object('deadlines', s.eff->'deadlines' || $3::jsonb, 'acceptanceCriteria', COALESCE($4::jsonb, s.eff->'acceptanceCriteria'))`;
+    const args = [
+      engagementId,
+      proposer,
+      JSON.stringify(patch.deadlines ?? {}),
+      patch.acceptanceCriteria ? JSON.stringify(patch.acceptanceCriteria) : null,
+    ];
+    if (guarded) {
+      await t.$executeRawUnsafe(
+        `INSERT INTO "EngagementAmendment" ("engagementId","sequence","snapshot","digest","proposedByAccountId","expiresAt")
+         SELECT $1::uuid,1,${snapshot},repeat('a',64),$2,(s.eff->'deadlines'->>'submission')::timestamptz-interval '1 second'
+         FROM (SELECT raid_effective_terms($1::uuid) AS eff) s`,
+        ...args,
+      );
+      await t.$executeRawUnsafe(
+        `UPDATE "EngagementAmendment" SET "state"='ACCEPTED',"decidedByAccountId"=$2,"consentRef"='consent-test',"decidedAt"=clock_timestamp() WHERE "engagementId"=$1::uuid`,
+        engagementId,
+        decider,
+      );
+    } else {
+      await t.$executeRawUnsafe(
+        `INSERT INTO "EngagementAmendment" ("engagementId","sequence","snapshot","digest","proposedByAccountId","expiresAt","state","decidedByAccountId","consentRef","decidedAt")
+         SELECT $1::uuid,1,${snapshot},repeat('a',64),$2,clock_timestamp()+interval '1 hour','ACCEPTED',$5,'consent-test',clock_timestamp()
+         FROM (SELECT raid_effective_terms($1::uuid) AS eff) s`,
+        ...args,
+        decider,
+      );
+    }
+    locked.resolve(await pid(t));
+    await release.promise;
+  }, txOptions.transaction);
+  return { locked: locked.promise, release: release.resolve, done };
+}
+/** Runs `command` while the holder owns the engagement lock; the amendment commits only after it is seen waiting. */
+async function runBehindAmendment<T>(
+  holder: ReturnType<typeof holdAcceptedAmendment>,
+  command: (port: Tx) => Promise<T>,
+) {
+  const waiter = deferred<number>();
+  const blocker = await Promise.race([
+    holder.locked,
+    holder.done.then(() => {
+      throw Error('Amendment ended before holding the lock.');
+    }),
+  ]);
+  const waiting = runCommandTransaction(
+    db,
+    async (port, tx) => {
+      waiter.resolve(await pid(tx));
+      return command(port);
+    },
+    txOptions,
+  );
+  const outcome = waiting.then(
+    (value) => ({ value }),
+    (error: unknown) => ({ error }),
+  );
+  try {
+    await waitFor(
+      await Promise.race([
+        waiter.promise,
+        waiting.then(() => {
+          throw Error('Command ended before it was observed waiting.');
+        }),
+      ]),
+      blocker,
+      /"Engagement".*FOR UPDATE/s,
+    );
+  } finally {
+    holder.release();
+    await holder.done;
+  }
+  return outcome;
 }
 integration('T023 versioned submissions and criterion review', () => {
   beforeEach(async () => {
@@ -431,6 +526,79 @@ integration('T023 versioned submissions and criterion review', () => {
       code: 'DEADLINE_PASSED',
     });
   });
+  it('judges the submission deadline on terms read after the engagement lock, so an amendment accepted during the wait extends it', async () => {
+    const at = (ms: number) => new Date(Date.now() + ms).toISOString();
+    const { worker, reviewer, engagementId } = await setup({
+      deadlines: {
+        commitment: at(5000),
+        preparation: at(5500),
+        submission: at(6000),
+        review: at(6500),
+        operationalClosure: at(7000),
+      },
+    });
+    // The real guards run: the amendment is proposed and consented to while the original deadline is still ahead.
+    const holder = holdAcceptedAmendment(
+      engagementId,
+      reviewer.actor.accountId,
+      worker.actor.accountId,
+      {
+        deadlines: {
+          submission: at(3600000),
+          review: at(3601000),
+          operationalClosure: at(3602000),
+        },
+      },
+      true,
+    );
+    await holder.locked;
+    // Let the original submission deadline pass on the database clock before the submitter queues behind the lock.
+    await db.$queryRawUnsafe(
+      `SELECT pg_sleep(GREATEST(0, extract(epoch FROM $1::timestamptz-clock_timestamp()))+0.1)::text AS slept`,
+      (
+        (await db.$queryRawUnsafe(
+          `SELECT raid_effective_terms($1::uuid)->'deadlines'->>'submission' AS due`,
+          engagementId,
+        )) as { due: string }[]
+      )[0].due,
+    );
+    const outcome = await runBehindAmendment(holder, (port) =>
+      submitWork(port, cmd(worker.actor, work(engagementId)), host),
+    );
+    // The submitter waited on the lock, then saw the extended deadline: it is recorded, not rejected on stale terms.
+    expect(outcome).toMatchObject({ value: { submission: { submissionNumber: 1 } } });
+    expect(await state(engagementId)).toBe('SUBMITTED');
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "WorkSubmission"')).toHaveLength(1);
+  }, 40000);
+  it('judges review criteria on terms read after the engagement lock, so an amendment accepted during the wait applies', async () => {
+    const { worker, reviewer, engagementId } = await setup();
+    const sub = await submit(worker.actor, work(engagementId));
+    // Guards bypassed: this models an accepted amendment landing while the engagement is already SUBMITTED.
+    const holder = holdAcceptedAmendment(
+      engagementId,
+      reviewer.actor.accountId,
+      worker.actor.accountId,
+      { acceptanceCriteria: ['Original criterion.', 'Criterion added by the amendment.'] },
+      false,
+    );
+    const outcome = await runBehindAmendment(holder, (port) =>
+      decideReview(
+        port,
+        cmd(
+          reviewer.actor,
+          review(sub.submission.id, 'ACCEPT', [
+            ...met,
+            { index: 1, result: 'MET' as const, evidence: 'Added criterion verified.' },
+          ]),
+        ),
+        host,
+      ),
+    );
+    // The reviewer waited on the lock, then judged both criteria of the amended terms.
+    expect(outcome).toMatchObject({ value: { engagementState: 'ACCEPTED' } });
+    expect(await state(engagementId)).toBe('ACCEPTED');
+    expect(await commitments()).toEqual([]);
+  }, 40000);
   it('refuses direct engagement inserts that skip acceptance or its pending state', async () => {
     const { worker } = await setup();
     const other = await seedWorkSlot(db);
