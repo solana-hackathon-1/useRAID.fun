@@ -1,4 +1,4 @@
-import type { WorkCommand } from '../work-loop/contracts';
+import { WorkError, type WorkCommand } from '../work-loop/contracts';
 import type { ClosureHost } from '../work-loop/closure-contracts';
 import { closeOverdueEngagement } from '../work-loop/closure-storage';
 import { closeOverdueBatch } from '../work-loop/closure-pass';
@@ -26,19 +26,33 @@ export async function closeEngagementFromHost(command: WorkCommand) {
   const host = createRootClosureHost(workClosureEnabled());
   return runCommandTransaction(db, (tx) => closeOverdueEngagement(tx, command, host));
 }
+let sessionOutageReported = false;
 /**
  * Worker entry: one bounded pass. Off unless `WORK_CLOSURE_ENABLED` is exactly true and `WORK_CLOSURE_WORKER_ACCOUNT_ID`
  * names an operator account; the pass presents that account's own current Session and fails closed without one.
- * Failures that need an operator are thrown after the pass so the worker logs them.
+ * Failures that need an operator are thrown after the pass so the worker logs them; a missing worker session is
+ * thrown once per outage (the pass keeps failing closed) and again after it has recovered.
  */
 export async function runWorkClosureWorker() {
   const workerAccountId = (process.env.WORK_CLOSURE_WORKER_ACCOUNT_ID ?? '').trim();
   if (!workClosureEnabled() || !workerAccountId) return null;
-  const result = await closeOverdueBatch({
-    run: (work) => runCommandTransaction(db, work),
-    host: createRootClosureHost(true),
-    workerAccountId,
-  });
+  let result;
+  try {
+    result = await closeOverdueBatch({
+      run: (work) => runCommandTransaction(db, work),
+      host: createRootClosureHost(true),
+      workerAccountId,
+    });
+  } catch (error) {
+    // No live session for the worker account: the pass fails closed on every tick. Raise it once per outage so the
+    // log stays readable; any other failure is always raised.
+    if (error instanceof WorkError && error.code === 'UNAUTHENTICATED') {
+      if (sessionOutageReported) return null;
+      sessionOutageReported = true;
+    }
+    throw error;
+  }
+  sessionOutageReported = false;
   if (result.failed.length)
     throw new Error(
       `Work closure pass left ${result.failed.length} engagement(s) open: ${[

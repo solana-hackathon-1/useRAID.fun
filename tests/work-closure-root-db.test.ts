@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
 import { commitEngagement } from '../src/work-loop/engagement-storage';
 import { submitWork, decideReview } from '../src/work-loop/submission-storage';
+import { closeOverdueEngagement } from '../src/work-loop/closure-storage';
 import { closeOverdueBatch, type ClosurePassPorts } from '../src/work-loop/closure-pass';
 import { createRootClosureHost, closeEngagementFromHost } from '../src/lib/work-closure-host';
 import { raidTerms } from './helpers/raid-terms-fixture';
@@ -213,6 +214,14 @@ integration('T024 root composition: worker closure and operator closure route', 
     expect(done.map((d) => d.engagementId).sort()).toEqual(
       [raced, ...others].map((e) => e.engagementId).sort(),
     );
+    // Exactly one side won the contested engagement, and the recorded reason says which.
+    const contested = done.find((d) => d.engagementId === raced.engagementId);
+    expect(contested?.reason).toBe(
+      settled[0].status === 'fulfilled' ? 'ACCEPTED' : 'REVIEW_TIMEOUT',
+    );
+    expect(done.filter((d) => d.engagementId !== raced.engagementId).map((d) => d.reason)).toEqual(
+      others.map(() => 'ACCESS_TIMEOUT'),
+    );
     expect(await commitments()).toEqual([]);
   }, 60000);
 
@@ -244,6 +253,75 @@ integration('T024 root composition: worker closure and operator closure route', 
     expect(subs.length).toBe(submitted.status === 'fulfilled' ? 1 : 0);
     expect((await engagement(racing.engagementId)).state).toBe('TERMINATED');
   }, 40000);
+
+  it('judges the deadline on terms read after the engagement lock, so an amendment accepted during the wait extends it', async () => {
+    const deadlines = soon();
+    const { engagementId, worker, reviewer } = await setup(deadlines);
+    await start(engagementId);
+    const ops = await seedWorkHuman(db, operatorId);
+    const { revision } = await engagement(engagementId);
+    const extended = at(3600000);
+    let release!: () => void;
+    const hold = new Promise<void>((resolve) => (release = resolve));
+    let locked!: () => void;
+    const ready = new Promise<void>((resolve) => (locked = resolve));
+    // What an accepted amendment does: it takes the engagement lock and commits, without writing an Engagement row.
+    const amending = db.$transaction(
+      async (t) => {
+        await t.$queryRawUnsafe(
+          'SELECT 1 FROM "Engagement" WHERE "id"=$1::uuid FOR UPDATE',
+          engagementId,
+        );
+        await t.$executeRawUnsafe(
+          `INSERT INTO "EngagementAmendment" ("engagementId","sequence","snapshot","digest","proposedByAccountId","expiresAt")
+           SELECT $1::uuid,1,jsonb_set(s.eff,'{deadlines,operationalClosure}',to_jsonb($3::text)),repeat('a',64),$2,(s.eff->'deadlines'->>'submission')::timestamptz-interval '1 second'
+           FROM (SELECT raid_effective_terms($1::uuid) AS eff) s`,
+          engagementId,
+          reviewer.actor.accountId,
+          extended,
+        );
+        await t.$executeRawUnsafe(
+          `UPDATE "EngagementAmendment" SET "state"='ACCEPTED',"decidedByAccountId"=$2,"consentRef"='consent-test',"decidedAt"=clock_timestamp() WHERE "engagementId"=$1::uuid`,
+          engagementId,
+          worker.actor.accountId,
+        );
+        locked();
+        await hold;
+      },
+      { timeout: 60000 },
+    );
+    await ready;
+    await untilPast(deadlines.operationalClosure);
+    const closing = run((tx) =>
+      closeOverdueEngagement(
+        tx,
+        cmd(ops.actor, { engagementId, expectedRevision: revision }),
+        createRootClosureHost(true, (id) => id === operatorId),
+      ),
+    );
+    const outcome = closing.then(
+      (value) => ({ value }),
+      (error: unknown) => ({ error }),
+    );
+    let blocked = false;
+    for (let i = 0; i < 100 && !blocked; i++) {
+      blocked =
+        (
+          await row(
+            `SELECT 1 FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid() AND wait_event_type='Lock' AND query LIKE '%"Engagement"%FOR UPDATE%'`,
+          )
+        ).length > 0;
+      if (!blocked) await new Promise((resolve) => setTimeout(resolve, 50));
+    }
+    release();
+    await amending;
+    expect(blocked).toBe(true);
+    // The closer waited on the lock, then saw the extended deadline: a settled answer, not a storage failure.
+    expect(await outcome).toMatchObject({ error: { code: 'DEADLINE_NOT_REACHED' } });
+    expect(await closures()).toEqual([]);
+    expect(await commitments()).toHaveLength(1);
+    expect((await engagement(engagementId)).state).toBe('IN_PROGRESS');
+  }, 60000);
 
   it('refuses a worker account without a live session or without operator authority', async () => {
     const deadlines = soon();
@@ -305,7 +383,7 @@ integration('T024 root composition: worker closure and operator closure route', 
     expect(again).toMatchObject({ status: 'REPLAYED', closure: first.closure });
     await expect(
       closeEngagementFromHost(cmd(ops.actor, { ...target, expectedRevision: 2 }, randomUUID())),
-    ).rejects.toMatchObject({ code: expect.stringMatching(/WRITES_DISABLED|ENGAGEMENT_STATE/) });
+    ).rejects.toMatchObject({ code: 'WRITES_DISABLED' });
     expect(await closures()).toHaveLength(1);
   }, 40000);
 });

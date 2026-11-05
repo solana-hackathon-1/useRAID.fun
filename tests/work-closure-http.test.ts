@@ -1,4 +1,21 @@
-import { describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+const root = vi.hoisted(() => ({
+  close: vi.fn(),
+  limit: vi.fn(),
+  user: vi.fn(),
+  cookie: vi.fn(),
+}));
+vi.mock('../src/lib/work-closure-host', () => ({ closeEngagementFromHost: root.close }));
+vi.mock('next/headers', () => ({ cookies: async () => ({ get: root.cookie }) }));
+vi.mock('../src/lib/auth', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('../src/lib/auth')>()),
+  requireUser: root.user,
+  rateLimit: root.limit,
+}));
+import { POST } from '../src/app/api/v1/work/engagements/[engagementId]/closure/route';
+import { config } from '../src/lib/config';
+import { routeContext, routeRequest } from './helpers/route';
+
 import { WorkError } from '../src/work-loop/contracts';
 import { CommandReceiptError } from '../src/command-receipts';
 import { WorkHttpError } from '../src/work-http/workspace-http';
@@ -154,5 +171,43 @@ describe('T024 closure HTTP boundary', () => {
       createClosureHandlers({ ...host(), closeEngagement: undefined } as never),
     ).toThrow();
     expect(() => createClosureHandlers({ ...host(), version: 'v2' } as never)).toThrow();
+  });
+});
+
+describe('T024 closure Root route wiring', () => {
+  const url = `http://localhost/api/v1/work/engagements/${engagementId}/closure`;
+  const body = { expectedRevision: 3 };
+  const send = (origin?: string) =>
+    POST(
+      routeRequest(url, {
+        body,
+        origin,
+        headers: { 'idempotency-key': 'key-1' },
+      }),
+      routeContext({ engagementId }),
+    );
+  beforeEach(() => {
+    vi.clearAllMocks();
+    config.demo = false;
+    root.user.mockResolvedValue({ id: 'operator-1' });
+    root.cookie.mockReturnValue({ value: 'session-cookie' });
+    root.close.mockResolvedValue({ status: 'EXECUTED', closure });
+  });
+  it('rejects a request without the site origin before any session, limit or command', async () => {
+    expect((await send()).status).toBe(403);
+    expect((await send('https://evil.example')).status).toBe(403);
+    expect(root.user).not.toHaveBeenCalled();
+    expect(root.limit).not.toHaveBeenCalled();
+    expect(root.close).not.toHaveBeenCalled();
+  });
+  it('rate limits per account and then runs the command for a same-origin request', async () => {
+    const response = await send(new URL(config.appUrl).origin);
+    expect(response.status).toBe(200);
+    expect(root.limit).toHaveBeenCalledWith('work-closure:operator-1', 30, 60);
+    expect(root.close).toHaveBeenCalledTimes(1);
+    expect(root.close.mock.calls[0][0]).toMatchObject({
+      actor: { accountId: 'operator-1' },
+      input: { engagementId, expectedRevision: 3 },
+    });
   });
 });

@@ -99,13 +99,8 @@ export async function closeOverdueEngagement(tx: Tx, command: WorkCommand, host:
         [value.engagementId],
       );
       if (ref.length !== 1 || !(await authorized(ref[0].guildId))) fail('FORBIDDEN');
-      const rows = await tx.query<{
-        state: string;
-        revision: number;
-        guildId: string;
-        acceptedTerms: unknown;
-      }>(
-        'SELECT "state","revision","guildId",raid_effective_terms("id") AS "acceptedTerms" FROM "Engagement" WHERE "id"=$1::uuid FOR UPDATE',
+      const rows = await tx.query<{ state: string; revision: number; guildId: string }>(
+        'SELECT "state","revision","guildId" FROM "Engagement" WHERE "id"=$1::uuid FOR UPDATE',
         [value.engagementId],
       );
       if (rows.length !== 1) fail('STORAGE_CONTRACT');
@@ -113,7 +108,14 @@ export async function closeOverdueEngagement(tx: Tx, command: WorkCommand, host:
       const reason = TIMEOUT_REASON[e.state];
       if (!reason) fail('ENGAGEMENT_STATE');
       if (e.revision !== value.expectedRevision) fail('REVISION_CONFLICT');
-      const terms = TermsSnapshotSchema.safeParse(e.acceptedTerms);
+      // A separate statement after the lock: an amendment accepted while this waited takes the engagement lock without
+      // writing an Engagement row, so terms read in the locking statement would come from its older snapshot.
+      const effective = await tx.query<{ acceptedTerms: unknown }>(
+        'SELECT raid_effective_terms("id") AS "acceptedTerms" FROM "Engagement" WHERE "id"=$1::uuid',
+        [value.engagementId],
+      );
+      if (effective.length !== 1) fail('STORAGE_CONTRACT');
+      const terms = TermsSnapshotSchema.safeParse(effective[0].acceptedTerms);
       if (!terms.success) fail('STORAGE_CONTRACT');
       if (Date.parse(terms.data.deadlines.operationalClosure) > (await clock(tx)).getTime())
         fail('DEADLINE_NOT_REACHED');
