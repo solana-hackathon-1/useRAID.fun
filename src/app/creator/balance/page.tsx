@@ -1,5 +1,6 @@
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
+import { creatorReturn } from '@/lib/return-to';
 import { StudioAccess } from '@/components/studio-access';
 import { StudioBalance } from '@/components/studio-balance';
 import { balanceView, usdcSettings, studioSandbox, depositsReady } from '@/lib/usdc';
@@ -7,7 +8,7 @@ export const dynamic = 'force-dynamic';
 export default async function BalancePage({
   searchParams,
 }: {
-  searchParams: Promise<{ returnTo?: string }>;
+  searchParams: Promise<{ returnTo?: string | string[] }>;
 }) {
   const user = await currentUser();
   if (!user) return <StudioAccess />;
@@ -25,7 +26,7 @@ export default async function BalancePage({
       depositReady={await depositsReady()}
       network={settings.network}
       sandbox={studioSandbox()}
-      returnTo={returnTo?.startsWith('/creator/') ? returnTo : null}
+      returnTo={creatorReturn(returnTo)}
     />
   );
 }

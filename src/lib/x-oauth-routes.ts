@@ -1,4 +1,5 @@
 import { discardAttempt } from './identity-leaves';
+import { isLowercaseUuid } from './uuid-pattern';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { sessionCookie, studioSandbox } from './studio-mode';
@@ -34,7 +35,7 @@ function returnDestination(value: string | null | undefined) {
   if (Object.hasOwn(RETURNS, value)) return RETURNS[value];
   if (/^raid:[a-z0-9]{20,40}$/.test(value)) return `/raids/${value.slice(5)}`;
   // A public Raid brief, by its exact lowercase uuid only.
-  return /^work:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(value)
+  return value.startsWith('work:') && isLowercaseUuid(value.slice(5))
     ? `/raids/work/${value.slice(5)}`
     : null;
 }

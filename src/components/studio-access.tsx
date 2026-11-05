@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { XConnection } from './x-connection';
 import { config } from '@/lib/config';
-export function StudioAccess({ auth, returnTo }: { auth?: string; returnTo?: string }) {
+import type { XReturnToken } from '@/lib/return-to';
+export function StudioAccess({ auth, returnTo }: { auth?: string; returnTo?: XReturnToken }) {
   return (
     <div className="studio studio-access">
       <h1>Bring your community to a post.</h1>
