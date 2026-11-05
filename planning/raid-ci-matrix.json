@@ -334,6 +334,7 @@
     "tests/party-http-db.test.ts",
     "tests/party-host.test.ts",
     "tests/party-http-boundary.test.ts",
+    "tests/party-storage-boundary.test.ts",
     "tests/guild-storage-db.test.ts",
     "tests/guild-grants-db.test.ts",
     "tests/guild-ownership-db.test.ts",
@@ -1435,7 +1436,8 @@
         "tests/party-http.test.ts",
         "tests/party-http-db.test.ts",
         "tests/party-host.test.ts",
-        "tests/party-http-boundary.test.ts"
+        "tests/party-http-boundary.test.ts",
+        "tests/party-storage-boundary.test.ts"
       ],
       "implementation_status": "DOMAIN_TESTS_NOT_IMPLEMENTED",
       "required_test_layers": [

@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610260003_work_admission/migration.sql

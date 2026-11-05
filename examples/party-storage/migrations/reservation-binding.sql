@@ -1,0 +1,1 @@
+../../../prisma/migrations/202610270001_work_reservation_binding/migration.sql
