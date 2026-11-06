@@ -1,6 +1,6 @@
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import type { AddressInfo } from 'node:net';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { OutboundFetchError, providerFetch, readBoundedJson } from '../src/lib/outbound-fetch';
 
 /**
@@ -165,7 +165,6 @@ describe('readBoundedJson size limit', () => {
   });
   it('stops pulling once an undeclared stream passes the limit', async () => {
     let pulls = 0;
-    let cancelled = false;
     const body = new ReadableStream<Uint8Array>(
       {
         pull(controller) {
@@ -205,5 +204,22 @@ describe('readBoundedJson size limit', () => {
     await expect(readBoundedJson(new Response(null), 1024)).rejects.toBeInstanceOf(
       OutboundFetchError,
     );
+  });
+});
+
+describe('readBoundedJson reader cleanup', () => {
+  it('cancels the reader and rethrows unchanged when a read fails', async () => {
+    const timeout = new DOMException('timed out', 'TimeoutError');
+    const body = new ReadableStream<Uint8Array>({
+      pull() {
+        throw timeout;
+      },
+    });
+    const response = new Response(body);
+    const reader = response.body!.getReader();
+    const cancel = vi.spyOn(reader, 'cancel');
+    vi.spyOn(response.body!, 'getReader').mockReturnValue(reader);
+    await expect(readBoundedJson(response, 1024)).rejects.toBe(timeout);
+    expect(cancel).toHaveBeenCalled();
   });
 });
