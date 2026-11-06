@@ -61,11 +61,10 @@ export async function startEngagement(
         slotId: string;
         termsVersionId: string;
         fundingRef: string | null;
-        terms: unknown;
         definition: unknown;
       }>(
         `SELECT e."state",e."revision",e."guildId",e."slotId"::text,e."termsVersionId"::text,s."fundingRef",
-          raid_effective_terms(e."id") AS terms,t."snapshot" AS definition
+          t."snapshot" AS definition
          FROM "Engagement" e JOIN "RaidSlot" s ON s."id"=e."slotId" JOIN "TermsVersion" t ON t."id"=e."termsVersionId"
          WHERE e."id"=$1::uuid FOR UPDATE OF e`,
         [value.engagementId],
@@ -73,7 +72,14 @@ export async function startEngagement(
       if (rows.length !== 1) fail('STORAGE_CONTRACT');
       const e = rows[0];
       if (e.state !== 'ACCESS_PENDING') fail('ENGAGEMENT_STATE');
-      const effective = TermsSnapshotSchema.safeParse(e.terms);
+      // Read in a statement of its own: an amendment accepted while the locking statement waited takes the engagement
+      // lock without writing an Engagement row, so terms selected above would come from that statement's older snapshot.
+      const terms = await tx.query<{ terms: unknown }>(
+        'SELECT raid_effective_terms("id") AS terms FROM "Engagement" WHERE "id"=$1::uuid',
+        [value.engagementId],
+      );
+      if (terms.length !== 1) fail('STORAGE_CONTRACT');
+      const effective = TermsSnapshotSchema.safeParse(terms[0].terms);
       const definition = RaidTermsSchema.safeParse(e.definition);
       if (!effective.success || !definition.success || !e.fundingRef) fail('STORAGE_CONTRACT');
       // With no time left to submit, starting would only create work that must time out.
