@@ -23,6 +23,12 @@ import { reconcileUsdc, reconciliationJson } from './usdc-reconcile';
 import { runNotificationDispatch } from './notifications-host';
 import { runWorkClosureWorker } from './work-closure-host';
 import { recordStepOutcome } from './worker-health';
+import {
+  correlationFields,
+  jobCorrelationId,
+  newRunCorrelationId,
+  withCorrelation,
+} from './worker-diagnostics';
 import { MARKET_NO_PAIR } from './market-messages';
 /** Thrown by eachStep so the enclosing step records a failure when no item at all succeeded. */
 export class AllItemsFailedError extends Error {
@@ -52,7 +58,11 @@ async function runStep(name: string, fn: () => Promise<unknown>) {
     return true;
   } catch (error) {
     console.error(
-      JSON.stringify({ step: name, error: error instanceof Error ? error.message : String(error) }),
+      JSON.stringify({
+        step: name,
+        error: error instanceof Error ? error.message : String(error),
+        ...correlationFields(),
+      }),
     );
     if (!name.includes(':')) await recordStepOutcome(name, { error });
     return false;
@@ -75,7 +85,11 @@ export async function assertSchemaCurrent(
   if (!applied.length) throw new Error(`Database schema is behind migration ${latest}.`);
 }
 let reconciledHour = 0;
-export async function schedule(now = new Date()) {
+/** One bounded schedule pass; every step and health log line in it shares one correlation id. */
+export function schedule(now = new Date()) {
+  return withCorrelation(newRunCorrelationId(), () => runSchedule(now));
+}
+async function runSchedule(now: Date) {
   await step('notifications', () => runNotificationDispatch());
   await step('work-closure', () => runWorkClosureWorker());
   await step('finance-readiness', () => updateFinanceReadiness());
@@ -362,7 +376,9 @@ export async function schedule(now = new Date()) {
     reconciledHour = hour;
     const r = await reconcileUsdc(settings.network);
     if (r.surplus !== null && r.surplus < 0n)
-      console.error(JSON.stringify({ alert: 'usdc-deficit', ...reconciliationJson(r) }));
+      console.error(
+        JSON.stringify({ alert: 'usdc-deficit', ...reconciliationJson(r), ...correlationFields() }),
+      );
   });
 }
 async function clearCollectionError(raidId: string) {
@@ -380,7 +396,11 @@ async function clearCollectionError(raidId: string) {
       data: { collectionError: null },
     });
 }
-export async function runJob(job: Job) {
+/** Runs one claimed job; every log line in it carries the job's correlation id, the same for every attempt. */
+export function runJob(job: Job) {
+  return withCorrelation(jobCorrelationId(job.id), () => execute(job));
+}
+async function execute(job: Job) {
   const p = job.payload as {
     launchId: string;
     raidId: string;
@@ -441,29 +461,53 @@ export async function runJob(job: Job) {
   } catch (error) {
     if (error instanceof JobLeaseLostError) {
       // Another worker holds this job now. Leave its state alone: it owns the raid/token error writes and the retry.
-      console.error(JSON.stringify({ job: job.id, kind: job.kind, error: error.message }));
+      console.error(
+        JSON.stringify({
+          job: job.id,
+          kind: job.kind,
+          error: error.message,
+          ...correlationFields(),
+        }),
+      );
       return;
     }
     const message = error instanceof Error ? error.message : 'Collection failed';
     // Only the current lease holder may record raid/token errors; a stale worker's failure must not overwrite them.
-    const owned = await whileJobLeaseHeld(job, async (tx) => {
-      if (p.raidId && job.kind !== 'finance')
-        await tx.raid.updateMany({
-          where: { id: p.raidId },
-          data: {
-            ...(['collect', 'refresh'].includes(job.kind) ? { coverage: 'partial' } : {}),
-            collectionError: message,
-          },
-        });
-      if (p.mint)
-        await tx.token.updateMany({ where: { mint: p.mint }, data: { marketError: message } });
-    });
+    // If the ownership check itself fails (database blip), the original job error must not be lost and the job must
+    // still be released: finishJob is fenced by the lease in its own WHERE clause, so a stale worker still writes nothing.
+    let owned = true;
+    try {
+      owned = await whileJobLeaseHeld(job, async (tx) => {
+        if (p.raidId && job.kind !== 'finance')
+          await tx.raid.updateMany({
+            where: { id: p.raidId },
+            data: {
+              ...(['collect', 'refresh'].includes(job.kind) ? { coverage: 'partial' } : {}),
+              collectionError: message,
+            },
+          });
+        if (p.mint)
+          await tx.token.updateMany({ where: { mint: p.mint }, data: { marketError: message } });
+      });
+    } catch (bookkeeping) {
+      console.error(
+        JSON.stringify({
+          job: job.id,
+          kind: job.kind,
+          error: message,
+          bookkeeping: 'failed',
+          bookkeepingError: bookkeeping instanceof Error ? bookkeeping.message : 'unavailable',
+          ...correlationFields(),
+        }),
+      );
+    }
     if (!owned) {
       console.error(
         JSON.stringify({
           job: job.id,
           kind: job.kind,
           error: 'Job lease was lost; failure not recorded.',
+          ...correlationFields(),
         }),
       );
       return;
@@ -483,6 +527,8 @@ export async function runJob(job: Job) {
       if (p.raidId && ['submission', 'tracking-correction'].includes(job.kind))
         await clearCollectionError(p.raidId);
     }
-    console.error(JSON.stringify({ job: job.id, kind: job.kind, error: message }));
+    console.error(
+      JSON.stringify({ job: job.id, kind: job.kind, error: message, ...correlationFields() }),
+    );
   }
 }
