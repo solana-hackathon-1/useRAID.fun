@@ -109,7 +109,7 @@ const accept = (
  */
 async function cloneAssessment(skillId: string) {
   const [source] = (await db.$queryRawUnsafe(
-    'SELECT a."id"::text AS "assessmentId",v."id"::text AS "versionId",v."reviewVersionId"::text AS "reviewId" FROM "SkillAssessment" a JOIN "SkillAssessmentVersion" v ON v."id"=a."currentVersionId" LIMIT 1',
+    'SELECT a."id"::text AS "assessmentId",v."id"::text AS "versionId",v."reviewVersionId"::text AS "reviewId" FROM "SkillAssessment" a JOIN "SkillAssessmentVersion" v ON v."id"=a."currentVersionId" WHERE a."skillId"=\'frontend\' ORDER BY a."id" LIMIT 1',
   )) as { assessmentId: string; versionId: string; reviewId: string }[];
   const assessmentId = randomUUID(),
     versionId = randomUUID(),
