@@ -100,6 +100,55 @@ const accept = (
       h,
     ),
   );
+
+/**
+ * A second skill's verified assessment for the person: a column-for-column copy of the real current one (same policy,
+ * rank and provenance references) with its own review and receipts, re-keyed to another skill. The Root host reads only
+ * the assessment tables, and the provenance triggers refuse a second assessment from one real trial, so they are
+ * bypassed for this transaction only.
+ */
+async function cloneAssessment(skillId: string) {
+  const [source] = (await db.$queryRawUnsafe(
+    'SELECT a."id"::text AS "assessmentId",v."id"::text AS "versionId",v."reviewVersionId"::text AS "reviewId" FROM "SkillAssessment" a JOIN "SkillAssessmentVersion" v ON v."id"=a."currentVersionId" LIMIT 1',
+  )) as { assessmentId: string; versionId: string; reviewId: string }[];
+  const assessmentId = randomUUID(),
+    versionId = randomUUID(),
+    reviewId = randomUUID(),
+    receiptIds = [randomUUID(), randomUUID()];
+  const copy = (table: string, id: string, patch: Record<string, string | number>) =>
+    `INSERT INTO "${table}" SELECT (jsonb_populate_record(null::"${table}", to_jsonb(r) || '${JSON.stringify(patch)}'::jsonb)).* FROM "${table}" r WHERE r."id"='${id}'::uuid`;
+  await db.$transaction(async (tx) => {
+    await tx.$executeRawUnsafe('SET LOCAL session_replication_role = replica');
+    for (const [from, id] of [
+      [`(SELECT "receiptId" FROM "SkillAssessmentVersion" WHERE "id"='${source.versionId}')`, receiptIds[0]],
+      [`(SELECT "receiptId" FROM "PracticeAssessmentReviewVersion" WHERE "id"='${source.reviewId}')`, receiptIds[1]],
+    ] as const)
+      await tx.$executeRawUnsafe(
+        `INSERT INTO "CommandReceipt" SELECT (jsonb_populate_record(null::"CommandReceipt", to_jsonb(r) || '${JSON.stringify({ id, idempotencyKey: id })}'::jsonb)).* FROM "CommandReceipt" r WHERE r."id"=${from}`,
+      );
+    await tx.$executeRawUnsafe(
+      copy('PracticeAssessmentReviewVersion', source.reviewId, {
+        id: reviewId,
+        revision: 2,
+        receiptId: receiptIds[1],
+        assessmentVersionId: versionId,
+      }),
+    );
+    await tx.$executeRawUnsafe(
+      copy('SkillAssessmentVersion', source.versionId, {
+        id: versionId,
+        assessmentId,
+        skillId,
+        receiptId: receiptIds[0],
+        reviewVersionId: reviewId,
+      }),
+    );
+    await tx.$executeRawUnsafe(
+      `INSERT INTO "SkillAssessment" ("id","participantId","skillId","skillDomain","taxonomyId","revision","currentVersionId")
+       SELECT '${assessmentId}'::uuid,"participantId",'${skillId}',"skillDomain","taxonomyId","revision",'${versionId}'::uuid FROM "SkillAssessment" WHERE "id"='${source.assessmentId}'::uuid`,
+    );
+  });
+}
 const advisoryWaiters = async () =>
   (
     (await db.$queryRawUnsafe(
@@ -325,6 +374,26 @@ integration('Root acceptance: explicit consent and verified skills', { timeout: 
     expect(await db.$queryRawUnsafe('SELECT 1 FROM "Engagement"')).toEqual([]);
     // The verified skill alone still admits under the republished taxonomy.
     expect((await accept(person, one.slot)).engagement.state).toBe('ACCESS_PENDING');
+  });
+  it('admits only when every required skill is verified, and refuses once any one of them is revoked', async () => {
+    const fx = await setup();
+    await publishSyntheticCatalog(1, [
+      { id: 'frontend', domain: 'web', name: 'Frontend', status: 'ACTIVE', aliases: ['frontend'] },
+      { id: 'backend', domain: 'web', name: 'Backend', status: 'ACTIVE', aliases: ['backend'] },
+    ]);
+    const backend = { ...skill('D'), skillId: 'backend' };
+    const both = () => raid('D', undefined, { requiredSkills: [skill('D'), backend] });
+    const before = await both();
+    const after = await both();
+    for (const r of [before, after]) await consent(person, r.slot, r.digest);
+    // Backend is still unverified, then verified: every required skill must be present.
+    await expect(accept(person, before.slot)).rejects.toMatchObject({ code: 'ELIGIBILITY_REJECTED' });
+    await cloneAssessment('backend');
+    expect((await accept(person, before.slot)).engagement.state).toBe('ACCESS_PENDING');
+    // Revoking one of the two skills (frontend) makes the same requirement fail again.
+    await fx.decide('REVOKE');
+    await expect(accept(person, after.slot)).rejects.toMatchObject({ code: 'ELIGIBILITY_REJECTED' });
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "Engagement"')).toHaveLength(1);
   });
   it('makes a real revocation racing an acceptance wait until the acceptance that read the evidence commits', async () => {
     const fx = await setup();
