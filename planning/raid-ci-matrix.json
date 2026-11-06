@@ -285,6 +285,7 @@
     "tests/work-start-db.test.ts",
     "tests/work-submission-contracts.test.ts",
     "tests/worker-db.test.ts",
+    "tests/worker-health-db.test.ts",
     "tests/x-oauth-db.test.ts",
     "tests/x-oauth-first-link-race-db.test.ts",
     "tests/x-oauth-routes.test.ts",
@@ -1159,7 +1160,8 @@
         "tests/local-db.test.ts",
         "tests/standalone-db.test.ts",
         "tests/standalone-raids.test.ts",
-        "tests/worker-db.test.ts"
+        "tests/worker-db.test.ts",
+        "tests/worker-health-db.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
       "required_test_layers": [
