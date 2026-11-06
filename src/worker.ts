@@ -3,6 +3,7 @@ import { db } from './lib/db';
 import { config } from './lib/config';
 import { claimJob } from './lib/queue';
 import { assertSchemaCurrent, runJob, schedule } from './lib/worker-jobs';
+import { checkRuntimeConfig } from './lib/config-validation-host';
 let stopping = false;
 process.on('SIGTERM', () => {
   stopping = true;
@@ -11,6 +12,7 @@ process.on('SIGINT', () => {
   stopping = true;
 });
 async function main() {
+  checkRuntimeConfig('worker');
   if (config.demo) throw new Error('Worker cannot run in demo mode.');
   await assertSchemaCurrent();
   let scheduled = 0;
