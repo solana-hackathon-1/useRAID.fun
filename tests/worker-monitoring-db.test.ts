@@ -75,6 +75,9 @@ suite('worker monitoring signals (T038 W02), synthetic data only', () => {
       const scheduled = [...source.matchAll(/\bawait step\('([a-z-]+)'/g)].map((m) => m[1]).sort();
       expect(scheduled.length).toBeGreaterThan(10);
       expect([...KNOWN_WORKER_STEPS].sort()).toEqual(scheduled);
+      // A step spelled any other way (variable name, double quotes, a wrapper) would dodge the match above and retire.
+      const calls = [...source.matchAll(/(?<!function )\bstep\(/g)];
+      expect(calls).toHaveLength(scheduled.length);
     });
   });
 
