@@ -11,6 +11,9 @@ import {
   FeedPageSchema,
   FeedQuerySchema,
   type FeedAsset,
+  FeedFacetsSchema,
+  FEED_FACET_LIMIT,
+  type FeedFacets,
   type FeedCard,
   type FeedPage,
   type FeedQuery,
@@ -156,6 +159,8 @@ function candidate(row: Row, query: FeedQuery): Candidate | null {
     .filter((r) => r.assetKey === query.assetKey)
     .reduce((sum, r) => sum + fromJsonAmount(r.amount), 0n);
   if (query.minReward !== undefined && inAsset < BigInt(query.minReward)) return null;
+  if (query.closesAfter && Date.parse(terms.deadlines.commitment) < Date.parse(query.closesAfter))
+    return null;
   if (
     query.closesBefore &&
     Date.parse(terms.deadlines.commitment) >= Date.parse(query.closesBefore)
@@ -266,6 +271,29 @@ export async function readFeedAssets(tx: Tx): Promise<FeedAsset[]> {
     }
   }
   return [...found.values()].sort((a, b) => (a.assetKey < b.assetKey ? -1 : 1));
+}
+/**
+ * Categories and skills of the live window, for suggestion lists on the two text filters. It reads exactly the work
+ * the feed lists (open, public, unexpired, a funded available slot), so a hidden Raid's category or skill is never
+ * suggested. Sorted and capped; nothing here grants or decides anything.
+ */
+export async function readFeedFacets(tx: Tx): Promise<FeedFacets> {
+  port(tx);
+  const rows = await tx.query<Row>(
+    `${LIVE_SELECT} ORDER BY l."createdAt" DESC,l."id" DESC LIMIT ${WINDOW}`,
+    [],
+  );
+  const categories = new Set<string>();
+  const skills = new Set<string>();
+  for (const row of rows) {
+    if (row.availableSlots < 1) continue;
+    const parsed = RaidTermsSchema.safeParse(row.snapshot);
+    if (!parsed.success || parsed.data.visibility !== 'PUBLIC') continue;
+    categories.add(parsed.data.category);
+    for (const skill of parsed.data.requiredSkills) skills.add(skill.skillId);
+  }
+  const top = (values: Set<string>) => [...values].sort().slice(0, FEED_FACET_LIMIT);
+  return FeedFacetsSchema.parse({ categories: top(categories), skills: top(skills) });
 }
 /** The full public brief of one live Raid. Missing, unlisted, filled, expired and non-public listings are one `NOT_FOUND`. */
 export async function readWorkDetail(tx: Tx, listingId: unknown): Promise<Detail> {

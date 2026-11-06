@@ -1,4 +1,9 @@
-import { readFeedAssets, readWorkDetail, readWorkFeed } from '../work-loop/feed-storage';
+import {
+  readFeedAssets,
+  readFeedFacets,
+  readWorkDetail,
+  readWorkFeed,
+} from '../work-loop/feed-storage';
 import { attachPublicGuilds } from './work-feed-guilds';
 import { WorkError, type WorkActor } from '../work-loop/contracts';
 import { guildPublicAvailable } from './guild-public-host';
@@ -45,6 +50,10 @@ async function withGuilds<T extends { guildId: string }>(
 export async function readFeedAssetsFromHost() {
   if (!workFeedRewardFilterAvailable()) throw new WorkError('INVALID_INPUT');
   return runCommandTransaction(db, (tx) => readFeedAssets(tx));
+}
+/** Suggestions for the category and skill filters: the same public live work the feed lists, nothing more. */
+export async function readFeedFacetsFromHost() {
+  return runCommandTransaction(db, (tx) => readFeedFacets(tx));
 }
 export async function readFeedFromHost(query: unknown) {
   guardRewardFilter(query);

@@ -22,6 +22,8 @@ export const FeedQuerySchema = z
      * other assets are ignored, never converted or ranked against it. Needs `assetKey`.
      */
     minReward: AmountSchema.optional(),
+    /** Apply-by window over the commitment deadline: `closesAfter` inclusive, `closesBefore` exclusive. */
+    closesAfter: UtcTimestamp.optional(),
     closesBefore: UtcTimestamp.optional(),
     sort: z.enum(FEED_SORTS).default('newest'),
     limit: z.number().int().min(1).max(FEED_MAX_LIMIT).default(20),
@@ -31,6 +33,13 @@ export const FeedQuerySchema = z
     message: 'Reward ordering needs one asset: amounts in different assets are not comparable.',
     path: ['sort'],
   })
+  .refine(
+    (q) =>
+      q.closesAfter === undefined ||
+      q.closesBefore === undefined ||
+      Date.parse(q.closesAfter) < Date.parse(q.closesBefore),
+    { message: 'The deadline window must end after it starts.', path: ['closesBefore'] },
+  )
   .refine((q) => q.minReward === undefined || q.assetKey !== undefined, {
     message: 'A minimum reward needs one asset: amounts in different assets are not comparable.',
     path: ['minReward'],
@@ -100,6 +109,16 @@ export const FeedAssetSchema = z.strictObject({
   decimals: AssetDecimals.nullable(),
 });
 export type FeedAsset = z.infer<typeof FeedAssetSchema>;
+/**
+ * The categories and skills of live, public, funded Raids, offered as suggestions for the two text filters. Public
+ * data only; bounded and sorted. A suggestion is never a permission and a typed value is still validated.
+ */
+export const FEED_FACET_LIMIT = 100;
+export const FeedFacetsSchema = z.strictObject({
+  categories: z.array(InternalId).max(FEED_FACET_LIMIT),
+  skills: z.array(InternalId).max(FEED_FACET_LIMIT),
+});
+export type FeedFacets = z.infer<typeof FeedFacetsSchema>;
 export const FeedPageSchema = z.strictObject({
   items: z.array(FeedCardSchema).max(FEED_MAX_LIMIT),
   nextCursor: z.string().min(1).max(600).nullable(),

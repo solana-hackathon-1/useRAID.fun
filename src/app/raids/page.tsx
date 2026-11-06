@@ -32,6 +32,7 @@ export default async function RaidsPage({
         query={loaded.query}
         viewer={loaded.viewer}
         reward={loaded.reward}
+        facets={loaded.facets}
       />
     </div>
   );
