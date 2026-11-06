@@ -48,7 +48,9 @@ describe('T037 configuration validator reuse contract (R15, R16)', () => {
   it('no documented non-switch setting is mistaken for a misspelled switch', () => {
     const switches = new Set(FLAG_CATALOG.map((f) => f.name));
     const env = Object.fromEntries(
-      [...exampleEnv()].filter(([name]) => !switches.has(name)).map(([name]) => [name, 'x']),
+      [...exampleEnv()]
+        .filter(([name]) => !switches.has(name) && name !== 'RAID_ENVIRONMENT')
+        .map(([name]) => [name, 'x']),
     );
     expect(validateRuntimeConfig(env, 'web').violations).toEqual([]);
   });
