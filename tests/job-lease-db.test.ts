@@ -1,5 +1,7 @@
 import { describe, it, expect, beforeAll, beforeEach, afterAll, afterEach, vi } from 'vitest';
 import { db } from '../src/lib/db';
+import { createRaid } from '../src/lib/campaigns';
+import { config } from '../src/lib/config';
 import { claimJob, enqueue } from '../src/lib/queue';
 import { runJob } from '../src/lib/worker-jobs';
 import { assertJobLease, JobLeaseLostError, runUnderJobLease } from '../src/lib/job-lease';
@@ -13,10 +15,26 @@ const expireLease = (id: string) =>
   db.$executeRaw`UPDATE "Job" SET "lockedAt"=(NOW() AT TIME ZONE 'UTC')-INTERVAL '11 minutes' WHERE id=${id}`;
 suite('pre-effect job lease fence (T038)', () => {
   const providerCalls = vi.fn();
-  beforeAll(() => assertTestDatabase());
+  let raidId: string;
+  beforeAll(() => {
+    assertTestDatabase();
+    config.demo = false;
+  });
   beforeEach(async () => {
     await truncateAll(db);
-    await db.token.create({ data: { mint: MINT, symbol: 'SOL', name: 'Solana' } });
+    const user = await db.user.create({ data: { xId: 'l-owner', handle: 'l', approved: true } });
+    await db.xAccount.create({
+      data: { userId: user.id, xUserId: 'l-owner', username: 'l', displayName: 'L' },
+    });
+    raidId = (
+      await createRaid(user, {
+        title: 'Lease campaign',
+        description: 'A lease fixture campaign.',
+        mint: MINT,
+        symbol: 'SOL',
+        name: 'Solana',
+      })
+    ).id;
     providerCalls.mockReset();
     providerCalls.mockImplementation(async () => Response.json([]));
     vi.stubGlobal('fetch', providerCalls);
@@ -83,5 +101,79 @@ suite('pre-effect job lease fence (T038)', () => {
   });
   it('is a no-op outside a job so request-time callers of the same provider code are unaffected', async () => {
     await expect(assertJobLease()).resolves.toBeUndefined();
+  });
+  it('writes no raid or token error when the worker loses the lease while its handler is failing', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    await enqueue(
+      'market',
+      'market:lease:5',
+      { mint: MINT, raidId },
+      new Date(Date.now() - 60_000),
+    );
+    const stale = (await claimJob())!;
+    const reclaimed: { lease: string | null }[] = [];
+    // The pre-effect check passes, then the worker stalls past the lease, another worker reclaims, and the call fails.
+    providerCalls.mockImplementation(async () => {
+      await expireLease(stale.id);
+      reclaimed.push((await claimJob())!);
+      throw new Error('provider timed out after lease expiry');
+    });
+    await runJob(stale);
+    expect(reclaimed).toHaveLength(1);
+    expect(providerCalls).toHaveBeenCalledTimes(1);
+    expect((await db.raid.findUniqueOrThrow({ where: { id: raidId } })).collectionError).toBeNull();
+    expect((await db.token.findUniqueOrThrow({ where: { mint: MINT } })).marketError).toBeNull();
+    const row = await db.job.findUniqueOrThrow({ where: { id: stale.id } });
+    expect(row.lease).toBe(reclaimed[0].lease);
+    expect(row.error).toBeNull();
+  });
+  it('still records raid and token errors for the worker that holds the lease', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    await enqueue(
+      'market',
+      'market:lease:6',
+      { mint: MINT, raidId },
+      new Date(Date.now() - 60_000),
+    );
+    const job = (await claimJob())!;
+    providerCalls.mockRejectedValue(new Error('provider down'));
+    await runJob(job);
+    expect((await db.raid.findUniqueOrThrow({ where: { id: raidId } })).collectionError).toBe(
+      'provider down',
+    );
+    expect((await db.token.findUniqueOrThrow({ where: { mint: MINT } })).marketError).toBe(
+      'provider down',
+    );
+    expect((await db.job.findUniqueOrThrow({ where: { id: job.id } })).error).toBe('provider down');
+  });
+  // AC67: process crashes after the external effect succeeded but before the local receipt was recorded.
+  it('AC67: a refused stale worker repeats no effect and the reclaiming worker reconciles to one receipt', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    await due('market:lease:7');
+    const crashed = (await claimJob())!;
+    // Worker A performs the provider effect and dies before finishJob/any local write.
+    await runUnderJobLease(crashed, async () => {
+      await assertJobLease();
+      await providerCalls();
+    });
+    expect(providerCalls).toHaveBeenCalledTimes(1);
+    expect((await db.job.findUniqueOrThrow({ where: { id: crashed.id } })).doneAt).toBeNull();
+    expect((await db.token.findUniqueOrThrow({ where: { mint: MINT } })).marketAt).toBeNull();
+    // Lease runs out; B reclaims. A (a zombie, not dead) wakes up and tries the job again: refused, nothing written.
+    await expireLease(crashed.id);
+    const reconciler = (await claimJob())!;
+    await runJob(crashed);
+    expect(providerCalls).toHaveBeenCalledTimes(1);
+    const mid = await db.job.findUniqueOrThrow({ where: { id: crashed.id } });
+    expect(mid).toMatchObject({ lease: reconciler.lease, doneAt: null, error: null });
+    expect((await db.token.findUniqueOrThrow({ where: { mint: MINT } })).marketAt).toBeNull();
+    // B reconciles: exactly one local receipt, job closed, never claimable again.
+    await runJob(reconciler);
+    expect(providerCalls).toHaveBeenCalledTimes(2);
+    expect((await db.job.findUniqueOrThrow({ where: { id: crashed.id } })).doneAt).not.toBeNull();
+    expect((await db.token.findUniqueOrThrow({ where: { mint: MINT } })).marketAt).not.toBeNull();
+    expect(await claimJob()).toBeNull();
+    await runJob(crashed); // a late zombie after completion is still refused
+    expect(providerCalls).toHaveBeenCalledTimes(2);
   });
 });

@@ -8,7 +8,7 @@ vi.mock('../src/lib/auth', async (importOriginal) => ({
 }));
 import { db } from '../src/lib/db';
 import { POST } from '../src/app/api/admin/[action]/route';
-import { enqueue } from '../src/lib/queue';
+import { enqueue, JOB_MAX_ATTEMPTS } from '../src/lib/queue';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 import { routeContext, routeRequest } from './helpers/route';
 const suite = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
@@ -58,6 +58,47 @@ suite('admin job retry', () => {
     expect((await db.job.findUniqueOrThrow({ where: { id: running.id } })).lease).toBe('live');
     expect((await retry('missing')).status).toBe(409);
     expect((await retry()).status).toBe(400);
+  });
+  it('resets an exhausted job whose workers all lost the lease and left no error', async () => {
+    // Crash/lease-lost exhaustion: claimJob counted 8 attempts, nobody ever ran finishJob, so error and failedAt are null.
+    const job = await failed('retry-lost', {
+      error: null,
+      failedAt: null,
+      attempts: JOB_MAX_ATTEMPTS,
+      lockedAt: new Date(Date.now() - 30 * 60000),
+      lease: 'gone',
+    });
+    expect((await retry(job.id)).status).toBe(200);
+    const row = await db.job.findUniqueOrThrow({ where: { id: job.id } });
+    expect(row).toMatchObject({
+      attempts: 0,
+      error: null,
+      failedAt: null,
+      lockedAt: null,
+      lease: null,
+    });
+    expect(await db.moderationEvent.count({ where: { action: 'retry', targetId: job.id } })).toBe(
+      1,
+    );
+  });
+  it('still refuses an exhausted job a worker holds live, a finished one and an ordinary healthy job', async () => {
+    const live = await failed('retry-live', {
+      error: null,
+      failedAt: null,
+      attempts: JOB_MAX_ATTEMPTS,
+      lockedAt: new Date(),
+      lease: 'live',
+    });
+    expect((await retry(live.id)).status).toBe(409);
+    const done = await failed('retry-fin', {
+      error: null,
+      failedAt: null,
+      doneAt: new Date(),
+      attempts: JOB_MAX_ATTEMPTS,
+    });
+    expect((await retry(done.id)).status).toBe(409);
+    const healthy = await failed('retry-ok', { error: null, failedAt: null, attempts: 1 });
+    expect((await retry(healthy.id)).status).toBe(409);
   });
   it('retries a job whose lock went stale', async () => {
     const job = await failed('retry-d', {

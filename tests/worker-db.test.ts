@@ -2,6 +2,10 @@ import { describe, it, expect, beforeAll, beforeEach, afterAll, afterEach, vi } 
 import * as trackingReview from '../src/lib/tracking-review';
 import * as studioFinance from '../src/lib/studio-finance';
 import * as raidAllocation from '../src/lib/raid-allocation';
+import * as collection from '../src/lib/collection';
+import * as marketProvider from '../src/lib/providers/market';
+import { MARKET_NO_PAIR } from '../src/lib/market-messages';
+import { publicMarketError } from '../src/lib/data';
 import { db } from '../src/lib/db';
 import { createRaid } from '../src/lib/campaigns';
 import { config } from '../src/lib/config';
@@ -107,6 +111,42 @@ suite('worker jobs module', () => {
       pendingNewestId: null,
       finalRefreshed: false,
     });
+  });
+  it('reports the collect step failed when every per-raid step failed, not successful', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(collection, 'snapshot').mockRejectedValue(new Error('snapshot down'));
+    const now = new Date();
+    await db.raid.update({
+      where: { id: raidId },
+      data: {
+        status: 'ACTIVE',
+        startsAt: new Date(+now - 1000),
+        endsAt: new Date(+now + 86400000),
+      },
+    });
+    await db.workerStepHealth.deleteMany();
+    await schedule(now);
+    expect(
+      await db.workerStepHealth.findUniqueOrThrow({ where: { step: 'collect' } }),
+    ).toMatchObject({
+      consecutiveFailures: 1,
+      lastSuccessAt: null,
+      lastErrorKind: 'AllItemsFailedError',
+    });
+    vi.restoreAllMocks();
+  });
+  it('stores one shared no-pair message that the public projection preserves', async () => {
+    vi.spyOn(marketProvider, 'fetchMarket').mockResolvedValue(null);
+    await enqueueDue('market', 'market:nopair', {
+      mint: 'So11111111111111111111111111111111111111112',
+    });
+    await runJob((await claimJob())!);
+    const token = await db.token.findUniqueOrThrow({
+      where: { mint: 'So11111111111111111111111111111111111111112' },
+    });
+    expect(token.marketError).toBe(MARKET_NO_PAIR);
+    expect(publicMarketError(token.marketError)).toBe(MARKET_NO_PAIR);
+    vi.restoreAllMocks();
   });
   describe('launch jobs', () => {
     const launchJobs = async () =>

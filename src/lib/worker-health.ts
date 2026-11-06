@@ -10,6 +10,14 @@ import { JOB_MAX_ATTEMPTS } from './queue';
  */
 /** The worker schedule runs about once a minute; a step with no success for this long is stale. */
 export const STEP_STALE_MS = 5 * 60 * 1000;
+/**
+ * A step row this old, while some other step is still running, belongs to a step that was removed or renamed and no
+ * longer counts. With no recent heartbeat anywhere nothing is retired: a dead worker must stay visible.
+ */
+export const STEP_RETIRE_MS = 24 * 60 * 60 * 1000;
+/** Recording is best-effort: wait this long for the database, then skip recording for the cooldown. */
+export const RECORD_TIMEOUT_MS = 2000;
+export const RECORD_COOLDOWN_MS = 30 * 1000;
 export const FAILING_STREAK = 3;
 export const JOB_OVERDUE_SECONDS = 15 * 60;
 export const OUTBOX_OVERDUE_SECONDS = 15 * 60;
@@ -21,24 +29,45 @@ function errorKind(error: unknown) {
   const name = error instanceof Error ? error.constructor.name || error.name : 'Unknown';
   return /^[A-Za-z][A-Za-z0-9_]{0,63}$/.test(name) ? name : 'Error';
 }
-/** Best-effort and atomic across overlapping workers. Never throws: health must not break the step it observes. */
+let skipRecordingUntil = 0;
+/** Test hook: forget a tripped recording cooldown. */
+export function resetRecordingBreaker() {
+  skipRecordingUntil = 0;
+}
+/**
+ * Best-effort and atomic across overlapping workers. Never throws: health must not break the step it observes.
+ * A hung database would otherwise add a pool timeout to every step, so a wait beyond RECORD_TIMEOUT_MS gives up and
+ * skips recording for RECORD_COOLDOWN_MS (the schedule keeps its pace; the missing heartbeat shows as stale).
+ */
 export async function recordStepOutcome(
   stepName: string,
   failure?: { error: unknown },
   at = new Date(),
 ) {
+  if (Date.now() < skipRecordingUntil) return;
+  let timer: ReturnType<typeof setTimeout> | undefined;
   try {
     const kind = failure ? errorKind(failure.error) : null;
-    if (failure)
-      await db.$executeRaw`INSERT INTO "WorkerStepHealth" ("step","lastRunAt","lastFailureAt","consecutiveFailures","lastErrorKind")
+    const write = Promise.resolve(
+      failure
+        ? db.$executeRaw`INSERT INTO "WorkerStepHealth" ("step","lastRunAt","lastFailureAt","consecutiveFailures","lastErrorKind")
         VALUES (${stepName.slice(0, 120)}, ${at}, ${at}, 1, ${kind})
         ON CONFLICT ("step") DO UPDATE SET "lastRunAt"=EXCLUDED."lastRunAt", "lastFailureAt"=EXCLUDED."lastFailureAt",
-          "consecutiveFailures"="WorkerStepHealth"."consecutiveFailures"+1, "lastErrorKind"=EXCLUDED."lastErrorKind"`;
-    else
-      await db.$executeRaw`INSERT INTO "WorkerStepHealth" ("step","lastRunAt","lastSuccessAt")
+          "consecutiveFailures"="WorkerStepHealth"."consecutiveFailures"+1, "lastErrorKind"=EXCLUDED."lastErrorKind"`
+        : db.$executeRaw`INSERT INTO "WorkerStepHealth" ("step","lastRunAt","lastSuccessAt")
         VALUES (${stepName.slice(0, 120)}, ${at}, ${at})
         ON CONFLICT ("step") DO UPDATE SET "lastRunAt"=EXCLUDED."lastRunAt", "lastSuccessAt"=EXCLUDED."lastSuccessAt",
-          "consecutiveFailures"=0, "lastErrorKind"=NULL`;
+          "consecutiveFailures"=0, "lastErrorKind"=NULL`,
+    );
+    const timedOut = new Promise<never>((_, reject) => {
+      timer = setTimeout(() => {
+        skipRecordingUntil = Date.now() + RECORD_COOLDOWN_MS;
+        reject(new Error('timed out'));
+      }, RECORD_TIMEOUT_MS);
+    });
+    // A late rejection of the abandoned write must not become an unhandled rejection.
+    write.then(undefined, () => {});
+    await Promise.race([write, timedOut]);
   } catch (error) {
     console.error(
       JSON.stringify({
@@ -46,6 +75,8 @@ export async function recordStepOutcome(
         error: error instanceof Error ? error.message : 'unavailable',
       }),
     );
+  } finally {
+    clearTimeout(timer);
   }
 }
 
@@ -55,10 +86,17 @@ export async function workerHealthSnapshot(
   options: { outboxDispatchEnabled?: boolean } = {},
 ) {
   // Collapse per-iteration collect/measure/settle steps (`collect:<raidId>`) so identifiers never reach the signal.
-  const rows = await db.workerStepHealth.findMany({
+  const all = await db.workerStepHealth.findMany({
     where: { step: { not: { contains: ':' } } },
     orderBy: { step: 'asc' },
   });
+  const heartbeat = all.reduce<Date | null>(
+    (a, r) => (!a || r.lastRunAt > a ? r.lastRunAt : a),
+    null,
+  );
+  // Retire rows of removed/renamed steps, but only while another step is alive (see STEP_RETIRE_MS).
+  const alive = heartbeat !== null && +now - +heartbeat <= STEP_STALE_MS;
+  const rows = alive ? all.filter((r) => +now - +r.lastRunAt <= STEP_RETIRE_MS) : all;
   const steps = rows.map((row) => ({
     step: row.step,
     lastRunAt: row.lastRunAt,
