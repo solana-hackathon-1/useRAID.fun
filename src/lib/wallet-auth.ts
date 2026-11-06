@@ -95,9 +95,11 @@ export async function createWalletChallenge(
     await db.walletChallenge.create({
       data: { digest, address, message, userId: currentUserId ?? null, expiresAt: expires },
     });
-  } catch {
+  } catch (error) {
     // The driver error can echo the connection string or the stored message and nonce; failure() logs
-    // an unknown error's raw text, so surface only a fixed, secret-free outcome (T007 log guard).
+    // an unknown error's raw text. Log only the fixed storage code for operators and surface a fixed,
+    // secret-free outcome (T007 log guard).
+    console.error('wallet challenge store failed', classifyIdentityStorageFailure(error).code);
     throw new HttpError(503, 'Wallet sign-in unavailable. Please try again.');
   }
   return { digest, message };

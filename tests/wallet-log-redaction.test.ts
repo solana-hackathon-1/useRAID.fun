@@ -1,6 +1,8 @@
 // T007 (#49) "No key/secret appears in logs": drives the real wallet challenge and verify routes and
 // libraries through their failure paths with an in-memory challenge store, then asserts that nothing
-// written to the console contains a signature, signed message, nonce, session token or key material.
+// written to the console contains a signature, signed message, nonce, key material, the raw session
+// cookie or the session token generated before the transaction (failure paths only: the success path
+// needs the identity lock/session writes and is covered by the DB tests, not by this file).
 // Storage and rate limiting are synthetic; the route, validation, signature and origin code are real.
 import bs58 from 'bs58';
 import nacl from 'tweetnacl';
@@ -175,11 +177,25 @@ describe('wallet failure paths never log signatures, messages, nonces, session t
     expect(res.status).toBe(503);
     expectClean(await res.text());
   });
-  it('sanitizes a storage error carrying a secret when issuing a challenge (503)', async () => {
-    secrets = [DB_SECRET, 'HUNTER2-SENTINEL'];
+  it('sanitizes a storage error carrying a secret when issuing a challenge (503), keeping an operator signal', async () => {
     mocks.create.mockRejectedValue(new Error(`insert failed for ${DB_SECRET}`));
     const res = await post(challengeRoute, { address });
     expect(res.status).toBe(503);
+    const { message } = mocks.create.mock.calls[0][0].data as Row;
+    secrets = [
+      DB_SECRET,
+      'HUNTER2-SENTINEL',
+      message,
+      /Nonce: (\S+)/.exec(message)?.[1] ?? 'missing-nonce',
+    ];
+    expect(logs.join('\n')).toContain('wallet challenge store failed STORAGE_UNAVAILABLE');
     expectClean(await res.text());
+  });
+  it('positive control: the console spies capture an unknown error logged by failure()', async () => {
+    await issueChallenge();
+    mocks.user.mockRejectedValue(new Error('control-line-sentinel'));
+    const res = await verify(sign(issued.message));
+    expect(res.status).toBe(503);
+    expect(logs.join('\n')).toContain('control-line-sentinel');
   });
 });
