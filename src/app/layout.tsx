@@ -15,6 +15,7 @@ const barlow = localFont({
 });
 import { Shell } from '@/components/shell';
 import { config } from '@/lib/config';
+import { deploymentEnvironment } from '@/lib/deployment-environment';
 import { shellAccount } from '@/lib/shell-account';
 import { publicNavLinks } from '@/lib/work-entry-links';
 import { loadActiveRaid } from '@/lib/work-workspace-page';
@@ -27,6 +28,7 @@ export const metadata: Metadata = {
 };
 export default async function Layout({ children }: { children: React.ReactNode }) {
   // Per-request and session-bound (force-dynamic → private, no-store): never part of a cached public page.
+  const environment = deploymentEnvironment();
   const [account, activeRaid] = await Promise.all([shellAccount(), loadActiveRaid()]);
   return (
     <html lang="en" data-scroll-behavior="smooth">
@@ -37,6 +39,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
           account={account}
           extraLinks={publicNavLinks()}
           activeRaid={account ? activeRaid : null}
+          environment={environment.production ? null : environment}
         >
           {children}
         </Shell>

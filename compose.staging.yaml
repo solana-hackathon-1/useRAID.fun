@@ -16,6 +16,7 @@ x-app: &app
   environment: &safe-environment
     NODE_ENV: production
     DEMO_MODE: 'false'
+    RAID_ENVIRONMENT: staging
     ACCOUNT_FOLDS_ENABLED: 'false'
     WALLET_LINKS_ENABLED: 'false'
     STUDIO_SANDBOX: 'false'
