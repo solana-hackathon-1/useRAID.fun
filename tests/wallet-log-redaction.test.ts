@@ -123,7 +123,9 @@ afterEach(() => {
 describe('wallet failure paths never log signatures, messages, nonces, session tokens or keys', () => {
   it('rejects a bad signature (401)', async () => {
     await issueChallenge();
-    const res = await verify(sign(issued.message, other));
+    const forged = sign(issued.message, other);
+    secrets.push(forged);
+    const res = await verify(forged);
     expect(res.status).toBe(401);
     expectClean(await res.text());
   });
