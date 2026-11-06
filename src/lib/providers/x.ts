@@ -112,7 +112,7 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
         data: { reason: 'Timed out; reservation kept' },
       });
     else await settleReservation(reservation.id, 0, 'Transport failure; no response');
-    if (error instanceof OutboundFetchError)
+    if (error instanceof OutboundFetchError && error.code === 'redirect')
       throw new ProviderError('X redirected the request; refused.', 300, true);
     throw new ProviderError('X is unreachable.', 60, true);
   });
@@ -171,10 +171,11 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
     );
   }
   // The reservation stays at its upper bound when the reply is refused: the call was served and may be billed.
+  // Not deferred: attempts must count so a persistently bad reply kills the job instead of draining the shared budget.
   const body = await readBoundedJson<XReadBody>(response, MAX_PROVIDER_JSON_BYTES).catch(
     (error) => {
       if (error instanceof OutboundFetchError)
-        throw new ProviderError(`X response refused (${error.code}).`, 60, true, response.status);
+        throw new ProviderError(`X response refused (${error.code}).`, 60, false, response.status);
       throw error;
     },
   );

@@ -63,15 +63,18 @@ export async function readBoundedJson<T = unknown>(
   const reader = response.body.getReader();
   const chunks: Uint8Array[] = [];
   let total = 0;
-  for (;;) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    total += value.byteLength;
-    if (total > maxBytes) {
-      await reader.cancel().catch(() => undefined);
-      throw tooLarge();
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > maxBytes) throw tooLarge();
+      chunks.push(value);
     }
-    chunks.push(value);
+  } catch (error) {
+    // Release the connection on any failure (oversize, timeout or a broken stream), then rethrow unchanged.
+    await reader.cancel().catch(() => undefined);
+    throw error;
   }
   try {
     return JSON.parse(Buffer.concat(chunks).toString('utf8')) as T;

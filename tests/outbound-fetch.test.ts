@@ -165,6 +165,7 @@ describe('readBoundedJson size limit', () => {
   });
   it('stops pulling once an undeclared stream passes the limit', async () => {
     let pulls = 0;
+    let cancelled = false;
     const body = new ReadableStream<Uint8Array>(
       {
         pull(controller) {
