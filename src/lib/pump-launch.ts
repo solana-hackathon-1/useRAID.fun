@@ -1,3 +1,4 @@
+import { publicPausedReason } from './pause-reason';
 import { lockResource } from '../identity-locks';
 import { assertJobLease } from './job-lease';
 import { lockAdvisory } from './identity-protocol';
@@ -281,8 +282,15 @@ const SAFE_LAUNCH_ERRORS = new Set([
   NO_REVIEWED_CREATION,
   LAUNCH_SUBMISSION_PENDING,
 ]);
-export function publicLaunchError(stored: string | null | undefined): string | null {
+export function publicLaunchError(
+  stored: string | null | undefined,
+  status?: string,
+): string | null {
   if (!stored) return null;
+  // A paused launch carries a pause reason, a live one only an operator note (e.g. absorbed fee cost): neither is a
+  // pending submission, and neither is shown raw.
+  if (status === 'PAUSED') return publicPausedReason(stored);
+  if (status === 'LIVE') return null;
   return SAFE_LAUNCH_ERRORS.has(stored) ? stored : LAUNCH_SUBMISSION_PENDING;
 }
 export function publicLaunch(launch: {
@@ -305,7 +313,7 @@ export function publicLaunch(launch: {
     symbol: launch.symbol,
     signature: launch.signature,
     raidId: launch.raidId,
-    error: publicLaunchError(launch.error),
+    error: publicLaunchError(launch.error, launch.status),
     ...rewardCopy(),
   };
 }
