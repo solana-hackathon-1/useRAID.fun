@@ -5,8 +5,9 @@ import { scanOutboundCalls } from './helpers/outbound-scan';
 
 /**
  * T091 / blueprint §28.3: defend against server-side requests to internal services, credential-bearing endpoints
- * and unsafe redirects. Server code never fetches a caller-supplied URL: every server-side `fetch(` must begin with a
- * literal https:// plus a pinned provider host, so no input can change the scheme or host. Adding a provider host is a
+ * and unsafe redirects. Server code never fetches a caller-supplied URL: every server-side `providerFetch(` must begin
+ * with a literal https:// plus a pinned provider host, so no input can change the scheme or host, and no server code
+ * may call a raw `fetch(` at all (it would follow redirects), so providerFetch is the only way out. Adding a provider host is a
  * deliberate change to this list (and needs its own adapter contract, R15). Browser code is excluded (components with
  * 'use client' and the repo's `*-client.ts` fetch wrappers): the browser can only reach the same origin because the CSP
  * sets `connect-src 'self'`, which the last test pins so the exclusion's premise cannot silently lapse.

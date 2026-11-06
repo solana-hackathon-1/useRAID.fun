@@ -172,10 +172,19 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
   }
   // The reservation stays at its upper bound when the reply is refused: the call was served and may be billed.
   // Not deferred: attempts must count so a persistently bad reply kills the job instead of draining the shared budget.
+  // A stalled body is the same case as a refused one (the headers arrived, so the call was served), and unlike the
+  // header timeout it must not be deferred: a deferred retry keeps a fresh reservation every time.
   const body = await readBoundedJson<XReadBody>(response, MAX_PROVIDER_JSON_BYTES).catch(
-    (error) => {
+    async (error) => {
       if (error instanceof OutboundFetchError)
         throw new ProviderError(`X response refused (${error.code}).`, 60, false, response.status);
+      if (error instanceof DOMException && error.name === 'TimeoutError') {
+        await db.providerUsage.update({
+          where: { id: reservation.id },
+          data: { reason: 'Body timed out; reservation kept' },
+        });
+        throw new ProviderError('X response timed out.', 60, false, response.status);
+      }
       throw error;
     },
   );

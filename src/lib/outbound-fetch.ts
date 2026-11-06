@@ -77,7 +77,8 @@ export async function readBoundedJson<T = unknown>(
     throw error;
   }
   try {
-    return JSON.parse(Buffer.concat(chunks).toString('utf8')) as T;
+    // TextDecoder drops a leading UTF-8 byte order mark, exactly as Response.json() does; Buffer#toString would not.
+    return JSON.parse(new TextDecoder().decode(Buffer.concat(chunks))) as T;
   } catch {
     throw new OutboundFetchError('invalid_json', 'Provider response was not valid JSON.');
   }

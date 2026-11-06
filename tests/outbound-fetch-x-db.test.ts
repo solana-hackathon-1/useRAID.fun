@@ -85,7 +85,10 @@ suite('X provider read hardening', () => {
         }),
         { status: 200 },
       );
-    vi.stubGlobal('fetch', vi.fn().mockImplementation(async () => stalled()));
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockImplementation(async () => stalled()),
+    );
     const failure = await lookupPosts(['1']).catch((error) => error);
     expect(failure).toBeInstanceOf(ProviderError);
     expect(failure).toMatchObject({ deferred: false, status: 200, retryAfter: 60 });
