@@ -9,6 +9,7 @@ import type {
   Detail,
   FeedCard,
   FeedEligibility,
+  FeedFacets,
   FeedPage,
   FeedQuery,
   FeedViewerState,
@@ -32,6 +33,7 @@ type Filters = Partial<Omit<FeedQuery, 'cursor' | 'minReward'>> & {
    */
   minRewardAmount?: string;
 };
+const NO_FACETS: FeedFacets = { categories: [], skills: [] };
 const NO_REWARD_CONTROL: RewardControl = { enabled: false, assets: [], amount: '', problem: null };
 const ORDER = [
   'category',
@@ -42,6 +44,7 @@ const ORDER = [
   'admission',
   'assetKey',
   'minRewardAmount',
+  'closesAfter',
   'closesBefore',
   'sort',
   'limit',
@@ -89,6 +92,8 @@ const ELIGIBILITY_LABEL: Readonly<Record<FeedEligibility, string>> = {
   NOT_ELIGIBLE: 'Not eligible yet: your verified skills do not meet this Raid',
   UNKNOWN: 'Eligibility unknown: not confirmable from your verified skills alone',
 };
+const CATEGORY_LIST = 'raid-feed-categories';
+const SKILL_LIST = 'raid-feed-skills';
 const MIN_HELP = 'raid-feed-min-reward-help';
 const MIN_ERROR = 'raid-feed-min-reward-error';
 function Option({ value, label }: { value: string; label: string }) {
@@ -99,11 +104,13 @@ function Filter({
   assets,
   viewer,
   reward,
+  facets,
 }: {
   query: Filters;
   assets: Map<string, string>;
   viewer: FeedViewerState;
   reward: RewardControl;
+  facets: FeedFacets;
 }) {
   const chosen = query.assetKey
     ? (reward.assets.find((asset) => asset.assetKey === query.assetKey) ?? null)
@@ -114,12 +121,37 @@ function Filter({
     <form className="raid-feed-filters" method="get" action={FEED_PATH}>
       <label>
         Category
-        <input name="category" defaultValue={query.category ?? ''} maxLength={64} />
+        <input
+          name="category"
+          defaultValue={query.category ?? ''}
+          maxLength={64}
+          list={facets.categories.length ? CATEGORY_LIST : undefined}
+        />
       </label>
       <label>
         Skill
-        <input name="skillId" defaultValue={query.skillId ?? ''} maxLength={64} />
+        <input
+          name="skillId"
+          defaultValue={query.skillId ?? ''}
+          maxLength={64}
+          list={facets.skills.length ? SKILL_LIST : undefined}
+        />
       </label>
+      {/* Suggestions only: public categories and skills of live Raids. A typed value is still validated. */}
+      {facets.categories.length ? (
+        <datalist id={CATEGORY_LIST}>
+          {facets.categories.map((value) => (
+            <option key={value} value={value} />
+          ))}
+        </datalist>
+      ) : null}
+      {facets.skills.length ? (
+        <datalist id={SKILL_LIST}>
+          {facets.skills.map((value) => (
+            <option key={value} value={value} />
+          ))}
+        </datalist>
+      ) : null}
       <label>
         Difficulty
         <select name="difficulty" defaultValue={query.difficulty ?? ''}>
@@ -198,6 +230,14 @@ function Filter({
           ) : null}
         </div>
       ) : null}
+      <label>
+        Apply after
+        <input
+          name="closesAfter"
+          type="date"
+          defaultValue={query.closesAfter?.slice(0, 10) ?? ''}
+        />
+      </label>
       <label>
         Apply before
         <input
@@ -278,11 +318,13 @@ export function WorkFeed({
   query,
   viewer = { status: 'OFF' },
   reward = NO_REWARD_CONTROL,
+  facets = NO_FACETS,
 }: {
   page: FeedPage;
   query: Filters;
   viewer?: FeedViewerState;
   reward?: RewardControl;
+  facets?: FeedFacets;
 }) {
   const eligibleOnly = viewer.status === 'READY' && viewer.eligibleOnly;
   const assets = new Map<string, string>();
@@ -330,6 +372,7 @@ export function WorkFeed({
         assets={assets}
         viewer={viewer}
         reward={reward}
+        facets={facets}
       />
       {minimum ? (
         <p className="raid-feed-viewer" role="status">

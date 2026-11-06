@@ -88,6 +88,9 @@ const render = (props: { page?: unknown; query?: Record<string, unknown>; reward
     }),
   );
 
+/** The one <input> carrying `name`, so assertions do not depend on React's attribute order. */
+const field = (markup: string, name: string) =>
+  markup.match(new RegExp(`<input[^>]*name="${name}"[^>]*>`))?.[0] ?? '';
 describe('T097 structured filters markup', () => {
   const withFacets = (query = {}) =>
     renderToStaticMarkup(
@@ -99,11 +102,11 @@ describe('T097 structured filters markup', () => {
     );
   it('suggests live categories and skills in native lists while keeping plain text fields', () => {
     const out = withFacets();
-    expect(out).toMatch(/<input[^>]*name="category"[^>]*list="raid-feed-categories"/);
-    expect(out).toMatch(/<input[^>]*name="skillId"[^>]*list="raid-feed-skills"/);
+    expect(field(out, 'category')).toContain('list="raid-feed-categories"');
+    expect(field(out, 'skillId')).toContain('list="raid-feed-skills"');
     expect(out).toContain('<datalist id="raid-feed-categories">');
-    expect(out).toContain('<option value="design"');
-    expect(out).toContain('<option value="figma"');
+    expect(out).toContain('<option value="design">');
+    expect(out).toContain('<option value="figma">');
     // Suggestions are data, escaped, never markup.
     expect(out).toContain('value="docs&lt;x&gt;"');
     expect(out).not.toContain('docs<x>');
@@ -116,8 +119,13 @@ describe('T097 structured filters markup', () => {
       closesAfter: '2026-11-03T00:00:00.000Z',
       closesBefore: '2026-11-10T00:00:00.000Z',
     });
-    expect(out).toMatch(/<input[^>]*name="closesAfter"[^>]*type="date"[^>]*value="2026-11-03"/);
-    expect(out).toMatch(/<input[^>]*name="closesBefore"[^>]*type="date"[^>]*value="2026-11-10"/);
+    for (const [name, date] of [
+      ['closesAfter', '2026-11-03'],
+      ['closesBefore', '2026-11-10'],
+    ]) {
+      expect(field(out, name)).toContain('type="date"');
+      expect(field(out, name)).toContain(`value="${date}"`);
+    }
     expect(feedHref({ closesAfter: '2026-11-03T00:00:00.000Z', category: 'design' })).toBe(
       '/raids?category=design&closesAfter=2026-11-03T00%3A00%3A00.000Z',
     );
