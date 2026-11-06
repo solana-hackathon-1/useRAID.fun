@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, beforeEach, afterAll, vi } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, afterAll, afterEach, vi } from 'vitest';
 const mocks = vi.hoisted(() => ({ user: vi.fn() }));
 vi.mock('next/headers', () => ({ cookies: async () => ({ get: () => undefined }) }));
 vi.mock('../src/lib/auth', async (importOriginal) => ({
@@ -6,9 +6,17 @@ vi.mock('../src/lib/auth', async (importOriginal) => ({
   requireUser: mocks.user,
 }));
 import { db } from '../src/lib/db';
-import { step } from '../src/lib/worker-jobs';
+import { eachStep, step } from '../src/lib/worker-jobs';
 import { claimJob, enqueue, finishJob, JOB_MAX_ATTEMPTS } from '../src/lib/queue';
-import { workerHealthSnapshot, STEP_STALE_MS } from '../src/lib/worker-health';
+import {
+  workerHealthSnapshot,
+  recordStepOutcome,
+  resetRecordingBreaker,
+  STEP_STALE_MS,
+  STEP_RETIRE_MS,
+  RECORD_TIMEOUT_MS,
+  RECORD_COOLDOWN_MS,
+} from '../src/lib/worker-health';
 import { GET } from '../src/app/api/admin/worker-health/route';
 import { HttpError } from '../src/lib/auth-primitives';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
@@ -21,6 +29,7 @@ suite('durable worker health and generation fence (T038)', () => {
   beforeEach(async () => {
     await truncateAll(db);
     await db.$executeRawUnsafe('DELETE FROM "WorkerStepHealth"');
+    resetRecordingBreaker();
     vi.spyOn(console, 'error').mockImplementation(() => {});
   });
   afterAll(() => db.$disconnect());
@@ -75,6 +84,100 @@ suite('durable worker health and generation fence (T038)', () => {
       await expect(step('delta', fn)).resolves.toBeUndefined();
       expect(fn).toHaveBeenCalledOnce();
       spy.mockRestore();
+    });
+  });
+
+  describe('an outer step is not healthy when every per-item step failed', () => {
+    const boom = async () => {
+      throw new Error('x');
+    };
+    const outer = (items: string[], fn: (item: string) => Promise<unknown>) =>
+      step('outer', () => eachStep('inner', items, fn));
+    const row = () => db.workerStepHealth.findUniqueOrThrow({ where: { step: 'outer' } });
+    it('records a failure with a safe error kind when all items fail', async () => {
+      await outer(['a', 'b', 'c'], boom);
+      expect(await row()).toMatchObject({
+        consecutiveFailures: 1,
+        lastSuccessAt: null,
+        lastErrorKind: 'AllItemsFailedError',
+      });
+    });
+    it('stays a success when at least one item succeeds, or there were no items', async () => {
+      await outer(['a', 'b'], async (id) => {
+        if (id === 'a') throw new Error('x');
+      });
+      expect((await row()).consecutiveFailures).toBe(0);
+      await outer([], boom);
+      expect((await row()).lastSuccessAt).not.toBeNull();
+    });
+    it('still logs and isolates each item failure and keeps going', async () => {
+      const seen: string[] = [];
+      await outer(['a', 'b'], async (id) => {
+        seen.push(id);
+        throw new Error('x');
+      });
+      expect(seen).toEqual(['a', 'b']);
+    });
+  });
+
+  describe('rows for removed or renamed steps retire while the worker is alive', () => {
+    it('ignores a long-dead step row once another step is running, but not when the whole worker is dead', async () => {
+      const now = new Date();
+      const ancient = new Date(+now - STEP_RETIRE_MS - 60000);
+      await db.workerStepHealth.create({
+        data: { step: 'renamed-away', lastRunAt: ancient, lastSuccessAt: ancient },
+      });
+      await step('alpha', async () => {});
+      const live = await workerHealthSnapshot(now);
+      expect(live.status).toBe('ok');
+      expect(live.steps.map((s) => s.step)).toEqual(['alpha']);
+      // Everything stopped (no recent heartbeat anywhere): nothing is retired, the silence stays visible.
+      await db.$executeRawUnsafe(
+        `UPDATE "WorkerStepHealth" SET "lastRunAt"=$1, "lastSuccessAt"=$1`,
+        ancient,
+      );
+      const dead = await workerHealthSnapshot(now);
+      expect(dead.status).toBe('degraded');
+      expect(dead.reasons).toEqual(
+        expect.arrayContaining(['step-stale:renamed-away', 'step-stale:alpha']),
+      );
+    });
+    it('keeps a recently stale step visible', async () => {
+      const now = new Date();
+      const recent = new Date(+now - STEP_STALE_MS - 60000);
+      await db.workerStepHealth.create({
+        data: { step: 'slow', lastRunAt: recent, lastSuccessAt: recent },
+      });
+      await step('alpha', async () => {});
+      expect((await workerHealthSnapshot(now)).reasons).toContain('step-stale:slow');
+    });
+  });
+
+  describe('a hung health store does not slow the worker', () => {
+    afterEach(() => {
+      vi.useRealTimers();
+      vi.restoreAllMocks();
+    });
+    it('gives up after a bounded wait, then skips recording during a cooldown, then resumes', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'Date'] });
+      const hung = vi
+        .spyOn(db, '$executeRaw')
+        .mockImplementation(() => new Promise(() => {}) as never);
+      const first = recordStepOutcome('alpha');
+      await vi.advanceTimersByTimeAsync(RECORD_TIMEOUT_MS + 1);
+      await expect(first).resolves.toBeUndefined();
+      expect(hung).toHaveBeenCalledTimes(1);
+      // During the cooldown further steps return immediately without touching the database.
+      await expect(recordStepOutcome('beta')).resolves.toBeUndefined();
+      await expect(recordStepOutcome('gamma', { error: new Error('x') })).resolves.toBeUndefined();
+      expect(hung).toHaveBeenCalledTimes(1);
+      // After the cooldown it tries again.
+      await vi.advanceTimersByTimeAsync(RECORD_COOLDOWN_MS + 1);
+      const retry = recordStepOutcome('delta');
+      await vi.advanceTimersByTimeAsync(RECORD_TIMEOUT_MS + 1);
+      await retry;
+      expect(hung).toHaveBeenCalledTimes(2);
     });
   });
 
