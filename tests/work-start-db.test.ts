@@ -11,6 +11,7 @@ import type { StartHost } from '../src/work-loop/start-contracts';
 import { raidTerms } from './helpers/raid-terms-fixture';
 import { seedWorkHuman, seedWorkSlot, syntheticAcceptanceHost } from './helpers/work-loop-db';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import { holdAcceptedAmendment, runBehindAmendment } from './helpers/amendment-lock-race';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 const db = new PrismaClient();
 const run = <T>(work: Parameters<typeof runCommandTransaction<T>>[1]) =>
@@ -194,4 +195,50 @@ integration('T032 starting accepted work', { timeout: 60000 }, () => {
     });
     expect((await state(engagementId)).state).toBe('ACCESS_PENDING');
   });
+
+  it('judges the start deadline on terms read after the engagement lock, so an amendment accepted during the wait extends it', async () => {
+    const reviewer = await seedWorkHuman(db, 'reviewer-' + randomUUID());
+    const { worker, engagementId } = await setup({
+      deadlines: {
+        commitment: ahead(5000),
+        preparation: ahead(5500),
+        submission: ahead(6000),
+        review: ahead(6500),
+        operationalClosure: ahead(7000),
+      },
+    });
+    // The real guards run: the amendment is proposed by a non-member and accepted by the member while still ACCESS_PENDING.
+    const holder = holdAcceptedAmendment(
+      db,
+      engagementId,
+      reviewer.actor.accountId,
+      worker.actor.accountId,
+      {
+        deadlines: {
+          submission: ahead(3600000),
+          review: ahead(3601000),
+          operationalClosure: ahead(3602000),
+        },
+      },
+    );
+    await holder.locked;
+    // Let the original submission deadline pass on the database clock before the start queues behind the lock.
+    await db.$queryRawUnsafe(
+      `SELECT pg_sleep(GREATEST(0, extract(epoch FROM $1::timestamptz-clock_timestamp()))+0.1)::text AS slept`,
+      (
+        (await db.$queryRawUnsafe(
+          `SELECT raid_effective_terms($1::uuid)->'deadlines'->>'submission' AS due`,
+          engagementId,
+        )) as { due: string }[]
+      )[0].due,
+    );
+    const outcome = await runBehindAmendment(db, holder, (port) =>
+      startEngagement(port, cmd(worker.actor, { engagementId }), ready),
+    );
+    // The start waited on the lock, then saw the extended deadline: it succeeds, not DEADLINE_PASSED on stale terms.
+    expect(outcome).toMatchObject({
+      value: { status: 'EXECUTED', engagement: { state: 'IN_PROGRESS' } },
+    });
+    expect((await state(engagementId)).state).toBe('IN_PROGRESS');
+  }, 40000);
 });
