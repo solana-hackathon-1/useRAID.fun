@@ -14,6 +14,7 @@ import { replanIdentity } from '../identity-locks';
 import { sweepIdentityLeaves } from './identity-cleanup';
 import { HttpError } from './errors';
 import { reserveUsage, settleReservation } from './providers/x';
+import { MAX_SMALL_JSON_BYTES, providerFetch, readBoundedJson } from './outbound-fetch';
 
 export class OAuthError extends Error {
   constructor(public code: string) {
@@ -87,10 +88,9 @@ export async function fetchXIdentity(code: string, verifier: string) {
   const { clientId, clientSecret, callback } = oauthConfig();
   try {
     const encode = (value: string) => new URLSearchParams({ v: value }).toString().slice(2);
-    const token = await fetch('https://api.x.com/2/oauth2/token', {
+    const token = await providerFetch('https://api.x.com/2/oauth2/token', {
       method: 'POST',
       cache: 'no-store',
-      redirect: 'error',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         Authorization: `Basic ${Buffer.from(`${encode(clientId)}:${encode(clientSecret)}`).toString('base64')}`,
@@ -109,12 +109,11 @@ export async function fetchXIdentity(code: string, verifier: string) {
         access_token: z.string().min(1),
         token_type: z.string().refine((v) => v.toLowerCase() === 'bearer'),
       })
-      .parse(await token.json());
+      .parse(await readBoundedJson(token, MAX_SMALL_JSON_BYTES));
     const reservation = await reserveUsage(1, undefined, true);
-    const me = await fetch('https://api.x.com/2/users/me?user.fields=profile_image_url', {
+    const me = await providerFetch('https://api.x.com/2/users/me?user.fields=profile_image_url', {
       headers: { Authorization: `Bearer ${credentials.access_token}` },
       cache: 'no-store',
-      redirect: 'error',
       signal: AbortSignal.timeout(15000),
     }).catch(async (error) => {
       if (!(error instanceof DOMException && error.name === 'TimeoutError'))
@@ -125,7 +124,7 @@ export async function fetchXIdentity(code: string, verifier: string) {
       await settleReservation(reservation.id, 0, `X returned ${me.status}; nothing billable`);
       throw new OAuthError('provider');
     }
-    return profileSchema.parse(await me.json()).data;
+    return profileSchema.parse(await readBoundedJson(me, MAX_SMALL_JSON_BYTES)).data;
   } catch {
     throw new OAuthError('provider');
   }
