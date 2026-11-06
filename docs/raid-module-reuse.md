@@ -198,7 +198,18 @@ Owner: `src/lib/worker-health.ts` (blueprint §27.3, §30.3; T038 W02/W03, parti
 - **Explicit host dependencies.** A Prisma `db` with `WorkerStepHealth` (additive migration `202611060001_worker_step_health`), `Job`, `OutboxEvent`, `AuditEvent` and `NotificationDispatch`; an injectable clock; the host decides whether outbox dispatch is enabled. No RAID singleton, secret or provider client.
 - **Privacy.** Output holds step names, counts, ages and the error class name only: no job keys, payloads or error messages. Per-record sub-steps are excluded so identifiers cannot enter it.
 - **Consuming example.** `tests/worker-health-db.test.ts` is the host: it records outcomes, reads the snapshot and calls the route handler against real PostgreSQL, including overlapping workers and a stale-lease finish.
-- **Limitations (NOT VERIFIED beyond the real-database tests).** It does not yet cover commitment deadlines, unknown transactions or provider freshness, does not fence handler side effects against a reclaimed lease (only the acknowledgement is fenced by `Job.lease`), and does not dead-letter exhausted jobs. Rollback: drop `WorkerStepHealth`; nothing depends on it.
+- **Limitations (NOT VERIFIED beyond the real-database tests).** It does not yet cover commitment deadlines, unknown transactions or provider freshness, does not dead-letter exhausted jobs. Rollback: drop `WorkerStepHealth`; nothing depends on it.
+
+## Job lease fence (job-lease)
+
+Owner: `src/lib/job-lease.ts` (blueprint §27.3; T038 W01, partial). Acknowledgement is fenced by `Job.lease` in `finishJob`; this module fences the external effect itself so a stalled worker that lost its lease cannot repeat it.
+
+- **Stable exports.** `runUnderJobLease(job, fn)` (host wraps a handler; `runJob` does), `assertJobLease()` (call immediately before a provider call, broadcast or send), `JobLeaseLostError`, `JOB_LEASE_MINUTES` (also the `claimJob` reclaim window). Outside a job `assertJobLease()` does nothing, so code shared with request handlers is unaffected.
+- **Rule.** The check passes only while the job still holds the caller's lease generation, is neither finished nor dead-lettered and its lock is inside the lease window, judged by the database clock. A reclaim, a finish, a dead-letter or an expired unreclaimed lease refuses. `runJob` then leaves the job, raid and token untouched; the lease holder owns retry and error recording.
+- **Wired at.** `providers/x.ts` `xRead` (before quota decrement and billing reservation), `providers/market.ts` `fetchMarket`, `rewards.ts` and `pump-launch.ts` transaction (re)broadcasts.
+- **Explicit host dependencies.** A Prisma `db` with `Job` (`lease`, `lockedAt`, `doneAt`, `failedAt`) and PostgreSQL `NOW()`. No RAID singleton, secret or provider client.
+- **Consuming example.** `tests/job-lease-db.test.ts`: against real PostgreSQL worker A claims, its lease expires, worker B reclaims, A's `runJob` is refused before the provider call and the effect runs once.
+- **Limitations (NOT VERIFIED beyond those tests).** Check-then-act is not atomic, so the window narrows to the instant between them; effects that must be exactly-once still need a provider idempotency key. Database writes by a stale handler (ingest, snapshots) are not fenced. No durable back-off or automatic dead-lettering of crash-exhausted jobs (owner decisions). Rollback: revert the module; `finishJob` fencing is independent.
 
 ## Parties (party-storage)
 

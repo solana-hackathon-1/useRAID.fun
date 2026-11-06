@@ -12,6 +12,7 @@ import { observedImpressions } from './raid-progress';
 import { processTrackingLookup } from './tracking-worker';
 import { db } from './db';
 import { enqueue, finishJob } from './queue';
+import { JobLeaseLostError, runUnderJobLease } from './job-lease';
 import { collect, ingest, refresh, snapshot } from './collection';
 import { fetchMarket } from './providers/market';
 import { lookupPosts, ProviderError } from './providers/x';
@@ -369,51 +370,58 @@ export async function runJob(job: Job) {
     submissionId?: string;
   };
   try {
-    if (job.kind === 'launch-reconcile') await reconcileLaunch(p.launchId);
-    else if (job.kind === 'finance') await financeLaunch(p.launchId);
-    else if (job.kind === 'collect') await collect(p.raidId, job.id);
-    else if (job.kind === 'refresh')
-      await refresh(p.raidId, p.after, p.final, p.coveredUntil, job.id, job.attempts);
-    else if (job.kind === 'tracking-correction')
-      await processTrackingLookup(p.raidId, p.postId, job.id, undefined, true);
-    else if (job.kind === 'submission') {
-      const raid = await db.raid.findUniqueOrThrow({
-        where: { id: p.raidId },
-        include: { creator: true },
-      });
-      if (raid.trackingVersion === 2) {
-        await processTrackingLookup(p.raidId, p.postId, job.id, p.submissionId);
-      } else {
-        if (raid.hidden || raid.creator.suspended || raid.status !== 'ACTIVE')
-          throw new Error('Raid is not accepting submissions.');
-        const result = await lookupPosts([p.postId], p.raidId);
-        await ingest(p.raidId, result.data || []);
-        await snapshot(p.raidId, false);
+    await runUnderJobLease(job, async () => {
+      if (job.kind === 'launch-reconcile') await reconcileLaunch(p.launchId);
+      else if (job.kind === 'finance') await financeLaunch(p.launchId);
+      else if (job.kind === 'collect') await collect(p.raidId, job.id);
+      else if (job.kind === 'refresh')
+        await refresh(p.raidId, p.after, p.final, p.coveredUntil, job.id, job.attempts);
+      else if (job.kind === 'tracking-correction')
+        await processTrackingLookup(p.raidId, p.postId, job.id, undefined, true);
+      else if (job.kind === 'submission') {
+        const raid = await db.raid.findUniqueOrThrow({
+          where: { id: p.raidId },
+          include: { creator: true },
+        });
+        if (raid.trackingVersion === 2) {
+          await processTrackingLookup(p.raidId, p.postId, job.id, p.submissionId);
+        } else {
+          if (raid.hidden || raid.creator.suspended || raid.status !== 'ACTIVE')
+            throw new Error('Raid is not accepting submissions.');
+          const result = await lookupPosts([p.postId], p.raidId);
+          await ingest(p.raidId, result.data || []);
+          await snapshot(p.raidId, false);
+        }
+      } else if (job.kind === 'market') {
+        const market = await fetchMarket(p.mint);
+        await db.token.update({
+          where: { mint: p.mint },
+          data: {
+            market: market ? JSON.parse(JSON.stringify(market)) : Prisma.DbNull,
+            marketAt: new Date(),
+            marketError: market ? null : 'No eligible market pair found.',
+            ...(market?.name.trim() && market.symbol.trim()
+              ? {
+                  name: market.name.trim().slice(0, 80),
+                  symbol: market.symbol.trim().slice(0, 15),
+                  ...(market.imageUri ? { imageUri: market.imageUri } : {}),
+                  metadataSource: 'MARKET',
+                  metadataVerifiedAt: new Date(),
+                }
+              : {}),
+          },
+        });
       }
-    } else if (job.kind === 'market') {
-      const market = await fetchMarket(p.mint);
-      await db.token.update({
-        where: { mint: p.mint },
-        data: {
-          market: market ? JSON.parse(JSON.stringify(market)) : Prisma.DbNull,
-          marketAt: new Date(),
-          marketError: market ? null : 'No eligible market pair found.',
-          ...(market?.name.trim() && market.symbol.trim()
-            ? {
-                name: market.name.trim().slice(0, 80),
-                symbol: market.symbol.trim().slice(0, 15),
-                ...(market.imageUri ? { imageUri: market.imageUri } : {}),
-                metadataSource: 'MARKET',
-                metadataVerifiedAt: new Date(),
-              }
-            : {}),
-        },
-      });
-    }
+    });
     await finishJob(job);
     if (p.raidId && ['submission', 'tracking-correction'].includes(job.kind))
       await clearCollectionError(p.raidId);
   } catch (error) {
+    if (error instanceof JobLeaseLostError) {
+      // Another worker holds this job now. Leave its state alone: it owns the raid/token error writes and the retry.
+      console.error(JSON.stringify({ job: job.id, kind: job.kind, error: error.message }));
+      return;
+    }
     const message = error instanceof Error ? error.message : 'Collection failed';
     if (p.raidId && job.kind !== 'finance')
       await db.raid.updateMany({

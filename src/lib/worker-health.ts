@@ -1,4 +1,5 @@
 import { db } from './db';
+import { JOB_LEASE_MINUTES } from './job-lease';
 import { JOB_MAX_ATTEMPTS } from './queue';
 
 /**
@@ -12,8 +13,8 @@ export const STEP_STALE_MS = 5 * 60 * 1000;
 export const FAILING_STREAK = 3;
 export const JOB_OVERDUE_SECONDS = 15 * 60;
 export const OUTBOX_OVERDUE_SECONDS = 15 * 60;
-/** The claim query treats a lock older than this as abandoned. Keep equal to the interval in `claimJob`. */
-export const LEASE_SECONDS = 10 * 60;
+/** The claim query treats a lock older than this as abandoned; derived from the one lease constant. */
+export const LEASE_SECONDS = JOB_LEASE_MINUTES * 60;
 
 /** Error class name only: a message can carry provider bodies or secrets. */
 function errorKind(error: unknown) {

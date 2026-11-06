@@ -1,4 +1,5 @@
 import { lockResource } from '../identity-locks';
+import { assertJobLease } from './job-lease';
 import { lockAdvisory } from './identity-protocol';
 import { newTrackingRules, trackingSettlementEnabled } from './config';
 import { assertLaunchpadsAvailable, launchpadsAvailable } from './release';
@@ -432,10 +433,12 @@ export async function reconcileLaunch(id: string, recovered = false): Promise<Pu
       launch.signedTx &&
       launch.lastValidBlockHeight &&
       (await rpc.getBlockHeight('finalized')) <= launch.lastValidBlockHeight
-    )
+    ) {
+      await assertJobLease();
       await rpc
         .sendRawTransaction(Buffer.from(launch.signedTx, 'base64'), { maxRetries: 2 })
         .catch(() => {});
+    }
     if (
       !status.value[0] &&
       launch.lastValidBlockHeight &&
