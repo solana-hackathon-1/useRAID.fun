@@ -58,7 +58,7 @@ export function Shell({
         }}
       >
         {environment && (
-          <div className="env-label" role="status">
+          <div className="env-label">
             <span className="env-label-name">{environment.label}</span>
             <span className="env-label-detail">
               {environment.declared ? 'Not production' : 'Treat as not production'}

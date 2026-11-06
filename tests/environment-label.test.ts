@@ -54,10 +54,11 @@ describe('persistent non-production label', () => {
     renderToStaticMarkup(
       createElement(Shell, { demo: false, account: null, environment, children: null }),
     );
-  it('renders a named status inside the sticky header, before the navigation', () => {
+  it('renders inside the sticky header before the navigation, and is not a live region', () => {
     const out = html({ label: 'Staging', declared: true });
     expect(out).toContain('class="env-label"');
-    expect(out).toContain('role="status"');
+    // Present on every page: a live region would be announced needlessly and collide with real page statuses.
+    expect(out).not.toContain('role="status"');
     expect(out).toContain('Staging');
     expect(out).toContain('Not production');
     expect(out.indexOf('env-label')).toBeGreaterThan(out.indexOf('site-header'));
