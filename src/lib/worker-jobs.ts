@@ -21,13 +21,17 @@ import { usdcSettings } from './usdc';
 import { reconcileUsdc, reconciliationJson } from './usdc-reconcile';
 import { runNotificationDispatch } from './notifications-host';
 import { runWorkClosureWorker } from './work-closure-host';
+import { recordStepOutcome } from './worker-health';
 export async function step(name: string, fn: () => Promise<unknown>) {
   try {
     await fn();
+    // Per-record sub-steps (`collect:<id>`) are not tracked: only the schedule's named steps are health signals.
+    if (!name.includes(':')) await recordStepOutcome(name);
   } catch (error) {
     console.error(
       JSON.stringify({ step: name, error: error instanceof Error ? error.message : String(error) }),
     );
+    if (!name.includes(':')) await recordStepOutcome(name, { error });
   }
 }
 export async function assertSchemaCurrent(

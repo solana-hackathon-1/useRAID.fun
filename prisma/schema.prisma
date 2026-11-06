@@ -529,6 +529,15 @@ model Job {
   @@index([doneAt, runAt, lockedAt])
   @@index([failedAt])
 }
+// Diagnostic only: latest outcome per worker step. Never an input to a business decision.
+model WorkerStepHealth {
+  step String @id
+  lastRunAt DateTime @db.Timestamptz(6)
+  lastSuccessAt DateTime? @db.Timestamptz(6)
+  lastFailureAt DateTime? @db.Timestamptz(6)
+  consecutiveFailures Int @default(0)
+  lastErrorKind String?
+}
 model Settings {
   id String @id @default("global")
   collectionEnabled Boolean @default(false)
