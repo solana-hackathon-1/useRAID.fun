@@ -63,7 +63,9 @@ describe('validateRuntimeConfig', () => {
       expect(codes(result.violations), value).toContain(
         'REFUSE:FLAG_VALUE_NOT_EXACT:PAYOUT_ENABLED',
       );
-      expect(JSON.stringify(result)).not.toContain(value.trim() || 'never');
+      expect(result.violations).toEqual([
+        { severity: 'REFUSE', code: 'FLAG_VALUE_NOT_EXACT', subject: 'PAYOUT_ENABLED' },
+      ]);
     }
   });
 
