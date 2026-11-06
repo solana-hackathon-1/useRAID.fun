@@ -244,6 +244,13 @@ function Changes({
                 <time dateTime={c.before}>{when(c.before)}</time> →{' '}
                 <time dateTime={c.after}>{when(c.after)}</time>
               </>
+            ) : c.kind === 'scope' ? (
+              <>
+                <br />
+                <em>Was:</em> <span style={wrap}>{c.before}</span>
+                <br />
+                <em>Now:</em> <span style={wrap}>{c.after}</span>
+              </>
             ) : (
               <>
                 {c.before} → {c.after}
@@ -457,7 +464,7 @@ function FounderCard({
             <label>
               New scope
               <textarea
-                rows={3}
+                rows={8}
                 maxLength={8000}
                 value={form.scope}
                 onChange={(e) => set({ scope: e.target.value })}
