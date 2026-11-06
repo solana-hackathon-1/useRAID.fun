@@ -17,7 +17,7 @@ function sources(dir: string): string[] {
   });
 }
 
-const platform = new Set(['NODE_ENV', 'NEXT_DIST_DIR', 'APP_URL', 'PORT', 'CI']);
+const platform = new Set(['NODE_ENV', 'NEXT_DIST_DIR', 'NEXT_RUNTIME', 'APP_URL', 'PORT', 'CI']);
 
 describe('.env.example', () => {
   it('documents every variable the application reads', () => {

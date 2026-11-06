@@ -1,0 +1,15 @@
+{
+  "name": "raid-config-validation-example",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx host.ts"
+  },
+  "dependencies": {
+    "tsx": "4.23.15"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
