@@ -11,11 +11,11 @@ import {
 import { db } from '@/lib/db';
 import { postId } from '@/lib/domain';
 import { enqueue } from '@/lib/queue';
-import { failure } from '@/lib/http';
+import { failure, readJsonBody } from '@/lib/http';
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     checkOrigin(request);
-    const id = postId((await request.json()).url);
+    const id = postId((await readJsonBody(request)).url);
     if (!id) throw new HttpError(400, 'Enter an https://x.com/.../status/... post URL.');
     const raid = await db.raid.findUnique({
       where: { id: (await params).id },

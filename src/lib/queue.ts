@@ -3,6 +3,7 @@ import { lockAdvisory } from './identity-protocol';
 import { randomUUID } from 'node:crypto';
 import { Prisma, type Job } from '@prisma/client';
 import { db } from './db';
+import { JOB_LEASE_MINUTES } from './job-lease';
 export async function enqueue(
   kind: string,
   key: string,
@@ -36,7 +37,7 @@ export async function claimJob() {
     await lockAdvisory(tx, lockResource('global', '729104'));
     return tx.$queryRaw<
       Job[]
-    >`UPDATE "Job" SET "lockedAt"=(NOW() AT TIME ZONE 'UTC'), "lease"=${lease}, "attempts"="attempts"+1 WHERE id=(SELECT candidate.id FROM "Job" candidate WHERE candidate."doneAt" IS NULL AND candidate."failedAt" IS NULL AND candidate."attempts"<${JOB_MAX_ATTEMPTS} AND candidate."runAt"<=(NOW() AT TIME ZONE 'UTC') AND (candidate."lockedAt" IS NULL OR candidate."lockedAt"<(NOW() AT TIME ZONE 'UTC')-INTERVAL '10 minutes') AND NOT EXISTS (SELECT 1 FROM "Job" running WHERE running.id<>candidate.id AND running."doneAt" IS NULL AND running."failedAt" IS NULL AND running."lockedAt">(NOW() AT TIME ZONE 'UTC')-INTERVAL '10 minutes' AND running.payload->>'raidId'=candidate.payload->>'raidId') ORDER BY candidate."priority" DESC, candidate."runAt" FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING *`;
+    >`UPDATE "Job" SET "lockedAt"=(NOW() AT TIME ZONE 'UTC'), "lease"=${lease}, "attempts"="attempts"+1 WHERE id=(SELECT candidate.id FROM "Job" candidate WHERE candidate."doneAt" IS NULL AND candidate."failedAt" IS NULL AND candidate."attempts"<${JOB_MAX_ATTEMPTS} AND candidate."runAt"<=(NOW() AT TIME ZONE 'UTC') AND (candidate."lockedAt" IS NULL OR candidate."lockedAt"<(NOW() AT TIME ZONE 'UTC')-make_interval(mins => ${JOB_LEASE_MINUTES}::int)) AND NOT EXISTS (SELECT 1 FROM "Job" running WHERE running.id<>candidate.id AND running."doneAt" IS NULL AND running."failedAt" IS NULL AND running."lockedAt">(NOW() AT TIME ZONE 'UTC')-make_interval(mins => ${JOB_LEASE_MINUTES}::int) AND running.payload->>'raidId'=candidate.payload->>'raidId') ORDER BY candidate."priority" DESC, candidate."runAt" FOR UPDATE SKIP LOCKED LIMIT 1) RETURNING *`;
   });
   return rows[0] || null;
 }

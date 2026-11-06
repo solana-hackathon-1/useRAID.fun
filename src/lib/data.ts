@@ -9,6 +9,14 @@ import type { RaidView } from './types';
 import type { Market } from './providers/market';
 import { displayIdentity } from './token-identity';
 const LIST_TTL_MS = 10000;
+// Stored job errors are raw provider/worker text (URLs, query strings, response bodies). Public views carry only
+// a fixed, safe message; the raw detail stays in the database for operators.
+const MARKET_NO_PAIR = 'No eligible market pair found.';
+export const MARKET_UNAVAILABLE = 'Market data temporarily unavailable.';
+export function publicMarketError(stored: string | null | undefined): string | null {
+  if (!stored) return null;
+  return stored === MARKET_NO_PAIR ? MARKET_NO_PAIR : MARKET_UNAVAILABLE;
+}
 let listMemo: { at: number; value: Promise<RaidView[]> } | null = null;
 export function resetRaidListMemo() {
   listMemo = null;
@@ -123,7 +131,7 @@ async function loadRaids(filter: Prisma.RaidWhereInput): Promise<RaidView[]> {
       coverage: r.coverage,
       market: (r.token?.market as unknown as Market | null) || null,
       marketAt: r.token?.marketAt?.toISOString() || null,
-      marketError: r.token?.marketError || null,
+      marketError: publicMarketError(r.token?.marketError),
       activity: r.posts
         .filter(
           (p) =>

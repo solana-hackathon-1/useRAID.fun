@@ -1,13 +1,13 @@
 import { z } from 'zod';
 import { checkOrigin, requireUser, rateLimit, HttpError } from '@/lib/auth';
 import { createDeposit, verifyUsdcTransfer, requestWithdrawal, units } from '@/lib/usdc';
-import { failure } from '@/lib/http';
+import { failure, readJsonBody } from '@/lib/http';
 export async function POST(request: Request, { params }: { params: Promise<{ action: string }> }) {
   try {
     checkOrigin(request);
     const user = await requireUser();
     await rateLimit(`balance:${user.id}`, 20, 60);
-    const body = await request.json(),
+    const body = await readJsonBody(request),
       { action } = await params;
     if (action === 'deposit')
       return Response.json(await createDeposit(user.id, units(z.string().parse(body.amount))));

@@ -16,6 +16,8 @@ import {
 } from '@solana/spl-token';
 import type { TokenLaunch } from '@prisma/client';
 import { decodeTransfers, FakeRpc } from './helpers/fake-solana';
+import { claimJob, enqueue } from '../src/lib/queue';
+import { JobLeaseLostError, runUnderJobLease } from '../src/lib/job-lease';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 
 const mocks = vi.hoisted(() => ({
@@ -752,6 +754,81 @@ suite('launch finance', () => {
       const rounds = await db.rewardRound.findMany();
       expect(rounds).toHaveLength(1);
       expect(+rounds[0].startsAt).toBe(base + hour);
+    });
+  });
+
+  describe('job lease fence at the broadcast site (T038)', () => {
+    const transfer = () => [
+      SystemProgram.transfer({
+        fromPubkey: operator.publicKey,
+        toPubkey: treasury.publicKey,
+        lamports: 1,
+      }),
+    ];
+    const broadcast = (onRecorded?: () => Promise<void>) =>
+      __test.recordAndBroadcast(
+        rpc.asConnection(),
+        launch,
+        'PLATFORM',
+        null,
+        transfer(),
+        null,
+        null,
+        onRecorded,
+      );
+    // Worker A claims, its lease expires by the database clock, worker B reclaims: A is the stale generation.
+    const staleAndCurrent = async () => {
+      await db.job.deleteMany();
+      await enqueue(
+        'finance',
+        'finance:fence',
+        { launchId: launch.id },
+        new Date(Date.now() - 60000),
+      );
+      const stale = (await claimJob())!;
+      await expireAndReclaim(stale.id);
+      return stale;
+    };
+    const expireAndReclaim = async (id: string) => {
+      await db.$executeRaw`UPDATE "Job" SET "lockedAt"=(NOW() AT TIME ZONE 'UTC')-INTERVAL '11 minutes' WHERE id=${id}`;
+      expect(await claimJob()).not.toBeNull();
+    };
+    it('a stale worker persists no FinancialTx row, runs no payout hook and sends nothing', async () => {
+      const stale = await staleAndCurrent();
+      const onRecorded = vi.fn();
+      await expect(runUnderJobLease(stale, () => broadcast(onRecorded))).rejects.toBeInstanceOf(
+        JobLeaseLostError,
+      );
+      expect(await db.financialTx.count()).toBe(0);
+      expect(onRecorded).not.toHaveBeenCalled();
+      expect(rpc.sent).toHaveLength(0);
+    });
+    it('the current lease holder records and sends exactly once', async () => {
+      await db.job.deleteMany();
+      await enqueue(
+        'finance',
+        'finance:fence',
+        { launchId: launch.id },
+        new Date(Date.now() - 60000),
+      );
+      const job = (await claimJob())!;
+      await runUnderJobLease(job, () => broadcast());
+      expect(await db.financialTx.count()).toBe(1);
+      expect(rpc.sent).toHaveLength(1);
+    });
+    it('a lease lost between the commit and the send still stops the send', async () => {
+      await db.job.deleteMany();
+      await enqueue(
+        'finance',
+        'finance:fence',
+        { launchId: launch.id },
+        new Date(Date.now() - 60000),
+      );
+      const job = (await claimJob())!;
+      await expect(
+        runUnderJobLease(job, () => broadcast(() => expireAndReclaim(job.id))),
+      ).rejects.toBeInstanceOf(JobLeaseLostError);
+      expect(rpc.sent).toHaveLength(0);
     });
   });
 });

@@ -6,13 +6,13 @@ import {
   sandboxContribution,
   createSandboxSession,
 } from '@/lib/studio-sandbox';
-import { failure } from '@/lib/http';
+import { failure, readJsonBody } from '@/lib/http';
 import { sessionCookie } from '@/lib/studio-mode';
 export async function POST(request: Request) {
   try {
     requireStudioSandbox();
     checkOrigin(request);
-    const body = await request.json();
+    const body = await readJsonBody(request);
     if (body.action === 'login') {
       const user = await sandboxUser(
           typeof body.fixtureId === 'string' ? body.fixtureId : undefined,

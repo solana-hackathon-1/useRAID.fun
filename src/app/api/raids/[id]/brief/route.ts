@@ -3,14 +3,14 @@ import { checkOrigin, requireUser, rateLimit, HttpError } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { postId } from '@/lib/domain';
 import { lockTracking } from '@/lib/tracking';
-import { failure } from '@/lib/http';
+import { failure, readJsonBody } from '@/lib/http';
 import { addStudioTarget } from '@/lib/studio-targets';
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     checkOrigin(request);
     const user = await requireUser();
     await rateLimit(`brief:${user.id}`, 30, 60);
-    const body = await request.json();
+    const body = await readJsonBody(request);
     const id = typeof body.url === 'string' ? postId(body.url) : null;
     if (!id) throw new HttpError(400, 'Enter a valid X post URL.');
     const raidId = (await params).id;

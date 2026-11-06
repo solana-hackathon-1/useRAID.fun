@@ -1,3 +1,4 @@
+import { assertJobLease } from '../job-lease';
 import { allowedImageUrl } from '../image-hosts';
 export interface Market {
   imageUri?: string;
@@ -50,6 +51,7 @@ export function selectMarket(pairs: Pair[], mint: string): Market | null {
   };
 }
 export async function fetchMarket(mint: string) {
+  await assertJobLease();
   const res = await fetch(
     `https://api.dexscreener.com/token-pairs/v1/solana/${encodeURIComponent(mint)}`,
     { signal: AbortSignal.timeout(15000), cache: 'no-store' },
