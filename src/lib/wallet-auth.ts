@@ -91,9 +91,17 @@ export async function createWalletChallenge(
   const expires = new Date(+issued + 5 * 60000);
   const message = `${url.host} wants you to sign in with your Solana account:\n${address}\n\n${STATEMENTS[purpose]}\n\nURI: ${url.origin}\nVersion: 1\nChain ID: ${chainId}\nNonce: ${nonce}\nIssued At: ${issued.toISOString()}\nExpiration Time: ${expires.toISOString()}`;
   const digest = hash(message);
-  await db.walletChallenge.create({
-    data: { digest, address, message, userId: currentUserId ?? null, expiresAt: expires },
-  });
+  try {
+    await db.walletChallenge.create({
+      data: { digest, address, message, userId: currentUserId ?? null, expiresAt: expires },
+    });
+  } catch (error) {
+    // The driver error can echo the connection string or the stored message and nonce; failure() logs
+    // an unknown error's raw text. Log only the fixed storage code for operators and surface a fixed,
+    // secret-free outcome (T007 log guard).
+    console.error('wallet challenge store failed', classifyIdentityStorageFailure(error).code);
+    throw new HttpError(503, 'Wallet sign-in unavailable. Please try again.');
+  }
   return { digest, message };
 }
 async function requireConnectedX(
