@@ -29,7 +29,8 @@ import {
 import { allocateUsdcRaid, releaseFundedRaid } from '../src/lib/studio-finance';
 import { allocateRaidFunding } from '../src/lib/raid-allocation';
 import { reconcileUsdc } from '../src/lib/usdc-reconcile';
-import { enqueue, claimJob } from '../src/lib/queue';
+import { claimJob } from '../src/lib/queue';
+import { enqueueDue } from './helpers/queue';
 import { runJob } from '../src/lib/worker-jobs';
 import { displayIdentity } from '../src/lib/token-identity';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
@@ -371,7 +372,7 @@ suite('USDC operations', () => {
       imageUri: 'https://dex.test/real.png',
       price: 1,
     };
-    await enqueue('market', `market:${mint}`, { mint });
+    await enqueueDue('market', `market:${mint}`, { mint });
     await runJob((await claimJob())!);
     const verified = await db.token.findUniqueOrThrow({ where: { mint } });
     expect(verified).toMatchObject({

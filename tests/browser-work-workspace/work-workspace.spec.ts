@@ -3,6 +3,30 @@ import { seedWorkWorkspaceFixture, db } from '../helpers/work-workspace-fixture'
 const baseURL = process.env.WORK_WORKSPACE_BROWSER_URL || 'http://127.0.0.1:3040';
 let fixture: Awaited<ReturnType<typeof seedWorkWorkspaceFixture>>;
 test.afterAll(() => db.$disconnect());
+// `next dev` compiles each page and route handler on first use and then rebuilds the client bundle, which can reload
+// an open page mid-test and drop its transient status message. Touch every page and route handler these tests use
+// before any browser interaction so the compile and rebuild happen while no page is open.
+test.beforeAll(async ({ playwright }) => {
+  const api = await playwright.request.newContext({ baseURL });
+  try {
+    for (const path of ['/raider/work', '/creator/work'])
+      await api.get(path, { failOnStatusCode: false });
+    for (const name of [
+      'me',
+      'engagements',
+      'submissions',
+      'reviews',
+      'applicants',
+      'applications',
+      'offers',
+    ]) {
+      await api.get('/api/v1/work/' + name, { failOnStatusCode: false });
+      await api.post('/api/v1/work/' + name, { data: {}, failOnStatusCode: false });
+    }
+  } finally {
+    await api.dispose();
+  }
+});
 async function open(browser: Browser, cookie?: string) {
   const context = await browser.newContext(
     test.info().project.name === 'mobile'
