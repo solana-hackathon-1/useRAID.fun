@@ -12,7 +12,7 @@ import { observedImpressions } from './raid-progress';
 import { processTrackingLookup } from './tracking-worker';
 import { db } from './db';
 import { enqueue, finishJob } from './queue';
-import { JobLeaseLostError, runUnderJobLease } from './job-lease';
+import { JobLeaseLostError, runUnderJobLease, whileJobLeaseHeld } from './job-lease';
 import { collect, ingest, refresh, snapshot } from './collection';
 import { fetchMarket } from './providers/market';
 import { lookupPosts, ProviderError } from './providers/x';
@@ -23,17 +23,43 @@ import { reconcileUsdc, reconciliationJson } from './usdc-reconcile';
 import { runNotificationDispatch } from './notifications-host';
 import { runWorkClosureWorker } from './work-closure-host';
 import { recordStepOutcome } from './worker-health';
-export async function step(name: string, fn: () => Promise<unknown>) {
+import { MARKET_NO_PAIR } from './market-messages';
+/** Thrown by eachStep so the enclosing step records a failure when no item at all succeeded. */
+export class AllItemsFailedError extends Error {
+  constructor(count: number) {
+    super(`Every per-item step failed (${count}).`);
+    this.name = 'AllItemsFailedError';
+  }
+}
+/**
+ * Run `fn` per item as isolated sub-steps (`prefix:<id>`: logged, never tracked, one failure never stops the rest).
+ * If there were items and every one failed, throw so the enclosing named step does not report a clean success.
+ */
+export async function eachStep<T extends { id: string }>(
+  prefix: string,
+  items: T[],
+  fn: (item: T) => Promise<unknown>,
+) {
+  let failed = 0;
+  for (const item of items) if (!(await runStep(`${prefix}:${item.id}`, () => fn(item)))) failed++;
+  if (items.length && failed === items.length) throw new AllItemsFailedError(failed);
+}
+async function runStep(name: string, fn: () => Promise<unknown>) {
   try {
     await fn();
     // Per-record sub-steps (`collect:<id>`) are not tracked: only the schedule's named steps are health signals.
     if (!name.includes(':')) await recordStepOutcome(name);
+    return true;
   } catch (error) {
     console.error(
       JSON.stringify({ step: name, error: error instanceof Error ? error.message : String(error) }),
     );
     if (!name.includes(':')) await recordStepOutcome(name, { error });
+    return false;
   }
+}
+export async function step(name: string, fn: () => Promise<unknown>) {
+  await runStep(name, fn);
 }
 export async function assertSchemaCurrent(
   latest = readdirSync(path.join(process.cwd(), 'prisma', 'migrations'), { withFileTypes: true })
@@ -123,27 +149,26 @@ export async function schedule(now = new Date()) {
         ],
       },
     });
-    for (const raid of raids)
-      await step(`collect:${raid.id}`, async () => {
-        if (raid.trackingVersion === 2 && (!trackingEnabled() || raid.activeResultId)) return;
-        if (settings.collectionEnabled)
-          await enqueue('collect', `collect:${raid.id}:${Math.floor(Date.now() / 300000)}`, {
-            raidId: raid.id,
-            final: raid.endsAt <= now,
+    await eachStep('collect', raids, async (raid) => {
+      if (raid.trackingVersion === 2 && (!trackingEnabled() || raid.activeResultId)) return;
+      if (settings.collectionEnabled)
+        await enqueue('collect', `collect:${raid.id}:${Math.floor(Date.now() / 300000)}`, {
+          raidId: raid.id,
+          final: raid.endsAt <= now,
+        });
+      if (raid.status === 'ACTIVE') {
+        if (raid.mint)
+          await enqueue('market', `market:${raid.mint}:${Math.floor(Date.now() / 60000)}`, {
+            mint: raid.mint,
           });
-        if (raid.status === 'ACTIVE') {
-          if (raid.mint)
-            await enqueue('market', `market:${raid.mint}:${Math.floor(Date.now() / 60000)}`, {
-              mint: raid.mint,
-            });
-          await snapshot(
-            raid.id,
-            raid.coverage === 'complete' &&
-              !!raid.observedAt &&
-              Date.now() - +raid.observedAt < 600000,
-          );
-        }
-      });
+        await snapshot(
+          raid.id,
+          raid.coverage === 'complete' &&
+            !!raid.observedAt &&
+            Date.now() - +raid.observedAt < 600000,
+        );
+      }
+    });
   });
   if (trackingEnabled()) {
     await step('measure', async () => {
@@ -158,20 +183,19 @@ export async function schedule(now = new Date()) {
         },
         select: { id: true, measureUntil: true, endsAt: true, impressionTarget: true },
       });
-      for (const raid of measuring)
-        await step(`measure:${raid.id}`, async () => {
-          const posts = await db.post.findMany({
-            where: { raidId: raid.id, qualification: 'QUALIFIED' },
-          });
-          const hour = Math.floor(+now / 3600000);
-          if (!posts.length || measureEnd(raid, observedImpressions(posts).total) <= raid.endsAt)
-            return;
-          const payload = { raidId: raid.id, after: '', final: true };
-          if (raid.measureUntil! > now)
-            await enqueue('refresh', `measure:${raid.id}:${hour}`, payload);
-          else if (posts.some((p) => p.observedAt < raid.measureUntil!))
-            await enqueue('refresh', `measure-final:${raid.id}:${hour}`, payload);
+      await eachStep('measure', measuring, async (raid) => {
+        const posts = await db.post.findMany({
+          where: { raidId: raid.id, qualification: 'QUALIFIED' },
         });
+        const hour = Math.floor(+now / 3600000);
+        if (!posts.length || measureEnd(raid, observedImpressions(posts).total) <= raid.endsAt)
+          return;
+        const payload = { raidId: raid.id, after: '', final: true };
+        if (raid.measureUntil! > now)
+          await enqueue('refresh', `measure:${raid.id}:${hour}`, payload);
+        else if (posts.some((p) => p.observedAt < raid.measureUntil!))
+          await enqueue('refresh', `measure-final:${raid.id}:${hour}`, payload);
+      });
     });
     await step('finalize', async () => {
       const closing = await db.raid.findMany({
@@ -182,12 +206,11 @@ export async function schedule(now = new Date()) {
         },
         select: { id: true, studioVersion: true },
       });
-      for (const raid of closing)
-        await step(`settle:${raid.id}`, async () => {
-          await finalizeTracking(raid.id);
-          if (raid.studioVersion === 1) await allocateUsdcRaid(raid.id);
-          else await allocateRaidFunding(raid.id);
-        });
+      await eachStep('settle', closing, async (raid) => {
+        await finalizeTracking(raid.id);
+        if (raid.studioVersion === 1) await allocateUsdcRaid(raid.id);
+        else await allocateRaidFunding(raid.id);
+      });
     });
     await step('allocate-retry', async () => {
       const approved = await db.raid.findMany({
@@ -200,10 +223,9 @@ export async function schedule(now = new Date()) {
         },
         select: { id: true, studioVersion: true },
       });
-      for (const raid of approved)
-        await step(`allocate:${raid.id}`, () =>
-          raid.studioVersion === 1 ? allocateUsdcRaid(raid.id) : allocateRaidFunding(raid.id),
-        );
+      await eachStep('allocate', approved, (raid) =>
+        raid.studioVersion === 1 ? allocateUsdcRaid(raid.id) : allocateRaidFunding(raid.id),
+      );
     });
   }
   await step('launch-jobs', async () => {
@@ -399,7 +421,7 @@ export async function runJob(job: Job) {
           data: {
             market: market ? JSON.parse(JSON.stringify(market)) : Prisma.DbNull,
             marketAt: new Date(),
-            marketError: market ? null : 'No eligible market pair found.',
+            marketError: market ? null : MARKET_NO_PAIR,
             ...(market?.name.trim() && market.symbol.trim()
               ? {
                   name: market.name.trim().slice(0, 80),
@@ -423,16 +445,29 @@ export async function runJob(job: Job) {
       return;
     }
     const message = error instanceof Error ? error.message : 'Collection failed';
-    if (p.raidId && job.kind !== 'finance')
-      await db.raid.updateMany({
-        where: { id: p.raidId },
-        data: {
-          ...(['collect', 'refresh'].includes(job.kind) ? { coverage: 'partial' } : {}),
-          collectionError: message,
-        },
-      });
-    if (p.mint)
-      await db.token.updateMany({ where: { mint: p.mint }, data: { marketError: message } });
+    // Only the current lease holder may record raid/token errors; a stale worker's failure must not overwrite them.
+    const owned = await whileJobLeaseHeld(job, async (tx) => {
+      if (p.raidId && job.kind !== 'finance')
+        await tx.raid.updateMany({
+          where: { id: p.raidId },
+          data: {
+            ...(['collect', 'refresh'].includes(job.kind) ? { coverage: 'partial' } : {}),
+            collectionError: message,
+          },
+        });
+      if (p.mint)
+        await tx.token.updateMany({ where: { mint: p.mint }, data: { marketError: message } });
+    });
+    if (!owned) {
+      console.error(
+        JSON.stringify({
+          job: job.id,
+          kind: job.kind,
+          error: 'Job lease was lost; failure not recorded.',
+        }),
+      );
+      return;
+    }
     const { dead } = await finishJob(
       job,
       message,

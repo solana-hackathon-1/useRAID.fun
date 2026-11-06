@@ -1,5 +1,6 @@
 import { lockResource } from '@/identity-locks';
 import { JOB_LEASE_MINUTES } from '@/lib/job-lease';
+import { JOB_MAX_ATTEMPTS } from '@/lib/queue';
 import { lockAdvisory, prepareIdentity, identityWriter } from '@/lib/identity-protocol';
 import { NextResponse } from 'next/server';
 import { checkOrigin, requireUser, HttpError } from '@/lib/auth';
@@ -116,8 +117,11 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
           where: {
             id: b.id,
             doneAt: null,
-            error: { not: null },
-            OR: [{ lockedAt: null }, { lockedAt: { lt: stale } }],
+            // A job that exhausted its attempts by crashing or losing the lease never ran finishJob: its error is null.
+            AND: [
+              { OR: [{ error: { not: null } }, { attempts: { gte: JOB_MAX_ATTEMPTS } }] },
+              { OR: [{ lockedAt: null }, { lockedAt: { lt: stale } }] },
+            ],
           },
           data: {
             attempts: 0,

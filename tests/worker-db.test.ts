@@ -115,8 +115,17 @@ suite('worker jobs module', () => {
   it('reports the collect step failed when every per-raid step failed, not successful', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     vi.spyOn(collection, 'snapshot').mockRejectedValue(new Error('snapshot down'));
+    const now = new Date();
+    await db.raid.update({
+      where: { id: raidId },
+      data: {
+        status: 'ACTIVE',
+        startsAt: new Date(+now - 1000),
+        endsAt: new Date(+now + 86400000),
+      },
+    });
     await db.workerStepHealth.deleteMany();
-    await schedule(new Date());
+    await schedule(now);
     expect(
       await db.workerStepHealth.findUniqueOrThrow({ where: { step: 'collect' } }),
     ).toMatchObject({

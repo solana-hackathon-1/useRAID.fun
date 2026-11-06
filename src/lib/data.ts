@@ -8,10 +8,10 @@ import { metrics, momentum, interactions, scoreTime } from './domain';
 import type { RaidView } from './types';
 import type { Market } from './providers/market';
 import { displayIdentity } from './token-identity';
+import { MARKET_NO_PAIR } from './market-messages';
 const LIST_TTL_MS = 10000;
 // Stored job errors are raw provider/worker text (URLs, query strings, response bodies). Public views carry only
 // a fixed, safe message; the raw detail stays in the database for operators.
-const MARKET_NO_PAIR = 'No eligible market pair found.';
 export const MARKET_UNAVAILABLE = 'Market data temporarily unavailable.';
 export function publicMarketError(stored: string | null | undefined): string | null {
   if (!stored) return null;

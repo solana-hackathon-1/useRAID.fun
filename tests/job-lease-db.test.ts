@@ -111,20 +111,20 @@ suite('pre-effect job lease fence (T038)', () => {
       new Date(Date.now() - 60_000),
     );
     const stale = (await claimJob())!;
-    let current: Awaited<ReturnType<typeof claimJob>> = null;
+    const reclaimed: { lease: string | null }[] = [];
     // The pre-effect check passes, then the worker stalls past the lease, another worker reclaims, and the call fails.
     providerCalls.mockImplementation(async () => {
       await expireLease(stale.id);
-      current = await claimJob();
+      reclaimed.push((await claimJob())!);
       throw new Error('provider timed out after lease expiry');
     });
     await runJob(stale);
-    expect(current).not.toBeNull();
+    expect(reclaimed).toHaveLength(1);
     expect(providerCalls).toHaveBeenCalledTimes(1);
     expect((await db.raid.findUniqueOrThrow({ where: { id: raidId } })).collectionError).toBeNull();
     expect((await db.token.findUniqueOrThrow({ where: { mint: MINT } })).marketError).toBeNull();
     const row = await db.job.findUniqueOrThrow({ where: { id: stale.id } });
-    expect(row.lease).toBe(current!.lease);
+    expect(row.lease).toBe(reclaimed[0].lease);
     expect(row.error).toBeNull();
   });
   it('still records raid and token errors for the worker that holds the lease', async () => {

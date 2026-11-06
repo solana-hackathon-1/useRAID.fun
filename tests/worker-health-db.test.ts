@@ -91,8 +91,14 @@ suite('durable worker health and generation fence (T038)', () => {
     const boom = async () => {
       throw new Error('x');
     };
-    const outer = (items: string[], fn: (item: string) => Promise<unknown>) =>
-      step('outer', () => eachStep('inner', items, fn));
+    const outer = (ids: string[], fn: (id: string) => Promise<unknown>) =>
+      step('outer', () =>
+        eachStep(
+          'inner',
+          ids.map((id) => ({ id })),
+          (item) => fn(item.id),
+        ),
+      );
     const row = () => db.workerStepHealth.findUniqueOrThrow({ where: { step: 'outer' } });
     it('records a failure with a safe error kind when all items fail', async () => {
       await outer(['a', 'b', 'c'], boom);
