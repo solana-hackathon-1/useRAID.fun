@@ -95,6 +95,66 @@ describe('validateRuntimeConfig', () => {
     ).toEqual([]);
   });
 
+  it('warns on a near-miss spelling of a catalogued switch even outside the *_ENABLED family rule', () => {
+    // These would otherwise be silently ignored: the real switch stays at its default while the operator believes it is set.
+    for (const name of [
+      'PAYOUTS_ENABLED', // extra letter in the first word, so no shared family
+      'LAUNCH_ENABLE', // suffix typo
+      'payout_enabled', // wrong case
+      'DEMO_MOD',
+      'LIVE_COLLECTION_APROVED',
+      'X_TRACKING_V2_SETTLEMENT_ENABLD',
+    ]) {
+      const result = validateRuntimeConfig({ [name]: 'true' }, 'web');
+      expect(codes(result.violations), name).toEqual([`WARN:UNKNOWN_FLAG:${name}`]);
+      expect(result.ok, name).toBe(true);
+    }
+  });
+
+  it('does not treat unrelated variables as typos of a switch', () => {
+    const env = {
+      PATH: '/usr/bin',
+      HOME: '/home/raid',
+      DATABASE_URL: 'postgresql://x',
+      OPERATOR_PUBLIC_KEY: 'k',
+      NODE_ENV: 'production',
+      DEMO_MODE: 'false',
+      PAYOUT_ENABLED: 'false',
+      LAUNCH_ENABLED: 'false',
+    };
+    expect(validateRuntimeConfig(env, 'web').violations).toEqual([]);
+  });
+
+  it('warns when RAID_ENVIRONMENT is set but not a recognised deployment name', () => {
+    for (const value of ['prod', 'stagign', 'live', 'productoin'])
+      expect(
+        codes(validateRuntimeConfig({ RAID_ENVIRONMENT: value }, 'web').violations),
+        value,
+      ).toEqual(['WARN:ENVIRONMENT_NOT_RECOGNISED:RAID_ENVIRONMENT']);
+    for (const value of [
+      undefined,
+      '',
+      ' Production ',
+      'staging',
+      'pilot',
+      'alpha',
+      'demo',
+      'local',
+    ])
+      expect(
+        validateRuntimeConfig({ RAID_ENVIRONMENT: value }, 'web').violations,
+        String(value),
+      ).toEqual([]);
+  });
+
+  it('never echoes the value of a misspelled variable or of RAID_ENVIRONMENT', () => {
+    const result = validateRuntimeConfig(
+      { PAYOUTS_ENABLED: SECRET, RAID_ENVIRONMENT: SECRET },
+      'web',
+    );
+    expect(JSON.stringify(result)).not.toContain(SECRET);
+  });
+
   it('refuses launch and payout without their named authorities', () => {
     for (const flag of ['LAUNCH_ENABLED', 'PAYOUT_ENABLED']) {
       const result = validateRuntimeConfig({ [flag]: 'true' }, 'web');

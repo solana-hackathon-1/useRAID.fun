@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { FLAG_CATALOG } from '../src/config-validation/index';
+import { FLAG_CATALOG, validateRuntimeConfig } from '../src/config-validation/index';
 
 const dir = 'src/config-validation';
 const exampleEnv = () =>
@@ -43,6 +43,14 @@ describe('T037 configuration validator reuse contract (R15, R16)', () => {
       expect(documented.get(flag.name), flag.name).toBe(expected);
     }
     expect(new Set(FLAG_CATALOG.map((f) => f.name)).size).toBe(FLAG_CATALOG.length);
+  });
+
+  it('no documented non-switch setting is mistaken for a misspelled switch', () => {
+    const switches = new Set(FLAG_CATALOG.map((f) => f.name));
+    const env = Object.fromEntries(
+      [...exampleEnv()].filter(([name]) => !switches.has(name)).map(([name]) => [name, 'x']),
+    );
+    expect(validateRuntimeConfig(env, 'web').violations).toEqual([]);
   });
 
   it('every switch the source reads is catalogued', () => {
