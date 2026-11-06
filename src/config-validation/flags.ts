@@ -20,7 +20,12 @@ export interface FlagDefinition {
 const high = (name: string, defaultState: 'OFF' | 'ON' = 'OFF'): FlagDefinition =>
   Object.freeze({ name, impact: 'HIGH', defaultState });
 const routine = (name: string, requires?: string): FlagDefinition =>
-  Object.freeze({ name, impact: 'ROUTINE', defaultState: 'OFF', ...(requires ? { requires } : {}) });
+  Object.freeze({
+    name,
+    impact: 'ROUTINE',
+    defaultState: 'OFF',
+    ...(requires ? { requires } : {}),
+  });
 
 export const FLAG_CATALOG: readonly FlagDefinition[] = Object.freeze([
   high('DEMO_MODE'),

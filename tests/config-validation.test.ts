@@ -40,7 +40,9 @@ describe('validateRuntimeConfig', () => {
     expect(result.ok).toBe(true);
     expect(result.violations).toEqual([]);
     for (const flag of FLAG_CATALOG)
-      expect(flag.defaultState, flag.name).toBe(flag.name === 'X_TRACKING_V2_ENABLED' ? 'ON' : 'OFF');
+      expect(flag.defaultState, flag.name).toBe(
+        flag.name === 'X_TRACKING_V2_ENABLED' ? 'ON' : 'OFF',
+      );
   });
 
   it('accepts the pinned staging values for both roles', () => {
@@ -72,9 +74,7 @@ describe('validateRuntimeConfig', () => {
   it('treats a mistyped default-on switch as a refusal: anything but "false" leaves tracking on', () => {
     const result = validateRuntimeConfig({ X_TRACKING_V2_ENABLED: 'False' }, 'web');
     expect(result.ok).toBe(false);
-    expect(codes(result.violations)).toEqual([
-      'REFUSE:FLAG_VALUE_NOT_EXACT:X_TRACKING_V2_ENABLED',
-    ]);
+    expect(codes(result.violations)).toEqual(['REFUSE:FLAG_VALUE_NOT_EXACT:X_TRACKING_V2_ENABLED']);
   });
 
   it('only warns for a non-exact routine feature flag (code already treats it as off)', () => {
@@ -89,6 +89,12 @@ describe('validateRuntimeConfig', () => {
     expect(codes(result.violations)).toEqual(['WARN:UNKNOWN_FLAG:WORK_STRT_ENABLED']);
   });
 
+  it('ignores ambient *_ENABLED variables that are not in a RAID family', () => {
+    expect(
+      validateRuntimeConfig({ WARP_PROMPT_NODE_VERSION_ENABLED: '1' }, 'web').violations,
+    ).toEqual([]);
+  });
+
   it('refuses launch and payout without their named authorities', () => {
     for (const flag of ['LAUNCH_ENABLED', 'PAYOUT_ENABLED']) {
       const result = validateRuntimeConfig({ [flag]: 'true' }, 'web');
@@ -100,8 +106,10 @@ describe('validateRuntimeConfig', () => {
       ]);
     }
     expect(
-      validateRuntimeConfig({ LAUNCH_ENABLED: 'true', ...REAL_AUTHORITY, SOLANA_RPC_URL: 'http://x' }, 'web')
-        .violations.map((v) => v.subject),
+      validateRuntimeConfig(
+        { LAUNCH_ENABLED: 'true', ...REAL_AUTHORITY, SOLANA_RPC_URL: 'http://x' },
+        'web',
+      ).violations.map((v) => v.subject),
     ).toEqual(['SOLANA_RPC_URL']);
   });
 
@@ -111,7 +119,9 @@ describe('validateRuntimeConfig', () => {
     expect(codes(validateRuntimeConfig(payout, 'worker').violations)).toEqual([
       'REFUSE:REAL_OPERATION_AUTHORITY_MISSING:OPERATOR_SECRET_KEY',
     ]);
-    expect(validateRuntimeConfig({ ...payout, OPERATOR_SECRET_KEY: SECRET }, 'worker').ok).toBe(true);
+    expect(validateRuntimeConfig({ ...payout, OPERATOR_SECRET_KEY: SECRET }, 'worker').ok).toBe(
+      true,
+    );
     const onWeb = validateRuntimeConfig({ ...payout, OPERATOR_SECRET_KEY: SECRET }, 'web');
     expect(codes(onWeb.violations)).toEqual(['REFUSE:SIGNER_SECRET_ON_WEB:OPERATOR_SECRET_KEY']);
     const sealed = validateRuntimeConfig({ ...payout, FEE_SEAL_PRIVATE_2: SECRET }, 'web');
@@ -121,12 +131,14 @@ describe('validateRuntimeConfig', () => {
 
   it('refuses settlement without an administrator, an explicit network, a funding address and https RPC', () => {
     const result = validateRuntimeConfig({ X_TRACKING_V2_SETTLEMENT_ENABLED: 'true' }, 'web');
-    expect(codes(result.violations)).toEqual([
-      'REFUSE:REAL_OPERATION_AUTHORITY_MISSING:USDC_FUNDING_ADDRESS',
-      'REFUSE:REAL_OPERATION_AUTHORITY_MISSING:USDC_NETWORK',
-      'REFUSE:REAL_OPERATION_AUTHORITY_MISSING:SOLANA_RPC_URL',
-      'REFUSE:REAL_OPERATION_AUTHORITY_MISSING:X_ADMIN_USER_ID|ADMIN_X_IDS',
-    ].sort());
+    expect(codes(result.violations)).toEqual(
+      [
+        'REFUSE:REAL_OPERATION_AUTHORITY_MISSING:USDC_FUNDING_ADDRESS',
+        'REFUSE:REAL_OPERATION_AUTHORITY_MISSING:USDC_NETWORK',
+        'REFUSE:REAL_OPERATION_AUTHORITY_MISSING:SOLANA_RPC_URL',
+        'REFUSE:REAL_OPERATION_AUTHORITY_MISSING:X_ADMIN_USER_ID|ADMIN_X_IDS',
+      ].sort(),
+    );
     const ok = {
       X_TRACKING_V2_SETTLEMENT_ENABLED: 'true',
       ADMIN_X_IDS: '123',
@@ -143,15 +155,19 @@ describe('validateRuntimeConfig', () => {
     for (const flag of ['STUDIO_SANDBOX', 'ALLOW_REMOTE_TEST_DB']) {
       const prod = validateRuntimeConfig({ NODE_ENV: 'production', [flag]: 'true' }, 'web');
       expect(codes(prod.violations), flag).toEqual([`REFUSE:TEST_MODE_IN_PRODUCTION:${flag}`]);
-      expect(validateRuntimeConfig({ NODE_ENV: 'development', [flag]: 'true' }, 'web').ok).toBe(true);
+      expect(validateRuntimeConfig({ NODE_ENV: 'development', [flag]: 'true' }, 'web').ok).toBe(
+        true,
+      );
     }
   });
 
   it('refuses any real-operation switch in demo mode', () => {
     for (const flag of ['LAUNCH_ENABLED', 'PAYOUT_ENABLED', 'X_TRACKING_V2_SETTLEMENT_ENABLED']) {
-      const result = validateRuntimeConfig({ DEMO_MODE: 'true', [flag]: 'true', ...REAL_AUTHORITY }, 'web');
-      expect(codes(result.violations), flag)
-        .toContain(`REFUSE:REAL_OPERATION_IN_DEMO:${flag}`);
+      const result = validateRuntimeConfig(
+        { DEMO_MODE: 'true', [flag]: 'true', ...REAL_AUTHORITY },
+        'web',
+      );
+      expect(codes(result.violations), flag).toContain(`REFUSE:REAL_OPERATION_IN_DEMO:${flag}`);
     }
   });
 
@@ -169,7 +185,12 @@ describe('validateRuntimeConfig', () => {
 
   it('reports every violation without leaking any configured value', () => {
     const result = validateRuntimeConfig(
-      { LAUNCH_ENABLED: 'true', OPERATOR_SECRET_KEY: SECRET, DATABASE_URL: SECRET, WORK_X_ENABLED: SECRET },
+      {
+        LAUNCH_ENABLED: 'true',
+        OPERATOR_SECRET_KEY: SECRET,
+        DATABASE_URL: SECRET,
+        WORK_X_ENABLED: SECRET,
+      },
       'web',
     );
     expect(result.ok).toBe(false);

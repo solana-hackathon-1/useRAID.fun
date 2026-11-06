@@ -66,8 +66,15 @@ export function validateRuntimeConfig(env: ConfigEnv, role: ConfigRole): ConfigV
     if (value === undefined || value === '' || value === 'true' || value === 'false') continue;
     add(flag.impact === 'HIGH' ? 'REFUSE' : 'WARN', 'FLAG_VALUE_NOT_EXACT', flag.name);
   }
+  // Only names that share a leading word with a catalogued switch: ambient variables from the operating
+  // system or tooling (for example a terminal's `*_ENABLED`) are not ours to judge.
+  const families = new Set(FLAG_CATALOG.map((flag) => flag.name.split('_')[0]));
   for (const name of Object.keys(env))
-    if (/^[A-Z][A-Z0-9_]*_(ENABLED|APPROVED)$/.test(name) && !known.has(name))
+    if (
+      /^[A-Z][A-Z0-9_]*_(ENABLED|APPROVED)$/.test(name) &&
+      !known.has(name) &&
+      families.has(name.split('_')[0])
+    )
       add('WARN', 'UNKNOWN_FLAG', name);
   for (const flag of FLAG_CATALOG)
     if (flag.requires && isTrue(env, flag.name) && !present(env, flag.requires))
@@ -96,12 +103,16 @@ export function validateRuntimeConfig(env: ConfigEnv, role: ConfigRole): ConfigV
     needRpc();
   }
 
-  for (const name of realOperations) if (isTrue(env, 'DEMO_MODE')) add('REFUSE', 'REAL_OPERATION_IN_DEMO', name);
+  for (const name of realOperations)
+    if (isTrue(env, 'DEMO_MODE')) add('REFUSE', 'REAL_OPERATION_IN_DEMO', name);
 
   // A worker-only signer or sealed private key must never reach the web process once real operations are on.
   if (role === 'web' && realOperations.length > 0)
     for (const name of Object.keys(env))
-      if ((name === 'OPERATOR_SECRET_KEY' || /^FEE_SEAL_PRIVATE_\d+$/.test(name)) && present(env, name))
+      if (
+        (name === 'OPERATOR_SECRET_KEY' || /^FEE_SEAL_PRIVATE_\d+$/.test(name)) &&
+        present(env, name)
+      )
         add('REFUSE', 'SIGNER_SECRET_ON_WEB', name);
 
   if (env.NODE_ENV === 'production')
@@ -117,6 +128,7 @@ export function validateRuntimeConfig(env: ConfigEnv, role: ConfigRole): ConfigV
 /** Returns warnings; throws `ConfigRefusedError` (refusals only) when any refusal exists. */
 export function assertRuntimeConfig(env: ConfigEnv, role: ConfigRole): readonly ConfigViolation[] {
   const result = validateRuntimeConfig(env, role);
-  if (!result.ok) throw new ConfigRefusedError(result.violations.filter((v) => v.severity === 'REFUSE'));
+  if (!result.ok)
+    throw new ConfigRefusedError(result.violations.filter((v) => v.severity === 'REFUSE'));
   return result.violations;
 }
