@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { checkOrigin, requireUser, rateLimit } from '@/lib/auth';
 import { openDispute } from '@/lib/tracking-review';
-import { failure } from '@/lib/http';
+import { failure, readJsonBody } from '@/lib/http';
 import { validPostId } from '@/lib/domain';
 import { z } from 'zod';
 const input = z.object({
@@ -15,7 +15,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     const user = await requireUser();
     await rateLimit(`dispute:${user.id}`, 10, 3600);
     return NextResponse.json(
-      await openDispute((await params).id, user.id, input.parse(await request.json())),
+      await openDispute((await params).id, user.id, input.parse(await readJsonBody(request))),
       { status: 201 },
     );
   } catch (error) {

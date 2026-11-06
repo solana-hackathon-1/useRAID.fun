@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { checkOrigin, requireUser } from '@/lib/auth';
 import { resolveTracking, carryHeldFunds } from '@/lib/tracking-review';
-import { failure } from '@/lib/http';
+import { failure, readJsonBody } from '@/lib/http';
 import { z } from 'zod';
 const input = z.object({
   action: z.enum([
@@ -24,7 +24,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
   try {
     checkOrigin(request);
     const user = await requireUser(true);
-    const body = input.parse(await request.json());
+    const body = input.parse(await readJsonBody(request));
     if (body.action === 'carry-held')
       await carryHeldFunds((await params).id, body.targetRaidId || '', user.id, body.reason);
     else await resolveTracking((await params).id, user.id, { ...body, action: body.action });
