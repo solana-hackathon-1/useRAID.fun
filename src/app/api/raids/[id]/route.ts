@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { checkOrigin, requireUser, currentUser, rateLimit } from '@/lib/auth';
 import { changeRaid } from '@/lib/campaigns';
 import { getRaid } from '@/lib/data';
-import { failure } from '@/lib/http';
+import { failure, readJsonBody } from '@/lib/http';
 import { saveStudioRaid, launchStudioRaid } from '@/lib/studio-campaigns';
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -22,7 +22,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   try {
     checkOrigin(request);
     const user = await requireUser();
-    const body = await request.json();
+    const body = await readJsonBody(request);
     const id = (await params).id;
     if (['save', 'fund-launch'].includes(body.action))
       await rateLimit(`studio-mutate:${user.id}`, 30, 60);

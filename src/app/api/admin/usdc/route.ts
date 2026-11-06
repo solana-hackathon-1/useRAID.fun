@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { checkOrigin, requireUser, rateLimit } from '@/lib/auth';
 import { verifyUsdcTransfer, rejectWithdrawal } from '@/lib/usdc';
-import { failure } from '@/lib/http';
+import { failure, readJsonBody } from '@/lib/http';
 import { HttpError } from '@/lib/auth-primitives';
 import { reconcileUsdc, reconciliationJson } from '@/lib/usdc-reconcile';
 export async function GET() {
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
         signature: z.string().max(110).optional(),
         reason: z.string().min(5).max(500).optional(),
       })
-      .parse(await request.json());
+      .parse(await readJsonBody(request));
     if (body.action === 'verify')
       await verifyUsdcTransfer(body.id, body.signature || '', user.id, true);
     else if (body.action === 'verify-late') {

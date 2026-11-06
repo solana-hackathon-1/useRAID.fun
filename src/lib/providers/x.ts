@@ -1,4 +1,5 @@
 import { lockResource } from '../../identity-locks';
+import { assertJobLease } from '../job-lease';
 import { lockAdvisory } from '../identity-protocol';
 import { db } from '../db';
 import { config } from '../config';
@@ -74,6 +75,8 @@ type XReadBody = {
   includes?: { users?: { id: string; username: string; name: string }[] };
 };
 async function xRead(path: string, params: URLSearchParams, units: number, raidId?: string) {
+  // Before the quota decrement and billing reservation too: a stale worker must not spend either.
+  await assertJobLease();
   await db.$transaction(async (tx) => {
     await lockAdvisory(tx, lockResource('x-endpoint', path));
     const state = await tx.xEndpointState.findUnique({ where: { key: path } });
