@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { db } from '../src/lib/db';
 import { createRaid, changeRaid } from '../src/lib/campaigns';
 import { collect, ingest, refresh, snapshot } from '../src/lib/collection';
+import { enqueueDue } from './helpers/queue';
 import { claimJob, enqueue, finishJob, JOB_MAX_ATTEMPTS } from '../src/lib/queue';
 import { reserveUsage, lookupPosts } from '../src/lib/providers/x';
 import { config } from '../src/lib/config';
@@ -85,8 +86,8 @@ integration('PostgreSQL integration', () => {
     expect(metrics(await db.post.findMany({ where: { raidId } }), new Date()).score).toBe(0);
   });
   it('deduplicates queued jobs, claims once, and rejects stale lease completion', async () => {
-    await enqueue('test', 'same', { raidId });
-    await enqueue('test', 'same', { raidId });
+    await enqueueDue('test', 'same', { raidId });
+    await enqueueDue('test', 'same', { raidId });
     expect(await db.job.count()).toBe(1);
     const claims = await Promise.all([claimJob(), claimJob()]);
     expect(claims.filter(Boolean)).toHaveLength(1);
@@ -157,8 +158,8 @@ integration('PostgreSQL integration', () => {
     expect(post.text).toBe('');
   });
   it('serializes different jobs for the same raid', async () => {
-    await enqueue('test', 'raid-lock-a', { raidId });
-    await enqueue('test', 'raid-lock-b', { raidId });
+    await enqueueDue('test', 'raid-lock-a', { raidId });
+    await enqueueDue('test', 'raid-lock-b', { raidId });
     const [a, b] = await Promise.all([claimJob(), claimJob()]);
     expect([a, b].filter(Boolean)).toHaveLength(1);
     await finishJob((a || b)!);
@@ -267,7 +268,7 @@ integration('PostgreSQL integration', () => {
   });
   it('never dead-letters through a stale lease', async () => {
     await db.job.deleteMany();
-    await enqueue('test', 'stale-1', { raidId: 'stale-a' });
+    await enqueueDue('test', 'stale-1', { raidId: 'stale-a' });
     const job = (await claimJob())!;
     await db.job.update({ where: { id: job.id }, data: { attempts: JOB_MAX_ATTEMPTS } });
     expect(await finishJob({ ...job, attempts: JOB_MAX_ATTEMPTS, lease: 'x' }, 'e')).toEqual({

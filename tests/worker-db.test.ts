@@ -6,8 +6,9 @@ import { db } from '../src/lib/db';
 import { createRaid } from '../src/lib/campaigns';
 import { config } from '../src/lib/config';
 import { assertSchemaCurrent, runJob, schedule, step } from '../src/lib/worker-jobs';
-import { claimJob, enqueue } from '../src/lib/queue';
+import { claimJob } from '../src/lib/queue';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import { enqueueDue } from './helpers/queue';
 const gate = vi.hoisted(() => ({ on: false }));
 const closure = vi.hoisted(() => ({ run: vi.fn() }));
 vi.mock('../src/lib/work-closure-host', () => ({ runWorkClosureWorker: closure.run }));
@@ -210,11 +211,11 @@ suite('worker jobs module', () => {
       expect(finance.some((j) => j.launchId === pausedIdle.id)).toBe(false);
     });
     it('ranks finance work below collection and keeps the launch id as the serialising key', async () => {
-      const finance = await enqueue('finance', 'finance:l1:1', { launchId: 'l1', raidId: 'l1' });
-      const reconcile = await enqueue('launch-reconcile', 'launch-reconcile:l1:1', {
+      const finance = await enqueueDue('finance', 'finance:l1:1', { launchId: 'l1', raidId: 'l1' });
+      const reconcile = await enqueueDue('launch-reconcile', 'launch-reconcile:l1:1', {
         launchId: 'l1',
       });
-      const collect = await enqueue('collect', 'collect:r1:1', { raidId: 'r1' });
+      const collect = await enqueueDue('collect', 'collect:r1:1', { raidId: 'r1' });
       expect(finance.priority).toBe(5);
       expect(reconcile.priority).toBe(5);
       expect(collect.priority).toBe(10);
@@ -226,7 +227,7 @@ suite('worker jobs module', () => {
       vi.stubEnv('SOLANA_RPC_URL', 'https://rpc.example');
       const l = await launch('LIVE');
       await db.raid.update({ where: { id: raidId }, data: { collectionError: null } });
-      await enqueue('finance', 'finance:fail:1', { launchId: l.id, raidId });
+      await enqueueDue('finance', 'finance:fail:1', { launchId: l.id, raidId });
       const job = (await claimJob())!;
       await runJob(job);
       expect(
@@ -236,15 +237,27 @@ suite('worker jobs module', () => {
       vi.unstubAllEnvs();
     });
   });
+  it('enqueueDue jobs are claimable at once even when the app clock leads the database clock', async () => {
+    // enqueue() stamps runAt with the app clock while claimJob() compares it with Postgres NOW(); a few ms of lead (see helpers/queue.ts)
+    // (Docker VM drift, cold start) hides a just-enqueued job from the next claim.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(Date.now() + 5000);
+    try {
+      await enqueueDue('collect', 'collect:skew:1', { raidId: 'skew' });
+      expect(await claimJob()).not.toBeNull();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
   it('finishes an unknown job kind without throwing', async () => {
-    await enqueue('mystery', 'mystery:1', {});
+    await enqueueDue('mystery', 'mystery:1', {});
     const job = (await claimJob())!;
     await expect(runJob(job)).resolves.toBeUndefined();
     expect((await db.job.findUniqueOrThrow({ where: { id: job.id } })).doneAt).not.toBeNull();
   });
   it('records a failing job and keeps going', async () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
-    await enqueue('collect', 'collect:missing', { raidId: 'missing-raid' });
+    await enqueueDue('collect', 'collect:missing', { raidId: 'missing-raid' });
     const job = (await claimJob())!;
     await expect(runJob(job)).resolves.toBeUndefined();
     const row = await db.job.findUniqueOrThrow({ where: { id: job.id } });
