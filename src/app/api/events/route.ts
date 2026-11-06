@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { checkOrigin, publicRateLimit, rateLimit, HttpError } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { failure } from '@/lib/http';
+import { failure, readJsonBody } from '@/lib/http';
 export async function POST(request: Request) {
   try {
     checkOrigin(request);
-    const b = await request.json();
+    const b = await readJsonBody(request);
     if (!['discovery_view', 'raid_view', 'share_click', 'raid_click'].includes(b.type))
       throw new HttpError(400, 'Invalid event');
     if (b.visitor && !/^[a-f0-9-]{36}$/.test(b.visitor))

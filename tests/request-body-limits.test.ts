@@ -29,6 +29,33 @@ import { POST as verify } from '../src/app/api/wallet/verify/route';
 import { POST as events } from '../src/app/api/events/route';
 import { POST as studioImage } from '../src/app/api/studio/image/route';
 
+const crcTable = Array.from({ length: 256 }, (_, n) => {
+  let c = n;
+  for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+  return c >>> 0;
+});
+const u32 = (n: number) => [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255];
+function chunk(type: string, data: number[]) {
+  const body = [...type].map((c) => c.charCodeAt(0)).concat(data);
+  let c = 0xffffffff;
+  for (const b of body) c = crcTable[(c ^ b) & 0xff] ^ (c >>> 8);
+  return [...u32(data.length), ...body, ...u32((c ^ 0xffffffff) >>> 0)];
+}
+const tinyPng = () =>
+  new Uint8Array([
+    137,
+    80,
+    78,
+    71,
+    13,
+    10,
+    26,
+    10,
+    ...chunk('IHDR', [...u32(1), ...u32(1), 8, 2, 0, 0, 0]),
+    ...chunk('IDAT', [0x78, 0x9c, 0x63, 0, 0, 0, 2, 0, 1]),
+    ...chunk('IEND', []),
+  ]);
+
 const CHUNK = 64 * 1024;
 const HUGE = 64 * 1024 * 1024;
 /** A request whose body is `total` bytes that the handler pulls on demand; `pulled()` reports what it actually read. */
@@ -76,6 +103,27 @@ describe('request bodies are bounded before they are buffered', () => {
       expect((await handler(request)).status).toBe(413);
       expect(pulled()).toBeLessThan(1024 * 1024);
     });
+  });
+  it('still stores an ordinary small image upload', async () => {
+    mocks.store.mockResolvedValue('/api/media/abc');
+    const form = new FormData();
+    form.set('file', new File([tinyPng() as BlobPart], 'logo.png', { type: 'image/png' }));
+    const response = await studioImage(
+      new Request('http://localhost/api/studio/image', { method: 'POST', body: form }),
+    );
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ imageUri: '/api/media/abc' });
+    expect(mocks.store).toHaveBeenCalledOnce();
+  });
+  it('rejects a non-multipart body to the image route with 400', async () => {
+    const response = await studioImage(
+      new Request('http://localhost/api/studio/image', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: '{}',
+      }),
+    );
+    expect(response.status).toBe(400);
   });
   it('still accepts ordinary small bodies', async () => {
     const ok = await challenge(
