@@ -12,6 +12,7 @@ vi.mock('../src/lib/work-feed-host', () => ({
   workFeedAvailable: mocks.available,
   workFeedEligibilityAvailable: mocks.eligibility,
   workFeedRewardFilterAvailable: () => false,
+  readFeedFacetsFromHost: async () => ({ categories: [], skills: [] }),
   readFeedFromHost: mocks.feed,
   readFeedForViewerFromHost: mocks.viewerFeed,
   readDetailFromHost: vi.fn(),

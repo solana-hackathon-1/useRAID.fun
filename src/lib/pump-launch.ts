@@ -1,3 +1,4 @@
+import { publicPausedReason } from './pause-reason';
 import { lockResource } from '../identity-locks';
 import { assertJobLease } from './job-lease';
 import { lockAdvisory } from './identity-protocol';
@@ -268,6 +269,30 @@ function rewardCopy() {
     settlementEnabled: trackingSettlementEnabled(),
   };
 }
+// Stored launch errors can be raw RPC text (URLs, query-string keys, response bodies). The status read carries only a
+// fixed message this module wrote itself; the raw detail stays in the row for operators.
+const LAUNCH_FAILED_ON_CHAIN = 'Launch transaction failed on chain.';
+const LAUNCH_BLOCKHASH_EXPIRED = 'Blockhash expired. Sign a fresh transaction.';
+const NO_REVIEWED_CREATION =
+  'Mint exists but no reviewed creation transaction was found; operator review required.';
+export const LAUNCH_SUBMISSION_PENDING = 'Launch submission pending. Check status before retrying.';
+const SAFE_LAUNCH_ERRORS = new Set([
+  LAUNCH_FAILED_ON_CHAIN,
+  LAUNCH_BLOCKHASH_EXPIRED,
+  NO_REVIEWED_CREATION,
+  LAUNCH_SUBMISSION_PENDING,
+]);
+export function publicLaunchError(
+  stored: string | null | undefined,
+  status?: string,
+): string | null {
+  if (!stored) return null;
+  // A paused launch carries a pause reason, a live one only an operator note (e.g. absorbed fee cost): neither is a
+  // pending submission, and neither is shown raw.
+  if (status === 'PAUSED') return publicPausedReason(stored);
+  if (status === 'LIVE') return null;
+  return SAFE_LAUNCH_ERRORS.has(stored) ? stored : LAUNCH_SUBMISSION_PENDING;
+}
 export function publicLaunch(launch: {
   id: string;
   mint: string;
@@ -288,7 +313,7 @@ export function publicLaunch(launch: {
     symbol: launch.symbol,
     signature: launch.signature,
     raidId: launch.raidId,
-    error: launch.error,
+    error: publicLaunchError(launch.error, launch.status),
     ...rewardCopy(),
   };
 }
@@ -343,13 +368,11 @@ export async function submitLaunch(id: string, userId: string, rawBase64: string
       where: { id },
       data: { error: error instanceof Error ? error.message.slice(0, 200) : 'Broadcast failed' },
     });
-    throw new HttpError(503, 'Launch submission pending. Check status before retrying.');
+    throw new HttpError(503, LAUNCH_SUBMISSION_PENDING);
   }
   return publicLaunch(await db.tokenLaunch.findUniqueOrThrow({ where: { id } }));
 }
 type PublicLaunch = ReturnType<typeof publicLaunch>;
-const NO_REVIEWED_CREATION =
-  'Mint exists but no reviewed creation transaction was found; operator review required.';
 function mintSigned(tx: VersionedTransactionResponse, mint: PublicKey) {
   const { staticAccountKeys, header } = tx.transaction.message;
   return staticAccountKeys.slice(0, header.numRequiredSignatures).some((key) => key.equals(mint));
@@ -423,7 +446,7 @@ export async function reconcileLaunch(id: string, recovered = false): Promise<Pu
   if (status.value[0]?.err) {
     await db.tokenLaunch.update({
       where: { id },
-      data: { status: 'FAILED', error: 'Launch transaction failed on chain.' },
+      data: { status: 'FAILED', error: LAUNCH_FAILED_ON_CHAIN },
     });
     return publicLaunch(await db.tokenLaunch.findUniqueOrThrow({ where: { id } }));
   }
@@ -452,7 +475,7 @@ export async function reconcileLaunch(id: string, recovered = false): Promise<Pu
           status: 'PREPARED',
           signature: null,
           signedTx: null,
-          error: 'Blockhash expired. Sign a fresh transaction.',
+          error: LAUNCH_BLOCKHASH_EXPIRED,
         },
       });
     }

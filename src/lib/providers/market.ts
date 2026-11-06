@@ -1,5 +1,6 @@
 import { assertJobLease } from '../job-lease';
 import { allowedImageUrl } from '../image-hosts';
+import { MAX_PROVIDER_JSON_BYTES, providerFetch, readBoundedJson } from '../outbound-fetch';
 export interface Market {
   imageUri?: string;
   price: number | null;
@@ -52,10 +53,10 @@ export function selectMarket(pairs: Pair[], mint: string): Market | null {
 }
 export async function fetchMarket(mint: string) {
   await assertJobLease();
-  const res = await fetch(
+  const res = await providerFetch(
     `https://api.dexscreener.com/token-pairs/v1/solana/${encodeURIComponent(mint)}`,
     { signal: AbortSignal.timeout(15000), cache: 'no-store' },
   );
   if (!res.ok) throw new Error(`Market provider returned ${res.status}.`);
-  return selectMarket(await res.json(), mint);
+  return selectMarket(await readBoundedJson<Pair[]>(res, MAX_PROVIDER_JSON_BYTES), mint);
 }

@@ -22,9 +22,11 @@ function sources(dir: string): string[] {
 }
 const isClient = (text: string) =>
   /^\s*(?:\/\/[^\n]*\n|\/\*[\s\S]*?\*\/\s*)*['"]use client['"]/.test(text);
-/** The first argument text of every bare `fetch(` call (not `prefetch(`, `x.fetch(`, or `fetchMarket(`). */
+/** The first argument text of every bare `fetch(` or `providerFetch(` call (not `prefetch(`, `x.fetch(`, or `fetchMarket(`). */
 function fetchCalls(text: string) {
-  return [...text.matchAll(/(?<![\w.$])fetch\(\s*([^\n]{0,120})/g)].map((m) => m[1]);
+  return [
+    ...text.matchAll(/(?<![\w.$])(?<!function )(?:providerFetch|fetch)\(\s*([^\n]{0,120})/g),
+  ].map((m) => m[1]);
 }
 const files = sources(src);
 const isBrowser = (file: string) =>

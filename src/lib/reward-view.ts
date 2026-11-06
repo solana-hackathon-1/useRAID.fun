@@ -1,5 +1,6 @@
 import { db } from './db';
 import { config } from './config';
+import { publicPausedReason } from './pause-reason';
 export async function publicRewardView(mint: string, userId?: string) {
   if (config.demo) return null;
   const launch = await db.tokenLaunch.findUnique({
@@ -80,7 +81,8 @@ export async function publicRewardView(mint: string, userId?: string) {
     mint,
     feeAddress: launch.feeAddress,
     status: launch.status,
-    pausedReason: launch.error,
+    // The stored reason is raw operator text (RPC logs, signatures); only a fixed projection is public.
+    pausedReason: launch.status === 'PAUSED' ? publicPausedReason(launch.error) : null,
     globalPauseReason: !settings?.collectionEnabled
       ? 'Raid collection is paused.'
       : settings.payoutPaused

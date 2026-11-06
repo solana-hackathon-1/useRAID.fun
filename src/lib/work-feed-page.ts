@@ -4,6 +4,7 @@ import {
   FeedQuerySchema,
   type Detail,
   type FeedEligibility,
+  type FeedFacets,
   type FeedPage,
   type FeedQuery,
   type FeedViewerState,
@@ -21,6 +22,7 @@ import { readMyRaidsFromHost, workWorkspaceConfiguration } from './work-workspac
 import {
   readDetailFromHost,
   readFeedAssetsFromHost,
+  readFeedFacetsFromHost,
   readFeedForViewerFromHost,
   readFeedFromHost,
   workFeedAvailable,
@@ -38,6 +40,7 @@ export type LoadedFeed =
       query: FeedQuery;
       viewer: FeedViewerState;
       reward: RewardControl;
+      facets: FeedFacets;
     };
 /** The signed-in session as a work actor, or null. Any failure reads as signed out. */
 async function sessionActor() {
@@ -47,6 +50,14 @@ async function sessionActor() {
     return user && cookie ? { accountId: user.id, sessionHash: hash(cookie) } : null;
   } catch {
     return null;
+  }
+}
+/** Suggestions for the category and skill fields. A failure never takes the feed down: the fields just stay plain. */
+async function loadFacets(): Promise<FeedFacets> {
+  try {
+    return await readFeedFacetsFromHost();
+  } catch {
+    return { categories: [], skills: [] };
   }
 }
 /** Server-side first paint of the public feed. Failures never expose detail. */
@@ -73,7 +84,7 @@ export async function loadFeed(params: Params): Promise<LoadedFeed> {
     raw[name] =
       name === 'limit' && /^\d{1,3}$/.test(value)
         ? Number(value)
-        : name === 'closesBefore' && /^\d{4}-\d{2}-\d{2}$/.test(value)
+        : (name === 'closesBefore' || name === 'closesAfter') && /^\d{4}-\d{2}-\d{2}$/.test(value)
           ? `${value}T00:00:00.000Z`
           : value;
   }
@@ -104,6 +115,7 @@ export async function loadFeed(params: Params): Promise<LoadedFeed> {
       else problem = converted.message;
     }
     const reward = { enabled, assets, amount: amount ?? '', problem };
+    const facets = await loadFacets();
     let viewer: FeedViewerState = { status: 'OFF' };
     if (workFeedEligibilityAvailable()) {
       const actor = await sessionActor();
@@ -121,6 +133,7 @@ export async function loadFeed(params: Params): Promise<LoadedFeed> {
             query: filtered,
             viewer: { status: 'READY', eligibleOnly, eligibility: facts?.eligibility ?? {} },
             reward,
+            facets,
           };
         } catch {
           // The check failing never takes the public feed down; the person is told it is unavailable.
@@ -137,7 +150,7 @@ export async function loadFeed(params: Params): Promise<LoadedFeed> {
           rewardComparable: query.data.assetKey !== undefined,
         }
       : await readFeedFromHost(filtered);
-    return { status: 'READY', page, query: filtered, viewer, reward };
+    return { status: 'READY', page, query: filtered, viewer, reward, facets };
   } catch {
     return { status: 'UNAVAILABLE' };
   }

@@ -33,6 +33,8 @@ export interface GuildPublicPageView {
   updates: PublicGuildUpdate[];
   nextCursor: string | null;
   before: string | null;
+  /** The profile was read but the updates could not be; the page says so instead of claiming there are none. */
+  updatesUnavailable: boolean;
 }
 const slugSchema = PublicGuildSchema.shape.slug;
 const beforeSchema = z.uuid().optional();
@@ -91,13 +93,21 @@ export async function loadGuildPublicPage(
   if (!cursor.success) return null;
   const guild = await loadGuildPublicProfile(slug);
   if (!guild) return null;
-  const raw = await orNull(() =>
-    readGuildUpdatesFromHost(slug, { limit: GUILD_PUBLIC_PAGE_SIZE, before: cursor.data }),
-  );
+  const beforeId = cursor.data ?? null;
+  let raw;
+  try {
+    raw = await orNull(() =>
+      readGuildUpdatesFromHost(slug, { limit: GUILD_PUBLIC_PAGE_SIZE, before: cursor.data }),
+    );
+  } catch {
+    // A failed read is "unable to refresh", never "no updates". The error itself is not shown to visitors.
+    console.error('guild public page: updates read failed');
+    return { guild, updates: [], nextCursor: null, before: beforeId, updatesUnavailable: true };
+  }
   if (raw === null) return null;
   const page = PublicGuildUpdatesPageSchema.safeParse(raw);
   if (!page.success) throw new Error('GUILD_PUBLIC_CONTRACT');
-  return { guild, ...page.data, before: cursor.data ?? null };
+  return { guild, ...page.data, before: beforeId, updatesUnavailable: false };
 }
 export interface GuildDirectoryView {
   guilds: PublicGuildDirectoryEntry[];

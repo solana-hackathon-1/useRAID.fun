@@ -13,6 +13,7 @@ export type ViolationSeverity = 'REFUSE' | 'WARN';
 export type ViolationCode =
   | 'FLAG_VALUE_NOT_EXACT'
   | 'UNKNOWN_FLAG'
+  | 'ENVIRONMENT_NOT_RECOGNISED'
   | 'FLAG_SETTING_MISSING'
   | 'REAL_OPERATION_AUTHORITY_MISSING'
   | 'REAL_OPERATION_IN_DEMO'
@@ -37,6 +38,16 @@ export const REAL_OPERATION_FLAGS = Object.freeze([
   'X_TRACKING_V2_SETTLEMENT_ENABLED',
 ]);
 
+/** Values of `RAID_ENVIRONMENT` the non-production label recognises (kept equal to `deploymentEnvironment` by a test). */
+export const RECOGNISED_ENVIRONMENTS = Object.freeze([
+  'production',
+  'pilot',
+  'staging',
+  'alpha',
+  'demo',
+  'local',
+]);
+
 export class ConfigRefusedError extends Error {
   readonly violations: readonly ConfigViolation[];
   constructor(violations: readonly ConfigViolation[]) {
@@ -48,6 +59,24 @@ export class ConfigRefusedError extends Error {
 
 export const describeViolations = (violations: readonly ConfigViolation[]) =>
   violations.map((v) => `${v.code}(${v.subject})`).join(', ');
+
+/** Levenshtein distance, giving up early once it must exceed `limit` (names are short, so this is cheap). */
+function withinEdits(a: string, b: string, limit: number): boolean {
+  if (Math.abs(a.length - b.length) > limit) return false;
+  let previous = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    const row = [i];
+    for (let j = 1; j <= b.length; j++)
+      row[j] = Math.min(
+        previous[j]! + 1,
+        row[j - 1]! + 1,
+        previous[j - 1]! + (a[i - 1] === b[j - 1] ? 0 : 1),
+      );
+    if (Math.min(...row) > limit) return false;
+    previous = row;
+  }
+  return previous[b.length]! <= limit;
+}
 
 const present = (env: ConfigEnv, name: string) => (env[name] ?? '').trim() !== '';
 const isTrue = (env: ConfigEnv, name: string) => env[name] === 'true';
@@ -76,6 +105,22 @@ export function validateRuntimeConfig(env: ConfigEnv, role: ConfigRole): ConfigV
       families.has(name.split('_')[0])
     )
       add('WARN', 'UNKNOWN_FLAG', name);
+  // A near-miss spelling (wrong case, a dropped or extra letter) of a catalogued switch, in any family: the
+  // real switch would silently keep its default while the operator believes it is set.
+  for (const name of Object.keys(env)) {
+    if (known.has(name) || !/^[A-Za-z][A-Za-z0-9_]{7,}$/.test(name)) continue;
+    const upper = name.toUpperCase();
+    if (
+      FLAG_CATALOG.some(
+        (flag) =>
+          upper === flag.name || withinEdits(upper, flag.name, flag.name.length < 16 ? 1 : 2),
+      )
+    )
+      add('WARN', 'UNKNOWN_FLAG', name);
+  }
+  const environment = (env.RAID_ENVIRONMENT ?? '').trim().toLowerCase();
+  if (environment !== '' && !RECOGNISED_ENVIRONMENTS.includes(environment))
+    add('WARN', 'ENVIRONMENT_NOT_RECOGNISED', 'RAID_ENVIRONMENT');
   for (const flag of FLAG_CATALOG)
     if (flag.requires && isTrue(env, flag.name) && !present(env, flag.requires))
       add('WARN', 'FLAG_SETTING_MISSING', `${flag.name}>${flag.requires}`);

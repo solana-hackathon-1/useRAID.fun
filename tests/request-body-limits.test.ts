@@ -4,7 +4,13 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
  * T091 (#161) W02/C14: a body is size-bounded BEFORE it is buffered or parsed. A public or low-privilege caller must not
  * make the web process hold an arbitrarily large request in memory, whatever the later schema or file-size check says.
  */
-const mocks = vi.hoisted(() => ({ eventCreate: vi.fn(), challenge: vi.fn(), store: vi.fn() }));
+const mocks = vi.hoisted(() => ({
+  eventCreate: vi.fn(),
+  challenge: vi.fn(),
+  store: vi.fn(),
+  verify: vi.fn(),
+  rotate: vi.fn(),
+}));
 vi.mock('next/headers', () => ({ cookies: async () => ({ get: () => undefined }) }));
 vi.mock('../src/lib/auth', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../src/lib/auth')>()),
@@ -17,8 +23,8 @@ vi.mock('../src/lib/auth', async (importOriginal) => ({
 vi.mock('../src/lib/db', () => ({ db: { event: { create: mocks.eventCreate } } }));
 vi.mock('../src/lib/wallet-auth', () => ({
   createWalletChallenge: mocks.challenge,
-  verifyWalletChallenge: vi.fn(),
-  rotateWallet: vi.fn(),
+  verifyWalletChallenge: mocks.verify,
+  rotateWallet: mocks.rotate,
 }));
 vi.mock('../src/lib/media', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../src/lib/media')>()),
@@ -58,19 +64,27 @@ const tinyPng = () =>
 
 const CHUNK = 64 * 1024;
 const HUGE = 64 * 1024 * 1024;
-/** A request whose body is `total` bytes that the handler pulls on demand; `pulled()` reports what it actually read. */
-function streamed(contentType: string, total: number, declareLength: boolean) {
+/**
+ * A request whose body is `total` bytes that the handler pulls on demand; `pulled()` reports what it actually read.
+ * The stream has no read-ahead buffer (highWaterMark 0), so `pulled()` is exactly the bytes the handler asked for.
+ * `declare` is the Content-Length header to send: the true length, a lie, or none (chunked).
+ */
+function streamed(contentType: string, total: number, declare: number | boolean) {
   let sent = 0;
-  const body = new ReadableStream<Uint8Array>({
-    pull(controller) {
-      if (sent >= total) return controller.close();
-      const size = Math.min(CHUNK, total - sent);
-      sent += size;
-      controller.enqueue(new Uint8Array(size).fill(32));
+  const body = new ReadableStream<Uint8Array>(
+    {
+      pull(controller) {
+        if (sent >= total) return controller.close();
+        const size = Math.min(CHUNK, total - sent);
+        sent += size;
+        controller.enqueue(new Uint8Array(size).fill(32));
+      },
     },
-  });
+    new CountQueuingStrategy({ highWaterMark: 0 }),
+  );
   const headers: Record<string, string> = { 'content-type': contentType };
-  if (declareLength) headers['content-length'] = String(total);
+  if (declare === true) headers['content-length'] = String(total);
+  else if (typeof declare === 'number') headers['content-length'] = String(declare);
   const request = new Request('http://localhost/api/x', {
     method: 'POST',
     headers,
@@ -90,11 +104,19 @@ beforeEach(() => {
   mocks.eventCreate.mockReset();
   mocks.challenge.mockReset().mockResolvedValue({ digest: 'd', message: 'm' });
   mocks.store.mockReset();
+  mocks.verify.mockReset();
+  mocks.rotate.mockReset();
 });
 describe('request bodies are bounded before they are buffered', () => {
   describe.each(routes)('%s', (_name, handler, contentType) => {
     it('rejects a declared oversize body with 413 without reading it', async () => {
       const { request, pulled } = streamed(contentType, HUGE, true);
+      expect((await handler(request)).status).toBe(413);
+      // Refused from the header alone: not one byte may be read. Only the Content-Length pre-check can do this.
+      expect(pulled()).toBe(0);
+    });
+    it('stops reading a body whose small Content-Length lies about its real size', async () => {
+      const { request, pulled } = streamed(contentType, HUGE, 10);
       expect((await handler(request)).status).toBe(413);
       expect(pulled()).toBeLessThan(1024 * 1024);
     });
@@ -104,6 +126,43 @@ describe('request bodies are bounded before they are buffered', () => {
       expect(pulled()).toBeLessThan(1024 * 1024);
     });
   });
+  describe.each([
+    ['wallet challenge', challenge],
+    ['wallet verify', verify],
+    ['events', events],
+  ])('%s JSON shape', (_name, handler) => {
+    it.each([
+      ['an array', '[]'],
+      ['null', 'null'],
+      ['a string', '"x"'],
+      ['malformed JSON', '{'],
+    ])('rejects %s with 400', async (_label, body) => {
+      const response = await handler(
+        new Request('http://localhost/api/x', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body,
+        }),
+      );
+      expect(response.status).toBe(400);
+      expect(mocks.verify).not.toHaveBeenCalled();
+      expect(mocks.challenge).not.toHaveBeenCalled();
+      expect(mocks.eventCreate).not.toHaveBeenCalled();
+    });
+  });
+  it.each([
+    ['declared', true],
+    ['lying small length', 10],
+    ['chunked', false],
+  ] as const)(
+    'wallet verify never reaches signature verification or rotation after a 413 (%s)',
+    async (_label, declare) => {
+      const { request } = streamed('application/json', HUGE, declare);
+      expect((await verify(request)).status).toBe(413);
+      expect(mocks.verify).not.toHaveBeenCalled();
+      expect(mocks.rotate).not.toHaveBeenCalled();
+    },
+  );
   it('still stores an ordinary small image upload', async () => {
     mocks.store.mockResolvedValue('/api/media/abc');
     const form = new FormData();

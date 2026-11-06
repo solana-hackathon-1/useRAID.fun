@@ -66,8 +66,10 @@ export default async function GuildDirectoryPage({ searchParams }: Props) {
                     <Link href={`/guilds/${guild.slug}`}>{guild.name}</Link>
                   </h3>
                   <p className="muted">{guild.slug}</p>
-                  {guild.description && (
+                  {guild.description ? (
                     <p className="campaign-copy">{excerpt(guild.description)}</p>
+                  ) : (
+                    <p className="muted">No description published yet.</p>
                   )}
                 </article>
               </li>

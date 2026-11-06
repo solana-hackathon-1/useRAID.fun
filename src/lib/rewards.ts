@@ -6,6 +6,7 @@ import { launchpadsAvailable } from './release';
 import { lockTracking } from './tracking';
 import { trackingBlockers, type ResultPayload } from './tracking-review';
 import bs58 from 'bs58';
+import { PAUSE_REASON } from './pause-reason';
 import {
   Connection,
   Keypair,
@@ -99,7 +100,7 @@ async function expectedFee(
     SystemProgram.transfer({ fromPubkey: feeAddress, toPubkey: payer, lamports: 1 }),
   );
   const fee = (await rpc.getFeeForMessage(tx.compileMessage(), 'finalized')).value;
-  if (!fee || fee > 100_000) throw new FinancePauseError('Unexpected network fee; payouts paused');
+  if (!fee || fee > 100_000) throw new FinancePauseError(PAUSE_REASON.unexpectedFee);
   return BigInt(fee);
 }
 async function recordAndBroadcast(
@@ -125,7 +126,7 @@ async function recordAndBroadcast(
     actualEstimate > 100_000 ||
     (expectedCost !== null && BigInt(actualEstimate) !== expectedCost)
   )
-    throw new FinancePauseError('Network fee changed before signing');
+    throw new FinancePauseError(PAUSE_REASON.feeChanged);
   const signers = message.accountKeys.slice(0, message.header.numRequiredSignatures);
   tx.sign(...(signers.some((k) => k.equals(fee.publicKey)) ? [gas, fee] : [gas]));
   const raw = tx.serialize();
@@ -180,7 +181,7 @@ async function verifyFeeRecipient(rpc: Connection, launch: TokenLaunch) {
     (wallet && (!wallet.owner.equals(SystemProgram.programId) || wallet.executable)) ||
     wallet?.owner.equals(PUMP_FEE_PROGRAM_ID)
   )
-    throw new FinancePauseError('Fee recipient or bonding curve changed');
+    throw new FinancePauseError(PAUSE_REASON.recipientOrCurveChanged);
   const curve = PUMP_SDK.decodeBondingCurve(info);
   if (
     !curve.creator.equals(expected) ||
@@ -188,14 +189,14 @@ async function verifyFeeRecipient(rpc: Connection, launch: TokenLaunch) {
     curve.isMayhemMode ||
     !curve.quoteMint.equals(PublicKey.default)
   )
-    throw new FinancePauseError('Bonding curve fee recipient changed');
+    throw new FinancePauseError(PAUSE_REASON.curveRecipientChanged);
   if (curve.complete) {
     const pool = await getPumpAmmProgram(rpc).account.pool.fetchNullable(
       canonicalPumpPoolPda(mint),
     );
     if (!pool) return { curve, migrating: true };
     if (!pool.coinCreator.equals(expected))
-      throw new FinancePauseError('Graduated pool fee recipient changed');
+      throw new FinancePauseError(PAUSE_REASON.poolRecipientChanged);
   }
   return { curve, migrating: false };
 }
@@ -244,9 +245,9 @@ async function reconcileFinancial(rpc: Connection, launch: TokenLaunch) {
       if (open.kind === 'CLAIM') {
         const keys = tx.transaction.message.staticAccountKeys;
         const index = keys.findIndex((k) => k.toBase58() === launch.feeAddress);
-        if (index < 0) throw new FinancePauseError('Claim recipient missing from transaction');
+        if (index < 0) throw new FinancePauseError(PAUSE_REASON.claimRecipientMissing);
         const gross = BigInt(tx.meta!.postBalances[index]) - BigInt(tx.meta!.preBalances[index]);
-        if (gross < 0n) throw new FinancePauseError('Negative claim');
+        if (gross < 0n) throw new FinancePauseError(PAUSE_REASON.negativeClaim);
         await t.feeClaim.upsert({
           where: { signature: open.signature },
           create: {
@@ -346,7 +347,7 @@ function assertOwnWrappedSolAccount(
   try {
     account = unpackAccount(address, info, TOKEN_PROGRAM_ID);
   } catch {
-    throw new FinancePauseError('Fee wallet wSOL account has foreign authority');
+    throw new FinancePauseError(PAUSE_REASON.foreignAuthority);
   }
   if (
     !account.mint.equals(NATIVE_MINT) ||
@@ -356,7 +357,7 @@ function assertOwnWrappedSolAccount(
     account.delegate ||
     account.closeAuthority
   )
-    throw new FinancePauseError('Fee wallet wSOL account has foreign authority');
+    throw new FinancePauseError(PAUSE_REASON.foreignAuthority);
 }
 async function claimFees(rpc: Connection, launch: TokenLaunch, raidId?: string) {
   const fee = new PublicKey(launch.feeAddress),
@@ -639,7 +640,7 @@ export async function settleNextRound(rpc: Connection, launch: TokenLaunch) {
 }
 async function rentTopUp(rpc: Connection, fee: PublicKey, debit: bigint) {
   const balance = BigInt(await rpc.getBalance(fee, 'finalized'));
-  if (balance < debit) throw new FinancePauseError('Fee wallet balance insufficient');
+  if (balance < debit) throw new FinancePauseError(PAUSE_REASON.balanceInsufficient);
   const rentFloor = BigInt(await rpc.getMinimumBalanceForRentExemption(0));
   const after = balance - debit;
   return after > 0n && after < rentFloor ? rentFloor - after : 0n;

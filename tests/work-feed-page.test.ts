@@ -3,6 +3,7 @@ const mocks = vi.hoisted(() => ({
   available: vi.fn(),
   rewardFilter: vi.fn(),
   assets: vi.fn(),
+  facets: vi.fn(),
   feed: vi.fn(),
   detail: vi.fn(),
   user: vi.fn(),
@@ -15,6 +16,7 @@ vi.mock('../src/lib/work-feed-host', () => ({
   workFeedEligibilityAvailable: () => false,
   workFeedRewardFilterAvailable: mocks.rewardFilter,
   readFeedAssetsFromHost: mocks.assets,
+  readFeedFacetsFromHost: mocks.facets,
   readFeedForViewerFromHost: vi.fn(),
   readFeedFromHost: mocks.feed,
   readDetailFromHost: mocks.detail,
@@ -39,6 +41,7 @@ beforeEach(() => {
   mocks.available.mockReturnValue(true);
   mocks.feed.mockResolvedValue(page);
   mocks.rewardFilter.mockReturnValue(false);
+  mocks.facets.mockResolvedValue({ categories: [], skills: [] });
 });
 describe('loadFeed', () => {
   it('is unavailable while the feature flag is off and never reads', async () => {
@@ -69,6 +72,42 @@ describe('loadFeed', () => {
     mocks.feed.mockRejectedValue(new Error('postgres://secret'));
     const failed = await loadFeed({});
     expect(failed).toEqual({ status: 'UNAVAILABLE' });
+  });
+});
+describe('loadFeed: deadline window and suggested categories and skills (T097)', () => {
+  it('maps both apply-by dates to UTC instants and reads them as one typed window', async () => {
+    const loaded = await loadFeed({ closesAfter: '2026-11-03', closesBefore: '2026-11-10' });
+    expect(loaded).toMatchObject({ status: 'READY' });
+    expect(mocks.feed).toHaveBeenCalledWith({
+      closesAfter: '2026-11-03T00:00:00.000Z',
+      closesBefore: '2026-11-10T00:00:00.000Z',
+      sort: 'newest',
+      limit: 20,
+    });
+  });
+  it('refuses an inverted or empty window and a malformed date without reading', async () => {
+    for (const params of [
+      { closesAfter: '2026-11-10', closesBefore: '2026-11-03' },
+      { closesAfter: '2026-11-10', closesBefore: '2026-11-10' },
+      { closesAfter: 'tomorrow' },
+      { visibility: 'PUBLIC' },
+      { visibility: 'INVITE_ONLY' },
+    ])
+      expect(await loadFeed(params)).toMatchObject({ status: 'INVALID' });
+    expect(mocks.feed).not.toHaveBeenCalled();
+  });
+  it('hands the form the live categories and skills, and still lists Raids if suggestions fail', async () => {
+    mocks.facets.mockResolvedValue({ categories: ['design'], skills: ['figma'] });
+    expect(await loadFeed({})).toMatchObject({
+      status: 'READY',
+      facets: { categories: ['design'], skills: ['figma'] },
+    });
+    mocks.facets.mockRejectedValue(new Error('postgres://secret'));
+    expect(await loadFeed({})).toMatchObject({
+      status: 'READY',
+      page,
+      facets: { categories: [], skills: [] },
+    });
   });
 });
 describe('loadFeed: display-unit minimum reward within one asset (T097)', () => {
