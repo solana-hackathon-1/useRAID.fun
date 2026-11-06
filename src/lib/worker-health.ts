@@ -1,12 +1,14 @@
 import { db } from './db';
 import { JOB_LEASE_MINUTES } from './job-lease';
 import { JOB_MAX_ATTEMPTS } from './queue';
+import { correlationFields } from './worker-diagnostics';
 
 /**
  * Durable worker health (T038, blueprint §27.3/§30.3). Diagnostic only: nothing here gates, retries or revives work.
  * Host contract: needs a Prisma `db` with the `WorkerStepHealth`, `Job`, `OutboxEvent`, `AuditEvent` and
- * `NotificationDispatch` tables; the clock is injectable. Output carries counts, ages and step names only - never job
- * payloads, keys or error messages.
+ * `NotificationDispatch` tables, plus (read-only) `Engagement`, `FinancialTx`, `TokenLaunch`, `Raid`, `Token` and
+ * `Settings` for the commitment, transaction and provider signals; the clock is injectable. Output carries counts, ages
+ * and step names only - never job payloads, keys, identifiers, signatures or error messages.
  */
 /** The worker schedule runs about once a minute; a step with no success for this long is stale. */
 export const STEP_STALE_MS = 5 * 60 * 1000;
@@ -28,7 +30,24 @@ export const PROVIDER_STALE_SECONDS = 30 * 60;
 /** The closure worker runs every minute; an active engagement past its accepted operational deadline longer than this is overdue. */
 export const COMMITMENT_OVERDUE_SECONDS = 15 * 60;
 /** Every named step `schedule()` runs; a drift test keeps this identical to worker-jobs.ts. */
-export const KNOWN_WORKER_STEPS: readonly string[] = [];
+export const KNOWN_WORKER_STEPS: readonly string[] = [
+  'notifications',
+  'work-closure',
+  'finance-readiness',
+  'status-transitions',
+  'coverage-expired',
+  'collect',
+  'measure',
+  'finalize',
+  'allocate-retry',
+  'launch-jobs',
+  'cleanup',
+  'retention',
+  'reconcile',
+  'usdc-reconcile',
+];
+/** Steps that only run while tracking is enabled: the money path (measure, settle, allocate). */
+const TRACKING_STEPS: readonly string[] = ['measure', 'finalize', 'allocate-retry'];
 /** The claim query treats a lock older than this as abandoned; derived from the one lease constant. */
 export const LEASE_SECONDS = JOB_LEASE_MINUTES * 60;
 
@@ -81,6 +100,7 @@ export async function recordStepOutcome(
       JSON.stringify({
         step: 'worker-health',
         error: error instanceof Error ? error.message : 'unavailable',
+        ...correlationFields(),
       }),
     );
   } finally {
@@ -89,10 +109,16 @@ export async function recordStepOutcome(
 }
 
 export type WorkerHealthStatus = 'ok' | 'degraded' | 'unknown';
-export async function workerHealthSnapshot(
-  now = new Date(),
-  options: { outboxDispatchEnabled?: boolean } = {},
-) {
+export interface WorkerHealthOptions {
+  outboxDispatchEnabled?: boolean;
+  /** Explicit `false` lets the tracking steps retire; anything else keeps them visible when they stop (money path). */
+  trackingEnabled?: boolean;
+  /** Commitment overdue is only a reason while the closure worker is switched on. */
+  closureEnabled?: boolean;
+  commitmentOverdueSeconds?: number;
+}
+const seconds = (value: number | null) => (value === null ? null : Math.max(0, Math.floor(value)));
+export async function workerHealthSnapshot(now = new Date(), options: WorkerHealthOptions = {}) {
   // Collapse per-iteration collect/measure/settle steps (`collect:<raidId>`) so identifiers never reach the signal.
   const all = await db.workerStepHealth.findMany({
     where: { step: { not: { contains: ':' } } },
@@ -102,9 +128,22 @@ export async function workerHealthSnapshot(
     (a, r) => (!a || r.lastRunAt > a ? r.lastRunAt : a),
     null,
   );
-  // Retire rows of removed/renamed steps, but only while another step is alive (see STEP_RETIRE_MS).
+  // Retire rows of removed/renamed steps, but only while another step is alive (see STEP_RETIRE_MS). A step the
+  // schedule still defines is never retired merely for silence, except the tracking steps when tracking is off:
+  // otherwise a money-path step that stopped running would vanish from the signal after a day.
   const alive = heartbeat !== null && +now - +heartbeat <= STEP_STALE_MS;
-  const rows = alive ? all.filter((r) => +now - +r.lastRunAt <= STEP_RETIRE_MS) : all;
+  const retiredReason = (r: { step: string; lastRunAt: Date }) => {
+    if (!alive || +now - +r.lastRunAt <= STEP_RETIRE_MS) return null;
+    if (!KNOWN_WORKER_STEPS.includes(r.step)) return 'unknown-step' as const;
+    return TRACKING_STEPS.includes(r.step) && options.trackingEnabled === false
+      ? ('tracking-disabled' as const)
+      : null;
+  };
+  const retiredSteps = all.flatMap((r) => {
+    const reason = retiredReason(r);
+    return reason ? [{ step: r.step, reason }] : [];
+  });
+  const rows = all.filter((r) => !retiredReason(r));
   const steps = rows.map((row) => ({
     step: row.step,
     lastRunAt: row.lastRunAt,
@@ -136,6 +175,63 @@ export async function workerHealthSnapshot(
           WHERE a."eventType" LIKE 'work.%' AND NOT EXISTS (SELECT 1 FROM "NotificationDispatch" d WHERE d."outboxEventId"=o."id")`
       )[0]
     : null;
+  const commitmentOverdueSeconds = options.commitmentOverdueSeconds ?? COMMITMENT_OVERDUE_SECONDS;
+  // Same effective-terms read as the closure pass; an unreadable stored deadline is that pass's own failure to report.
+  const [commitmentRow] = await db.$queryRaw<{ past: bigint; oldest: number | null }[]>`
+    WITH t AS MATERIALIZED (
+      SELECT raid_try_timestamptz(raid_effective_terms(e."id")->'deadlines'->>'operationalClosure') AS due
+      FROM "Engagement" e WHERE e."state" IN ('ACCESS_PENDING','IN_PROGRESS','SUBMITTED','REVISION_REQUESTED'))
+    SELECT COUNT(*) FILTER (WHERE due <= clock_timestamp()) AS past,
+      EXTRACT(EPOCH FROM (clock_timestamp() - MIN(due) FILTER (WHERE due <= clock_timestamp())))::float8 AS oldest
+    FROM t`;
+  // Signed transactions and submitted launches whose chain outcome the reconcilers have not yet recorded.
+  const [txRow] = await db.$queryRaw<{ pending: bigint; oldest: number | null }[]>`
+    SELECT COUNT(*) AS pending, EXTRACT(EPOCH FROM ((NOW() AT TIME ZONE 'UTC') - MIN(p."at")))::float8 AS oldest
+    FROM (SELECT "createdAt" AS "at" FROM "FinancialTx" WHERE "status"='SIGNED'
+      UNION ALL SELECT "updatedAt" FROM "TokenLaunch" WHERE "status"='SUBMITTED') p`;
+  // Provider freshness is judged only for work the schedule actually collects: active, visible, not suspended, and
+  // (for tracking v2) only while tracking is on. X is judged only while collection is switched on.
+  const trackingOn = options.trackingEnabled !== false;
+  const collectionEnabled =
+    (await db.settings.findUnique({ where: { id: 'global' }, select: { collectionEnabled: true } }))
+      ?.collectionEnabled ?? false;
+  const [xRow] = collectionEnabled
+    ? await db.$queryRaw<{ active: bigint; stale: bigint; oldest: number | null }[]>`
+        SELECT COUNT(*) AS active, COUNT(*) FILTER (WHERE a."age" > ${PROVIDER_STALE_SECONDS}) AS stale, MAX(a."age") AS oldest
+        FROM (SELECT EXTRACT(EPOCH FROM ((NOW() AT TIME ZONE 'UTC') - COALESCE(r."observedAt", r."startsAt")))::float8 AS "age"
+          FROM "Raid" r JOIN "User" u ON u."id"=r."creatorId"
+          WHERE r."status"='ACTIVE' AND r."hidden"=false AND u."suspended"=false AND (r."trackingVersion"<>2 OR ${trackingOn})) a`
+    : [];
+  const [marketRow] = await db.$queryRaw<
+    { active: bigint; stale: bigint; oldest: number | null }[]
+  >`
+    SELECT COUNT(*) AS active, COUNT(*) FILTER (WHERE a."age" > ${PROVIDER_STALE_SECONDS}) AS stale, MAX(a."age") AS oldest
+    FROM (SELECT EXTRACT(EPOCH FROM ((NOW() AT TIME ZONE 'UTC') - COALESCE(t."marketAt", MIN(r."startsAt"))))::float8 AS "age"
+      FROM "Token" t JOIN "Raid" r ON r."mint"=t."mint" JOIN "User" u ON u."id"=r."creatorId"
+      WHERE r."status"='ACTIVE' AND r."hidden"=false AND u."suspended"=false AND (r."trackingVersion"<>2 OR ${trackingOn})
+      GROUP BY t."mint", t."marketAt") a`;
+  const commitments = {
+    closureEnabled: !!options.closureEnabled,
+    pastDeadline: Number(commitmentRow.past),
+    oldestPastDeadlineSeconds: seconds(commitmentRow.oldest),
+  };
+  const transactions = {
+    pending: Number(txRow.pending),
+    oldestPendingAgeSeconds: seconds(txRow.oldest),
+  };
+  const providers = {
+    collection: {
+      enabled: collectionEnabled,
+      activeRaids: xRow ? Number(xRow.active) : null,
+      staleRaids: xRow ? Number(xRow.stale) : null,
+      oldestObservationAgeSeconds: xRow ? seconds(xRow.oldest) : null,
+    },
+    market: {
+      activeTokens: Number(marketRow.active),
+      staleTokens: Number(marketRow.stale),
+      oldestAgeSeconds: seconds(marketRow.oldest),
+    },
+  };
   const oldestRunnableAgeSeconds =
     jobs.oldest === null ? null : Math.max(0, Math.floor(jobs.oldest));
   const outboxSummary = {
@@ -156,6 +252,16 @@ export async function workerHealthSnapshot(
     ...((outboxSummary.oldestPendingAgeSeconds ?? 0) > OUTBOX_OVERDUE_SECONDS
       ? ['outbox-overdue']
       : []),
+    ...(commitments.closureEnabled &&
+    commitments.oldestPastDeadlineSeconds !== null &&
+    commitments.oldestPastDeadlineSeconds >= commitmentOverdueSeconds
+      ? ['commitment-deadline-overdue']
+      : []),
+    ...((transactions.oldestPendingAgeSeconds ?? 0) > TX_UNKNOWN_SECONDS
+      ? ['tx-unknown-overdue']
+      : []),
+    ...(providers.collection.staleRaids ? ['provider-stale:x'] : []),
+    ...(providers.market.staleTokens ? ['provider-stale:market'] : []),
   ];
   const heartbeatAt = rows.reduce<Date | null>(
     (a, r) => (!a || r.lastRunAt > a ? r.lastRunAt : a),
@@ -168,6 +274,10 @@ export async function workerHealthSnapshot(
     heartbeatAt,
     reasons,
     steps,
+    retiredSteps,
+    commitments,
+    transactions,
+    providers,
     jobs: {
       oldestRunnableAgeSeconds,
       staleLeases: Number(jobs.stale),
