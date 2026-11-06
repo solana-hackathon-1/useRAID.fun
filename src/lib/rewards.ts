@@ -140,6 +140,8 @@ async function recordAndBroadcast(
     );
   }
   const signature = bs58.encode(tx.signature!);
+  // Before the commit too: the signed row and payout rows built from reads older than the lease must not be persisted.
+  await assertJobLease();
   const row = await db.$transaction(async (t) => {
     await lockAdvisory(t, lockResource('finance', launch.id));
     if (await t.financialTx.count({ where: { launchId: launch.id, status: 'SIGNED' } }))

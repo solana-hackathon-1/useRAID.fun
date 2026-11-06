@@ -1,4 +1,5 @@
 import { lockResource } from '@/identity-locks';
+import { JOB_LEASE_MINUTES } from '@/lib/job-lease';
 import { lockAdvisory, prepareIdentity, identityWriter } from '@/lib/identity-protocol';
 import { NextResponse } from 'next/server';
 import { checkOrigin, requireUser, HttpError } from '@/lib/auth';
@@ -109,7 +110,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
         }
       } else if (action === 'retry') {
         if (typeof b.id !== 'string') throw new HttpError(400, 'Invalid job.');
-        const stale = new Date(Date.now() - 600000);
+        const stale = new Date(Date.now() - JOB_LEASE_MINUTES * 60000);
         const job = await tx.job.findUnique({ where: { id: b.id } });
         const reset = await tx.job.updateMany({
           where: {
