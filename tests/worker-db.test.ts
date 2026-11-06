@@ -236,6 +236,18 @@ suite('worker jobs module', () => {
       vi.unstubAllEnvs();
     });
   });
+  it('claims a job at once even when the app clock leads the database clock', async () => {
+    // enqueue() stamps runAt with the app clock while claimJob() compares it with Postgres NOW(); a few ms of lead
+    // (Docker VM drift, cold start) hides a just-enqueued job from the next claim.
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(Date.now() + 5000);
+    try {
+      await enqueue('collect', 'collect:skew:1', { raidId: 'skew' });
+      expect(await claimJob()).not.toBeNull();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
   it('finishes an unknown job kind without throwing', async () => {
     await enqueue('mystery', 'mystery:1', {});
     const job = (await claimJob())!;
