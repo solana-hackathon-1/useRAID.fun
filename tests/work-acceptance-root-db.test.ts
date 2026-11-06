@@ -120,8 +120,14 @@ async function cloneAssessment(skillId: string) {
   await db.$transaction(async (tx) => {
     await tx.$executeRawUnsafe('SET LOCAL session_replication_role = replica');
     for (const [from, id] of [
-      [`(SELECT "receiptId" FROM "SkillAssessmentVersion" WHERE "id"='${source.versionId}')`, receiptIds[0]],
-      [`(SELECT "receiptId" FROM "PracticeAssessmentReviewVersion" WHERE "id"='${source.reviewId}')`, receiptIds[1]],
+      [
+        `(SELECT "receiptId" FROM "SkillAssessmentVersion" WHERE "id"='${source.versionId}')`,
+        receiptIds[0],
+      ],
+      [
+        `(SELECT "receiptId" FROM "PracticeAssessmentReviewVersion" WHERE "id"='${source.reviewId}')`,
+        receiptIds[1],
+      ],
     ] as const)
       await tx.$executeRawUnsafe(
         `INSERT INTO "CommandReceipt" SELECT (jsonb_populate_record(null::"CommandReceipt", to_jsonb(r) || '${JSON.stringify({ id, idempotencyKey: id })}'::jsonb)).* FROM "CommandReceipt" r WHERE r."id"=${from}`,
@@ -387,12 +393,16 @@ integration('Root acceptance: explicit consent and verified skills', { timeout: 
     const after = await both();
     for (const r of [before, after]) await consent(person, r.slot, r.digest);
     // Backend is still unverified, then verified: every required skill must be present.
-    await expect(accept(person, before.slot)).rejects.toMatchObject({ code: 'ELIGIBILITY_REJECTED' });
+    await expect(accept(person, before.slot)).rejects.toMatchObject({
+      code: 'ELIGIBILITY_REJECTED',
+    });
     await cloneAssessment('backend');
     expect((await accept(person, before.slot)).engagement.state).toBe('ACCESS_PENDING');
     // Revoking one of the two skills (frontend) makes the same requirement fail again.
     await fx.decide('REVOKE');
-    await expect(accept(person, after.slot)).rejects.toMatchObject({ code: 'ELIGIBILITY_REJECTED' });
+    await expect(accept(person, after.slot)).rejects.toMatchObject({
+      code: 'ELIGIBILITY_REJECTED',
+    });
     expect(await db.$queryRawUnsafe('SELECT 1 FROM "Engagement"')).toHaveLength(1);
   });
   it('makes a real revocation racing an acceptance wait until the acceptance that read the evidence commits', async () => {
