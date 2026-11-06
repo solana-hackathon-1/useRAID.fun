@@ -68,6 +68,11 @@ const closures = () =>
   row<{ engagementId: string; reason: string }>(
     'SELECT "engagementId"::text,"reason" FROM "EngagementClosure"',
   );
+/** `work.engagement_closed.v1` announcements per engagement: one per closure, and a closure releases exactly once. */
+const closedEvents = () =>
+  row<{ aggregateId: string; n: number }>(
+    `SELECT "aggregateId","count"(*)::int AS n FROM "AuditEvent" WHERE "eventType"='work.engagement_closed.v1' GROUP BY 1 ORDER BY 1`,
+  );
 async function setup(deadlines: ReturnType<typeof soon>) {
   const worker = await seedWorkHuman(db);
   const reviewer = await seedWorkHuman(db, 'reviewer-' + randomUUID());
@@ -194,7 +199,7 @@ integration('T024 root composition: worker closure and operator closure route', 
     const others = [await setup(deadlines), await setup(deadlines), await setup(deadlines)];
     await seedWorkHuman(db, operatorId);
     await untilPast(deadlines.operationalClosure);
-    const settled = await Promise.allSettled([
+    const [review, ...passes] = await Promise.allSettled([
       run((tx) =>
         decideReview(tx, cmd(raced.reviewer.actor, accept(sub.submission.id)), {
           allowNewWrites: true,
@@ -203,27 +208,69 @@ integration('T024 root composition: worker closure and operator closure route', 
       closeOverdueBatch(ports()),
       closeOverdueBatch(ports()),
     ]);
-    // The reviewer may lose to the worker, but never both outcomes, and no pass may report a failure.
-    for (const r of settled.slice(1)) {
+    // No pass may report a failure; the only settled refusals are another writer winning or the same key replaying.
+    let passClosed = 0;
+    for (const r of passes) {
       expect(r.status).toBe('fulfilled');
-      if (r.status === 'fulfilled') expect((r.value as { failed: unknown[] }).failed).toEqual([]);
+      if (r.status !== 'fulfilled') continue;
+      passClosed += r.value.closed;
+      expect(r.value.failed).toEqual([]);
+      for (const s of r.value.skipped) expect(['ENGAGEMENT_STATE', 'REPLAYED']).toContain(s.code);
     }
     const done = await closures();
     expect(done).toHaveLength(4);
-    expect(new Set(done.map((d) => d.engagementId)).size).toBe(4);
     expect(done.map((d) => d.engagementId).sort()).toEqual(
       [raced, ...others].map((e) => e.engagementId).sort(),
     );
-    // Exactly one side won the contested engagement, and the recorded reason says which.
+    // Exactly one side won the contested engagement, and the recorded reason says which. A reviewer that lost is
+    // refused with the settled ENGAGEMENT_STATE answer and leaves no review behind.
     const contested = done.find((d) => d.engagementId === raced.engagementId);
-    expect(contested?.reason).toBe(
-      settled[0].status === 'fulfilled' ? 'ACCEPTED' : 'REVIEW_TIMEOUT',
+    const reviews = await row(
+      'SELECT 1 FROM "WorkReview" WHERE "submissionId"=$1::uuid',
+      sub.submission.id,
     );
+    if (review.status === 'fulfilled') {
+      expect(contested?.reason).toBe('ACCEPTED');
+      expect(reviews).toHaveLength(1);
+      expect(passClosed).toBe(3);
+    } else {
+      expect(review.reason).toMatchObject({ code: 'ENGAGEMENT_STATE' });
+      expect(contested?.reason).toBe('REVIEW_TIMEOUT');
+      expect(reviews).toHaveLength(0);
+      expect(passClosed).toBe(4);
+    }
     expect(done.filter((d) => d.engagementId !== raced.engagementId).map((d) => d.reason)).toEqual(
       others.map(() => 'ACCESS_TIMEOUT'),
     );
+    // Four closures, one announcement and one release each; nothing is held afterwards.
+    expect(await closedEvents()).toEqual(
+      done
+        .map((d) => ({ aggregateId: d.engagementId, n: 1 }))
+        .sort((a, b) => (a.aggregateId < b.aggregateId ? -1 : 1)),
+    );
     expect(await commitments()).toEqual([]);
   }, 60000);
+
+  it('refuses a reviewer decision that arrives after the worker closed the submitted engagement', async () => {
+    const deadlines = soon();
+    const { worker, reviewer, engagementId } = await setup(deadlines);
+    await start(engagementId);
+    const sub = await run((tx) =>
+      submitWork(tx, cmd(worker.actor, work(engagementId)), { allowNewWrites: true }),
+    );
+    await seedWorkHuman(db, operatorId);
+    await untilPast(deadlines.operationalClosure);
+    expect(await closeOverdueBatch(ports())).toMatchObject({ closed: 1, failed: [] });
+    await expect(
+      run((tx) =>
+        decideReview(tx, cmd(reviewer.actor, accept(sub.submission.id)), { allowNewWrites: true }),
+      ),
+    ).rejects.toMatchObject({ code: 'ENGAGEMENT_STATE' });
+    expect(await closures()).toEqual([{ engagementId, reason: 'REVIEW_TIMEOUT' }]);
+    expect(await closedEvents()).toEqual([{ aggregateId: engagementId, n: 1 }]);
+    expect((await engagement(engagementId)).state).toBe('TERMINATED');
+    expect(await commitments()).toEqual([]);
+  }, 40000);
 
   it('leaves exactly one closure and one release when a submission races the worker', async () => {
     const deadlines = soon();
@@ -368,13 +415,20 @@ integration('T024 root composition: worker closure and operator closure route', 
     await seedWorkHuman(db, operatorId);
     await untilPast(at(8950));
     const host = { allowNewWrites: true, authorize: async () => false };
-    const pass = await closeOverdueBatch(ports({ host, limit: 2, maxFailures: 2 }));
+    // `limit` is larger than the failure budget, so only `maxFailures` can stop this pass at two of four rows.
+    const pass = await closeOverdueBatch(ports({ host, limit: 10, maxFailures: 2 }));
     expect(pass).toMatchObject({ considered: 2, closed: 0, skipped: [] });
-    expect(pass.failed.map((f) => f.engagementId)).toEqual([
-      rows[0].engagementId,
-      rows[1].engagementId,
+    expect(pass.failed).toEqual([
+      { engagementId: rows[0].engagementId, code: 'FORBIDDEN' },
+      { engagementId: rows[1].engagementId, code: 'FORBIDDEN' },
     ]);
+    // The rows behind the budget were never attempted, so they still hold their reservation.
     expect(await closures()).toEqual([]);
+    expect(await commitments()).toHaveLength(4);
+    // A larger budget on the same rows attempts all of them, so the bound above came from `maxFailures` alone.
+    const wide = await closeOverdueBatch(ports({ host, limit: 10, maxFailures: 4 }));
+    expect(wide.considered).toBe(4);
+    expect(wide.failed.map((f) => f.engagementId)).toEqual(rows.map((r) => r.engagementId));
   }, 60000);
 
   it('reports a row whose terms cannot be read without aborting selection for the rest of the pass', async () => {
