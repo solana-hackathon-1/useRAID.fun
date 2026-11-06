@@ -21,6 +21,7 @@ export function Shell({
   sandbox = false,
   extraLinks = [],
   activeRaid = null,
+  environment = null,
 }: {
   children: React.ReactNode;
   demo: boolean;
@@ -30,6 +31,8 @@ export function Shell({
   extraLinks?: { href: string; label: string }[];
   /** The Raid holding the signed-in account's capacity, read server-side per request; shown only with an account. */
   activeRaid?: { engagementId: string; title: string } | null;
+  /** Set on every non-production deployment so the viewer always sees it; null only for a declared production. */
+  environment?: { label: string; declared: boolean } | null;
 }) {
   const path = usePathname();
   const links = [navLinks[0], ...extraLinks, ...navLinks.slice(1)];
@@ -54,6 +57,14 @@ export function Shell({
           }
         }}
       >
+        {environment && (
+          <div className="env-label" role="status">
+            <span className="env-label-name">{environment.label}</span>
+            <span className="env-label-detail">
+              {environment.declared ? 'Not production' : 'Treat as not production'}
+            </span>
+          </div>
+        )}
         <div className="header-inner">
           <Link
             href="/"

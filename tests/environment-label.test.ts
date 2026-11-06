@@ -66,9 +66,17 @@ describe('persistent non-production label', () => {
   it('tells the viewer to treat an undeclared environment as not production', () => {
     const out = html({ label: 'Environment not declared', declared: false });
     expect(out).toContain('Environment not declared');
-    expect(out).toContain('treat as not production');
+    expect(out).toMatch(/treat as not production/i);
   });
   it('renders nothing for production', () => {
     expect(html(null)).not.toContain('env-label');
+  });
+});
+
+describe('staging compose', () => {
+  it('declares the staging environment for web and worker through the shared safe environment', async () => {
+    const { readFileSync } = await import('node:fs');
+    const compose = readFileSync(`${__dirname}/../compose.staging.yaml`, 'utf8');
+    expect(compose).toMatch(/safe-environment\n(?:\s+\S.*\n)*?\s+RAID_ENVIRONMENT: staging\n/);
   });
 });
