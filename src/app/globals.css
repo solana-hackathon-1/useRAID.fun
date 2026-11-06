@@ -933,6 +933,25 @@ aside,
   background: var(--surface-2);
   color: var(--text);
 }
+.env-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  min-height: 28px;
+  padding: 2px 16px;
+  background: var(--accent-text);
+  color: var(--bg);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.env-label-detail {
+  font-weight: 500;
+}
 .active-raid-bar {
   border-top: 1px solid var(--border);
   display: flex;
