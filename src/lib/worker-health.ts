@@ -21,6 +21,14 @@ export const RECORD_COOLDOWN_MS = 30 * 1000;
 export const FAILING_STREAK = 3;
 export const JOB_OVERDUE_SECONDS = 15 * 60;
 export const OUTBOX_OVERDUE_SECONDS = 15 * 60;
+/** A signed transaction or submitted launch with no known outcome after this long needs an operator (reconcile gives up its own retries well before). */
+export const TX_UNKNOWN_SECONDS = 30 * 60;
+/** An active campaign whose provider data is older than this is stale (collection runs every 5 minutes, market every minute). */
+export const PROVIDER_STALE_SECONDS = 30 * 60;
+/** The closure worker runs every minute; an active engagement past its accepted operational deadline longer than this is overdue. */
+export const COMMITMENT_OVERDUE_SECONDS = 15 * 60;
+/** Every named step `schedule()` runs; a drift test keeps this identical to worker-jobs.ts. */
+export const KNOWN_WORKER_STEPS: readonly string[] = [];
 /** The claim query treats a lock older than this as abandoned; derived from the one lease constant. */
 export const LEASE_SECONDS = JOB_LEASE_MINUTES * 60;
 

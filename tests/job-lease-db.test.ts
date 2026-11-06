@@ -4,7 +4,12 @@ import { createRaid } from '../src/lib/campaigns';
 import { config } from '../src/lib/config';
 import { claimJob, enqueue } from '../src/lib/queue';
 import { runJob } from '../src/lib/worker-jobs';
-import { assertJobLease, JobLeaseLostError, runUnderJobLease } from '../src/lib/job-lease';
+import {
+  assertJobLease,
+  JobLeaseLostError,
+  runUnderJobLease,
+  whileJobLeaseHeld,
+} from '../src/lib/job-lease';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 const suite = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 const MINT = 'So11111111111111111111111111111111111111112';
@@ -175,5 +180,87 @@ suite('pre-effect job lease fence (T038)', () => {
     expect(await claimJob()).toBeNull();
     await runJob(crashed); // a late zombie after completion is still refused
     expect(providerCalls).toHaveBeenCalledTimes(2);
+  });
+
+  describe('the ownership fence under contention and failure', () => {
+    const pause = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+    it('keeps a concurrent claimJob off the row while a fenced write holds it, then lets it claim after commit', async () => {
+      await due('market:fence:race');
+      const holder = (await claimJob())!;
+      // Owned by the database clock for about two more seconds, so the fence passes now and the lease expires inside it.
+      await db.$executeRaw`UPDATE "Job" SET "lockedAt"=(NOW() AT TIME ZONE 'UTC')-INTERVAL '10 minutes'+INTERVAL '2 seconds' WHERE id=${holder.id}`;
+      let release!: () => void;
+      const gate = new Promise<void>((resolve) => (release = resolve));
+      let entered!: () => void;
+      const inside = new Promise<void>((resolve) => (entered = resolve));
+      const fenced = whileJobLeaseHeld(holder, async (tx) => {
+        await tx.token.updateMany({ where: { mint: MINT }, data: { marketError: 'fenced write' } });
+        entered();
+        await gate;
+      });
+      await inside;
+      await pause(2500); // the lease is now expired by the database clock, but the fence transaction still holds the row
+      expect(await claimJob()).toBeNull(); // second connection: SKIP LOCKED, the job is not handed out mid-write
+      release();
+      expect(await fenced).toBe(true);
+      expect((await db.token.findUniqueOrThrow({ where: { mint: MINT } })).marketError).toBe(
+        'fenced write',
+      );
+      const next = (await claimJob())!; // the write is committed first; only now may another worker take over
+      expect(next.id).toBe(holder.id);
+      expect(next.lease).not.toBe(holder.lease);
+      expect(await whileJobLeaseHeld(holder, async () => {})).toBe(false);
+    }, 20000);
+    it('rolls back every write and releases the row when the database fails inside the fence', async () => {
+      await due('market:fence:failure');
+      const holder = (await claimJob())!;
+      await expect(
+        whileJobLeaseHeld(holder, async (tx) => {
+          await tx.token.updateMany({ where: { mint: MINT }, data: { marketError: 'partial' } });
+          throw new Error('database failure mid-write');
+        }),
+      ).rejects.toThrow('database failure mid-write');
+      expect((await db.token.findUniqueOrThrow({ where: { mint: MINT } })).marketError).toBeNull();
+      await expireLease(holder.id);
+      expect((await claimJob())?.id).toBe(holder.id); // the row lock did not outlive the failed transaction
+    });
+    it('records the original job error and still releases the job when the ownership check itself fails', async () => {
+      const lines: string[] = [];
+      vi.spyOn(console, 'error').mockImplementation(
+        (line: unknown) => void lines.push(String(line)),
+      );
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => new Response('x', { status: 500 })),
+      );
+      await due('market:fence:check-fails');
+      const job = (await claimJob())!;
+      vi.spyOn(db, '$transaction').mockRejectedValueOnce(new Error('connection reset'));
+      await expect(runJob(job)).resolves.toBeUndefined();
+      expect(lines.some((l) => l.includes('Market provider returned 500.'))).toBe(true);
+      const after = await db.job.findUniqueOrThrow({ where: { id: job.id } });
+      expect(after).toMatchObject({
+        error: 'Market provider returned 500.',
+        lease: null,
+        lockedAt: null,
+      });
+      expect(after.runAt.getTime()).toBeGreaterThan(Date.now()); // backoff applied, not stuck until the lease runs out
+    });
+    it('still logs the original job error when both the ownership check and the release fail', async () => {
+      const lines: string[] = [];
+      vi.spyOn(console, 'error').mockImplementation(
+        (line: unknown) => void lines.push(String(line)),
+      );
+      vi.stubGlobal(
+        'fetch',
+        vi.fn(async () => new Response('x', { status: 500 })),
+      );
+      await due('market:fence:both-fail');
+      const job = (await claimJob())!;
+      vi.spyOn(db, '$transaction').mockRejectedValueOnce(new Error('connection reset'));
+      vi.spyOn(db.job, 'updateMany').mockRejectedValueOnce(new Error('connection reset'));
+      await expect(runJob(job)).rejects.toThrow('connection reset');
+      expect(lines.some((l) => l.includes('Market provider returned 500.'))).toBe(true);
+    });
   });
 });
