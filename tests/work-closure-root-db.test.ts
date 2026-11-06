@@ -330,6 +330,73 @@ integration('T024 root composition: worker closure and operator closure route', 
     expect((await engagement(engagementId)).state).toBe('IN_PROGRESS');
   }, 60000);
 
+  it('does not let persistently failing oldest engagements starve newer overdue ones', async () => {
+    const base = soon();
+    const stale = await setup({ ...base, operationalClosure: at(8800) });
+    const stale2 = await setup({ ...base, operationalClosure: at(8900) });
+    const fresh = await setup({ ...base, operationalClosure: at(9000) });
+    const fresh2 = await setup({ ...base, operationalClosure: at(9100) });
+    await seedWorkHuman(db, operatorId);
+    await untilPast(at(9100));
+    const broken = new Set<string>([stale.engagementId, stale2.engagementId]);
+    const host = {
+      allowNewWrites: true,
+      authorize: async (_tx: unknown, _actor: unknown, t: { engagementId: string }) =>
+        !broken.has(t.engagementId),
+    };
+    const pass = await closeOverdueBatch(ports({ host, limit: 2 }));
+    // The two oldest keep failing, are reported, and no longer use the batch: the newer rows still close.
+    expect(pass.closed).toBe(2);
+    expect(pass.failed).toEqual([
+      { engagementId: stale.engagementId, code: 'FORBIDDEN' },
+      { engagementId: stale2.engagementId, code: 'FORBIDDEN' },
+    ]);
+    expect((await closures()).map((c) => c.engagementId).sort()).toEqual(
+      [fresh, fresh2].map((e) => e.engagementId).sort(),
+    );
+    // Nothing the failing rows hold was released.
+    expect((await commitments()).map((c) => c.engagementId).sort()).toEqual(
+      [stale, stale2].map((e) => e.engagementId).sort(),
+    );
+  }, 60000);
+
+  it('bounds a pass by `maxFailures`, stepping over failures oldest first', async () => {
+    const base = soon();
+    const rows = [];
+    for (const ms of [8800, 8850, 8900, 8950])
+      rows.push(await setup({ ...base, operationalClosure: at(ms) }));
+    await seedWorkHuman(db, operatorId);
+    await untilPast(at(8950));
+    const host = { allowNewWrites: true, authorize: async () => false };
+    const pass = await closeOverdueBatch(ports({ host, limit: 2, maxFailures: 2 }));
+    expect(pass).toMatchObject({ considered: 2, closed: 0, skipped: [] });
+    expect(pass.failed.map((f) => f.engagementId)).toEqual([
+      rows[0].engagementId,
+      rows[1].engagementId,
+    ]);
+    expect(await closures()).toEqual([]);
+  }, 60000);
+
+  it('reports a row whose terms cannot be read without aborting selection for the rest of the pass', async () => {
+    const base = soon();
+    const poison = await setup({ ...base, operationalClosure: at(8800) });
+    const healthy = await setup({ ...base, operationalClosure: at(9000) });
+    await seedWorkHuman(db, operatorId);
+    await db.$transaction(async (t) => {
+      await t.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
+      await t.$executeRawUnsafe(
+        `UPDATE "Engagement" SET "acceptedTerms"=jsonb_set("acceptedTerms",'{deadlines,operationalClosure}','"not-a-date"') WHERE "id"=$1::uuid`,
+        poison.engagementId,
+      );
+    });
+    await untilPast(at(9000));
+    const pass = await closeOverdueBatch(ports());
+    expect(pass.closed).toBe(1);
+    expect(pass.failed).toEqual([{ engagementId: poison.engagementId, code: 'TERMS_INVALID' }]);
+    expect((await closures()).map((c) => c.engagementId)).toEqual([healthy.engagementId]);
+    expect((await engagement(poison.engagementId)).state).toBe('ACCESS_PENDING');
+  }, 60000);
+
   it('refuses a worker account without a live session or without operator authority', async () => {
     const deadlines = soon();
     const a = await setup(deadlines);
