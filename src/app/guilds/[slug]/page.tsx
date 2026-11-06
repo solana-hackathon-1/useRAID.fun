@@ -47,7 +47,7 @@ export default async function GuildPage({ params, searchParams }: Props) {
     throw error;
   }
   if (!view) notFound();
-  const { guild, updates, nextCursor, before } = view;
+  const { guild, updates, nextCursor, before, updatesUnavailable } = view;
   const home = `/guilds/${guild.slug}`;
   return (
     <>
@@ -59,16 +59,34 @@ export default async function GuildPage({ params, searchParams }: Props) {
       <header className="page-title">
         <p className="muted">Guild · {guild.slug}</p>
         <h1>{guild.name}</h1>
-        {guild.description && <p className="campaign-copy">{guild.description}</p>}
+        {guild.description ? (
+          <p className="campaign-copy">{guild.description}</p>
+        ) : (
+          <p className="muted">No description published yet.</p>
+        )}
         {guild.primaryTokenMint && (
           <p className="muted">
             Primary token mint <code>{guild.primaryTokenMint}</code>
           </p>
         )}
       </header>
+      {!before && (
+        <section className="panel" aria-labelledby="guild-track-record-heading">
+          <h2 id="guild-track-record-heading">Track record</h2>
+          <p>No Raid history is published for this Guild yet.</p>
+          <p className="muted">This is not a rating, and it does not say the Guild is low rated.</p>
+        </section>
+      )}
       <section className="panel" aria-labelledby="guild-updates-heading">
         <h2 id="guild-updates-heading">{before ? 'Older updates' : 'Updates'}</h2>
-        {updates.length ? (
+        {updatesUnavailable ? (
+          <div role="status">
+            <p>Updates cannot be loaded right now.</p>
+            <p className="muted">
+              This does not mean there are none. <Link href={home}>Try again</Link> shortly.
+            </p>
+          </div>
+        ) : updates.length ? (
           <ol className="guild-updates">
             {updates.map((update) => (
               <li key={update.id}>
