@@ -1,6 +1,11 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { FLAG_CATALOG, validateRuntimeConfig } from '../src/config-validation/index';
+import {
+  FLAG_CATALOG,
+  RECOGNISED_ENVIRONMENTS,
+  validateRuntimeConfig,
+} from '../src/config-validation/index';
+import { deploymentEnvironment } from '../src/lib/deployment-environment';
 import { checkRuntimeConfig } from '../src/lib/config-validation-host';
 
 const text = (path: string) => readFileSync(path, 'utf8');
@@ -84,5 +89,12 @@ describe('T037 startup host (web instrumentation and worker)', () => {
     const web = text('src/instrumentation.ts');
     expect(web).toContain("checkRuntimeConfig('web')");
     expect(web).toContain("NEXT_RUNTIME !== 'nodejs'");
+  });
+
+  it('recognises exactly the RAID_ENVIRONMENT names the non-production label declares', () => {
+    for (const value of RECOGNISED_ENVIRONMENTS)
+      expect(deploymentEnvironment({ RAID_ENVIRONMENT: value }).declared, value).toBe(true);
+    for (const value of ['prod', 'live', 'staging2'])
+      expect(deploymentEnvironment({ RAID_ENVIRONMENT: value }).declared, value).toBe(false);
   });
 });

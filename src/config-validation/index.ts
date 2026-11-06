@@ -2,6 +2,7 @@ export { FLAG_CATALOG, type FlagDefinition, type FlagImpact } from './flags';
 export {
   ConfigRefusedError,
   REAL_OPERATION_FLAGS,
+  RECOGNISED_ENVIRONMENTS,
   assertRuntimeConfig,
   describeViolations,
   validateRuntimeConfig,
