@@ -192,6 +192,25 @@ describe('readBoundedJson size limit', () => {
       code: 'too_large',
     });
   });
+  it('ignores a leading UTF-8 byte order mark, as Response.json() does', async () => {
+    const bom = Buffer.concat([Buffer.from([0xef, 0xbb, 0xbf]), Buffer.from('{"ok":true}')]);
+    expect(await readBoundedJson(new Response(bom), 1024)).toEqual({ ok: true });
+    expect(await new Response(bom).json()).toEqual({ ok: true });
+  });
+  it('still rejects a body that is only a byte order mark', async () => {
+    await expect(
+      readBoundedJson(new Response(Buffer.from([0xef, 0xbb, 0xbf])), 1024),
+    ).rejects.toMatchObject({ code: 'invalid_json' });
+  });
+  it('passes a body-read timeout through unchanged for the caller to map', async () => {
+    const timeout = new DOMException('The operation timed out.', 'TimeoutError');
+    const body = new ReadableStream<Uint8Array>({
+      pull() {
+        throw timeout;
+      },
+    });
+    await expect(readBoundedJson(new Response(body), 1024)).rejects.toBe(timeout);
+  });
   it('counts bytes, not characters', async () => {
     const text = JSON.stringify({ v: '€'.repeat(40) }); // 3 bytes per character
     await expect(readBoundedJson(new Response(text), 60)).rejects.toMatchObject({
