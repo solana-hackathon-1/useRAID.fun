@@ -1,4 +1,5 @@
 import { lockResource } from '../identity-locks';
+import { assertJobLease } from './job-lease';
 import { lockAdvisory } from './identity-protocol';
 import { trackingEnabled, trackingSettlementEnabled } from './config';
 import { launchpadsAvailable } from './release';
@@ -163,6 +164,7 @@ async function recordAndBroadcast(
     if (onRecorded) await onRecorded(t, signature);
     return record;
   });
+  await assertJobLease();
   await rpc.sendRawTransaction(raw, { maxRetries: 3 }).catch(() => {});
   return row;
 }
@@ -208,6 +210,7 @@ async function reconcileFinancial(rpc: Connection, launch: TokenLaunch) {
   if (!result) {
     const height = await rpc.getBlockHeight('finalized');
     if (height <= open.lastValidBlockHeight + EXPIRY_MARGIN_BLOCKS) {
+      await assertJobLease();
       await rpc
         .sendRawTransaction(Buffer.from(open.raw, 'base64'), { maxRetries: 2 })
         .catch(() => {});
@@ -328,6 +331,7 @@ async function reconcileFinancial(rpc: Connection, launch: TokenLaunch) {
     });
     return true;
   }
+  await assertJobLease();
   await rpc.sendRawTransaction(Buffer.from(open.raw, 'base64'), { maxRetries: 2 }).catch(() => {});
   return true;
 }
