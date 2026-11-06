@@ -18,6 +18,7 @@ import {
   clock,
   definition,
   assertOpenForTaking,
+  source,
 } from './engagement-authority';
 
 const COLUMNS =
@@ -50,37 +51,18 @@ export async function recordAcceptanceConsent(
       auth = await currentHuman(tx, actor);
       // Share-lock the listing then the slot, the order every slot writer uses, so a concurrent fill queues behind this
       // consent and one that already committed is read below. The database guard takes the same locks as a backstop.
-      const refs = await tx.query<{ listingId: string }>(
-        'SELECT "listingId"::text FROM "RaidSlot" WHERE "id"=$1::uuid',
-        [value.slotId],
+      const slot = await source(tx, value.slotId, 'SHARE');
+      const [stored] = await tx.query<{ digest: string }>(
+        'SELECT "digest" FROM "TermsVersion" WHERE "id"=$1::uuid',
+        [slot.termsVersionId],
       );
-      if (refs.length !== 1) fail('NOT_FOUND');
-      await tx.query('SELECT "id" FROM "WorkListing" WHERE "id"=$1::uuid FOR SHARE', [
-        refs[0].listingId,
-      ]);
-      await tx.query('SELECT "id" FROM "RaidSlot" WHERE "id"=$1::uuid FOR SHARE', [value.slotId]);
-      const rows = await tx.query<{
-        state: string;
-        listingState: string;
-        currentTermsVersionId: string;
-        termsVersionId: string;
-        digest: string;
-        listingId: string;
-        guildId: string;
-      }>(
-        `SELECT s."state",l."state" AS "listingState",l."currentTermsVersionId"::text,s."termsVersionId"::text,t."digest",l."id"::text AS "listingId",l."guildId"
-         FROM "RaidSlot" s JOIN "WorkListing" l ON l."id"=s."listingId" JOIN "TermsVersion" t ON t."id"=s."termsVersionId"
-         WHERE s."id"=$1::uuid`,
-        [value.slotId],
-      );
-      if (rows.length !== 1) fail('NOT_FOUND');
-      const slot = rows[0];
+      if (!stored) fail('NOT_FOUND');
       if (slot.state === 'FILLED') fail('SLOT_FILLED');
       if (slot.state !== 'AVAILABLE' || slot.listingState !== 'OPEN') fail('PUBLICATION_BLOCKED');
       if (
         slot.termsVersionId !== value.termsVersionId ||
         slot.currentTermsVersionId !== value.termsVersionId ||
-        slot.digest !== value.termsDigest
+        stored.digest !== value.termsDigest
       )
         fail('TERMS_VERSION_CHANGED');
       // Pre-screen with acceptance's own checks and codes. The Raid rows are share-locked above, but the offer and
