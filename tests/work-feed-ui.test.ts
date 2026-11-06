@@ -88,6 +88,44 @@ const render = (props: { page?: unknown; query?: Record<string, unknown>; reward
     }),
   );
 
+describe('T097 structured filters markup', () => {
+  const withFacets = (query = {}) =>
+    renderToStaticMarkup(
+      createElement(WorkFeed, {
+        page: page(),
+        query,
+        facets: { categories: ['design', 'docs<x>'], skills: ['figma'] },
+      } as never),
+    );
+  it('suggests live categories and skills in native lists while keeping plain text fields', () => {
+    const out = withFacets();
+    expect(out).toMatch(/<input[^>]*name="category"[^>]*list="raid-feed-categories"/);
+    expect(out).toMatch(/<input[^>]*name="skillId"[^>]*list="raid-feed-skills"/);
+    expect(out).toContain('<datalist id="raid-feed-categories">');
+    expect(out).toContain('<option value="design"');
+    expect(out).toContain('<option value="figma"');
+    // Suggestions are data, escaped, never markup.
+    expect(out).toContain('value="docs&lt;x&gt;"');
+    expect(out).not.toContain('docs<x>');
+  });
+  it('renders no suggestion list without live facets', () => {
+    expect(html()).not.toContain('<datalist');
+  });
+  it('has Apply after and Apply before date fields and carries both through links', () => {
+    const out = withFacets({
+      closesAfter: '2026-11-03T00:00:00.000Z',
+      closesBefore: '2026-11-10T00:00:00.000Z',
+    });
+    expect(out).toMatch(/<input[^>]*name="closesAfter"[^>]*type="date"[^>]*value="2026-11-03"/);
+    expect(out).toMatch(/<input[^>]*name="closesBefore"[^>]*type="date"[^>]*value="2026-11-10"/);
+    expect(feedHref({ closesAfter: '2026-11-03T00:00:00.000Z', category: 'design' })).toBe(
+      '/raids?category=design&closesAfter=2026-11-03T00%3A00%3A00.000Z',
+    );
+  });
+  it('offers no visibility control: only public work is discoverable', () => {
+    expect(withFacets()).not.toMatch(/name="visibility"/i);
+  });
+});
 describe('R08 public Raid feed markup', () => {
   it('shows safe cards with exact rewards, honest simulated funding and escaped text', () => {
     const out = html();
