@@ -90,6 +90,57 @@ describe('X OAuth identity', () => {
     );
     await expect(fetchXIdentity('code', 'verifier')).rejects.toMatchObject({ code: 'provider' });
   });
+  it('maps a refused redirect on the token call to the provider failure, before any reservation', async () => {
+    const fetcher = vi.fn().mockRejectedValue(redirectFailure());
+    vi.stubGlobal('fetch', fetcher);
+    await expect(fetchXIdentity('code', 'verifier')).rejects.toMatchObject({ code: 'provider' });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(usage.reserve).not.toHaveBeenCalled();
+  });
+  it('maps a refused redirect on /users/me to the provider failure and settles the reservation to zero', async () => {
+    const fetcher = vi.fn().mockResolvedValueOnce(token()).mockRejectedValueOnce(redirectFailure());
+    vi.stubGlobal('fetch', fetcher);
+    const failure = await fetchXIdentity('code', 'verifier').catch((error) => error);
+    expect(failure).toMatchObject({ code: 'provider' });
+    expect(JSON.stringify(failure)).not.toContain('fixture-token');
+    expect(usage.reserve).toHaveBeenCalledTimes(1);
+    expect(usage.settle).toHaveBeenCalledWith('reservation', 0, expect.any(String));
+  });
+  it('settles the reservation to zero when the profile read answers with an error status', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce(token())
+        .mockResolvedValueOnce(new Response('{}', { status: 503 })),
+    );
+    await expect(fetchXIdentity('code', 'verifier')).rejects.toMatchObject({ code: 'provider' });
+    expect(usage.settle).toHaveBeenCalledWith('reservation', 0, expect.stringContaining('503'));
+  });
+  it('keeps the reservation when the profile reply was served but refused (oversized)', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce(token())
+        .mockResolvedValueOnce(huge(256 * 1024)),
+    );
+    await expect(fetchXIdentity('code', 'verifier')).rejects.toMatchObject({ code: 'provider' });
+    expect(usage.reserve).toHaveBeenCalledTimes(1);
+    expect(usage.settle).not.toHaveBeenCalled();
+  });
+  it('keeps the reservation and reports the provider failure when the profile body times out', async () => {
+    const stalled = new Response(
+      new ReadableStream<Uint8Array>({
+        start(controller) {
+          controller.error(new DOMException('The operation timed out.', 'TimeoutError'));
+        },
+      }),
+    );
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(token()).mockResolvedValueOnce(stalled));
+    await expect(fetchXIdentity('code', 'verifier')).rejects.toMatchObject({ code: 'provider' });
+    expect(usage.settle).not.toHaveBeenCalled();
+  });
   it('keeps redirects refused on both calls', async () => {
     const fetcher = vi
       .fn()

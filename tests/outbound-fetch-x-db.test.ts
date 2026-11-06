@@ -73,6 +73,30 @@ suite('X provider read hardening', () => {
     const usage = await db.providerUsage.findFirstOrThrow({ where: { provider: 'x' } });
     expect(usage.reservedCents).toBeGreaterThan(0);
   });
+  it('refuses a stalled body as a counted (non-deferred) failure and keeps the reservation', async () => {
+    // A body that times out after the headers arrived: the call was served and may be billed, and a deferred retry
+    // would keep a fresh reservation every time (the unbounded spend loop), so it must count as an attempt.
+    const stalled = () =>
+      new Response(
+        new ReadableStream<Uint8Array>({
+          start(controller) {
+            controller.error(new DOMException('The operation timed out.', 'TimeoutError'));
+          },
+        }),
+        { status: 200 },
+      );
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockImplementation(async () => stalled()),
+    );
+    const failure = await lookupPosts(['1']).catch((error) => error);
+    expect(failure).toBeInstanceOf(ProviderError);
+    expect(failure).toMatchObject({ deferred: false, status: 200, retryAfter: 60 });
+    expect(failure.message).toContain('timed out');
+    const usage = await db.providerUsage.findFirstOrThrow({ where: { provider: 'x' } });
+    expect(usage.reservedCents).toBeGreaterThan(0);
+    expect(usage.reason).toContain('reservation kept');
+  });
   it('keeps the redirect refusal deferred and does not map other outbound errors to it', async () => {
     vi.stubGlobal(
       'fetch',
