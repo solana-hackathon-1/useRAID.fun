@@ -1,6 +1,12 @@
 import { z } from 'zod';
 import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
 import { HttpError } from './auth-primitives';
+import {
+  MAX_SMALL_JSON_BYTES,
+  OutboundFetchError,
+  providerFetch,
+  readBoundedJson,
+} from './outbound-fetch';
 
 const cid = z.string().regex(/^(?:bafy[a-z2-7]{20,}|Qm[1-9A-HJ-NP-Za-km-z]{44})$/);
 export function ipfsUri(value: string) {
@@ -39,15 +45,22 @@ export async function pinFile(file: File) {
   const form = new FormData();
   form.append('file', file);
   form.append('network', 'public');
-  const result = await fetch('https://uploads.pinata.cloud/v3/files', {
+  const failed = (error: unknown) =>
+    error instanceof OutboundFetchError ? new HttpError(503, 'IPFS upload failed.') : error;
+  const result = await providerFetch('https://uploads.pinata.cloud/v3/files', {
     method: 'POST',
     headers: { Authorization: `Bearer ${jwt}` },
     body: form,
     cache: 'no-store',
     signal: AbortSignal.timeout(30000),
+  }).catch((error) => {
+    throw failed(error);
   });
   if (!result.ok) throw new HttpError(503, 'IPFS upload failed.');
-  const parsed = z.object({ data: z.object({ cid }) }).parse(await result.json());
+  const reply = await readBoundedJson(result, MAX_SMALL_JSON_BYTES).catch((error) => {
+    throw failed(error);
+  });
+  const parsed = z.object({ data: z.object({ cid }) }).parse(reply);
   return `ipfs://${parsed.data.cid}`;
 }
 export async function pinMetadata(data: Record<string, string | undefined>) {

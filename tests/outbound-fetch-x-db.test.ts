@@ -10,6 +10,7 @@ suite('X provider read hardening', () => {
   beforeAll(() => assertTestDatabase());
   beforeEach(async () => {
     await truncateAll(db);
+    await db.settings.create({ data: { id: 'global', collectionEnabled: true } });
     vi.stubEnv('X_BEARER_TOKEN', 'fixture-bearer');
     config.demo = false;
     config.liveApproved = true;

@@ -3,6 +3,12 @@ import { lockAdvisory } from '../identity-protocol';
 import { db } from '../db';
 import { config } from '../config';
 import type { XPost } from '../domain';
+import {
+  MAX_PROVIDER_JSON_BYTES,
+  OutboundFetchError,
+  providerFetch,
+  readBoundedJson,
+} from '../outbound-fetch';
 export class ProviderError extends Error {
   constructor(
     message: string,
@@ -61,6 +67,12 @@ export function settleReservation(id: string, units: number, reason: string) {
     data: { units, reservedCents: Math.ceil(units * 0.5), reason },
   });
 }
+type XReadBody = {
+  data?: XPost[];
+  meta?: { next_token?: string; newest_id?: string };
+  errors?: { resource_id?: string; type?: string }[];
+  includes?: { users?: { id: string; username: string; name: string }[] };
+};
 async function xRead(path: string, params: URLSearchParams, units: number, raidId?: string) {
   await db.$transaction(async (tx) => {
     await lockAdvisory(tx, lockResource('x-endpoint', path));
@@ -85,7 +97,7 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
     }
   });
   const reservation = await reserveUsage(units, raidId);
-  const response = await fetch(`https://api.x.com/2/${path}?${params}`, {
+  const response = await providerFetch(`https://api.x.com/2/${path}?${params}`, {
     headers: { Authorization: `Bearer ${process.env.X_BEARER_TOKEN}` },
     signal: AbortSignal.timeout(20000),
     cache: 'no-store',
@@ -97,6 +109,8 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
         data: { reason: 'Timed out; reservation kept' },
       });
     else await settleReservation(reservation.id, 0, 'Transport failure; no response');
+    if (error instanceof OutboundFetchError)
+      throw new ProviderError('X redirected the request; refused.', 300, true);
     throw new ProviderError('X is unreachable.', 60, true);
   });
   const remainingHeader = response.headers.get('x-rate-limit-remaining');
@@ -153,18 +167,20 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
       response.status,
     );
   }
-  const body = await response.json();
+  // The reservation stays at its upper bound when the reply is refused: the call was served and may be billed.
+  const body = await readBoundedJson<XReadBody>(response, MAX_PROVIDER_JSON_BYTES).catch(
+    (error) => {
+      if (error instanceof OutboundFetchError)
+        throw new ProviderError(`X response refused (${error.code}).`, 60, true, response.status);
+      throw error;
+    },
+  );
   await settleReservation(
     reservation.id,
     body.data?.length || 0,
     'Observed post reads; no deduplication discount',
   );
-  return body as {
-    data?: XPost[];
-    meta?: { next_token?: string; newest_id?: string };
-    errors?: { resource_id?: string; type?: string }[];
-    includes?: { users?: { id: string; username: string; name: string }[] };
-  };
+  return body;
 }
 export function lookupOutcome(
   errors: { resource_id?: string; type?: string }[] | undefined,
