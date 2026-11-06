@@ -302,6 +302,7 @@
     "tests/worker-health-db.test.ts",
     "tests/worker-monitoring-db.test.ts",
     "tests/worker-correlation-db.test.ts",
+    "tests/worker-diagnostics.test.ts",
     "tests/x-oauth-db.test.ts",
     "tests/x-oauth-first-link-race-db.test.ts",
     "tests/x-oauth-routes.test.ts",
@@ -1192,7 +1193,8 @@
         "tests/config-validation-boundary.test.ts",
         "tests/worker-health-db.test.ts",
         "tests/worker-monitoring-db.test.ts",
-        "tests/worker-correlation-db.test.ts"
+        "tests/worker-correlation-db.test.ts",
+        "tests/worker-diagnostics.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
       "required_test_layers": [

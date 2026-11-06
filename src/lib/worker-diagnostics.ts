@@ -1,5 +1,5 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { randomBytes } from 'node:crypto';
+import { createHash, randomBytes } from 'node:crypto';
 
 /**
  * Worker log correlation (T038 W03, blueprint §27/§30). One opaque id ties a job's attempts, a schedule run's steps and
@@ -23,7 +23,12 @@ export function correlationFields(): { correlationId?: string } {
 export function newRunCorrelationId() {
   return `run-${randomBytes(6).toString('hex')}`;
 }
-/** Stable across every attempt of one job: the job id is the only identifier used. */
+/**
+ * Stable across every attempt of one job: the job id is the only identifier used. An id outside the safe shape is hashed
+ * rather than refused, because a correlation id is diagnostic and must never stop a job from running.
+ */
 export function jobCorrelationId(jobId: string) {
-  return `job-${jobId}`;
+  const id = `job-${jobId}`;
+  if (SAFE_ID.test(id)) return id;
+  return `job-${createHash('sha256').update(jobId).digest('hex').slice(0, 24)}`;
 }
