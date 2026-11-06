@@ -64,6 +64,23 @@ suite('pre-effect job lease fence (T038)', () => {
       JobLeaseLostError,
     );
   });
+  it('judges expiry by the database clock whatever the app clock says', async () => {
+    await due('market:lease:4');
+    const job = (await claimJob())!;
+    const check = () => runUnderJobLease(job, () => assertJobLease());
+    vi.useFakeTimers({ toFake: ['Date'] });
+    try {
+      vi.setSystemTime(Date.now() + 3_600_000); // app clock an hour ahead: a live lease must still be honoured
+      await expect(check()).resolves.toBeUndefined();
+      vi.useRealTimers();
+      await expireLease(job.id);
+      vi.useFakeTimers({ toFake: ['Date'] });
+      vi.setSystemTime(Date.now() - 3_600_000); // app clock an hour behind: an expired lease must still be refused
+      await expect(check()).rejects.toBeInstanceOf(JobLeaseLostError);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
   it('is a no-op outside a job so request-time callers of the same provider code are unaffected', async () => {
     await expect(assertJobLease()).resolves.toBeUndefined();
   });
