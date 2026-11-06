@@ -5,7 +5,12 @@ import { readFileSync } from 'node:fs';
 import { AmendmentPanel, ConfirmAction, confirmStep } from '../src/components/work-amendments';
 import { FocusedStatus } from '../src/components/focus-status';
 import { ScopeText } from '../src/components/scope-text';
-import { readableScope } from '../src/work-http/scope-text';
+import {
+  readableScope,
+  sameScope,
+  scopeFromEditable,
+  scopeToEditable,
+} from '../src/work-http/scope-text';
 import { MyRaidsWorkspace, WorkDesk } from '../src/components/work-workspace';
 import {
   buildProposal,
@@ -518,5 +523,127 @@ describe('#384-2 scope is shown as readable text, never raw JSON', () => {
     expect(html).toMatch(/<li[^>]*>Guide PDF<\/li>/);
     // The editable "New scope" field keeps the stored text; the read-only display must not show it.
     expect(html.replace(/<textarea[\s\S]*?<\/textarea>/g, '')).not.toContain('&quot;outcome&quot;');
+  });
+});
+
+describe('amendment scope editor round-trips readable text', () => {
+  const stored = JSON.stringify({
+    outcome: 'Ship the guide',
+    deliverables: ['Guide PDF', 'Source files'],
+    exclusions: ['Translations'],
+    dependencies: [],
+  });
+  const reordered = JSON.stringify(
+    {
+      dependencies: [],
+      exclusions: ['Translations'],
+      deliverables: ['Guide PDF', 'Source files'],
+      outcome: 'Ship the guide',
+    },
+    null,
+    2,
+  );
+  const now = Date.parse('2026-11-01T00:00:00.000Z');
+  const withScope = terms({ scope: stored });
+  const formOf = (t = withScope): ProposalForm => ({
+    ...formFrom(t),
+    expiresAt: '2026-11-05T00:00',
+  });
+
+  it('shows structured scope as readable text, never JSON', () => {
+    const text = scopeToEditable(stored);
+    expect(text).toContain('Ship the guide');
+    expect(text).toContain('Deliverables:');
+    expect(text).toContain('- Guide PDF');
+    expect(text).not.toContain('{');
+    expect(text).not.toContain('"');
+    expect(text).not.toContain('Depends on');
+    expect(scopeToEditable('Write the guide.')).toBe('Write the guide.');
+  });
+
+  it('returns the exact stored scope when the text is untouched', () => {
+    for (const original of [stored, reordered, '  {"outcome":"x"}', 'Plain scope.'])
+      expect(scopeFromEditable(scopeToEditable(original), original)).toBe(original);
+  });
+
+  it('turns edited text into a valid canonical scope', () => {
+    const edited = scopeToEditable(stored).replace('- Source files', '- Source files\n- Slides');
+    const out = scopeFromEditable(edited, stored);
+    expect(JSON.parse(out)).toEqual({
+      outcome: 'Ship the guide',
+      deliverables: ['Guide PDF', 'Source files', 'Slides'],
+      exclusions: ['Translations'],
+      dependencies: [],
+    });
+    expect(scopeFromEditable('  Just a sentence now.  ', stored)).toBe('Just a sentence now.');
+    expect(scopeFromEditable('  Better sentence.  ', 'Old sentence.')).toBe('Better sentence.');
+    // a plain scope that merely looks like a label stays plain
+    expect(scopeFromEditable('Outcome: faster', 'Old sentence.')).toBe('Outcome: faster');
+  });
+
+  it('untouched form sends no scope change; other edits still go through', () => {
+    expect(buildProposal(id(1), withScope, formOf(), now)).toMatchObject({
+      ok: false,
+      problem: expect.stringMatching(/at least one term/),
+    });
+    const built = buildProposal(id(1), withScope, { ...formOf(), rewards: ['1.5'] }, now);
+    expect(built).toMatchObject({ ok: true });
+    if (built.ok) expect(built.input.changes).toEqual({ rewards: [{ amount: '1500000000' }] });
+  });
+
+  it('keeps an unchanged exact scope even when stored with other key order', () => {
+    const t = terms({ scope: reordered });
+    const built = buildProposal(id(1), t, { ...formOf(t), rewards: ['1.5'] }, now);
+    if (built.ok) expect(built.input.changes).not.toHaveProperty('scope');
+    expect(built.ok).toBe(true);
+  });
+
+  it('sends a real edit as the new scope', () => {
+    const form = { ...formOf(), scope: scopeToEditable(stored).replace('Guide PDF', 'Guide EPUB') };
+    const built = buildProposal(id(1), withScope, form, now);
+    expect(built.ok).toBe(true);
+    if (built.ok)
+      expect(JSON.parse(built.input.changes.scope as string).deliverables[0]).toBe('Guide EPUB');
+  });
+
+  it('prefills the Founder textarea with readable text', () => {
+    const html = panel('FOUNDER', desk([{ role: 'FOUNDER', effectiveTerms: withScope }]));
+    const area = html.match(/<textarea[^>]*>([\s\S]*?)<\/textarea>/)![1];
+    expect(area).toContain('Ship the guide');
+    expect(area).toContain('- Guide PDF');
+    expect(html).not.toContain('&quot;outcome&quot;');
+  });
+
+  it('compares scope canonically', () => {
+    expect(sameScope(stored, reordered)).toBe(true);
+    expect(sameScope(stored, ' ' + stored + '\n')).toBe(true);
+    expect(sameScope(stored, stored.replace('Guide PDF', 'Guide EPUB'))).toBe(false);
+    expect(sameScope('a', 'b')).toBe(false);
+    expect(sameScope('{broken', '{broken')).toBe(true);
+  });
+
+  it('shows no false scope change for key order, spacing or whitespace; real change reads as text', () => {
+    const a = terms({ scope: stored });
+    const b = terms({ scope: reordered });
+    expect(describeChanges(a, b)).toEqual([]);
+    const c = terms({ scope: stored.replace('Guide PDF', 'Guide EPUB') });
+    const [line] = describeChanges(a, c);
+    expect(line.kind).toBe('scope');
+    expect(line.before).toContain('- Guide PDF');
+    expect(line.after).toContain('- Guide EPUB');
+    expect(line.before + line.after).not.toContain('{');
+    const html = panel(
+      'MEMBER',
+      desk([{ role: 'MEMBER', effectiveTerms: a, amendments: [amendment('PROPOSED', {}, c)] }]),
+      { now: BEFORE },
+    );
+    expect(html).toContain('Guide EPUB');
+    expect(html).not.toContain('&quot;');
+    const same = panel(
+      'MEMBER',
+      desk([{ role: 'MEMBER', effectiveTerms: a, amendments: [amendment('PROPOSED', {}, b)] }]),
+      { now: BEFORE },
+    );
+    expect(same).not.toContain('<strong>Scope</strong>');
   });
 });

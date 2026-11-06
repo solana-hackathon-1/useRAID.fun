@@ -58,6 +58,7 @@
     "tests/dispatcher-routes.test.ts",
     "tests/engagement-capacity-db.test.ts",
     "tests/work-consent-guard-db.test.ts",
+    "tests/work-engagement-authority.test.ts",
     "tests/docs-links.test.ts",
     "tests/domain.test.ts",
     "tests/env-documentation.test.ts",
@@ -288,6 +289,7 @@
     "tests/work-start-db.test.ts",
     "tests/work-submission-contracts.test.ts",
     "tests/worker-db.test.ts",
+    "tests/worker-health-db.test.ts",
     "tests/x-oauth-db.test.ts",
     "tests/x-oauth-first-link-race-db.test.ts",
     "tests/x-oauth-routes.test.ts",
@@ -876,6 +878,7 @@
         "tests/command-receipts.test.ts",
         "tests/engagement-capacity-db.test.ts",
         "tests/work-consent-guard-db.test.ts",
+        "tests/work-engagement-authority.test.ts",
         "tests/work-admission-db.test.ts",
         "tests/work-offer-lock.test.ts",
         "tests/work-submissions-db.test.ts",
@@ -1165,7 +1168,8 @@
         "tests/worker-db.test.ts",
         "tests/config-validation.test.ts",
         "tests/config-validation-host.test.ts",
-        "tests/config-validation-boundary.test.ts"
+        "tests/config-validation-boundary.test.ts",
+        "tests/worker-health-db.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
       "required_test_layers": [

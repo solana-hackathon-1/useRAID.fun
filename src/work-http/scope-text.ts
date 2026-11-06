@@ -38,3 +38,87 @@ export function readableScope(scope: string): ReadableScope | null {
   });
   return outcome || sections.length ? { outcome, sections } : null;
 }
+
+const HEADERS = [['Outcome:', 'outcome'], ...LISTS.map(([key, label]) => [label + ':', key])] as [
+  string,
+  string,
+][];
+const headerKey = (line: string) => HEADERS.find(([header]) => header === line.trim())?.[1] ?? null;
+/**
+ * A scope as the text the Founder edits: the labelled outcome and lists for a structured scope (never its JSON),
+ * the sentence itself for anything else.
+ */
+export function scopeToEditable(scope: string): string {
+  const readable = readableScope(scope);
+  if (!readable) return scope;
+  const blocks: string[] = [];
+  if (readable.outcome) blocks.push('Outcome:\n' + readable.outcome);
+  for (const section of readable.sections)
+    blocks.push(section.label + ':\n' + section.items.map((item) => '- ' + item).join('\n'));
+  return blocks.join('\n\n');
+}
+/**
+ * The scope to propose from the edited text. Text equal to what `scopeToEditable` showed returns `original`
+ * byte for byte, so an untouched field can never alter the stored scope. An edited structured scope is written
+ * back in the stored shape; an edited sentence (or an original that was a sentence) is the trimmed text.
+ */
+export function scopeFromEditable(text: string, original: string): string {
+  // Browsers hand textarea text back with \n line ends, whatever the stored text used.
+  const lf = (value: string) => value.replace(/\r\n/g, '\n');
+  if (lf(text) === lf(scopeToEditable(original))) return original;
+  if (!readableScope(original)) return text.trim();
+  const parts: Record<string, string[]> = {};
+  let current: string | null = null;
+  for (const line of text.split('\n')) {
+    const key = headerKey(line);
+    if (key) {
+      current = key;
+      parts[key] ??= [];
+    } else if (current) parts[current].push(line);
+    else if (line.trim()) return text.trim();
+  }
+  if (!current) return text.trim();
+  const items = (key: string) => {
+    const out: string[] = [];
+    let open = false;
+    for (const raw of parts[key] ?? []) {
+      const line = raw.trim();
+      if (!line) continue;
+      if (line.startsWith('- ') || line === '-' || !open) {
+        out.push(line.replace(/^-\s?/, '').trim());
+        open = true;
+      } else out[out.length - 1] += '\n' + line;
+    }
+    return out.filter(Boolean);
+  };
+  const outcome = (parts.outcome ?? []).join('\n').trim();
+  const lists = {
+    deliverables: items('deliverables'),
+    exclusions: items('exclusions'),
+    dependencies: items('dependencies'),
+  };
+  if (!outcome && !Object.values(lists).some((list) => list.length)) return '';
+  return JSON.stringify({ outcome, ...lists });
+}
+const sorted = (value: unknown): unknown =>
+  Array.isArray(value)
+    ? value.map(sorted)
+    : value && typeof value === 'object'
+      ? Object.fromEntries(
+          Object.entries(value as Record<string, unknown>)
+            .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+            .map(([key, entry]) => [key, sorted(entry)]),
+        )
+      : value;
+function canonicalScope(scope: string): string {
+  const trimmed = scope.trim();
+  if (trimmed.startsWith('{') || trimmed.startsWith('['))
+    try {
+      return 'json:' + JSON.stringify(sorted(JSON.parse(trimmed)));
+    } catch {
+      /* not JSON: compared as the text it is */
+    }
+  return 'text:' + trimmed;
+}
+/** Whether two stored scopes mean the same: JSON scopes ignore key order and formatting, text scopes only outer whitespace. */
+export const sameScope = (a: string, b: string) => canonicalScope(a) === canonicalScope(b);

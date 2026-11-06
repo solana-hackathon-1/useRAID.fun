@@ -66,6 +66,32 @@ const desk = (actor: Actor) => handlersFor(actor).DESK(get());
 const code = async (r: Response) => (await r.json()).error.code as string;
 const row = async <T>(sql: string, ...args: string[]) =>
   (await db.$queryRawUnsafe(sql, ...args)) as T[];
+const solPolicy = base.rewards[0].policy;
+const tokenPolicy = {
+  ...solPolicy,
+  assetId: {
+    chain: 'SOLANA' as const,
+    networkIdentity: 'synthetic-work',
+    kind: 'TOKEN' as const,
+    mint: '11111111111111111111111111111111',
+    tokenProgram: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+  },
+  verifiedDecimals: 6,
+};
+const twoLegs = {
+  rewards: [
+    { policy: solPolicy, amount: '1000000000' },
+    { policy: tokenPolicy, amount: '2000000' },
+  ],
+};
+const coverage = (sol: boolean, token: boolean) =>
+  vi.stubEnv(
+    'WORK_REWARD_ASSETS_JSON',
+    JSON.stringify([
+      { label: 'SOL', policy: solPolicy, funded: sol },
+      { label: 'Token', policy: tokenPolicy, funded: token },
+    ]),
+  );
 const raise = { rewards: [{ amount: '1500000000' }] };
 const cut = { rewards: [{ amount: '500000000' }] };
 const cmd = (actor: Actor, input: unknown) => ({
@@ -74,12 +100,13 @@ const cmd = (actor: Actor, input: unknown) => ({
   idempotencyKey: randomUUID(),
   requestId: randomUUID(),
 });
-async function setup() {
+async function setup(override: Partial<typeof base> = {}) {
   const founder = await seedWorkHuman(db, 'founder-' + randomUUID());
   const worker = await seedWorkHuman(db);
   const reviewer = await seedWorkHuman(db, 'reviewer-' + randomUUID());
   const slot = await seedWorkSlot(db, founder.actor.accountId, {
     review: { ...base.review, reviewerAccountId: reviewer.actor.accountId },
+    ...override,
   });
   const accepted = await run((tx) =>
     commitEngagement(
@@ -309,6 +336,41 @@ integration(
       const r = await propose(founder.actor, engagementId, raise);
       expect([r.status, await code(r)]).toEqual([403, 'FORBIDDEN']);
       expect(await amendments()).toEqual([]);
+    });
+
+    it('#361-7: judges coverage per increased reward leg; one uncovered leg leaves the whole increase unfunded', async () => {
+      const { founder, worker, engagementId } = await setup(twoLegs);
+      const both = { rewards: [{ amount: '1500000000' }, { amount: '2500000' }] };
+      const solOnly = { rewards: [{ amount: '1500000000' }, { amount: '2000000' }] };
+      // Only the SOL leg is funded: raising both legs is refused and writes nothing.
+      coverage(true, false);
+      const partial = await propose(founder.actor, engagementId, both);
+      expect([partial.status, await code(partial)]).toEqual([409, 'FUNDING_NOT_VERIFIED']);
+      expect(await amendments()).toEqual([]);
+      // The uncovered token leg is not part of this increase, so a SOL-only raise needs no token coverage.
+      const only = await propose(founder.actor, engagementId, solOnly);
+      expect(only.status).toBe(200);
+      const small = (await only.json()).amendment;
+      expect(small.requiresFunding).toBe(true);
+      expect((await withdraw(founder.actor, small.id)).status).toBe(200);
+      // Both legs covered at proposal; the token leg's coverage is withdrawn before consent.
+      coverage(true, true);
+      const made = (await (await propose(founder.actor, engagementId, both)).json()).amendment;
+      coverage(true, false);
+      const lost = await accept(worker.actor, made.id, made.digest);
+      expect([lost.status, await code(lost)]).toEqual([409, 'FUNDING_NOT_VERIFIED']);
+      coverage(false, true);
+      expect(await code(await accept(worker.actor, made.id, made.digest))).toBe(
+        'FUNDING_NOT_VERIFIED',
+      );
+      const open = (await amendments()).filter((r) => r.id === made.id);
+      expect(open[0].state).toBe('PROPOSED');
+      expect(await effectiveAmount(engagementId)).toBe('1000000000');
+      // Restored coverage of every increased leg lets the exact consent through.
+      coverage(true, true);
+      const agreed = await accept(worker.actor, made.id, made.digest);
+      expect(agreed.status).toBe(200);
+      expect(await effectiveAmount(engagementId)).toBe('1500000000');
     });
 
     it('refuses writes when the flag is off but still answers replays and reads', async () => {

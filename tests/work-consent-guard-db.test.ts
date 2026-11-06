@@ -112,11 +112,15 @@ integration('Consent insert guard (#275 item 3)', { timeout: 60000 }, () => {
     expect(await consentCount()).toBe(0);
   });
 
-  it('holds the listing and slot against a concurrent fill until the consent transaction ends', async () => {
+  it('share-locks the listing and the slot until the consent transaction ends, which the foreign key alone does not', async () => {
     const slot = await seedWorkSlot(db),
       consenter = await seedWorkHuman(db),
       taker = await seedWorkHuman(db),
       digest = await digestOf(slot);
+    const [{ listingId }] = await rows<{ listingId: string }>(
+      'SELECT "listingId"::text AS "listingId" FROM "RaidSlot" WHERE "id"=$1::uuid',
+      slot.slotId,
+    );
     const inserted = deferred(),
       release = deferred(),
       holder = deferred<number>();
@@ -135,14 +139,40 @@ integration('Consent insert guard (#275 item 3)', { timeout: 60000 }, () => {
       await release.promise;
     }, txOptions.transaction);
     await inserted.promise;
-    let filled = false;
-    const fill = accept(taker, slot).then((result) => ((filled = true), result));
-    // The fill must queue behind the uncommitted consent's lock instead of committing around it.
-    await waitFor(await holder.promise, /FOR UPDATE/);
-    expect(filled).toBe(false);
-    release.resolve();
+    const blocker = await holder.promise;
+    // The composite foreign key only takes FOR KEY SHARE on the slot, which a fill's FOR UPDATE and nothing weaker
+    // conflicts with, and takes no lock on the listing at all. Only the guard's FOR SHARE on both makes these two
+    // ordinary writers (a listing update, a non-key slot update) queue behind the uncommitted consent.
+    const probe = (sql: string, id: string) => {
+      const state = { done: false };
+      const done = db
+        .$transaction(
+          (tx) => tx.$queryRawUnsafe(sql, id).then(() => undefined),
+          txOptions.transaction,
+        )
+        .finally(() => (state.done = true));
+      done.catch(() => undefined);
+      return { state, done };
+    };
+    const onListing = probe(
+      'SELECT "id" FROM "WorkListing" WHERE "id"=$1::uuid FOR NO KEY UPDATE',
+      listingId,
+    );
+    const onSlot = probe(
+      'SELECT "id" FROM "RaidSlot" WHERE "id"=$1::uuid FOR NO KEY UPDATE',
+      slot.slotId,
+    );
+    try {
+      await waitFor(blocker, /"WorkListing".*FOR NO KEY UPDATE/);
+      await waitFor(blocker, /"RaidSlot".*FOR NO KEY UPDATE/);
+      expect([onListing.state.done, onSlot.state.done]).toEqual([false, false]);
+    } finally {
+      release.resolve();
+    }
     await open;
-    await fill;
+    await Promise.all([onListing.done, onSlot.done]);
+    // A fill started now sees the committed consent and still completes against the same slot.
+    await accept(taker, slot);
     expect(await consentCount()).toBe(1);
     const [row] = await rows<{ state: string }>(
       'SELECT "state" FROM "RaidSlot" WHERE "id"=$1::uuid',

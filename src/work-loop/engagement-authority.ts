@@ -69,17 +69,20 @@ export interface Source {
   fundingRef: string | null;
   termsVersionId: string;
 }
-export async function source(tx: Tx, slotId: string) {
+/** Reads a slot with its listing, locking listing then slot: FOR UPDATE for writers, FOR SHARE for a consent that only needs the rows held. */
+export async function source(tx: Tx, slotId: string, lock: 'UPDATE' | 'SHARE' = 'UPDATE') {
+  // Narrowed at runtime as well: this text reaches the SQL, and a cast or plain JavaScript caller bypasses the type.
+  const mode = lock === 'SHARE' ? 'SHARE' : 'UPDATE';
   const refs = await tx.query<{ listingId: string }>(
     'SELECT "listingId"::text FROM "RaidSlot" WHERE "id"=$1::uuid',
     [slotId],
   );
   if (refs.length !== 1) fail('NOT_FOUND');
   // Every source writer uses listing before slot; terms history is immutable.
-  await tx.query('SELECT "id" FROM "WorkListing" WHERE "id"=$1::uuid FOR UPDATE', [
+  await tx.query(`SELECT "id" FROM "WorkListing" WHERE "id"=$1::uuid FOR ${mode}`, [
     refs[0].listingId,
   ]);
-  await tx.query('SELECT "id" FROM "RaidSlot" WHERE "id"=$1::uuid FOR UPDATE', [slotId]);
+  await tx.query(`SELECT "id" FROM "RaidSlot" WHERE "id"=$1::uuid FOR ${mode}`, [slotId]);
   const rows = await tx.query<Source>(
     `SELECT l."id"::text AS "listingId",l."guildId",l."revision",l."state" AS "listingState",l."currentTermsVersionId"::text,s."state",s."fundingMode",s."fundingRef",s."termsVersionId"::text FROM "RaidSlot" s JOIN "WorkListing" l ON l."id"=s."listingId" WHERE s."id"=$1::uuid`,
     [slotId],

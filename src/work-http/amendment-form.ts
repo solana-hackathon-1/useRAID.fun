@@ -1,6 +1,7 @@
 import { formatDisplayAmount, parseDisplayAmount } from '../contracts/assets';
 import type { TermsSnapshot } from '../contracts/entities';
 import { ProposeAmendmentInput } from '../work-loop/amendment-contracts';
+import { sameScope, scopeFromEditable, scopeToEditable } from './scope-text';
 
 type DeadlineKey = 'preparation' | 'submission' | 'review' | 'operationalClosure';
 const DEADLINES: readonly [DeadlineKey, string][] = [
@@ -43,7 +44,7 @@ export const amountText = (leg: TermsSnapshot['rewards'][number]) =>
 /** The form prefilled with the current effective terms, so only deliberate edits become changes. */
 export function formFrom(terms: TermsSnapshot): ProposalForm {
   return {
-    scope: terms.scope,
+    scope: scopeToEditable(terms.scope),
     criteria: terms.acceptanceCriteria.join('\n'),
     rewards: terms.rewards.map((leg) =>
       formatDisplayAmount(leg.amount, leg.policy.verifiedDecimals),
@@ -60,8 +61,13 @@ export function formFrom(terms: TermsSnapshot): ProposalForm {
 /** What a proposed version changes against the current terms: only differing fields, exact amounts. */
 export function describeChanges(before: TermsSnapshot, after: TermsSnapshot): ChangeLine[] {
   const out: ChangeLine[] = [];
-  if (before.scope !== after.scope)
-    out.push({ kind: 'scope', label: 'Scope', before: before.scope, after: after.scope });
+  if (!sameScope(before.scope, after.scope))
+    out.push({
+      kind: 'scope',
+      label: 'Scope',
+      before: scopeToEditable(before.scope),
+      after: scopeToEditable(after.scope),
+    });
   if (JSON.stringify(before.acceptanceCriteria) !== JSON.stringify(after.acceptanceCriteria))
     out.push({
       kind: 'criteria',
@@ -105,9 +111,9 @@ export function buildProposal(
   now: number,
 ): BuiltProposal {
   const changes: Record<string, unknown> = {};
-  const scope = form.scope.trim();
+  const scope = scopeFromEditable(form.scope, current.scope).trim();
   if (!scope) return { ok: false, problem: 'The scope cannot be empty.' };
-  if (scope !== current.scope) changes.scope = scope;
+  if (!sameScope(scope, current.scope)) changes.scope = scope;
   const criteria = lines(form.criteria);
   if (!criteria.length) return { ok: false, problem: 'Keep at least one acceptance criterion.' };
   if (JSON.stringify(criteria) !== JSON.stringify(current.acceptanceCriteria))
