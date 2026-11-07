@@ -12,12 +12,12 @@ import {
   USDC_DEVNET_MINT,
   SOLANA_MAINNET_GENESIS,
   SOLANA_DEVNET_GENESIS,
-  assetKey,
   createAssetRegistry,
   createProductionAssetRegistry,
   validateProductionConfig,
   type ProductionConfig,
 } from '../src/asset-registry';
+import { assetKey } from '../src/contracts/assets';
 import { PROFILES, codeOf, fixtureAddress, policy, token } from './helpers/asset-fixtures';
 
 // DEC-2026-11-07-03 (O07): canonical USDC on Solana is the only first-release Raid funding asset.
@@ -27,12 +27,17 @@ const FREEZE_AUTHORITY = fixtureAddress(42);
 function config(
   assetId: Parameters<typeof policy>[0],
   overrides: Partial<ProductionConfig> = {},
-  approval: { decisionRef: string } | undefined = { decisionRef: USDC_DECISION_REF },
+  approval: { decisionRef: string } | null = { decisionRef: USDC_DECISION_REF },
 ): ProductionConfig {
   return {
     networks: [{ networkIdentity: SOLANA_MAINNET_GENESIS, cluster: 'MAINNET' }],
     assets: [
-      { assetId, display: { symbol: 'USDC' }, origin: 'CHAIN_VERIFIED', approval },
+      {
+        assetId,
+        display: { symbol: 'USDC' },
+        origin: 'CHAIN_VERIFIED',
+        approval: approval ?? undefined,
+      },
     ] as never,
     profiles: PROFILES,
     policies: [policy(assetId)],
@@ -89,7 +94,7 @@ describe('DEC-2026-11-07-03 canonical USDC production allow list', () => {
   });
 
   it('requires the matching decision reference', () => {
-    expect(codes(config(USDC_MAINNET_ASSET_ID, {}, undefined))).toContain('ASSET_NOT_APPROVED');
+    expect(codes(config(USDC_MAINNET_ASSET_ID, {}, null))).toContain('ASSET_NOT_APPROVED');
     expect(codes(config(USDC_MAINNET_ASSET_ID, {}, { decisionRef: 'other' }))).toContain(
       'ASSET_NOT_APPROVED',
     );
@@ -123,7 +128,9 @@ describe('DEC-2026-11-07-03 canonical USDC production allow list', () => {
     expect(codes(c)).toContain('ASSET_NOT_ALLOWLISTED');
     const other = token(fixtureAddress(9), SOLANA_MAINNET_GENESIS, TOKEN_2022_PROGRAM_ID);
     expect(
-      codes(config(other, { programs: [{ address: TOKEN_2022_PROGRAM_ID, origin: 'CHAIN_VERIFIED' }] })),
+      codes(
+        config(other, { programs: [{ address: TOKEN_2022_PROGRAM_ID, origin: 'CHAIN_VERIFIED' }] }),
+      ),
     ).toContain('ASSET_NOT_ALLOWLISTED');
   });
 

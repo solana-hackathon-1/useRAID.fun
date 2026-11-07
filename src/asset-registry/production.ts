@@ -7,13 +7,15 @@ import {
   type AssetRegistry,
   type AssetRegistryInput,
 } from './registry';
+import { USDC_DECISION_REF, USDC_MAINNET_ASSET_ID } from './usdc';
 
 /**
- * Fail-closed production validation (blueprint 16.5, I12, AC41). Open decision O07 has not chosen a
- * supported asset, so `PRODUCTION_ASSET_ALLOWLIST` is empty and every production configuration is
- * blocked by default. A host that eventually supplies an allow list must source it from a recorded
- * decision and gate G04 evidence; this module records the decision reference but cannot authenticate
- * it. Violations contain codes and positional subjects only, never input text.
+ * Fail-closed production validation (blueprint 16.5, I12, AC41). DEC-2026-11-07-03 resolves O07 for
+ * the first release: `PRODUCTION_ASSET_ALLOWLIST` holds canonical mainnet USDC only, so every other
+ * asset (arbitrary SPL, Token-2022, wrapped or native SOL, Guild tokens) is blocked by default. Gate
+ * G04 chain evidence is still required before enablement; this module records the decision reference
+ * but cannot authenticate it. Violations contain codes and positional subjects only, never input
+ * text.
  */
 export interface ProviderDeclaration {
   id: string;
@@ -37,7 +39,9 @@ export interface ProductionValidation {
   readonly violations: readonly ProductionViolation[];
 }
 
-export const PRODUCTION_ASSET_ALLOWLIST: readonly AllowlistEntry[] = Object.freeze([]);
+export const PRODUCTION_ASSET_ALLOWLIST: readonly AllowlistEntry[] = Object.freeze([
+  Object.freeze({ assetId: USDC_MAINNET_ASSET_ID, decisionRef: USDC_DECISION_REF }),
+]);
 
 export function validateProductionConfig(
   config: ProductionConfig,
