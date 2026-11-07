@@ -9,11 +9,65 @@ export class JobLeaseLostError extends Error {
     this.name = 'JobLeaseLostError';
   }
 }
+/** Renew at a third of the lease, so two consecutive failed renewals still leave a third of it. Derived, not tuned. */
+export const JOB_LEASE_RENEW_MS = (JOB_LEASE_MINUTES * 60000) / 3;
 type Held = Pick<Job, 'id' | 'lease'>;
-const held = new AsyncLocalStorage<Held>();
-/** Run a job handler so any code beneath it can call assertJobLease() without the job being threaded through. */
-export function runUnderJobLease<T>(job: Held, fn: () => Promise<T>) {
-  return held.run({ id: job.id, lease: job.lease }, fn);
+/** `lost` is set by the renewal timer the moment the database says this worker no longer owns the job. */
+const held = new AsyncLocalStorage<Held & { lost: boolean }>();
+/**
+ * Extend this worker's claim by restarting the lease clock, but only while it still owns the job: the same ownership
+ * test as assertJobLease() (same lease generation, unfinished, not yet expired by the database clock) in one atomic
+ * UPDATE. It returns false and writes nothing once the lease expired, was reclaimed, finished or dead-lettered, so a
+ * stalled worker can never revive a lease that claimJob() or the dead-letter sweep may already have taken. Row locking
+ * decides a race between a renewal and the sweep: exactly one of them wins the row.
+ */
+export async function renewJobLease(job: Held) {
+  if (!job.lease) return false;
+  const renewed =
+    await db.$executeRaw`UPDATE "Job" SET "lockedAt"=(NOW() AT TIME ZONE 'UTC') WHERE id=${job.id} AND "lease"=${job.lease} AND "doneAt" IS NULL AND "failedAt" IS NULL AND "lockedAt">(NOW() AT TIME ZONE 'UTC')-make_interval(mins => ${JOB_LEASE_MINUTES}::int)`;
+  return renewed === 1;
+}
+/**
+ * Run a job handler so any code beneath it can call assertJobLease() without the job being threaded through. While
+ * the handler runs the lease is renewed every `renewEveryMs`, so a job longer than the lease keeps its claim instead
+ * of being reclaimed mid-run; renewal stops when the handler settles. A failed renewal (database blip) is retried on
+ * the next tick and never aborts the job: the next assertJobLease() still decides from the database. A renewal that
+ * finds the lease gone marks the run lost, so the very next assertJobLease() refuses before any further effect.
+ * Nothing caps total run time here: a handler that never settles keeps renewing, so provider calls must carry their own timeouts.
+ */
+export async function runUnderJobLease<T>(
+  job: Held,
+  fn: () => Promise<T>,
+  options: { renewEveryMs?: number } = {},
+) {
+  const store = { id: job.id, lease: job.lease, lost: false };
+  let renewing = false;
+  const timer = job.lease
+    ? setInterval(() => {
+        if (renewing || store.lost) return;
+        renewing = true;
+        renewJobLease(store)
+          .then((ok) => {
+            if (ok) return;
+            store.lost = true;
+            console.error(
+              JSON.stringify({ job: job.id, error: 'Job lease was lost while running.' }),
+            );
+          })
+          .catch(() => {
+            console.error(JSON.stringify({ job: job.id, error: 'Job lease renewal failed.' }));
+          })
+          .finally(() => {
+            renewing = false;
+          });
+      }, options.renewEveryMs ?? JOB_LEASE_RENEW_MS)
+    : null;
+  timer?.unref();
+  try {
+    return await held.run(store, fn);
+  } finally {
+    if (timer) clearInterval(timer);
+  }
 }
 /**
  * Call immediately before an external side effect (provider call, broadcast, send). Throws JobLeaseLostError when
@@ -30,6 +84,7 @@ const ownedBy = (job: Held) =>
 export async function assertJobLease() {
   const job = held.getStore();
   if (!job) return;
+  if (job.lost) throw new JobLeaseLostError();
   const owned = job.lease ? await db.$queryRaw<{ id: string }[]>`${ownedBy(job)}` : [];
   if (!owned.length) throw new JobLeaseLostError();
 }

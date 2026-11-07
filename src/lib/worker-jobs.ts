@@ -11,7 +11,7 @@ import { LOCKED_PHASES } from './tracking-domain';
 import { observedImpressions } from './raid-progress';
 import { processTrackingLookup } from './tracking-worker';
 import { db } from './db';
-import { enqueue, finishJob } from './queue';
+import { deadLetterExhaustedJobs, enqueue, finishJob } from './queue';
 import { JobLeaseLostError, runUnderJobLease, whileJobLeaseHeld } from './job-lease';
 import { collect, ingest, refresh, snapshot } from './collection';
 import { fetchMarket } from './providers/market';
@@ -94,6 +94,7 @@ export function schedule(now = new Date()) {
   return withCorrelation(newRunCorrelationId(), () => runSchedule(now));
 }
 async function runSchedule(now: Date) {
+  await step('job-dead-letter', () => sweepExhaustedJobs());
   await step('notifications', () => runNotificationDispatch());
   await step('work-closure', () => runWorkClosureWorker());
   await step('finance-readiness', () => updateFinanceReadiness());
@@ -385,8 +386,9 @@ async function runSchedule(now: Date) {
       );
   });
 }
-async function clearCollectionError(raidId: string) {
-  const remaining = await db.job.count({
+type Client = Prisma.TransactionClient;
+async function clearCollectionError(raidId: string, client: Client = db) {
+  const remaining = await client.job.count({
     where: {
       doneAt: null,
       failedAt: null,
@@ -395,10 +397,76 @@ async function clearCollectionError(raidId: string) {
     },
   });
   if (!remaining)
-    await db.raid.updateMany({
+    await client.raid.updateMany({
       where: { id: raidId, trackingVersion: 2 },
       data: { collectionError: null },
     });
+}
+/**
+ * What a dead-lettered job leaves behind. When no worker ran the failure bookkeeping (a crash-exhausted job), record it
+ * exactly as a failing attempt would: a collect/refresh job marks its Raid partial and every Raid job its collection
+ * error, so finalization and reward rounds cannot settle on data the dead job never collected. Then resolve what
+ * waited on the job: its QUEUED submission would otherwise wait forever, and the Raid error of a submission is closed.
+ */
+async function resolveDeadJob(
+  job: Pick<Job, 'kind' | 'payload' | 'error'>,
+  client: Client = db,
+  options: { recordFailure: boolean } = { recordFailure: false },
+) {
+  const p = job.payload as { raidId?: string; submissionId?: string; mint?: string };
+  if (options.recordFailure) {
+    const message = job.error ?? 'Collection failed';
+    if (p.raidId && job.kind !== 'finance')
+      await client.raid.updateMany({
+        where: { id: p.raidId },
+        data: {
+          ...(['collect', 'refresh'].includes(job.kind) ? { coverage: 'partial' } : {}),
+          collectionError: message,
+        },
+      });
+    if (p.mint)
+      await client.token.updateMany({ where: { mint: p.mint }, data: { marketError: message } });
+  }
+  if (job.kind === 'submission' && p.submissionId)
+    await client.postSubmission.updateMany({
+      where: { id: p.submissionId, status: 'QUEUED' },
+      data: { status: 'EXCLUDED', reasonCode: 'LOOKUP_FAILED' },
+    });
+  if (p.raidId && ['submission', 'tracking-correction'].includes(job.kind))
+    await clearCollectionError(p.raidId, client);
+}
+/** The operator alert for a dead-lettered job: ids and kind only, never payloads, keys, leases or error text. */
+function alertDeadLetter(job: Pick<Job, 'id' | 'kind' | 'attempts'>, trigger: string) {
+  console.error(
+    JSON.stringify({
+      alert: 'job-dead-letter',
+      job: job.id,
+      kind: job.kind,
+      attempts: job.attempts,
+      cause: trigger, // a fixed word, never error text
+      ...correlationFields(),
+    }),
+  );
+}
+/**
+ * Dead-letter every job that used all its attempts without finishing (crash or lost lease on the last one), resolve
+ * what depended on it in the same transaction and alert once per job. Returns the dead-lettered job ids.
+ */
+export async function sweepExhaustedJobs() {
+  const { dead, failed } = await deadLetterExhaustedJobs((tx, job) =>
+    resolveDeadJob(job, tx, { recordFailure: true }),
+  );
+  for (const job of dead) alertDeadLetter(job, 'attempts-exhausted-without-finishing');
+  for (const { id, error } of failed)
+    console.error(
+      JSON.stringify({
+        alert: 'job-dead-letter-failed',
+        job: id,
+        ...operatorErrorFields(error),
+        ...correlationFields(),
+      }),
+    );
+  return dead.map((job) => job.id);
 }
 /** Runs one claimed job; every log line in it carries the job's correlation id, the same for every attempt. */
 export function runJob(job: Job) {
@@ -526,13 +594,8 @@ async function execute(job: Job) {
       { refundAttempt: error instanceof ProviderError && error.deferred },
     );
     if (dead) {
-      if (job.kind === 'submission' && p.submissionId)
-        await db.postSubmission.updateMany({
-          where: { id: p.submissionId, status: 'QUEUED' },
-          data: { status: 'EXCLUDED', reasonCode: 'LOOKUP_FAILED' },
-        });
-      if (p.raidId && ['submission', 'tracking-correction'].includes(job.kind))
-        await clearCollectionError(p.raidId);
+      alertDeadLetter(job, 'attempts-failed');
+      await resolveDeadJob(job);
     }
     console.error(
       JSON.stringify({

@@ -68,3 +68,42 @@ export async function finishJob(
   });
   return { dead: dead && updated.count === 1 };
 }
+export const EXHAUSTED_JOB_ERROR =
+  'The job used all its attempts without finishing (worker crash or lost lease).';
+/**
+ * Dead-letter jobs that used every attempt but were never finished or failed: each attempt was claimed and then the
+ * worker crashed or lost its lease, so finishJob() never ran for the last one. claimJob() never picks such a job
+ * again, so without this it would sit unfinished forever. Only a job whose lease has expired by the database clock
+ * qualifies, so an eighth attempt still running (and renewing) is never touched. One UPDATE decides each job: a
+ * concurrent sweep, renewal or late finishJob() either sees the job already failed with its lease cleared and writes
+ * nothing, or wins the row first.
+ *
+ * Each job has its own transaction, and `resolve` runs inside it, so whatever depended on the job (a QUEUED
+ * PostSubmission, a Raid's collection state) is resolved atomically with the dead-lettering, never left behind by a
+ * crash between the two. A job whose `resolve` throws rolls back alone, stays exhausted for the next sweep and is
+ * returned in `failed`, so one poison job can neither block the others nor go unreported.
+ */
+export async function deadLetterExhaustedJobs(
+  resolve?: (tx: Prisma.TransactionClient, job: Job) => Promise<void>,
+) {
+  const candidates = await db.$queryRaw<
+    { id: string }[]
+  >`SELECT id FROM "Job" WHERE "doneAt" IS NULL AND "failedAt" IS NULL AND "attempts">=${JOB_MAX_ATTEMPTS} AND ("lockedAt" IS NULL OR "lockedAt"<(NOW() AT TIME ZONE 'UTC')-make_interval(mins => ${JOB_LEASE_MINUTES}::int)) ORDER BY "runAt"`;
+  const dead: Job[] = [];
+  const failed: { id: string; error: unknown }[] = [];
+  for (const { id } of candidates) {
+    try {
+      const job = await db.$transaction(async (tx) => {
+        const [row] = await tx.$queryRaw<
+          Job[]
+        >`UPDATE "Job" SET "failedAt"=(NOW() AT TIME ZONE 'UTC'), "lockedAt"=NULL, "lease"=NULL, "error"=COALESCE("error", ${EXHAUSTED_JOB_ERROR}) WHERE id=${id} AND "doneAt" IS NULL AND "failedAt" IS NULL AND "attempts">=${JOB_MAX_ATTEMPTS} AND ("lockedAt" IS NULL OR "lockedAt"<(NOW() AT TIME ZONE 'UTC')-make_interval(mins => ${JOB_LEASE_MINUTES}::int)) RETURNING *`;
+        if (row) await resolve?.(tx, row);
+        return row;
+      });
+      if (job) dead.push(job);
+    } catch (error) {
+      failed.push({ id, error });
+    }
+  }
+  return { dead, failed };
+}

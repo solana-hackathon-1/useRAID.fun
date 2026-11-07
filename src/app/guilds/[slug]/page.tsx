@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { formatUtcDateTime } from '@/lib/format';
 import {
+  GUILD_STALE_AFTER_DAYS,
   GuildPublicPageThrottled,
   loadGuildPublicPage,
   loadGuildPublicProfile,
@@ -47,7 +48,7 @@ export default async function GuildPage({ params, searchParams }: Props) {
     throw error;
   }
   if (!view) notFound();
-  const { guild, updates, nextCursor, before, updatesUnavailable } = view;
+  const { guild, updates, nextCursor, before, updatesUnavailable, stale } = view;
   const home = `/guilds/${guild.slug}`;
   return (
     <>
@@ -79,6 +80,12 @@ export default async function GuildPage({ params, searchParams }: Props) {
       )}
       <section className="panel" aria-labelledby="guild-updates-heading">
         <h2 id="guild-updates-heading">{before ? 'Older updates' : 'Updates'}</h2>
+        {stale && (
+          <div role="status">
+            <p>No update in the last {GUILD_STALE_AFTER_DAYS} days.</p>
+            <p className="muted">This Guild&apos;s information may be out of date.</p>
+          </div>
+        )}
         {updatesUnavailable ? (
           <div role="status">
             <p>Updates cannot be loaded right now.</p>

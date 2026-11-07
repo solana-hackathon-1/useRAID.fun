@@ -45,7 +45,14 @@ export function RewardPanel({
         pump.fun creator fees arrive at <code className="mint">{view.feeAddress}</code>. After
         network costs, 90% goes to qualifying raiders and 10% to useRAID.
       </p>
-      {view.status === 'PAUSED' && <p className="notice">Payouts paused: {view.pausedReason}</p>}
+      {view.status === 'PAUSED' && (
+        <p className="notice">
+          Payouts paused
+          {view.owner && view.pausedReason && view.pausedReason !== 'Payouts paused'
+            ? `: ${view.pausedReason}`
+            : ''}
+        </p>
+      )}
       {view.globalPauseReason && <p className="notice">{view.globalPauseReason}</p>}
       {view.settlementDelayed && (
         <p className="notice">

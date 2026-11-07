@@ -1,4 +1,5 @@
-import { Connection, PublicKey } from '@solana/web3.js';
+import { PublicKey } from '@solana/web3.js';
+import { solanaConnection } from './solana-rpc';
 import { db } from './db';
 import { HttpError } from './auth-primitives';
 import { lockTracking } from './tracking';
@@ -59,7 +60,7 @@ export async function verifyRaidFunding(raidId: string, userId: string, signatur
   const endpoint = process.env.SOLANA_RPC_URL;
   if (!endpoint?.startsWith('https://'))
     throw new HttpError(503, 'Funding verification is not configured.');
-  const rpc = new Connection(endpoint, 'finalized');
+  const rpc = solanaConnection(endpoint);
   if ((await rpc.getGenesisHash()) !== '5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d')
     throw new HttpError(503, 'Funding requires Solana mainnet.');
   const receipt = await rpc.getParsedTransaction(signature, {
