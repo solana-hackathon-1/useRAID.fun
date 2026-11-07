@@ -64,7 +64,6 @@ describe('(g) production refuses test-looking database names and the sample oper
     'postgresql://u:p@db:5432/useraid_production',
     'postgresql://u:p@db:5432/contestants', // "test" inside a word is not a token
     'postgresql://u:p@db-test.internal:5432/useraid', // host is not the database name
-    'not a url',
     '',
   ])('accepts database %s', (url) => {
     expect(validateRuntimeConfig({ ...PRODUCTION, DATABASE_URL: url }, 'web').ok).toBe(true);
@@ -211,5 +210,112 @@ describe('(f) a web process refused for bad configuration exits at start', () =>
     await register();
     expect(exit).toHaveBeenCalledWith(1);
     vi.unstubAllEnvs();
+  });
+});
+
+// Review fix pass: the live staging VM has NODE_ENV=production, NO RAID_ENVIRONMENT and USDC_NETWORK=devnet.
+const LIVE_STAGING = {
+  NODE_ENV: 'production',
+  USDC_NETWORK: 'devnet',
+  DEMO_MODE: 'false',
+  LIVE_COLLECTION_APPROVED: 'false',
+  LAUNCH_ENABLED: 'false',
+  PAYOUT_ENABLED: 'false',
+  X_TRACKING_V2_SETTLEMENT_ENABLED: 'false',
+  DATABASE_URL: 'postgresql://useraid:p@db:5432/useraid_staging',
+};
+
+describe('production label cannot fail open (NODE_ENV=production)', () => {
+  it('still boots the live staging shape: no RAID_ENVIRONMENT, devnet, every money flag false', () => {
+    for (const role of ['web', 'worker'] as const)
+      expect(validateRuntimeConfig(LIVE_STAGING, role), role).toEqual({ ok: true, violations: [] });
+  });
+
+  it.each(['prod', 'live', 'productoin', 'stagign'])(
+    'refuses unrecognised RAID_ENVIRONMENT %s under NODE_ENV=production',
+    (value) => {
+      const result = validateRuntimeConfig({ ...LIVE_STAGING, RAID_ENVIRONMENT: value }, 'web');
+      expect(codes(result.violations)).toEqual([
+        'REFUSE:ENVIRONMENT_NOT_RECOGNISED:RAID_ENVIRONMENT',
+      ]);
+      expect(JSON.stringify(result)).not.toContain(`"${value}"`);
+    },
+  );
+
+  it('keeps the WARN for an unrecognised label outside NODE_ENV=production', () => {
+    expect(codes(validateRuntimeConfig({ RAID_ENVIRONMENT: 'prod' }, 'web').violations)).toEqual([
+      'WARN:ENVIRONMENT_NOT_RECOGNISED:RAID_ENVIRONMENT',
+    ]);
+  });
+
+  it.each([
+    ['LAUNCH_ENABLED', REAL_AUTHORITY],
+    ['PAYOUT_ENABLED', REAL_AUTHORITY],
+    ['LIVE_COLLECTION_APPROVED', {}],
+  ])('refuses an undeclared environment when %s is true', (money, authority) => {
+    for (const blank of [undefined, '', '  ']) {
+      const result = validateRuntimeConfig(
+        { ...LIVE_STAGING, ...authority, [money]: 'true', RAID_ENVIRONMENT: blank },
+        'web',
+      );
+      expect(codes(result.violations), String(blank)).toEqual([
+        'REFUSE:ENVIRONMENT_NOT_DECLARED:RAID_ENVIRONMENT',
+      ]);
+    }
+  });
+
+  it('accepts money flags once the environment is declared with a recognised label', () => {
+    expect(
+      validateRuntimeConfig(
+        {
+          ...LIVE_STAGING,
+          USDC_NETWORK: 'mainnet',
+          ...REAL_AUTHORITY,
+          LAUNCH_ENABLED: 'true',
+          RAID_ENVIRONMENT: 'pilot',
+        },
+        'web',
+      ).ok,
+    ).toBe(true);
+  });
+
+  it('does not require a declaration outside NODE_ENV=production', () => {
+    expect(validateRuntimeConfig({ LAUNCH_ENABLED: 'true', ...REAL_AUTHORITY }, 'web').ok).toBe(
+      true,
+    );
+  });
+});
+
+describe('LIVE_COLLECTION_APPROVED counts as a real-money flag for (h)', () => {
+  it('refuses WORK_* beside it', () => {
+    const result = validateRuntimeConfig(
+      { LIVE_COLLECTION_APPROVED: 'true', WORK_START_ENABLED: 'true' },
+      'web',
+    );
+    expect(codes(result.violations)).toEqual([
+      'REFUSE:SYNTHETIC_WITH_REAL_MONEY:WORK_START_ENABLED>LIVE_COLLECTION_APPROVED',
+    ]);
+  });
+
+  it('does not make it demand operator authorities on its own', () => {
+    expect(validateRuntimeConfig({ LIVE_COLLECTION_APPROVED: 'true' }, 'web').ok).toBe(true);
+  });
+});
+
+describe('unparseable DATABASE_URL in production', () => {
+  it.each(['not a url', 'postgresql//missing-colon', '://x'])(
+    'refuses %j without echoing it',
+    (url) => {
+      const result = validateRuntimeConfig({ ...PRODUCTION, DATABASE_URL: url }, 'web');
+      expect(codes(result.violations)).toEqual(['REFUSE:DATABASE_URL_UNPARSEABLE:DATABASE_URL']);
+      expect(JSON.stringify(result)).not.toContain(url);
+    },
+  );
+
+  it('is not judged outside production, and an unset URL is not this rule', () => {
+    expect(
+      validateRuntimeConfig({ RAID_ENVIRONMENT: 'staging', DATABASE_URL: 'not a url' }, 'web').ok,
+    ).toBe(true);
+    expect(validateRuntimeConfig({ RAID_ENVIRONMENT: 'production' }, 'web').ok).toBe(true);
   });
 });
