@@ -8,6 +8,7 @@ import {
   createProductionAssetRegistry,
   validateProductionConfig,
 } from '../src/asset-registry';
+import { createWithAllowlist, validateWithAllowlist } from '../src/asset-registry/production';
 import {
   MINT_ONE,
   MINT_THREE,
@@ -42,7 +43,7 @@ function candidate(): ProductionConfig {
 }
 const allowlist = [{ assetId: real, decisionRef: 'test-only-decision-reference' }];
 const codes = (config: ProductionConfig, list = allowlist) =>
-  validateProductionConfig(config, list).violations.map((violation) => violation.code);
+  validateWithAllowlist(config, list).violations.map((violation) => violation.code);
 
 describe('T029 production validation fails closed (AC41, I12, O07)', () => {
   it('ships only canonical USDC (DEC-2026-11-07-03) and blocks any other asset by default', () => {
@@ -57,12 +58,12 @@ describe('T029 production validation fails closed (AC41, I12, O07)', () => {
   it('blocks an empty configuration', () => {
     const empty = { ...candidate(), assets: [], policies: [] };
     expect(codes(empty)).toContain('NO_SUPPORTED_PRODUCTION_ASSET');
-    expect(validateProductionConfig(empty, allowlist).ok).toBe(false);
+    expect(validateWithAllowlist(empty, allowlist).ok).toBe(false);
   });
   it('accepts a fully verified, approved, allow-listed configuration only when the host supplies the list', () => {
-    const result = validateProductionConfig(candidate(), allowlist);
+    const result = validateWithAllowlist(candidate(), allowlist);
     expect(result).toEqual({ ok: true, violations: [] });
-    const registry = createProductionAssetRegistry(candidate(), allowlist);
+    const registry = createWithAllowlist(candidate(), allowlist);
     expect(registry.resolve(real).display.symbol).toBe('EXAMPLE');
   });
   it.each(['DEVNET', 'TESTNET', 'LOCAL', 'SYNTHETIC'] as const)(
@@ -71,9 +72,7 @@ describe('T029 production validation fails closed (AC41, I12, O07)', () => {
       const config = candidate();
       config.networks = [{ networkIdentity: MAINNET_LIKE, cluster }];
       expect(codes(config)).toContain('NETWORK_NOT_MAINNET');
-      expect(codeOf(() => createProductionAssetRegistry(config, allowlist))).toBe(
-        'PRODUCTION_BLOCKED',
-      );
+      expect(codeOf(() => createWithAllowlist(config, allowlist))).toBe('PRODUCTION_BLOCKED');
     },
   );
   it('blocks test fixture and sample assets even when listed', () => {
@@ -103,12 +102,12 @@ describe('T029 production validation fails closed (AC41, I12, O07)', () => {
   it('blocks a token asset whose token program is not declared chain-verified', () => {
     const undeclared = candidate();
     undeclared.programs = [{ address: fixtureAddress(8), origin: 'CHAIN_VERIFIED' }];
-    const violations = validateProductionConfig(undeclared, allowlist).violations;
+    const violations = validateWithAllowlist(undeclared, allowlist).violations;
     expect(violations).toEqual([{ code: 'PROGRAM_NOT_CHAIN_VERIFIED', subject: 'assets[0]' }]);
     const none = candidate();
     none.programs = [];
     expect(codes(none)).toContain('PROGRAM_NOT_CHAIN_VERIFIED');
-    expect(validateProductionConfig(candidate(), allowlist).ok).toBe(true);
+    expect(validateWithAllowlist(candidate(), allowlist).ok).toBe(true);
   });
   it('blocks an asset without a recorded decision reference matching the allow list entry', () => {
     const noApproval = candidate();
@@ -163,6 +162,6 @@ describe('T029 production validation fails closed (AC41, I12, O07)', () => {
     expect(validateProductionConfig({} as never).ok).toBe(false);
     const garbage = candidate();
     garbage.assets = [{ assetId: { symbol: 'USDC' } } as never];
-    expect(validateProductionConfig(garbage, allowlist).ok).toBe(false);
+    expect(validateWithAllowlist(garbage, allowlist).ok).toBe(false);
   });
 });

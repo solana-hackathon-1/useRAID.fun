@@ -17,6 +17,7 @@ import {
   validateProductionConfig,
   type ProductionConfig,
 } from '../src/asset-registry';
+import * as publicApi from '../src/asset-registry';
 import { assetKey } from '../src/contracts/assets';
 import { PROFILES, codeOf, fixtureAddress, policy, token } from './helpers/asset-fixtures';
 
@@ -159,5 +160,30 @@ describe('DEC-2026-11-07-03 canonical USDC production allow list', () => {
     });
     expect(registry.evaluateSupport(USDC_DEVNET_ASSET_ID).supported).toBe(true);
     expect(registry.has(USDC_MAINNET_ASSET_ID)).toBe(false);
+  });
+
+  it('cannot be widened by a host: the public entry points take no allow list', () => {
+    const arbitrary = token(fixtureAddress(7), SOLANA_MAINNET_GENESIS);
+    const widen = [{ assetId: arbitrary, decisionRef: USDC_DECISION_REF }];
+    const widened = config(arbitrary);
+    const validate = validateProductionConfig as (
+      c: ProductionConfig,
+      extra?: unknown,
+    ) => {
+      ok: boolean;
+      violations: readonly { code: string }[];
+    };
+    const result = validate(widened, widen);
+    expect(result.ok).toBe(false);
+    expect(result.violations.map((v) => v.code)).toContain('ASSET_NOT_ALLOWLISTED');
+    const create = createProductionAssetRegistry as (
+      c: ProductionConfig,
+      extra?: unknown,
+    ) => unknown;
+    expect(codeOf(() => create(widened, widen))).toBe('PRODUCTION_BLOCKED');
+    expect(validateProductionConfig.length).toBe(1);
+    expect(createProductionAssetRegistry.length).toBe(1);
+    expect(Object.keys(publicApi)).not.toContain('validateWithAllowlist');
+    expect(Object.keys(publicApi)).not.toContain('createWithAllowlist');
   });
 });
