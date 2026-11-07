@@ -202,6 +202,25 @@ integration('Guild activation over HTTP against real storage', () => {
     );
   });
 
+  it.each([
+    'LAUNCH_ENABLED',
+    'PAYOUT_ENABLED',
+    'X_TRACKING_V2_SETTLEMENT_ENABLED',
+    'LIVE_COLLECTION_APPROVED',
+  ])('refuses an allowlisted operator while %s is enabled, writing nothing', async (flag) => {
+    const applicant = await person();
+    const operator = await person();
+    const draft = await draftOf(applicant, 'funds-guild');
+    open(operator);
+    vi.stubEnv(flag, 'true');
+    const response = await activate(operator, draft, 'ev-1', 'key-funds');
+    expect(response.status).toBe(403);
+    expect(await guildCount()).toBe(0);
+    expect(await activationAudits()).toBe(0);
+    vi.stubEnv(flag, 'false');
+    expect((await activate(operator, draft, 'ev-1', 'key-funds-2')).status).toBe(200);
+  });
+
   it('replays an original activation with the switch off, but only for an operator who is still listed', async () => {
     const applicant = await person();
     const operator = await person();

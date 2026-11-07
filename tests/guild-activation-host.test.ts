@@ -80,3 +80,30 @@ it('keeps the allowlist answer independent of the switch so an original receipt 
   expect(await askHost('operator-1')).toBe(true);
   expect(mocks.activate.mock.calls.at(-1)![2].allowNewWrites).toBe(false);
 });
+
+const REAL_FUNDS_FLAGS = [
+  'LAUNCH_ENABLED',
+  'PAYOUT_ENABLED',
+  'X_TRACKING_V2_SETTLEMENT_ENABLED',
+  'LIVE_COLLECTION_APPROVED',
+];
+it.each(REAL_FUNDS_FLAGS)(
+  'fails closed for an allowlisted operator while %s is enabled: simulated funds only',
+  async (flag) => {
+    vi.stubEnv('GUILD_ACTIVATION_ENABLED', 'true');
+    vi.stubEnv('GUILD_ACTIVATION_OPERATOR_ACCOUNT_IDS', 'operator-1');
+    expect(await askHost('operator-1')).toBe(true);
+    vi.stubEnv(flag, 'true');
+    expect(await askHost('operator-1')).toBe(false);
+    expect(guildActivationConfiguration()).toEqual({
+      writesAvailable: false,
+      unavailableReason: 'DISABLED',
+    });
+    expect(mocks.activate.mock.calls.at(-1)![2].allowNewWrites).toBe(false);
+    // Same truthiness as the flags themselves: only the exact string `true` turns one on.
+    for (const value of ['', 'false', 'TRUE', '1', ' true']) {
+      vi.stubEnv(flag, value);
+      expect(await askHost('operator-1'), `${flag}=${JSON.stringify(value)}`).toBe(true);
+    }
+  },
+);
