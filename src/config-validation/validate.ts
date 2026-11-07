@@ -22,7 +22,9 @@ export type ViolationCode =
   | 'DEVNET_OR_DEMO_IN_PRODUCTION'
   | 'TEST_DATABASE_IN_PRODUCTION'
   | 'SAMPLE_OPERATOR_KEY_IN_PRODUCTION'
-  | 'SYNTHETIC_WITH_REAL_MONEY';
+  | 'SYNTHETIC_WITH_REAL_MONEY'
+  | 'ENVIRONMENT_NOT_DECLARED'
+  | 'DATABASE_URL_UNPARSEABLE';
 export interface ConfigViolation {
   readonly severity: ViolationSeverity;
   readonly code: ViolationCode;
@@ -40,6 +42,16 @@ export const REAL_OPERATION_FLAGS = Object.freeze([
   'LAUNCH_ENABLED',
   'PAYOUT_ENABLED',
   'X_TRACKING_V2_SETTLEMENT_ENABLED',
+]);
+
+/**
+ * Everything that can touch real money or real collection: the real-operation switches plus live collection.
+ * Used to separate synthetic `WORK_*` switches and to require a declared environment; it adds no authority
+ * requirement of its own (`LIVE_COLLECTION_APPROVED` alone demands no operator key).
+ */
+export const REAL_MONEY_FLAGS = Object.freeze([
+  ...REAL_OPERATION_FLAGS,
+  'LIVE_COLLECTION_APPROVED',
 ]);
 
 /** Values of `RAID_ENVIRONMENT` the non-production label recognises (kept equal to `deploymentEnvironment` by a test). */
@@ -98,12 +110,13 @@ const TEST_DATABASE_WORDS = Object.freeze([
 /** Well-known placeholder addresses: the system program, any sysvar, and `.env.example`-style stand-ins. */
 const SAMPLE_KEY = /^(1{32}|sysvar|your|sample|example|placeholder|changeme|todo|xxx)/i;
 
-function databaseName(url: string | undefined): string | undefined {
-  if (!url) return undefined;
+/** `undefined` when unset or blank, `null` when present but not a URL (never echoed). */
+function databaseName(url: string | undefined): string | null | undefined {
+  if (!url?.trim()) return undefined;
   try {
     return decodeURIComponent(new URL(url).pathname.replace(/^\//, ''));
   } catch {
-    return undefined; // an unparseable URL is the database client's refusal, not ours; never echoed
+    return null;
   }
 }
 
@@ -148,8 +161,18 @@ export function validateRuntimeConfig(env: ConfigEnv, role: ConfigRole): ConfigV
       add('WARN', 'UNKNOWN_FLAG', name);
   }
   const environment = (env.RAID_ENVIRONMENT ?? '').trim().toLowerCase();
+  const moneyFlags = REAL_MONEY_FLAGS.filter((name) => isTrue(env, name));
+  // The label must not fail open: under NODE_ENV=production a mistyped label (`prod`, `live`) would skip the
+  // production rules below, so it refuses. Unset is allowed only while no money flag is on (the live staging
+  // VM sets NODE_ENV=production and no RAID_ENVIRONMENT, with every money flag false).
   if (environment !== '' && !RECOGNISED_ENVIRONMENTS.includes(environment))
-    add('WARN', 'ENVIRONMENT_NOT_RECOGNISED', 'RAID_ENVIRONMENT');
+    add(
+      env.NODE_ENV === 'production' ? 'REFUSE' : 'WARN',
+      'ENVIRONMENT_NOT_RECOGNISED',
+      'RAID_ENVIRONMENT',
+    );
+  if (environment === '' && env.NODE_ENV === 'production' && moneyFlags.length > 0)
+    add('REFUSE', 'ENVIRONMENT_NOT_DECLARED', 'RAID_ENVIRONMENT');
   for (const flag of FLAG_CATALOG)
     if (flag.requires && isTrue(env, flag.name) && !present(env, flag.requires))
       add('WARN', 'FLAG_SETTING_MISSING', `${flag.name}>${flag.requires}`);
@@ -191,7 +214,7 @@ export function validateRuntimeConfig(env: ConfigEnv, role: ConfigRole): ConfigV
 
   // DEC-2026-11-07-01 (h): synthetic WORK_* switches model simulated funds; they never share a deployment
   // with a switch that can move real money, whatever RAID_ENVIRONMENT says.
-  for (const money of realOperations)
+  for (const money of moneyFlags)
     for (const flag of FLAG_CATALOG)
       if (flag.name.startsWith('WORK_') && isTrue(env, flag.name))
         add('REFUSE', 'SYNTHETIC_WITH_REAL_MONEY', `${flag.name}>${money}`);
@@ -206,7 +229,8 @@ export function validateRuntimeConfig(env: ConfigEnv, role: ConfigRole): ConfigV
     for (const name of ['DEMO_MODE', 'STUDIO_SANDBOX'])
       if (isTrue(env, name)) add('REFUSE', 'DEVNET_OR_DEMO_IN_PRODUCTION', name);
     const database = databaseName(env.DATABASE_URL);
-    if (
+    if (database === null) add('REFUSE', 'DATABASE_URL_UNPARSEABLE', 'DATABASE_URL');
+    else if (
       database &&
       database
         .toLowerCase()

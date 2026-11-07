@@ -44,6 +44,7 @@ describe('T037 startup host (web instrumentation and worker)', () => {
       expect(validateRuntimeConfig(example, role).ok, role).toBe(true);
     const live = {
       DEMO_MODE: 'false',
+      RAID_ENVIRONMENT: 'local',
       ADMIN_X_IDS: 'gate-admin-x',
       X_TRACKING_V2_ENABLED: 'true',
       LIVE_COLLECTION_APPROVED: 'true',
