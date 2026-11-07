@@ -13,6 +13,7 @@ import {
   Transaction,
   type VersionedTransactionResponse,
 } from '@solana/web3.js';
+import { solanaConnection } from './solana-rpc';
 import { PUMP_SDK, PUMP_PROGRAM_ID, bondingCurvePda } from './pump-sdk';
 import { TOKEN_2022_PROGRAM_ID } from '@solana/spl-token';
 import { db } from './db';
@@ -71,7 +72,7 @@ export async function assertMainnet(rpc: Connection) {
 export function connection() {
   const url = process.env.SOLANA_RPC_URL;
   if (!url || !/^https:\/\//.test(url)) throw new HttpError(503, 'Solana RPC unavailable.');
-  return new Connection(url, 'finalized');
+  return solanaConnection(url);
 }
 const RESERVATION_MS = 20 * 60000;
 async function assertLauncherAccess(userId: string) {
