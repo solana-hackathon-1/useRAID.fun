@@ -3,6 +3,7 @@ import type { Prisma } from '@prisma/client';
 import { JOB_LEASE_MINUTES } from './job-lease';
 import { JOB_MAX_ATTEMPTS } from './queue';
 import { correlationFields } from './worker-diagnostics';
+import { operatorErrorFields } from './operator-log';
 
 /**
  * Durable worker health (T038, blueprint §27.3/§30.3). Diagnostic only: nothing here gates, retries or revives work.
@@ -100,7 +101,7 @@ export async function recordStepOutcome(
     console.error(
       JSON.stringify({
         step: 'worker-health',
-        error: error instanceof Error ? error.message : 'unavailable',
+        ...operatorErrorFields(error),
         ...correlationFields(),
       }),
     );

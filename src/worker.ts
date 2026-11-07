@@ -4,6 +4,7 @@ import { config } from './lib/config';
 import { claimJob } from './lib/queue';
 import { assertSchemaCurrent, runJob, schedule } from './lib/worker-jobs';
 import { checkRuntimeConfig } from './lib/config-validation-host';
+import { operatorErrorFields, operatorLogLine } from './lib/operator-log';
 let stopping = false;
 process.on('SIGTERM', () => {
   stopping = true;
@@ -13,7 +14,8 @@ process.on('SIGINT', () => {
 });
 async function main() {
   checkRuntimeConfig('worker');
-  if (config.demo) throw new Error('Worker cannot run in demo mode.');
+  if (config.demo)
+    throw Object.assign(new Error('Worker cannot run in demo mode.'), { code: 'DEMO_MODE' });
   await assertSchemaCurrent();
   let scheduled = 0;
   while (!stopping) {
@@ -26,7 +28,7 @@ async function main() {
           console.error(
             JSON.stringify({
               schedule: 'failed',
-              error: error instanceof Error ? error.message : String(error),
+              ...operatorErrorFields(error),
             }),
           );
         }
@@ -38,13 +40,13 @@ async function main() {
       }
       await runJob(job);
     } catch (error) {
-      console.error(error instanceof Error ? error.message : 'Worker failed');
+      console.error(operatorLogLine('worker-loop-failed', error));
       await new Promise((r) => setTimeout(r, 5000));
     }
   }
   await db.$disconnect();
 }
 main().catch((e) => {
-  console.error(e.message);
+  console.error(operatorLogLine('worker-start-failed', e));
   process.exitCode = 1;
 });
