@@ -22,6 +22,8 @@ export const PAUSE_SIMULATION_FAILED = 'Transaction simulation failed; payouts p
 export const PAUSE_FEE_DIFFERED = 'Network fee differed from the approved amount';
 export const PAUSE_ONCHAIN_FAILED = 'An on-chain transaction failed';
 export const PAUSE_OPERATOR_REVIEW = 'Operator review required';
+/** The only pause text anyone but the launch owner sees (DEC-2026-11-07-01 k). */
+export const PAUSE_PUBLIC_TEXT = 'Payouts paused';
 const FIXED: ReadonlySet<string> = new Set(Object.values(PAUSE_REASON));
 export function publicPausedReason(stored: string | null | undefined): string | null {
   if (!stored) return null;

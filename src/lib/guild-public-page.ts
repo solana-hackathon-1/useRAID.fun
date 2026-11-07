@@ -21,6 +21,8 @@ import {
 export const GUILD_PUBLIC_PAGE_SIZE = 10;
 /** Guilds shown per directory page; within the public API's page maximum. */
 export const GUILD_DIRECTORY_PAGE_SIZE = 12;
+/** A Guild whose newest published update is older than this is shown as possibly out of date (DEC-2026-11-07-01 j). */
+export const GUILD_STALE_AFTER_DAYS = 30;
 /** What the page may render: the approved projection minus the internal Guild id. */
 export interface GuildPublicPageProfile {
   slug: string;
@@ -35,6 +37,8 @@ export interface GuildPublicPageView {
   before: string | null;
   /** The profile was read but the updates could not be; the page says so instead of claiming there are none. */
   updatesUnavailable: boolean;
+  /** First page only: the newest published update is more than GUILD_STALE_AFTER_DAYS old. */
+  stale: boolean;
 }
 const slugSchema = PublicGuildSchema.shape.slug;
 const beforeSchema = z.uuid().optional();
@@ -102,12 +106,15 @@ export async function loadGuildPublicPage(
   } catch {
     // A failed read is "unable to refresh", never "no updates". The error itself is not shown to visitors.
     console.error('guild public page: updates read failed');
-    return { guild, updates: [], nextCursor: null, before: beforeId, updatesUnavailable: true };
+    return { guild, updates: [], nextCursor: null, before: beforeId, updatesUnavailable: true, stale: false };
   }
   if (raw === null) return null;
   const page = PublicGuildUpdatesPageSchema.safeParse(raw);
   if (!page.success) throw new Error('GUILD_PUBLIC_CONTRACT');
-  return { guild, ...page.data, before: beforeId, updatesUnavailable: false };
+  const newest = beforeId === null ? page.data.updates[0] : undefined;
+  const stale =
+    !!newest && Date.now() - Date.parse(newest.publishedAt) > GUILD_STALE_AFTER_DAYS * 86_400_000;
+  return { guild, ...page.data, before: beforeId, updatesUnavailable: false, stale };
 }
 export interface GuildDirectoryView {
   guilds: PublicGuildDirectoryEntry[];

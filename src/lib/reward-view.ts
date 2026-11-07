@@ -1,6 +1,6 @@
 import { db } from './db';
 import { config } from './config';
-import { publicPausedReason } from './pause-reason';
+import { PAUSE_PUBLIC_TEXT, publicPausedReason } from './pause-reason';
 export async function publicRewardView(mint: string, userId?: string) {
   if (config.demo) return null;
   const launch = await db.tokenLaunch.findUnique({
@@ -81,8 +81,14 @@ export async function publicRewardView(mint: string, userId?: string) {
     mint,
     feeAddress: launch.feeAddress,
     status: launch.status,
-    // The stored reason is raw operator text (RPC logs, signatures); only a fixed projection is public.
-    pausedReason: launch.status === 'PAUSED' ? publicPausedReason(launch.error) : null,
+    // The stored reason is raw operator text (RPC logs, signatures). The owner sees a fixed projection of it; everyone
+    // else sees only the neutral text (DEC-2026-11-07-01 k).
+    pausedReason:
+      launch.status !== 'PAUSED'
+        ? null
+        : userId && userId === launch.userId
+          ? publicPausedReason(launch.error)
+          : PAUSE_PUBLIC_TEXT,
     globalPauseReason: !settings?.collectionEnabled
       ? 'Raid collection is paused.'
       : settings.payoutPaused
