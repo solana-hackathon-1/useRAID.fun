@@ -16,6 +16,9 @@ vi.mock('../src/lib/db', () => ({
     tokenLaunch: { findUnique: mocks.findLaunch },
     rewardPayout: { groupBy: async () => [], findMany: async () => [] },
     settings: { findUnique: async () => null },
+    user: { findUnique: async () => null },
+    raidEnrollment: { findFirst: async () => null },
+    rewardEnrollment: { findFirst: async () => null },
   },
 }));
 vi.mock('../src/lib/data', () => ({ getToken: mocks.getToken }));
@@ -61,7 +64,7 @@ describe('a paused launch never publishes its raw stored reason', () => {
     const text = await response.text();
     expect(leaks(text)).toBe(false);
     expect(JSON.parse(text).rewards).toMatchObject({ status: 'PAUSED' });
-    expect(JSON.parse(text).rewards.pausedReason).toBeTruthy();
+    expect(JSON.parse(text).rewards.pausedReason).toBe('Payouts paused');
   });
   it('the rendered RewardPanel shows a fixed reason, not the RPC log', async () => {
     mocks.findLaunch.mockResolvedValue(launchRow(RAW_SIMULATION));
@@ -70,8 +73,28 @@ describe('a paused launch never publishes its raw stored reason', () => {
       createElement(RewardPanel, { view: view!, walletAddress: null, xConnected: false }),
     );
     expect(html).toContain('Payouts paused');
+    expect(html).not.toContain('Payouts paused:');
+    expect(html).not.toContain('Payouts paused paused');
     expect(leaks(html)).toBe(false);
     expect(html).not.toContain('Program log');
+  });
+  it('the owner sees the fixed detail in the panel, never the raw text', async () => {
+    mocks.findLaunch.mockResolvedValue(launchRow('Fee wallet balance insufficient'));
+    const view = await publicRewardView('M', 'owner');
+    const html = renderToStaticMarkup(
+      createElement(RewardPanel, { view: view!, walletAddress: null, xConnected: false }),
+    );
+    expect(html).toContain('Payouts paused: Fee wallet balance insufficient');
+    mocks.findLaunch.mockResolvedValue(launchRow(RAW_SIMULATION));
+    const raw = renderToStaticMarkup(
+      createElement(RewardPanel, {
+        view: (await publicRewardView('M', 'owner'))!,
+        walletAddress: null,
+        xConnected: false,
+      }),
+    );
+    expect(leaks(raw)).toBe(false);
+    expect(raw).toContain('Transaction simulation failed; payouts paused');
   });
   it.each([
     ['simulation logs', RAW_SIMULATION],
@@ -80,7 +103,7 @@ describe('a paused launch never publishes its raw stored reason', () => {
     ['unrecognised text', 'something unexpected from a provider'],
   ])('projects %s to text that carries none of it', async (_label, stored) => {
     mocks.findLaunch.mockResolvedValue(launchRow(stored));
-    const view = await publicRewardView('M');
+    const view = await publicRewardView('M', 'owner');
     expect(view!.pausedReason).toBeTruthy();
     expect(view!.pausedReason).not.toContain('simulation logs');
     expect(view!.pausedReason).not.toMatch(
@@ -88,13 +111,26 @@ describe('a paused launch never publishes its raw stored reason', () => {
     );
   });
   it.each([
+    ['anonymous', undefined],
+    ['signed in but not the owner', 'someone-else'],
+  ])('shows %s callers only the neutral text', async (_who, userId) => {
+    for (const stored of [
+      'Fee wallet balance insufficient',
+      'Network fee changed before signing',
+      RAW_SIMULATION,
+    ]) {
+      mocks.findLaunch.mockResolvedValue(launchRow(stored));
+      expect((await publicRewardView('M', userId))!.pausedReason).toBe('Payouts paused');
+    }
+  });
+  it.each([
     'Fee wallet balance insufficient',
     'Network fee changed before signing',
     'Unexpected network fee; payouts paused',
     'Fee recipient or bonding curve changed',
-  ])('keeps the fixed pause reason: %s', async (reason) => {
+  ])('keeps the fixed pause reason for the owner: %s', async (reason) => {
     mocks.findLaunch.mockResolvedValue(launchRow(reason));
-    expect((await publicRewardView('M'))!.pausedReason).toBe(reason);
+    expect((await publicRewardView('M', 'owner'))!.pausedReason).toBe(reason);
   });
   it('a live launch carries no paused reason', async () => {
     mocks.findLaunch.mockResolvedValue(
