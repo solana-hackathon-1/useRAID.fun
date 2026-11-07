@@ -369,3 +369,11 @@ export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): Laun
   };
   return Object.freeze(route);
 }
+
+/** RED-stage stub: replaced by the recorded-decision registry in the GREEN commit. */
+export function createMeteoraDbcLaunchRouteWithDecisions(
+  config: MeteoraDbcRouteConfig,
+  _recorded: readonly string[],
+): LaunchRoute {
+  return createMeteoraDbcLaunchRoute(config);
+}

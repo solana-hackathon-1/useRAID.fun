@@ -6,8 +6,10 @@ import {
   createMeteoraDbcLaunchRoute,
   type LaunchRoute,
 } from '../src/launch-route';
+import { createMeteoraDbcLaunchRouteWithDecisions } from '../src/launch-route/meteora-dbc';
 import {
   DAMM_POOL,
+  DEC,
   FEE_CLAIMER,
   MINT,
   POOL,
@@ -26,12 +28,15 @@ const build = (
   clock = { now: T0 },
 ) => {
   const m = mockClient(state);
-  const route = createMeteoraDbcLaunchRoute({
-    network: 'DEVNET',
-    client: m.client,
-    now: () => clock.now,
-    ...(configured ? { economics: economics() } : {}),
-  });
+  const route = createMeteoraDbcLaunchRouteWithDecisions(
+    {
+      network: 'DEVNET',
+      client: m.client,
+      now: () => clock.now,
+      ...(configured ? { economics: economics() } : {}),
+    },
+    [DEC],
+  );
   return { ...m, route, clock };
 };
 async function intentOf(route: LaunchRoute) {
@@ -63,7 +68,7 @@ describe('T026 Meteora DBC launch route adapter (DEC-2026-11-07-04, R15)', () =>
           expect(r.error.detail).toEqual(['O02', 'O08']);
         }
       }
-      expect(calls).toEqual({ quote: 0, build: 0, tx: 0, pool: 0 });
+      expect(calls).toEqual({ genesis: 0, quote: 0, getQuote: 0, build: 0, tx: 0, pool: 0 });
       expect(route.capabilities().configured).toBe(false);
     });
     it('ships no default economics: configuring requires host-supplied economics', () => {
@@ -114,14 +119,17 @@ describe('T026 Meteora DBC launch route adapter (DEC-2026-11-07-04, R15)', () =>
       const r2 = await a.validateLaunch(request());
       expect(r1.ok && r2.ok && r1.value.parameterHash === r2.value.parameterHash).toBe(true);
       const m = mockClient();
-      const reordered = createMeteoraDbcLaunchRoute({
-        network: 'DEVNET',
-        client: m.client,
-        now: () => T0,
-        economics: economics({
-          configParameters: { nested: { a: '2', b: '1' }, placeholderA: 'x' },
-        }),
-      });
+      const reordered = createMeteoraDbcLaunchRouteWithDecisions(
+        {
+          network: 'DEVNET',
+          client: m.client,
+          now: () => T0,
+          economics: economics({
+            configParameters: { nested: { a: '2', b: '1' }, placeholderA: 'x' },
+          }),
+        },
+        [DEC],
+      );
       const r3 = await reordered.validateLaunch(request());
       expect(r3.ok && r1.ok && r3.value.parameterHash === r1.value.parameterHash).toBe(true);
       const r4 = await a.validateLaunch(
@@ -150,12 +158,15 @@ describe('T026 Meteora DBC launch route adapter (DEC-2026-11-07-04, R15)', () =>
         economics({ configParameters: { f() {} } }),
       ]) {
         const m = mockClient();
-        const route = createMeteoraDbcLaunchRoute({
-          network: 'DEVNET',
-          client: m.client,
-          now: () => T0,
-          economics: bad as never,
-        });
+        const route = createMeteoraDbcLaunchRouteWithDecisions(
+          {
+            network: 'DEVNET',
+            client: m.client,
+            now: () => T0,
+            economics: bad as never,
+          },
+          [DEC],
+        );
         expect(code(await route.validateLaunch(request()))).toBe('UNSUPPORTED_PARAMETERS');
       }
     });

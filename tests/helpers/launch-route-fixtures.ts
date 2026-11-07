@@ -1,4 +1,5 @@
 import bs58 from 'bs58';
+import { createHash } from 'node:crypto';
 import {
   type MeteoraDbcClient,
   type MeteoraPoolObservation,
@@ -12,6 +13,14 @@ export const FEE_CLAIMER = addr(12);
 export const MINT = addr(13);
 export const POOL = addr(14);
 export const DAMM_POOL = addr(15);
+export const DEVNET_GENESIS = 'EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG';
+export const MAINNET_GENESIS = '5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d';
+/** Synthetic recorded-decision reference; the shipped registry is empty, tests pass it explicitly. */
+export const DEC = 'DEC-2030-01-01-01';
+/** sha256 of the canonical (sorted-key) JSON of the default `economics().configParameters`. */
+export const CONFIG_HASH = createHash('sha256')
+  .update('{"nested":{"a":"2","b":"1"},"placeholderA":"x"}')
+  .digest('hex');
 export const T0 = new Date('2026-11-07T12:00:00.000Z');
 
 export const request = (over: Record<string, unknown> = {}) => ({
@@ -21,7 +30,7 @@ export const request = (over: Record<string, unknown> = {}) => ({
   ...over,
 });
 export const economics = (over: Record<string, unknown> = {}) => ({
-  decisionRef: 'test-only-decision-reference',
+  decisionRef: DEC,
   feeClaimer: FEE_CLAIMER,
   graduation: 'DAMM_V2' as const,
   configParameters: { placeholderA: 'x', nested: { b: '1', a: '2' } },
@@ -31,7 +40,10 @@ export const economics = (over: Record<string, unknown> = {}) => ({
 export function pool(over: Partial<MeteoraPoolObservation> = {}): MeteoraPoolObservation {
   return {
     programId: 'dbcij3LWUppWqq96dh6gJWwBifmcGfLSB5D4DuSMaqN',
+    pool: POOL,
     mint: MINT,
+    creator: FOUNDER,
+    configHash: CONFIG_HASH,
     quoteMint: '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU',
     feeClaimer: FEE_CLAIMER,
     migrationProgress: 0,
@@ -49,37 +61,85 @@ export class Fault extends Error {
   }
 }
 
+type Quote = {
+  quoteId: string;
+  expiresAt: string;
+  parameterHash: string;
+  amounts: Record<string, string>;
+};
 export function mockClient(
   state: {
     tx?: MeteoraTxObservation['state'][];
+    /** Overrides merged into every transaction observation (binding fields). */
+    txBinding?: Partial<MeteoraTxObservation>;
     pool?: MeteoraPoolObservation | null;
-    fail?: Partial<Record<'quote' | 'build' | 'tx' | 'pool', unknown>>;
+    fail?: Partial<Record<'quote' | 'build' | 'tx' | 'pool' | 'genesis' | 'getQuote', unknown>>;
     txCount?: number;
+    genesis?: unknown;
+    /** Rewrites the provider's authoritative record of an issued quote (null = unknown quote). */
+    providerQuote?: (issued: Quote) => Quote | null;
+    /** Overrides merged into the unsigned-build result. */
+    built?: Record<string, unknown>;
+    quoteAmounts?: Record<string, unknown>;
   } = {},
 ) {
-  const calls = { quote: 0, build: 0, tx: 0, pool: 0 };
+  const calls = { genesis: 0, quote: 0, getQuote: 0, build: 0, tx: 0, pool: 0 };
+  const issued = new Map<string, Quote>();
   const client: MeteoraDbcClient = {
-    async quote() {
+    async getGenesisHash() {
+      calls.genesis++;
+      if (state.fail?.genesis) throw state.fail.genesis;
+      return ('genesis' in state ? state.genesis : DEVNET_GENESIS) as string;
+    },
+    async quote(parameters) {
       calls.quote++;
       if (state.fail?.quote) throw state.fail.quote;
-      return { quoteId: 'q-1', expiresAt: '2026-11-07T12:01:00.000Z', amounts: { fee: '7' } };
+      const amounts = (state.quoteAmounts ?? { fee: '7' }) as Record<string, string>;
+      const q = {
+        quoteId: 'q-1',
+        expiresAt: '2026-11-07T12:01:00.000Z',
+        parameterHash: parameters.parameterHash,
+        amounts,
+      };
+      issued.set(q.quoteId, q);
+      return { quoteId: q.quoteId, expiresAt: q.expiresAt, amounts };
     },
-    async buildUnsignedLaunch() {
+    async getQuote(quoteId: string) {
+      calls.getQuote++;
+      if (state.fail?.getQuote) throw state.fail.getQuote;
+      const q = issued.get(quoteId);
+      if (!q) return null;
+      return state.providerQuote ? state.providerQuote(q) : q;
+    },
+    async buildUnsignedLaunch(parameters, quoteId) {
       calls.build++;
       if (state.fail?.build) throw state.fail.build;
+      const q = issued.get(quoteId);
       return {
         mint: MINT,
         pool: POOL,
+        parameterHash: parameters.parameterHash,
+        quoteId,
+        amounts: q?.amounts ?? {},
         transactions: Array.from({ length: state.txCount ?? 2 }, (_, i) => ({
           serializedBase64: `AAAA${i}`,
           description: `step ${i + 1}`,
         })),
-      };
+        ...state.built,
+      } as never;
     },
     async getTransactionStatus(signature: string) {
       const i = calls.tx++;
       if (state.fail?.tx) throw state.fail.tx;
-      return { signature, state: (state.tx ?? ['UNKNOWN'])[i % (state.tx ?? ['UNKNOWN']).length] };
+      return {
+        signature,
+        state: (state.tx ?? ['UNKNOWN'])[i % (state.tx ?? ['UNKNOWN']).length],
+        programId: 'dbcij3LWUppWqq96dh6gJWwBifmcGfLSB5D4DuSMaqN',
+        mint: MINT,
+        pool: POOL,
+        signer: FOUNDER,
+        ...state.txBinding,
+      } as MeteoraTxObservation;
     },
     async getPoolState() {
       calls.pool++;
