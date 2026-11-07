@@ -1,6 +1,7 @@
 import { lockResource } from '@/identity-locks';
 import { JOB_LEASE_MINUTES } from '@/lib/job-lease';
 import { JOB_MAX_ATTEMPTS } from '@/lib/queue';
+import { clearTimeoutBlocks, TIMEOUT_JOB_MESSAGE } from '@/lib/providers/x';
 import { lockAdvisory, prepareIdentity, identityWriter } from '@/lib/identity-protocol';
 import { NextResponse } from 'next/server';
 import { checkOrigin, requireUser, HttpError } from '@/lib/auth';
@@ -134,6 +135,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ act
         });
         if (reset.count !== 1)
           throw new HttpError(409, 'Only failed jobs that are not running can be retried.');
+        // A job that dead-lettered on X timeouts blocked its endpoint; retrying it is the administrator's reset.
+        if (job?.error === TIMEOUT_JOB_MESSAGE) await clearTimeoutBlocks(tx);
         const submissionId = (job?.payload as { submissionId?: string } | null)?.submissionId;
         if (job?.kind === 'submission' && submissionId)
           await tx.postSubmission.updateMany({

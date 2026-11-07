@@ -172,6 +172,7 @@
     "tests/outbound-fetch-callsites.test.ts",
     "tests/outbound-fetch-x-db.test.ts",
     "tests/solana-rpc-outbound.test.ts",
+    "tests/x-timeout-attempts-db.test.ts",
     "tests/practice-trial-assessment-boundary.test.ts",
     "tests/practice-trial-assessment-db.test.ts",
     "tests/practice-trial-assessment-host.test.ts",
@@ -1448,6 +1449,7 @@
         "tests/outbound-fetch-callsites.test.ts",
         "tests/outbound-fetch-x-db.test.ts",
         "tests/solana-rpc-outbound.test.ts",
+        "tests/x-timeout-attempts-db.test.ts",
         "tests/security-headers.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
