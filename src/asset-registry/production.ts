@@ -43,9 +43,14 @@ export const PRODUCTION_ASSET_ALLOWLIST: readonly AllowlistEntry[] = Object.free
   Object.freeze({ assetId: USDC_MAINNET_ASSET_ID, decisionRef: USDC_DECISION_REF }),
 ]);
 
-export function validateProductionConfig(
+/**
+ * Rule engine with an explicit allow list. Not exported from the package entry point: the public
+ * entry points below always use `PRODUCTION_ASSET_ALLOWLIST`, so a host cannot widen it. Tests
+ * import this directly to exercise the rules with synthetic assets.
+ */
+export function validateWithAllowlist(
   config: ProductionConfig,
-  allowlist: readonly AllowlistEntry[] = PRODUCTION_ASSET_ALLOWLIST,
+  allowlist: readonly AllowlistEntry[],
 ): ProductionValidation {
   const violations: ProductionViolation[] = [];
   const add = (code: string, subject: string) => {
@@ -112,15 +117,23 @@ export function validateProductionConfig(
   return Object.freeze({ ok: violations.length === 0, violations: Object.freeze(violations) });
 }
 
-export function createProductionAssetRegistry(
+export function validateProductionConfig(config: ProductionConfig): ProductionValidation {
+  return validateWithAllowlist(config, PRODUCTION_ASSET_ALLOWLIST);
+}
+
+export function createWithAllowlist(
   config: ProductionConfig,
-  allowlist: readonly AllowlistEntry[] = PRODUCTION_ASSET_ALLOWLIST,
+  allowlist: readonly AllowlistEntry[],
 ): AssetRegistry {
-  const result = validateProductionConfig(config, allowlist);
+  const result = validateWithAllowlist(config, allowlist);
   if (!result.ok) {
     const error = new AssetRegistryError('PRODUCTION_BLOCKED');
     error.violations = result.violations;
     throw error;
   }
   return createAssetRegistry(config);
+}
+
+export function createProductionAssetRegistry(config: ProductionConfig): AssetRegistry {
+  return createWithAllowlist(config, PRODUCTION_ASSET_ALLOWLIST);
 }
