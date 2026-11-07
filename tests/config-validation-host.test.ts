@@ -44,6 +44,7 @@ describe('T037 startup host (web instrumentation and worker)', () => {
       expect(validateRuntimeConfig(example, role).ok, role).toBe(true);
     const live = {
       DEMO_MODE: 'false',
+      RAID_ENVIRONMENT: 'local',
       ADMIN_X_IDS: 'gate-admin-x',
       X_TRACKING_V2_ENABLED: 'true',
       LIVE_COLLECTION_APPROVED: 'true',
@@ -87,7 +88,7 @@ describe('T037 startup host (web instrumentation and worker)', () => {
       worker.indexOf('assertSchemaCurrent()'),
     );
     const web = text('src/instrumentation.ts');
-    expect(web).toContain("checkRuntimeConfig('web')");
+    expect(web).toContain("checkRuntimeConfigOrExit('web')");
     expect(web).toContain("NEXT_RUNTIME !== 'nodejs'");
   });
 
