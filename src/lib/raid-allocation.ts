@@ -3,7 +3,7 @@ import { lockTracking } from './tracking';
 import { trackingBlockers, type ResultPayload } from './tracking-review';
 import { HttpError } from './auth-primitives';
 import { solMinPayout, trackingSettlementEnabled } from './config';
-import { Connection } from '@solana/web3.js';
+import { solanaConnection } from './solana-rpc';
 
 export function splitImpressionFunding(
   budget: bigint,
@@ -154,7 +154,7 @@ export async function recordRaidPayment(allocationId: string, signature: string,
   const endpoint = process.env.SOLANA_RPC_URL;
   if (!endpoint?.startsWith('https://'))
     throw new HttpError(503, 'Payment verification unavailable.');
-  const rpc = new Connection(endpoint, 'finalized');
+  const rpc = solanaConnection(endpoint);
   if ((await rpc.getGenesisHash()) !== '5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d')
     throw new HttpError(503, 'Solana mainnet required.');
   const receipt = await rpc.getParsedTransaction(signature, {
