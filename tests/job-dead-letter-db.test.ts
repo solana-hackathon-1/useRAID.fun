@@ -28,6 +28,7 @@ const lockAgeSeconds = async (id: string) =>
       { age: number }[]
     >`SELECT EXTRACT(EPOCH FROM ((NOW() AT TIME ZONE 'UTC')-"lockedAt"))::float8 AS age FROM "Job" WHERE id=${id}`
   )[0].age;
+const MINT = 'So11111111111111111111111111111111111111112';
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 suite(
@@ -226,6 +227,35 @@ suite(
         expect(renewedCount + sweptCount).toBeGreaterThan(0);
       });
 
+      it('one job whose resolution throws neither blocks the others nor goes unreported', async () => {
+        const { raid, sub } = await submissionFixture();
+        // A non-string submission id makes the resolution itself throw: a poison job.
+        const poison = await exhausted('poison', { raidId: raid.id, submissionId: 123 });
+        const healthy = await exhausted('healthy', { raidId: raid.id, submissionId: sub.id });
+        expect(await sweepExhaustedJobs()).toEqual([healthy.id]);
+        expect((await db.job.findUniqueOrThrow({ where: { id: poison.id } })).failedAt).toBeNull(); // rolled back whole, retried by the next sweep
+        expect(
+          (await db.job.findUniqueOrThrow({ where: { id: healthy.id } })).failedAt,
+        ).not.toBeNull();
+        expect((await db.postSubmission.findUniqueOrThrow({ where: { id: sub.id } })).status).toBe(
+          'EXCLUDED',
+        );
+        const failed = errors.mock.calls
+          .map((c) => String(c[0]))
+          .filter((line) => line.includes('"alert":"job-dead-letter-failed"'));
+        expect(failed).toHaveLength(1);
+        expect(failed[0]).toContain(poison.id);
+      });
+
+      it('a crash-exhausted market job records the failure on its token', async () => {
+        await db.token.create({ data: { mint: MINT, name: 'T', symbol: 'T' } });
+        await exhausted('mkt', { mint: MINT }, 'market');
+        await sweepExhaustedJobs();
+        expect(
+          (await db.token.findUniqueOrThrow({ where: { mint: MINT } })).marketError,
+        ).toBeTruthy();
+      });
+
       it('is a named schedule step so a pass repairs exhausted jobs and records health', async () => {
         const job = await exhausted('sched', { raidId: 'z' }, 'collect');
         await schedule();
@@ -307,6 +337,20 @@ suite(
         const row = await db.job.findUniqueOrThrow({ where: { id: stale.id } });
         expect(row.lease).toBe(current.lease);
         expect(await lockAgeSeconds(stale.id)).toBeLessThan(60); // current holder's own lock, untouched by the stale worker
+      });
+
+      it('a handler that throws synchronously still stops the renewal timer', async () => {
+        vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] });
+        try {
+          await expect(
+            runUnderJobLease({ id: 'j', lease: 'l' }, () => {
+              throw new Error('sync');
+            }),
+          ).rejects.toThrow('sync');
+          expect(vi.getTimerCount()).toBe(0);
+        } finally {
+          vi.useRealTimers();
+        }
       });
 
       it('a failed renewal (database blip) does not abort the job; the next check decides', async () => {
