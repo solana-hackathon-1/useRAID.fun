@@ -124,7 +124,7 @@ export async function usdcRpc(network: string) {
   const rpc = solanaConnection(endpoint);
   const expected =
     network === 'devnet'
-      ? 'EtWTRABZaYq6iMfeYKouRu166VU2xqa1'
+      ? 'EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG'
       : '5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d';
   if ((await rpc.getGenesisHash()) !== expected)
     throw new HttpError(503, 'Payment network does not match configured USDC network.');
