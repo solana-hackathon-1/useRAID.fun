@@ -99,6 +99,8 @@
     "tests/launch-db.test.ts",
     "tests/launch-gate.test.ts",
     "tests/launch-ipfs.test.ts",
+    "tests/launch-route-boundary.test.ts",
+    "tests/launch-route-meteora.test.ts",
     "tests/local-db.test.ts",
     "tests/lock-observation.test.ts",
     "tests/media-db.test.ts",
@@ -1029,6 +1031,8 @@
         "tests/launch-db.test.ts",
         "tests/launch-gate.test.ts",
         "tests/launch-ipfs.test.ts",
+        "tests/launch-route-boundary.test.ts",
+        "tests/launch-route-meteora.test.ts",
         "tests/pump-launch.test.ts",
         "tests/token-data.test.ts"
       ],
