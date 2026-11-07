@@ -68,7 +68,11 @@ describe('T026 Meteora DBC launch route adapter (DEC-2026-11-07-04, R15)', () =>
     });
     it('ships no default economics: configuring requires host-supplied economics', () => {
       const m = mockClient();
-      const route = createMeteoraDbcLaunchRoute({ network: 'DEVNET', client: m.client, now: () => T0 });
+      const route = createMeteoraDbcLaunchRoute({
+        network: 'DEVNET',
+        client: m.client,
+        now: () => T0,
+      });
       expect(route.capabilities().configured).toBe(false);
       expect(route.capabilities().openDecisions).toEqual(['O02', 'O08']);
     });
@@ -114,11 +118,17 @@ describe('T026 Meteora DBC launch route adapter (DEC-2026-11-07-04, R15)', () =>
         network: 'DEVNET',
         client: m.client,
         now: () => T0,
-        economics: economics({ configParameters: { nested: { a: '2', b: '1' }, placeholderA: 'x' } }),
+        economics: economics({
+          configParameters: { nested: { a: '2', b: '1' }, placeholderA: 'x' },
+        }),
       });
       const r3 = await reordered.validateLaunch(request());
       expect(r3.ok && r1.ok && r3.value.parameterHash === r1.value.parameterHash).toBe(true);
-      const r4 = await a.validateLaunch(request({ metadata: { name: 'Other', symbol: 'FIX', uri: 'https://example.invalid/meta.json' } }));
+      const r4 = await a.validateLaunch(
+        request({
+          metadata: { name: 'Other', symbol: 'FIX', uri: 'https://example.invalid/meta.json' },
+        }),
+      );
       expect(r4.ok && r1.ok && r4.value.parameterHash !== r1.value.parameterHash).toBe(true);
     });
     it.each([
@@ -193,7 +203,9 @@ describe('T026 Meteora DBC launch route adapter (DEC-2026-11-07-04, R15)', () =>
       const { route } = build();
       const q = await route.quoteLaunch(request());
       if (!q.ok) throw new Error('quote');
-      const other = request({ metadata: { name: 'Different', symbol: 'D', uri: 'https://x.invalid/m' } });
+      const other = request({
+        metadata: { name: 'Different', symbol: 'D', uri: 'https://x.invalid/m' },
+      });
       expect(code(await route.prepareLaunch(other, q.value))).toBe('INCONSISTENT_STATE');
     });
     it.each([
@@ -230,9 +242,13 @@ describe('T026 Meteora DBC launch route adapter (DEC-2026-11-07-04, R15)', () =>
     });
     it('a failed transaction is TRANSACTION_FAILED; finalized plus failed is PARTIAL_COMPLETION', async () => {
       const failed = build({ tx: ['FAILED', 'FAILED'] });
-      expect(code(await failed.route.verifyLaunch(await intentOf(failed.route), ['a', 'b']))).toBe('TRANSACTION_FAILED');
+      expect(code(await failed.route.verifyLaunch(await intentOf(failed.route), ['a', 'b']))).toBe(
+        'TRANSACTION_FAILED',
+      );
       const partial = build({ tx: ['FINALIZED', 'FAILED'] });
-      expect(code(await partial.route.verifyLaunch(await intentOf(partial.route), ['a', 'b']))).toBe('PARTIAL_COMPLETION');
+      expect(
+        code(await partial.route.verifyLaunch(await intentOf(partial.route), ['a', 'b'])),
+      ).toBe('PARTIAL_COMPLETION');
     });
     it('fewer signatures than prepared transactions is ACTION_REQUIRED, not LIVE', async () => {
       const { route, calls } = build({ tx: ['FINALIZED'] });
@@ -242,7 +258,10 @@ describe('T026 Meteora DBC launch route adapter (DEC-2026-11-07-04, R15)', () =>
       expect(calls.pool).toBe(0);
     });
     it('LIVE only when finalized and the observed pool matches the pinned facts; reports authorities', async () => {
-      const { route } = build({ tx: ['FINALIZED'], pool: pool({ tokenUpdateAuthority: 'CREATOR' }) });
+      const { route } = build({
+        tx: ['FINALIZED'],
+        pool: pool({ tokenUpdateAuthority: 'CREATOR' }),
+      });
       const intent = await intentOf(route);
       const r = await route.verifyLaunch(intent, ['a', 'b']);
       expect(r.ok).toBe(true);
@@ -275,7 +294,10 @@ describe('T026 Meteora DBC launch route adapter (DEC-2026-11-07-04, R15)', () =>
       expect(code(await route.verifyLaunch(intent, ['a', 'b']))).toBe('PROVIDER_UNAVAILABLE');
     });
     it('does not rely on immutable metadata: a non-immutable authority is reported, not refused', async () => {
-      const { route } = build({ tx: ['FINALIZED'], pool: pool({ tokenUpdateAuthority: 'PARTNER' }) });
+      const { route } = build({
+        tx: ['FINALIZED'],
+        pool: pool({ tokenUpdateAuthority: 'PARTNER' }),
+      });
       const r = await route.verifyLaunch(await intentOf(route), ['a', 'b']);
       expect(r.ok && r.value.state).toBe('LIVE');
       const caps = route.capabilities().immutableMetadata;
@@ -307,26 +329,31 @@ describe('T026 Meteora DBC launch route adapter (DEC-2026-11-07-04, R15)', () =>
       [2, undefined, 'LOCKED_VESTING', false],
       [3, undefined, 'CREATED_POOL', false],
       [3, DAMM_POOL, 'CREATED_POOL', true],
-    ] as const)('migrationProgress %s -> %s graduated=%s', async (progress, damm, phase, graduated) => {
-      const { route } = build({
-        pool: pool({
-          migrationProgress: progress,
-          quoteReserve: '999',
-          migrationQuoteThreshold: '1',
-          ...(damm ? { dammV2Pool: damm } : {}),
-        }),
-      });
-      const r = await route.getMarketStatus(await intentOf(route));
-      expect(r.ok).toBe(true);
-      if (!r.ok) return;
-      expect(r.value.phase).toBe(phase);
-      expect(r.value.graduated).toBe(graduated);
-      expect(r.value.quoteReserve).toBe('999');
-      expect(r.value.migrationQuoteThreshold).toBe('1');
-      expect(Object.keys(r.value)).not.toContain('progressPercent');
-    });
+    ] as const)(
+      'migrationProgress %s -> %s graduated=%s',
+      async (progress, damm, phase, graduated) => {
+        const { route } = build({
+          pool: pool({
+            migrationProgress: progress,
+            quoteReserve: '999',
+            migrationQuoteThreshold: '1',
+            ...(damm ? { dammV2Pool: damm } : {}),
+          }),
+        });
+        const r = await route.getMarketStatus(await intentOf(route));
+        expect(r.ok).toBe(true);
+        if (!r.ok) return;
+        expect(r.value.phase).toBe(phase);
+        expect(r.value.graduated).toBe(graduated);
+        expect(r.value.quoteReserve).toBe('999');
+        expect(r.value.migrationQuoteThreshold).toBe('1');
+        expect(Object.keys(r.value)).not.toContain('progressPercent');
+      },
+    );
     it('reaching the threshold is not graduation', async () => {
-      const { route } = build({ pool: pool({ migrationProgress: 0, quoteReserve: '10', migrationQuoteThreshold: '10' }) });
+      const { route } = build({
+        pool: pool({ migrationProgress: 0, quoteReserve: '10', migrationQuoteThreshold: '10' }),
+      });
       const r = await route.getMarketStatus(await intentOf(route));
       expect(r.ok && r.value.graduated).toBe(false);
     });
@@ -339,7 +366,10 @@ describe('T026 Meteora DBC launch route adapter (DEC-2026-11-07-04, R15)', () =>
 
   describe('reconcileLaunch', () => {
     it('combines launch state and market status and is repeatable', async () => {
-      const { route } = build({ tx: ['FINALIZED'], pool: pool({ migrationProgress: 3, dammV2Pool: DAMM_POOL }) });
+      const { route } = build({
+        tx: ['FINALIZED'],
+        pool: pool({ migrationProgress: 3, dammV2Pool: DAMM_POOL }),
+      });
       const intent = await intentOf(route);
       const a = await route.reconcileLaunch(intent, ['a', 'b']);
       const b = await route.reconcileLaunch(intent, ['a', 'b']);
@@ -349,7 +379,9 @@ describe('T026 Meteora DBC launch route adapter (DEC-2026-11-07-04, R15)', () =>
     });
     it('surfaces launch errors as typed results', async () => {
       const { route } = build({ tx: ['UNKNOWN'] });
-      expect(code(await route.reconcileLaunch(await intentOf(route), ['a', 'b']))).toBe('TRANSACTION_UNKNOWN');
+      expect(code(await route.reconcileLaunch(await intentOf(route), ['a', 'b']))).toBe(
+        'TRANSACTION_UNKNOWN',
+      );
     });
   });
 });

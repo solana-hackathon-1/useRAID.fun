@@ -13,11 +13,21 @@ describe('T026 launch route boundary and reuse contract (R15, R16)', () => {
       expect(source, name).not.toMatch(
         /process\.env|globalThis|Math\.random|@\/|@prisma|@solana|@meteora|next\/|from ['"].*lib\//,
       );
-      expect(source, name).not.toMatch(/secretKey|Keypair|signTransaction|sendTransaction|\.sign\(/);
+      expect(source, name).not.toMatch(
+        /secretKey|Keypair|signTransaction|sendTransaction|\.sign\(/,
+      );
       expect(source, name).not.toMatch(/api\.mainnet|mainnet-beta\.solana/);
       for (const match of source.matchAll(/from ['"]([^'"]+)['"]/g))
-        expect(match[1], name).toMatch(/^\.\/|^\.\.\/(asset-registry|contracts)\/|^node:crypto$/);
+        expect(match[1], name).toMatch(/^\.\/|^\.\.\/contracts\/|^node:crypto$/);
     }
+  });
+
+  it('pins the quote mint to the legacy devnet USDC mint', async () => {
+    const legacy = await readFile('src/lib/usdc.ts', 'utf8');
+    const devnet = legacy.match(/USDC_MINTS = \{[^}]*devnet: '([^']+)'/)?.[1];
+    const own = await readFile('src/launch-route/meteora-dbc.ts', 'utf8');
+    expect(devnet).toBeTruthy();
+    expect(own).toContain(`METEORA_DBC_QUOTE_MINT = '${devnet}'`);
   });
 
   it('adds no dependency and leaves the disabled Pump route untouched', async () => {
