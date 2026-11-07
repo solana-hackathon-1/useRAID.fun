@@ -87,7 +87,7 @@ describe('T037 startup host (web instrumentation and worker)', () => {
       worker.indexOf('assertSchemaCurrent()'),
     );
     const web = text('src/instrumentation.ts');
-    expect(web).toContain("checkRuntimeConfig('web')");
+    expect(web).toContain("checkRuntimeConfigOrExit('web')");
     expect(web).toContain("NEXT_RUNTIME !== 'nodejs'");
   });
 

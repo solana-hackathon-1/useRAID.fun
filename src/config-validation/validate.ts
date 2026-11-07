@@ -18,7 +18,11 @@ export type ViolationCode =
   | 'REAL_OPERATION_AUTHORITY_MISSING'
   | 'REAL_OPERATION_IN_DEMO'
   | 'SIGNER_SECRET_ON_WEB'
-  | 'TEST_MODE_IN_PRODUCTION';
+  | 'TEST_MODE_IN_PRODUCTION'
+  | 'DEVNET_OR_DEMO_IN_PRODUCTION'
+  | 'TEST_DATABASE_IN_PRODUCTION'
+  | 'SAMPLE_OPERATOR_KEY_IN_PRODUCTION'
+  | 'SYNTHETIC_WITH_REAL_MONEY';
 export interface ConfigViolation {
   readonly severity: ViolationSeverity;
   readonly code: ViolationCode;
@@ -76,6 +80,31 @@ function withinEdits(a: string, b: string, limit: number): boolean {
     previous = row;
   }
   return previous[b.length]! <= limit;
+}
+
+/** Database-name words that mark a test database; matched as whole words (`contestants` does not match). */
+const TEST_DATABASE_WORDS = Object.freeze([
+  'test',
+  'tests',
+  'testing',
+  'e2e',
+  'ci',
+  'fixture',
+  'fixtures',
+  'sample',
+  'tmp',
+  'scratch',
+]);
+/** Well-known placeholder addresses: the system program, any sysvar, and `.env.example`-style stand-ins. */
+const SAMPLE_KEY = /^(1{32}|sysvar|your|sample|example|placeholder|changeme|todo|xxx)/i;
+
+function databaseName(url: string | undefined): string | undefined {
+  if (!url) return undefined;
+  try {
+    return decodeURIComponent(new URL(url).pathname.replace(/^\//, ''));
+  } catch {
+    return undefined; // an unparseable URL is the database client's refusal, not ours; never echoed
+  }
 }
 
 const present = (env: ConfigEnv, name: string) => (env[name] ?? '').trim() !== '';
@@ -159,6 +188,35 @@ export function validateRuntimeConfig(env: ConfigEnv, role: ConfigRole): ConfigV
         present(env, name)
       )
         add('REFUSE', 'SIGNER_SECRET_ON_WEB', name);
+
+  // DEC-2026-11-07-01 (h): synthetic WORK_* switches model simulated funds; they never share a deployment
+  // with a switch that can move real money, whatever RAID_ENVIRONMENT says.
+  for (const money of realOperations)
+    for (const flag of FLAG_CATALOG)
+      if (flag.name.startsWith('WORK_') && isTrue(env, flag.name))
+        add('REFUSE', 'SYNTHETIC_WITH_REAL_MONEY', `${flag.name}>${money}`);
+
+  // DEC-2026-11-07-01 (e)(g): a deployment that declares itself production refuses devnet/demo/test settings.
+  // Keyed on RAID_ENVIRONMENT (not NODE_ENV, which staging also sets to production).
+  if (environment === 'production') {
+    if (env.USDC_NETWORK === 'devnet')
+      add('REFUSE', 'DEVNET_OR_DEMO_IN_PRODUCTION', 'USDC_NETWORK');
+    if ((env.SOLANA_RPC_URL ?? '').toLowerCase().includes('devnet'))
+      add('REFUSE', 'DEVNET_OR_DEMO_IN_PRODUCTION', 'SOLANA_RPC_URL');
+    for (const name of ['DEMO_MODE', 'STUDIO_SANDBOX'])
+      if (isTrue(env, name)) add('REFUSE', 'DEVNET_OR_DEMO_IN_PRODUCTION', name);
+    const database = databaseName(env.DATABASE_URL);
+    if (
+      database &&
+      database
+        .toLowerCase()
+        .split(/[^a-z0-9]+/)
+        .some((w) => TEST_DATABASE_WORDS.includes(w))
+    )
+      add('REFUSE', 'TEST_DATABASE_IN_PRODUCTION', 'DATABASE_URL');
+    if (SAMPLE_KEY.test((env.OPERATOR_PUBLIC_KEY ?? '').trim()))
+      add('REFUSE', 'SAMPLE_OPERATOR_KEY_IN_PRODUCTION', 'OPERATOR_PUBLIC_KEY');
+  }
 
   if (env.NODE_ENV === 'production')
     for (const name of ['STUDIO_SANDBOX', 'ALLOW_REMOTE_TEST_DB'])

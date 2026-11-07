@@ -36,13 +36,14 @@ describe('(e) production refuses devnet or demo settings', () => {
 
   it('ignores case and space in the environment name, and does not apply to other environments', () => {
     const bad = { DATABASE_URL: PRODUCTION.DATABASE_URL, USDC_NETWORK: 'devnet' };
-    expect(
-      validateRuntimeConfig({ ...bad, RAID_ENVIRONMENT: ' Production ' }, 'web').ok,
-    ).toBe(false);
+    expect(validateRuntimeConfig({ ...bad, RAID_ENVIRONMENT: ' Production ' }, 'web').ok).toBe(
+      false,
+    );
     for (const value of ['staging', 'pilot', 'alpha', 'demo', 'local', '', undefined])
-      expect(validateRuntimeConfig({ ...bad, RAID_ENVIRONMENT: value }, 'web').ok, String(value)).toBe(
-        true,
-      );
+      expect(
+        validateRuntimeConfig({ ...bad, RAID_ENVIRONMENT: value }, 'web').ok,
+        String(value),
+      ).toBe(true);
   });
 });
 
@@ -55,9 +56,7 @@ describe('(g) production refuses test-looking database names and the sample oper
     'postgresql://u:p@db:5432/ci_useraid',
   ])('refuses database %s', (url) => {
     const result = validateRuntimeConfig({ ...PRODUCTION, DATABASE_URL: url }, 'web');
-    expect(codes(result.violations)).toEqual([
-      'REFUSE:TEST_DATABASE_IN_PRODUCTION:DATABASE_URL',
-    ]);
+    expect(codes(result.violations)).toEqual(['REFUSE:TEST_DATABASE_IN_PRODUCTION:DATABASE_URL']);
   });
 
   it.each([
