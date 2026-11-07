@@ -68,6 +68,11 @@ export function settleReservation(id: string, units: number, reason: string) {
     data: { units, reservedCents: Math.ceil(units * 0.5), reason },
   });
 }
+/** A reservation that stays at its upper bound. The note is bookkeeping and must not replace the provider failure. */
+const noteKeptReservation = (id: string, reason: string) =>
+  db.providerUsage
+    .update({ where: { id }, data: { reason } })
+    .catch(() => console.warn('X reservation note failed'));
 type XReadBody = {
   data?: XPost[];
   meta?: { next_token?: string; newest_id?: string };
@@ -107,10 +112,7 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
   }).catch(async (error) => {
     // A timed-out request may still have been served and billed, so it keeps its reservation.
     if (error instanceof DOMException && error.name === 'TimeoutError')
-      await db.providerUsage.update({
-        where: { id: reservation.id },
-        data: { reason: 'Timed out; reservation kept' },
-      });
+      await noteKeptReservation(reservation.id, 'Timed out; reservation kept');
     else await settleReservation(reservation.id, 0, 'Transport failure; no response');
     if (error instanceof OutboundFetchError && error.code === 'redirect')
       throw new ProviderError('X redirected the request; refused.', 300, true);
@@ -179,10 +181,7 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
       if (error instanceof OutboundFetchError)
         throw new ProviderError(`X response refused (${error.code}).`, 60, false, response.status);
       if (error instanceof DOMException && error.name === 'TimeoutError') {
-        await db.providerUsage.update({
-          where: { id: reservation.id },
-          data: { reason: 'Body timed out; reservation kept' },
-        });
+        await noteKeptReservation(reservation.id, 'Body timed out; reservation kept');
         throw new ProviderError('X response timed out.', 60, false, response.status);
       }
       throw error;
