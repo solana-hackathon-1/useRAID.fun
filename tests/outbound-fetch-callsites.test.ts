@@ -139,6 +139,20 @@ describe('X OAuth identity', () => {
     );
     vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(token()).mockResolvedValueOnce(stalled));
     await expect(fetchXIdentity('code', 'verifier')).rejects.toMatchObject({ code: 'provider' });
+    expect(usage.reserve).toHaveBeenCalledTimes(1);
+    expect(usage.settle).not.toHaveBeenCalled();
+  });
+  it('keeps the reservation when the profile body breaks for any other reason', async () => {
+    const broken = new Response(
+      new ReadableStream<Uint8Array>({
+        start(controller) {
+          controller.error(new TypeError('terminated'));
+        },
+      }),
+    );
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(token()).mockResolvedValueOnce(broken));
+    await expect(fetchXIdentity('code', 'verifier')).rejects.toMatchObject({ code: 'provider' });
+    expect(usage.reserve).toHaveBeenCalledTimes(1);
     expect(usage.settle).not.toHaveBeenCalled();
   });
   it('keeps redirects refused on both calls', async () => {

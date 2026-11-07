@@ -65,6 +65,35 @@ describe('server-side outbound fetch allowlist', () => {
     expect(clean.raw).toEqual([]);
     expect(clean.provider).toHaveLength(1);
   });
+  it.each([
+    ['a cast receiver', `(globalThis as any).fetch(u)`],
+    ['optional access', `globalThis?.fetch(u)`],
+    ['element access', `globalThis['fetch'](u)`],
+    ['an alias', `const f = fetch; f(u)`],
+    ['fetch passed as a value', `run(fetch)`],
+    ['.call', `fetch.call(null, u)`],
+    ['optional call', `fetch?.(u)`],
+    ['a comma expression', `(0, fetch)(u)`],
+    ['destructuring', `const { fetch: f } = globalThis; f(u)`],
+    ['a type argument', `fetch<Reply>(u)`],
+    ['a comment between name and call', `fetch /* c */ (u)`],
+    ['node https', `import https from 'node:https';`],
+    ['node http', `import * as http from 'http';`],
+    ['undici', `import { request } from 'undici';`],
+    ['a dynamic import', `await import('node:https');`],
+    ['require', `const h = require('https');`],
+  ])('treats %s as a raw outbound call', (_name, source) => {
+    expect(scanOutboundCalls(source).raw.length).toBeGreaterThan(0);
+  });
+  it.each([
+    ['a type position', `type F = typeof fetch; const x: F = y;`],
+    ['a comment', `// fetch(x) is banned`],
+    ['a string', `const s = 'call fetch(x)';`],
+    ['a method on another object', `client.fetch(y);`],
+    ['an object key', `const o = { fetch: 1 };`],
+  ])('does not treat %s as a raw outbound call', (_name, source) => {
+    expect(scanOutboundCalls(source).raw).toEqual([]);
+  });
   it('uses every pinned host, so a stale entry cannot linger and widen the list', () => {
     const text = server.map((file) => readFileSync(file, 'utf8')).join('\n');
     for (const host of ALLOWED_HOSTS) expect(text, host).toContain(`https://${host}/`);
