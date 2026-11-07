@@ -1,4 +1,5 @@
 import { db } from './db';
+import type { Prisma } from '@prisma/client';
 import { JOB_LEASE_MINUTES } from './job-lease';
 import { JOB_MAX_ATTEMPTS } from './queue';
 import { correlationFields } from './worker-diagnostics';
@@ -116,11 +117,29 @@ export interface WorkerHealthOptions {
   /** Commitment overdue is only a reason while the closure worker is switched on. */
   closureEnabled?: boolean;
   commitmentOverdueSeconds?: number;
+  statementTimeoutMs?: number;
 }
 const seconds = (value: number | null) => (value === null ? null : Math.max(0, Math.floor(value)));
+/** Each health query's ceiling: these are full scans on an operator path, so a slow one fails rather than lingers. */
+export const HEALTH_STATEMENT_TIMEOUT_MS = 5000;
+const HEALTH_QUERY_COUNT = 8;
 export async function workerHealthSnapshot(now = new Date(), options: WorkerHealthOptions = {}) {
+  const limit = options.statementTimeoutMs ?? HEALTH_STATEMENT_TIMEOUT_MS;
+  return db.$transaction(
+    async (tx) => {
+      await tx.$queryRaw`SELECT set_config('statement_timeout', ${String(limit)}, true)`;
+      return readSnapshot(tx, now, options);
+    },
+    { maxWait: limit, timeout: limit * (HEALTH_QUERY_COUNT + 1) },
+  );
+}
+async function readSnapshot(
+  client: Prisma.TransactionClient,
+  now: Date,
+  options: WorkerHealthOptions,
+) {
   // Collapse per-iteration collect/measure/settle steps (`collect:<raidId>`) so identifiers never reach the signal.
-  const all = await db.workerStepHealth.findMany({
+  const all = await client.workerStepHealth.findMany({
     where: { step: { not: { contains: ':' } } },
     orderBy: { step: 'asc' },
   });
@@ -154,7 +173,7 @@ export async function workerHealthSnapshot(now = new Date(), options: WorkerHeal
     stale: +now - +(row.lastSuccessAt ?? row.lastRunAt) > STEP_STALE_MS,
     failing: row.consecutiveFailures >= FAILING_STREAK,
   }));
-  const [jobs] = await db.$queryRaw<
+  const [jobs] = await client.$queryRaw<
     {
       oldest: number | null;
       stale: bigint;
@@ -169,7 +188,7 @@ export async function workerHealthSnapshot(now = new Date(), options: WorkerHeal
     FROM "Job"`;
   const outbox = options.outboxDispatchEnabled
     ? (
-        await db.$queryRaw<{ pending: bigint; oldest: number | null }[]>`
+        await client.$queryRaw<{ pending: bigint; oldest: number | null }[]>`
           SELECT COUNT(*) AS pending, EXTRACT(EPOCH FROM (clock_timestamp() - MIN(o."createdAt")))::float8 AS oldest
           FROM "OutboxEvent" o JOIN "AuditEvent" a ON a."id"=o."eventId"
           WHERE a."eventType" LIKE 'work.%' AND NOT EXISTS (SELECT 1 FROM "NotificationDispatch" d WHERE d."outboxEventId"=o."id")`
@@ -177,7 +196,7 @@ export async function workerHealthSnapshot(now = new Date(), options: WorkerHeal
     : null;
   const commitmentOverdueSeconds = options.commitmentOverdueSeconds ?? COMMITMENT_OVERDUE_SECONDS;
   // Same effective-terms read as the closure pass; an unreadable stored deadline is that pass's own failure to report.
-  const [commitmentRow] = await db.$queryRaw<{ past: bigint; oldest: number | null }[]>`
+  const [commitmentRow] = await client.$queryRaw<{ past: bigint; oldest: number | null }[]>`
     WITH t AS MATERIALIZED (
       SELECT raid_try_timestamptz(raid_effective_terms(e."id")->'deadlines'->>'operationalClosure') AS due
       FROM "Engagement" e WHERE e."state" IN ('ACCESS_PENDING','IN_PROGRESS','SUBMITTED','REVISION_REQUESTED'))
@@ -185,7 +204,7 @@ export async function workerHealthSnapshot(now = new Date(), options: WorkerHeal
       EXTRACT(EPOCH FROM (clock_timestamp() - MIN(due) FILTER (WHERE due <= clock_timestamp())))::float8 AS oldest
     FROM t`;
   // Signed transactions and submitted launches whose chain outcome the reconcilers have not yet recorded.
-  const [txRow] = await db.$queryRaw<{ pending: bigint; oldest: number | null }[]>`
+  const [txRow] = await client.$queryRaw<{ pending: bigint; oldest: number | null }[]>`
     SELECT COUNT(*) AS pending, EXTRACT(EPOCH FROM ((NOW() AT TIME ZONE 'UTC') - MIN(p."at")))::float8 AS oldest
     FROM (SELECT "createdAt" AS "at" FROM "FinancialTx" WHERE "status"='SIGNED'
       UNION ALL SELECT "updatedAt" FROM "TokenLaunch" WHERE "status"='SUBMITTED') p`;
@@ -193,16 +212,20 @@ export async function workerHealthSnapshot(now = new Date(), options: WorkerHeal
   // (for tracking v2) only while tracking is on. X is judged only while collection is switched on.
   const trackingOn = options.trackingEnabled !== false;
   const collectionEnabled =
-    (await db.settings.findUnique({ where: { id: 'global' }, select: { collectionEnabled: true } }))
-      ?.collectionEnabled ?? false;
+    (
+      await client.settings.findUnique({
+        where: { id: 'global' },
+        select: { collectionEnabled: true },
+      })
+    )?.collectionEnabled ?? false;
   const [xRow] = collectionEnabled
-    ? await db.$queryRaw<{ active: bigint; stale: bigint; oldest: number | null }[]>`
+    ? await client.$queryRaw<{ active: bigint; stale: bigint; oldest: number | null }[]>`
         SELECT COUNT(*) AS active, COUNT(*) FILTER (WHERE a."age" > ${PROVIDER_STALE_SECONDS}) AS stale, MAX(a."age") AS oldest
         FROM (SELECT EXTRACT(EPOCH FROM ((NOW() AT TIME ZONE 'UTC') - COALESCE(r."observedAt", r."startsAt")))::float8 AS "age"
           FROM "Raid" r JOIN "User" u ON u."id"=r."creatorId"
           WHERE r."status"='ACTIVE' AND r."hidden"=false AND u."suspended"=false AND (r."trackingVersion"<>2 OR ${trackingOn})) a`
     : [];
-  const [marketRow] = await db.$queryRaw<
+  const [marketRow] = await client.$queryRaw<
     { active: bigint; stale: bigint; oldest: number | null }[]
   >`
     SELECT COUNT(*) AS active, COUNT(*) FILTER (WHERE a."age" > ${PROVIDER_STALE_SECONDS}) AS stale, MAX(a."age") AS oldest
