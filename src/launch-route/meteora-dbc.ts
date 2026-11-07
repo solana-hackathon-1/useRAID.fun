@@ -13,6 +13,7 @@ import type {
   MeteoraDbcRouteConfig,
   MeteoraParameters,
   MeteoraPoolObservation,
+  MeteoraTxObservation,
   PinnedLaunchIntent,
   PreparedLaunch,
   ReconciledLaunch,
@@ -34,7 +35,44 @@ export const METEORA_DBC_PROGRAM_ID = 'dbcij3LWUppWqq96dh6gJWwBifmcGfLSB5D4DuSMa
 export const METEORA_DBC_QUOTE_MINT = '4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU';
 export const METEORA_IMMUTABLE_METADATA_SOURCE =
   'https://docs.meteora.ag/developer-guides/dbc/program/accounts';
+/**
+ * Genesis hash of Solana devnet. The client must report exactly this before any call (the other
+ * network hashes, including mainnet-beta, are refused with `NETWORK_REFUSED`).
+ */
+export const SOLANA_DEVNET_GENESIS_HASH = 'EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG';
+/**
+ * Recorded owner decisions (`DEC-YYYY-MM-DD-NN`) that supply launch economics. Empty while O02 and
+ * O08 are OPEN: no value passes, so the route stays NOT_CONFIGURED. Not exported from the package
+ * entry point, which always uses this list, so a host cannot widen it; tests use
+ * `createMeteoraDbcLaunchRouteWithDecisions` from this file with synthetic references.
+ */
+export const RECORDED_ECONOMICS_DECISIONS: readonly string[] = Object.freeze([]);
+const DECISION_REF = /^DEC-\d{4}-\d{2}-\d{2}-\d{2}$/;
 const OPEN_DECISIONS = Object.freeze(['O02', 'O08']);
+const SHA256 = /^[0-9a-f]{64}$/;
+const BASE64 = /^[A-Za-z0-9+/]+={0,2}$/;
+const AMOUNT_KEY = /^[A-Za-z][A-Za-z0-9_]{0,63}$/;
+const AMOUNT_VALUE = /^(0|[1-9][0-9]{0,38})$/;
+const MAX_TRANSACTIONS = 8;
+const MAX_CONFIG_DEPTH = 16;
+const MAX_CONFIG_NODES = 2000;
+const QUOTE_KEYS: ReadonlySet<string> = new Set([
+  'quotemint',
+  'quoteasset',
+  'quotetoken',
+  'quotetokenmint',
+  'quotemintaddress',
+  'quotecurrency',
+]);
+const MIGRATION_KEYS: ReadonlySet<string> = new Set([
+  'migration',
+  'migrationoption',
+  'migrationtarget',
+  'migrationprotocol',
+  'migrationdestination',
+  'migrationprogram',
+  'graduation',
+]);
 const ID = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,199}$/;
 const PHASES: Record<number, MarketPhase> = {
   0: 'PRE_BONDING_CURVE',
@@ -84,18 +122,101 @@ function canonical(value: unknown): string | undefined {
   return undefined;
 }
 
+const sha256 = (text: string) => createHash('sha256').update(text).digest('hex');
+
+/**
+ * Fixed rules over `configParameters` at every depth: quote asset must be devnet USDC, the
+ * migration target DAMM v2 and no custom-curve key. Key names are compared normalized (case and
+ * punctuation ignored). A deny-list by key: the O02 decision must add an allow-list schema.
+ */
+function configViolation(root: unknown): string | undefined {
+  let nodes = 0;
+  const visit = (value: unknown, depth: number): string | undefined => {
+    if (++nodes > MAX_CONFIG_NODES) return 'SIZE';
+    if (depth > MAX_CONFIG_DEPTH) return 'DEPTH';
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        const found = visit(item, depth + 1);
+        if (found) return found;
+      }
+      return undefined;
+    }
+    if (!isPlain(value)) return undefined;
+    for (const key of Object.keys(value)) {
+      const k = key
+        .normalize('NFKC')
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '');
+      const inner = value[key];
+      if (QUOTE_KEYS.has(k) && inner !== METEORA_DBC_QUOTE_MINT) return 'QUOTE_MINT';
+      if (MIGRATION_KEYS.has(k) && inner !== 'DAMM_V2' && !(k === 'migrationoption' && inner === 1))
+        return 'MIGRATION';
+      if (k.includes('customcurve') || k.includes('curveprogram') || k.includes('custombonding'))
+        return 'CUSTOM_CURVE';
+      const found = visit(inner, depth + 1);
+      if (found) return found;
+    }
+    return undefined;
+  };
+  return visit(root, 0);
+}
+
+/** Decimal base-unit strings only, bounded; undefined if anything else. */
+function cleanAmounts(value: unknown): Record<string, string> | undefined {
+  if (!isPlain(value)) return undefined;
+  const keys = Object.keys(value);
+  if (keys.length > 32) return undefined;
+  const out: Record<string, string> = {};
+  for (const key of keys) {
+    const amount = value[key];
+    if (!AMOUNT_KEY.test(key) || typeof amount !== 'string' || !AMOUNT_VALUE.test(amount))
+      return undefined;
+    out[key] = amount;
+  }
+  return out;
+}
+
 function fault(error: unknown): LaunchResult<never> {
   const code = error instanceof ProviderFault ? error.code : undefined;
   return fail(code && PROVIDER_CODES.has(code) ? code : 'PROVIDER_UNAVAILABLE');
 }
 
+/** Public entry point: always the (currently empty) recorded-decision registry. */
 export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): LaunchRoute {
+  return createRoute(config, RECORDED_ECONOMICS_DECISIONS);
+}
+/** Not in the package entry point: lets tests exercise a configured route with synthetic decisions. */
+export function createMeteoraDbcLaunchRouteWithDecisions(
+  config: MeteoraDbcRouteConfig,
+  recorded: readonly string[],
+): LaunchRoute {
+  return createRoute(config, recorded);
+}
+
+function createRoute(config: MeteoraDbcRouteConfig, recordedList: readonly string[]): LaunchRoute {
   if (!config || config.network !== 'DEVNET') throw new LaunchRouteError('NETWORK_REFUSED');
   const { client, now, economics } = config;
-  const configured = economics !== undefined;
+  const recorded: ReadonlySet<string> = new Set(recordedList);
+  /** Evaluated on every call so a mutated or unrecorded decision reference never stays configured. */
+  const isConfigured = () =>
+    isPlain(economics) &&
+    typeof economics.decisionRef === 'string' &&
+    DECISION_REF.test(economics.decisionRef) &&
+    recorded.has(economics.decisionRef);
+
+  /** Refuses any client that is not on devnet; runs before every provider call, every time. */
+  const onDevnet = async (): Promise<LaunchResult<never> | undefined> => {
+    let genesis: unknown;
+    try {
+      genesis = await client.getGenesisHash();
+    } catch (error) {
+      return fault(error);
+    }
+    return genesis === SOLANA_DEVNET_GENESIS_HASH ? undefined : fail('NETWORK_REFUSED');
+  };
 
   const resolve = (request: LaunchRequest): LaunchResult<MeteoraParameters> => {
-    if (!economics) return fail('NOT_CONFIGURED', OPEN_DECISIONS);
+    if (!economics || !isConfigured()) return fail('NOT_CONFIGURED', OPEN_DECISIONS);
     const bad = (token: string) => fail('UNSUPPORTED_PARAMETERS', [token]);
     if (!request || typeof request !== 'object') return bad('REQUEST');
     if (typeof request.intentId !== 'string' || !ID.test(request.intentId)) return bad('INTENT_ID');
@@ -113,14 +234,12 @@ export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): Laun
       !/^(https:\/\/|ipfs:\/\/)\S+$/.test(meta.uri)
     )
       return bad('METADATA_URI');
-    if (!isPlain(economics) || typeof economics.decisionRef !== 'string' || !economics.decisionRef)
-      return bad('ECONOMICS');
     if (economics.graduation !== 'DAMM_V2') return bad('GRADUATION');
     if (!isAddress(economics.feeClaimer)) return bad('FEE_CLAIMER');
     const params = economics.configParameters;
     if (!isPlain(params)) return bad('CONFIG_PARAMETERS');
-    if ('quoteMint' in params && params.quoteMint !== METEORA_DBC_QUOTE_MINT)
-      return bad('QUOTE_MINT');
+    const violation = configViolation(params);
+    if (violation) return bad(violation);
     const body = canonical({
       protocol: 'METEORA_DBC',
       network: 'DEVNET',
@@ -132,7 +251,8 @@ export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): Laun
       metadata: { name: meta.name, symbol: meta.symbol, uri: meta.uri },
       configParameters: params,
     });
-    if (body === undefined) return bad('NON_CANONICAL');
+    const configBody = canonical(params);
+    if (body === undefined || configBody === undefined) return bad('NON_CANONICAL');
     return ok(
       Object.freeze({
         network: 'DEVNET',
@@ -143,14 +263,15 @@ export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): Laun
         founderWallet: request.founderWallet,
         metadata: Object.freeze({ name: meta.name, symbol: meta.symbol, uri: meta.uri }),
         configParameters: params,
-        parameterHash: createHash('sha256').update(body).digest('hex'),
+        configHash: sha256(configBody),
+        parameterHash: sha256(body),
       } as const),
     );
   };
 
   /** NOT_CONFIGURED first, then the pin check: an intent from another route is never interpreted. */
   const pinned = (intent: PinnedLaunchIntent): LaunchResult<PinnedLaunchIntent> => {
-    if (!economics) return fail('NOT_CONFIGURED', OPEN_DECISIONS);
+    if (!isConfigured()) return fail('NOT_CONFIGURED', OPEN_DECISIONS);
     if (
       !intent ||
       intent.protocol !== 'METEORA_DBC' ||
@@ -158,7 +279,15 @@ export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): Laun
       intent.network !== 'DEVNET' ||
       intent.quoteMint !== METEORA_DBC_QUOTE_MINT ||
       !isAddress(intent.mint) ||
+      !isAddress(intent.pool) ||
       !isAddress(intent.feeClaimer) ||
+      !isAddress(intent.founderWallet) ||
+      typeof intent.parameterHash !== 'string' ||
+      !SHA256.test(intent.parameterHash) ||
+      typeof intent.configHash !== 'string' ||
+      !SHA256.test(intent.configHash) ||
+      typeof intent.transactionsDigest !== 'string' ||
+      !SHA256.test(intent.transactionsDigest) ||
       !Number.isInteger(intent.transactionCount) ||
       intent.transactionCount < 1
     )
@@ -168,9 +297,22 @@ export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): Laun
 
   const matches = (intent: PinnedLaunchIntent, pool: MeteoraPoolObservation) =>
     pool.programId === intent.programId &&
+    pool.pool === intent.pool &&
     pool.mint === intent.mint &&
     pool.quoteMint === intent.quoteMint &&
-    pool.feeClaimer === intent.feeClaimer;
+    pool.feeClaimer === intent.feeClaimer &&
+    pool.creator === intent.founderWallet &&
+    pool.configHash === intent.configHash;
+
+  /** A known transaction must be this launch's: program, mint, pool and signer equal the pin. */
+  const bound = (intent: PinnedLaunchIntent, signature: string, tx: MeteoraTxObservation) =>
+    !!tx &&
+    tx.signature === signature &&
+    (tx.state === 'UNKNOWN' ||
+      (tx.programId === intent.programId &&
+        tx.mint === intent.mint &&
+        tx.pool === intent.pool &&
+        tx.signer === intent.founderWallet));
 
   const market = (pool: MeteoraPoolObservation | null): MarketStatus =>
     Object.freeze(
@@ -196,6 +338,8 @@ export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): Laun
   async function getMarketStatus(intent: PinnedLaunchIntent): Promise<LaunchResult<MarketStatus>> {
     const pin = pinned(intent);
     if (!pin.ok) return pin;
+    const refused = await onDevnet();
+    if (refused) return refused;
     let pool: MeteoraPoolObservation | null;
     try {
       pool = await client.getPoolState(intent.mint);
@@ -220,10 +364,15 @@ export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): Laun
       new Set(signatures).size !== signatures.length
     )
       return fail('UNSUPPORTED_PARAMETERS', ['SIGNATURES']);
+    const refused = await onDevnet();
+    if (refused) return refused;
     const states: string[] = [];
     try {
-      for (const signature of signatures)
-        states.push((await client.getTransactionStatus(signature)).state);
+      for (const signature of signatures) {
+        const tx = await client.getTransactionStatus(signature);
+        if (!bound(intent, signature, tx)) return fail('INCONSISTENT_STATE');
+        states.push(tx.state);
+      }
     } catch (error) {
       return fault(error);
     }
@@ -249,11 +398,13 @@ export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): Laun
       Object.freeze({
         protocol: 'METEORA_DBC',
         network: 'DEVNET',
-        programId: intent.programId,
-        mint: intent.mint,
-        pool: intent.pool,
-        quoteMint: intent.quoteMint,
-        feeClaimer: intent.feeClaimer,
+        programId: pool.programId,
+        mint: pool.mint,
+        pool: pool.pool,
+        quoteMint: pool.quoteMint,
+        feeClaimer: pool.feeClaimer,
+        creator: pool.creator,
+        configHash: pool.configHash,
         parameterHash: intent.parameterHash,
         authorities: Object.freeze({ tokenUpdateAuthority: pool.tokenUpdateAuthority }),
         transactionSignatures: Object.freeze([...signatures]),
@@ -270,8 +421,8 @@ export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): Laun
         network: 'DEVNET',
         quoteAsset: Object.freeze({ mint: METEORA_DBC_QUOTE_MINT }),
         graduation: 'DAMM_V2',
-        configured,
-        openDecisions: configured ? Object.freeze([]) : OPEN_DECISIONS,
+        configured: isConfigured(),
+        openDecisions: isConfigured() ? Object.freeze([]) : OPEN_DECISIONS,
         // Documented by Meteora (TokenAuthorityOption value 1, "immutable") but not exercised on
         // devnet by RAID, so nothing relies on it (DEC-2026-11-07-04).
         immutableMetadata: Object.freeze({
@@ -291,13 +442,17 @@ export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): Laun
     async quoteLaunch(request): Promise<LaunchResult<LaunchQuote>> {
       const resolved = resolve(request);
       if (!resolved.ok) return resolved;
+      const refused = await onDevnet();
+      if (refused) return refused;
       try {
         const q = await client.quote(resolved.value);
+        const amounts = cleanAmounts(q?.amounts);
         if (
           typeof q?.quoteId !== 'string' ||
-          !q.quoteId ||
+          !ID.test(q.quoteId) ||
+          typeof q.expiresAt !== 'string' ||
           Number.isNaN(Date.parse(q.expiresAt)) ||
-          !isPlain(q.amounts)
+          !amounts
         )
           return fail('INCONSISTENT_STATE');
         return ok(
@@ -305,7 +460,7 @@ export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): Laun
             quoteId: q.quoteId,
             expiresAt: q.expiresAt,
             parameterHash: resolved.value.parameterHash,
-            amounts: Object.freeze({ ...q.amounts }),
+            amounts: Object.freeze(amounts),
           }),
         );
       } catch (error) {
@@ -313,42 +468,95 @@ export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): Laun
       }
     },
 
+    /**
+     * The caller's quote is never trusted: it must equal the provider's own record of that quote
+     * (re-read here), recomputed against these parameters, and expiry comes from that record.
+     */
     async prepareLaunch(request, quote): Promise<LaunchResult<PreparedLaunch>> {
       const resolved = resolve(request);
       if (!resolved.ok) return resolved;
-      if (!quote || quote.parameterHash !== resolved.value.parameterHash)
+      const claimed = cleanAmounts(quote?.amounts);
+      if (
+        !isPlain(quote) ||
+        typeof quote.quoteId !== 'string' ||
+        !ID.test(quote.quoteId) ||
+        quote.parameterHash !== resolved.value.parameterHash ||
+        typeof quote.expiresAt !== 'string' ||
+        !claimed
+      )
         return fail('INCONSISTENT_STATE');
-      const expires = Date.parse(quote.expiresAt);
-      if (Number.isNaN(expires)) return fail('INCONSISTENT_STATE');
-      if (now().getTime() >= expires) return fail('QUOTE_EXPIRED');
+      const refused = await onDevnet();
+      if (refused) return refused;
       try {
-        const built = await client.buildUnsignedLaunch(resolved.value, quote.quoteId);
+        const record = await client.getQuote(quote.quoteId);
+        const recorded = cleanAmounts(record?.amounts);
         if (
-          !isAddress(built?.mint) ||
-          !isAddress(built.pool) ||
-          !Array.isArray(built.transactions) ||
-          built.transactions.length < 1
+          !record ||
+          record.quoteId !== quote.quoteId ||
+          record.parameterHash !== resolved.value.parameterHash ||
+          record.expiresAt !== quote.expiresAt ||
+          !recorded ||
+          canonical(recorded) !== canonical(claimed)
         )
           return fail('INCONSISTENT_STATE');
+        const expires = Date.parse(record.expiresAt);
+        const current = now().getTime();
+        if (Number.isNaN(expires) || Number.isNaN(current)) return fail('INCONSISTENT_STATE');
+        if (current >= expires) return fail('QUOTE_EXPIRED');
+        const built = await client.buildUnsignedLaunch(resolved.value, quote.quoteId);
+        const builtAmounts = cleanAmounts(built?.amounts);
+        if (
+          !isPlain(built) ||
+          !isAddress(built.mint) ||
+          !isAddress(built.pool) ||
+          built.mint === built.pool ||
+          built.parameterHash !== resolved.value.parameterHash ||
+          built.quoteId !== quote.quoteId ||
+          !builtAmounts ||
+          canonical(builtAmounts) !== canonical(recorded) ||
+          !Array.isArray(built.transactions) ||
+          built.transactions.length < 1 ||
+          built.transactions.length > MAX_TRANSACTIONS ||
+          !built.transactions.every(
+            (t) =>
+              isPlain(t) &&
+              typeof t.serializedBase64 === 'string' &&
+              t.serializedBase64.length >= 4 &&
+              t.serializedBase64.length <= 2048 &&
+              t.serializedBase64.length % 4 === 0 &&
+              BASE64.test(t.serializedBase64) &&
+              typeof t.description === 'string' &&
+              t.description.length >= 1 &&
+              t.description.length <= 200,
+          )
+        )
+          return fail('INCONSISTENT_STATE');
+        const transactions = built.transactions.map((t) =>
+          Object.freeze({ serializedBase64: t.serializedBase64, description: t.description }),
+        );
+        const digest = canonical(transactions.map((t) => [t.serializedBase64, t.description]));
+        if (digest === undefined) return fail('INCONSISTENT_STATE');
         const intent: PinnedLaunchIntent = Object.freeze({
           protocol: 'METEORA_DBC',
           programId: METEORA_DBC_PROGRAM_ID,
           network: 'DEVNET',
           intentId: request.intentId,
           parameterHash: resolved.value.parameterHash,
+          configHash: resolved.value.configHash,
           quoteMint: METEORA_DBC_QUOTE_MINT,
           feeClaimer: resolved.value.feeClaimer,
           founderWallet: resolved.value.founderWallet,
           mint: built.mint,
           pool: built.pool,
           quoteId: quote.quoteId,
-          transactionCount: built.transactions.length,
+          transactionCount: transactions.length,
+          transactionsDigest: sha256(digest),
         } as const);
         return ok(
           Object.freeze({
             signed: false as const,
             intent,
-            transactions: Object.freeze(built.transactions.map((t) => Object.freeze({ ...t }))),
+            transactions: Object.freeze(transactions),
           }),
         );
       } catch (error) {
@@ -368,12 +576,4 @@ export function createMeteoraDbcLaunchRoute(config: MeteoraDbcRouteConfig): Laun
     },
   };
   return Object.freeze(route);
-}
-
-/** RED-stage stub: replaced by the recorded-decision registry in the GREEN commit. */
-export function createMeteoraDbcLaunchRouteWithDecisions(
-  config: MeteoraDbcRouteConfig,
-  _recorded: readonly string[],
-): LaunchRoute {
-  return createMeteoraDbcLaunchRoute(config);
 }

@@ -55,10 +55,12 @@ describe('T026 launch route boundary and reuse contract (R15, R16)', () => {
       );
       expect(JSON.parse(output)).toEqual({
         notConfiguredByDefault: true,
+        hostCannotConfigure: true,
         mainnetRefused: true,
         pinnedIntent: true,
         liveOnlyWhenFinalizedAndMatching: true,
         graduationNeedsCreatedPool: true,
+        forgedQuoteAndMainnetClientRefused: true,
         substituteRouteSameResults: true,
         sanitizedFailure: true,
       });

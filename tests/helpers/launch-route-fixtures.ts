@@ -122,7 +122,7 @@ export function mockClient(
         quoteId,
         amounts: q?.amounts ?? {},
         transactions: Array.from({ length: state.txCount ?? 2 }, (_, i) => ({
-          serializedBase64: `AAAA${i}`,
+          serializedBase64: `AAA${i}`,
           description: `step ${i + 1}`,
         })),
         ...state.built,

@@ -1,10 +1,12 @@
 // Standalone consuming host for the launch route adapter. Synthetic data only; no network, key,
 // environment variable or Meteora SDK. The in-memory client stands in for a host-owned binding.
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import bs58 from 'bs58';
 import {
   METEORA_DBC_PROGRAM_ID,
   METEORA_DBC_QUOTE_MINT,
+  SOLANA_DEVNET_GENESIS_HASH,
   LaunchRouteError,
   createMeteoraDbcLaunchRoute,
   type LaunchResult,
@@ -12,6 +14,9 @@ import {
   type MeteoraDbcClient,
   type MeteoraPoolObservation,
 } from './launch-route/index';
+// Test seam, not in the package entry point: the public route has no recorded economics decision
+// today (O02/O08 OPEN), so this host passes a synthetic reference to exercise a configured route.
+import { createMeteoraDbcLaunchRouteWithDecisions } from './launch-route/meteora-dbc';
 
 const addr = (fill: number) => bs58.encode(new Uint8Array(32).fill(fill));
 const [FOUNDER, FEE_CLAIMER, MINT, POOL, DAMM] = [11, 12, 13, 14, 15].map(addr);
@@ -22,20 +27,51 @@ const request = {
   metadata: { name: 'Example Guild', symbol: 'EXG', uri: 'https://example.invalid/m.json' },
 };
 
+const DECISION = 'DEC-2030-01-01-01'; // synthetic; no recorded economics decision exists
+const CONFIG = { placeholder: 'host-supplied' };
+const CONFIG_HASH = createHash('sha256').update('{"placeholder":"host-supplied"}').digest('hex');
+let genesis = SOLANA_DEVNET_GENESIS_HASH;
 let pool: MeteoraPoolObservation | null = null;
+const issued = new Map<
+  string,
+  { quoteId: string; expiresAt: string; parameterHash: string; amounts: Record<string, string> }
+>();
 const client: MeteoraDbcClient = {
-  async quote() {
-    return { quoteId: 'q', expiresAt: '2026-11-07T12:05:00.000Z', amounts: {} };
+  async getGenesisHash() {
+    return genesis;
   },
-  async buildUnsignedLaunch() {
+  async quote(parameters) {
+    const q = {
+      quoteId: 'q',
+      expiresAt: '2026-11-07T12:05:00.000Z',
+      parameterHash: parameters.parameterHash,
+      amounts: { fee: '7' },
+    };
+    issued.set(q.quoteId, q);
+    return { quoteId: q.quoteId, expiresAt: q.expiresAt, amounts: q.amounts };
+  },
+  async getQuote(quoteId) {
+    return issued.get(quoteId) ?? null;
+  },
+  async buildUnsignedLaunch(parameters, quoteId) {
     return {
       mint: MINT,
       pool: POOL,
+      parameterHash: parameters.parameterHash,
+      quoteId,
+      amounts: issued.get(quoteId)?.amounts ?? {},
       transactions: [{ serializedBase64: 'AA==', description: 'create' }],
     };
   },
   async getTransactionStatus(signature) {
-    return { signature, state: 'FINALIZED' };
+    return {
+      signature,
+      state: 'FINALIZED',
+      programId: METEORA_DBC_PROGRAM_ID,
+      mint: MINT,
+      pool: POOL,
+      signer: FOUNDER,
+    };
   },
   async getPoolState() {
     return pool;
@@ -43,7 +79,10 @@ const client: MeteoraDbcClient = {
 };
 const observed = (over: Partial<MeteoraPoolObservation> = {}): MeteoraPoolObservation => ({
   programId: METEORA_DBC_PROGRAM_ID,
+  pool: POOL,
   mint: MINT,
+  creator: FOUNDER,
+  configHash: CONFIG_HASH,
   quoteMint: METEORA_DBC_QUOTE_MINT,
   feeClaimer: FEE_CLAIMER,
   migrationProgress: 0,
@@ -84,17 +123,23 @@ try {
 }
 
 // 3. Host-supplied (here: synthetic placeholder) economics configure the route.
-const route = createMeteoraDbcLaunchRoute({
+const economics = {
+  decisionRef: DECISION,
+  feeClaimer: FEE_CLAIMER,
+  graduation: 'DAMM_V2' as const,
+  configParameters: CONFIG,
+};
+const route = createMeteoraDbcLaunchRouteWithDecisions(
+  { network: 'DEVNET', client, now: () => NOW, economics },
+  [DECISION],
+);
+// The public entry point cannot be configured by a host: the recorded-decision list is empty.
+const hostCannotConfigure = !createMeteoraDbcLaunchRoute({
   network: 'DEVNET',
   client,
   now: () => NOW,
-  economics: {
-    decisionRef: 'example-only-decision',
-    feeClaimer: FEE_CLAIMER,
-    graduation: 'DAMM_V2',
-    configParameters: { placeholder: 'host-supplied' },
-  },
-});
+  economics,
+}).capabilities().configured;
 const quote = await route.quoteLaunch(request);
 assert.ok(quote.ok);
 const prepared = await route.prepareLaunch(request, quote.value);
@@ -128,6 +173,20 @@ const graduationNeedsCreatedPool =
   atThreshold.ok && !atThreshold.value.graduated && created.ok && created.value.graduated;
 
 pool = observed({ migrationProgress: 3, dammV2Pool: DAMM });
+// 5b. A forged quote and a non-devnet cluster are refused before anything is built or read.
+const forged = await route.prepareLaunch(request, {
+  ...quote.value,
+  expiresAt: '2999-01-01T00:00:00.000Z',
+});
+genesis = '5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d';
+const mainnetClient = await route.getMarketStatus(intent);
+genesis = SOLANA_DEVNET_GENESIS_HASH;
+const forgedQuoteAndMainnetClientRefused =
+  !forged.ok &&
+  forged.error.code === 'INCONSISTENT_STATE' &&
+  !mainnetClient.ok &&
+  mainnetClient.error.code === 'NETWORK_REFUSED';
+
 // 6. An independent route behind the same interface (a recorded-replay stand-in) serves the same
 // consumer with the same results; nothing in the consumer names Meteora.
 const ok = <T>(value: T): LaunchResult<T> => ({ ok: true, value });
@@ -150,22 +209,20 @@ const substituteRouteSameResults =
   (await consume(route)).state === 'LIVE';
 
 // 7. Failures carry codes only, never provider text.
-const leaky = createMeteoraDbcLaunchRoute({
-  network: 'DEVNET',
-  client: {
-    ...client,
-    async quote() {
-      throw new Error('SECRET provider text');
+const leaky = createMeteoraDbcLaunchRouteWithDecisions(
+  {
+    network: 'DEVNET',
+    client: {
+      ...client,
+      async quote() {
+        throw new Error('SECRET provider text');
+      },
     },
+    now: () => NOW,
+    economics,
   },
-  now: () => NOW,
-  economics: {
-    decisionRef: 'x',
-    feeClaimer: FEE_CLAIMER,
-    graduation: 'DAMM_V2',
-    configParameters: {},
-  },
-});
+  [DECISION],
+);
 const leakResult: LaunchResult<unknown> = await leaky.quoteLaunch(request);
 const sanitizedFailure =
   !leakResult.ok &&
@@ -174,10 +231,12 @@ const sanitizedFailure =
 
 const result = {
   notConfiguredByDefault,
+  hostCannotConfigure,
   mainnetRefused,
   pinnedIntent,
   liveOnlyWhenFinalizedAndMatching,
   graduationNeedsCreatedPool,
+  forgedQuoteAndMainnetClientRefused,
   substituteRouteSameResults,
   sanitizedFailure,
 };

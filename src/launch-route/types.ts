@@ -42,6 +42,8 @@ export interface PinnedLaunchIntent {
   readonly network: 'DEVNET';
   readonly intentId: string;
   readonly parameterHash: string;
+  /** SHA-256 of the canonical `configParameters`; the observed on-chain config must reproduce it. */
+  readonly configHash: string;
   readonly quoteMint: string;
   readonly feeClaimer: string;
   readonly founderWallet: string;
@@ -49,6 +51,8 @@ export interface PinnedLaunchIntent {
   readonly pool: string;
   readonly quoteId: string;
   readonly transactionCount: number;
+  /** SHA-256 over the canonical list of the unsigned transactions the founder reviewed. */
+  readonly transactionsDigest: string;
 }
 export interface PreparedLaunch {
   /** Always false: this module never signs. The founder's authorized wallet signs elsewhere. */
@@ -65,6 +69,11 @@ export interface LaunchFacts {
   readonly pool: string;
   readonly quoteMint: string;
   readonly feeClaimer: string;
+  /** Observed on-chain creator; equals the pinned founder wallet. */
+  readonly creator: string;
+  /** Observed on-chain config hash; equals the pinned `configHash`. */
+  readonly configHash: string;
+  /** The pinned, reviewed parameter hash (a pin, not an observation; bound through `configHash`). */
   readonly parameterHash: string;
   readonly authorities: { readonly tokenUpdateAuthority: TokenUpdateAuthority };
   readonly transactionSignatures: readonly string[];
@@ -129,12 +138,30 @@ export interface LaunchRoute {
 export type TokenUpdateAuthority =
   'CREATOR' | 'IMMUTABLE' | 'PARTNER' | 'CREATOR_AND_MINT' | 'PARTNER_AND_MINT';
 export interface MeteoraTxObservation {
+  /** Echo of the queried signature; a different one is refused. */
   signature: string;
   state: 'UNKNOWN' | 'PROCESSED' | 'CONFIRMED' | 'FINALIZED' | 'FAILED';
+  /**
+   * Binding of a known transaction to the launch: DBC program invoked, mint and pool it touches and
+   * its fee payer/signer. Required unless `state` is `UNKNOWN`; each must equal the pinned intent.
+   */
+  programId?: string;
+  mint?: string;
+  pool?: string;
+  signer?: string;
 }
 export interface MeteoraPoolObservation {
   programId: string;
+  /** The DBC pool account (`virtual_pool`) read on chain. */
+  pool: string;
   mint: string;
+  /** On-chain creator of the pool. */
+  creator: string;
+  /**
+   * SHA-256 of the canonical JSON of the configuration parameters as read from the on-chain config
+   * account, computed by the host binding exactly like the route hashes `configParameters`.
+   */
+  configHash: string;
   quoteMint: string;
   feeClaimer: string;
   /** Meteora `MigrationProgress`: 0 PreBondingCurve, 1 PostBondingCurve, 2 LockedVesting, 3 CreatedPool. */
@@ -154,34 +181,58 @@ export interface MeteoraParameters {
   readonly founderWallet: string;
   readonly metadata: LaunchMetadata;
   readonly configParameters: Readonly<Record<string, unknown>>;
+  readonly configHash: string;
   readonly parameterHash: string;
+}
+/** The provider's authoritative record of an issued quote. */
+export interface ProviderQuote {
+  quoteId: string;
+  expiresAt: string;
+  parameterHash: string;
+  amounts: Record<string, string>;
+}
+/** Unsigned build result; it must echo the parameters and quote it was built for. */
+export interface UnsignedLaunchBuild {
+  mint: string;
+  pool: string;
+  parameterHash: string;
+  quoteId: string;
+  amounts: Record<string, string>;
+  transactions: UnsignedTransaction[];
 }
 /**
  * Port to Meteora (SDK or RPC). A real binding belongs to the host and is not shipped here. The
  * client builds unsigned transactions only; it never receives a key.
  */
 export interface MeteoraDbcClient {
+  /** Genesis hash of the cluster this client talks to; the route refuses anything but devnet. */
+  getGenesisHash(): Promise<string>;
   quote(parameters: MeteoraParameters): Promise<{
     quoteId: string;
     expiresAt: string;
     amounts: Record<string, string>;
   }>;
-  buildUnsignedLaunch(
-    parameters: MeteoraParameters,
-    quoteId: string,
-  ): Promise<{ mint: string; pool: string; transactions: UnsignedTransaction[] }>;
+  /** Provider-side record of `quoteId`, or null when unknown. The route trusts this, not the caller. */
+  getQuote(quoteId: string): Promise<ProviderQuote | null>;
+  buildUnsignedLaunch(parameters: MeteoraParameters, quoteId: string): Promise<UnsignedLaunchBuild>;
   getTransactionStatus(signature: string): Promise<MeteoraTxObservation>;
   getPoolState(mint: string): Promise<MeteoraPoolObservation | null>;
 }
 
 /** Host-supplied economics from the future O02/O08 decision. This module ships no default. */
 export interface MeteoraEconomics {
-  /** Recorded owner decision that supplies these values. */
+  /**
+   * Reference (`DEC-YYYY-MM-DD-NN`) to the recorded owner decision that supplies these values. It
+   * only counts when it is in `RECORDED_ECONOMICS_DECISIONS`, which is empty while O02/O08 are OPEN.
+   */
   decisionRef: string;
   /** Fee recipient the founder reviewed; verification refuses a different one. */
   feeClaimer: string;
   graduation: 'DAMM_V2';
-  /** Opaque, canonical-JSON parameters passed to the client and hashed into the intent. */
+  /**
+   * Canonical-JSON parameters passed to the client and hashed into the intent. Rejected at any
+   * depth: another quote asset, a migration target other than DAMM v2, and custom-curve keys.
+   */
   configParameters: Record<string, unknown>;
 }
 export interface MeteoraDbcRouteConfig {
