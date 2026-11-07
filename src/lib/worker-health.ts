@@ -32,6 +32,7 @@ export const PROVIDER_STALE_SECONDS = 30 * 60;
 export const COMMITMENT_OVERDUE_SECONDS = 15 * 60;
 /** Every named step `schedule()` runs; a drift test keeps this identical to worker-jobs.ts. */
 export const KNOWN_WORKER_STEPS: readonly string[] = [
+  'job-dead-letter',
   'notifications',
   'work-closure',
   'finance-readiness',

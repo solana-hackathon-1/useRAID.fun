@@ -68,3 +68,25 @@ export async function finishJob(
   });
   return { dead: dead && updated.count === 1 };
 }
+export const EXHAUSTED_JOB_ERROR =
+  'The job used all its attempts without finishing (worker crash or lost lease).';
+/**
+ * Dead-letter jobs that used every attempt but were never finished or failed: each attempt was claimed and then the
+ * worker crashed or lost its lease, so finishJob() never ran for the last one. claimJob() never picks such a job
+ * again, so without this it would sit unfinished forever. Only a job whose lease has expired by the database clock
+ * qualifies, so an eighth attempt still running (and renewing) is never touched. One UPDATE decides each job: a
+ * concurrent sweep, renewal or late finishJob() either sees the job already failed with its lease cleared and writes
+ * nothing, or wins the row first. `resolve` runs in the same transaction so whatever depended on the job (a QUEUED
+ * PostSubmission) is resolved atomically with the dead-lettering, never left behind by a crash between the two.
+ */
+export async function deadLetterExhaustedJobs(
+  resolve?: (tx: Prisma.TransactionClient, jobs: Job[]) => Promise<void>,
+) {
+  return db.$transaction(async (tx) => {
+    const jobs = await tx.$queryRaw<
+      Job[]
+    >`UPDATE "Job" SET "failedAt"=(NOW() AT TIME ZONE 'UTC'), "lockedAt"=NULL, "lease"=NULL, "error"=COALESCE("error", ${EXHAUSTED_JOB_ERROR}) WHERE "doneAt" IS NULL AND "failedAt" IS NULL AND "attempts">=${JOB_MAX_ATTEMPTS} AND ("lockedAt" IS NULL OR "lockedAt"<(NOW() AT TIME ZONE 'UTC')-make_interval(mins => ${JOB_LEASE_MINUTES}::int)) RETURNING *`;
+    if (jobs.length) await resolve?.(tx, jobs);
+    return jobs;
+  });
+}

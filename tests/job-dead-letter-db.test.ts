@@ -1,4 +1,14 @@
-import { describe, it, expect, beforeAll, beforeEach, afterAll, afterEach, vi } from 'vitest';
+import {
+  describe,
+  it,
+  expect,
+  beforeAll,
+  beforeEach,
+  afterAll,
+  afterEach,
+  vi,
+  type MockInstance,
+} from 'vitest';
 import { db } from '../src/lib/db';
 import { claimJob, enqueue, finishJob, JOB_MAX_ATTEMPTS } from '../src/lib/queue';
 import { renewJobLease, runUnderJobLease, assertJobLease } from '../src/lib/job-lease';
@@ -23,7 +33,7 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 suite(
   'crash-exhausted jobs dead-letter and long jobs renew their lease (DEC-2026-11-07-01 a, b)',
   () => {
-    let errors: ReturnType<typeof vi.spyOn>;
+    let errors: MockInstance<typeof console.error>;
     beforeAll(() => assertTestDatabase());
     beforeEach(async () => {
       await truncateAll(db);
@@ -188,24 +198,32 @@ suite(
         expect(await lockAgeSeconds(live.id)).toBeLessThan(60);
       });
 
-      it('hammering renew and sweep together never both win a job', async () => {
+      it('hammering renew and sweep at the lease edge never lets both win a job', async () => {
         const job = await exhausted('hammer', { raidId: 'h' }, 'collect');
-        await ageLock(job.id, 10); // right at the edge of the lease window
-        for (let i = 0; i < 20; i++) {
+        let renewedCount = 0;
+        let sweptCount = 0;
+        for (let i = 0; i < 40; i++) {
           await db.job.update({
             where: { id: job.id },
             data: { failedAt: null, error: null, lease: 'edge', attempts: JOB_MAX_ATTEMPTS },
           });
-          await ageLock(job.id, 10);
+          // A lock a few milliseconds either side of expiry, so renewal and sweep genuinely contend for the row.
+          const edgeMs = Math.floor(Math.random() * 30) - 15;
+          await db.$executeRaw`UPDATE "Job" SET "lockedAt"=(NOW() AT TIME ZONE 'UTC')-make_interval(secs => ${600 + edgeMs / 1000}::float8) WHERE id=${job.id}`;
           const [renewed, swept] = await Promise.all([
             renewJobLease({ id: job.id, lease: 'edge' }),
             sweepExhaustedJobs(),
           ]);
+          const dead = swept.includes(job.id);
           const row = await db.job.findUniqueOrThrow({ where: { id: job.id } });
-          // Exactly one outcome: renewed and live, or swept and dead. Never a dead job with a live renewal.
-          expect(renewed !== swept.includes(job.id)).toBe(true);
-          expect(row.failedAt !== null).toBe(swept.includes(job.id));
+          // Never both. (Neither is possible in the instant between two clock readings; the next sweep settles it.)
+          expect(renewed && dead).toBe(false);
+          expect(row.failedAt !== null).toBe(dead);
+          if (renewed) expect(row.lease).toBe('edge');
+          renewedCount += renewed ? 1 : 0;
+          sweptCount += dead ? 1 : 0;
         }
+        expect(renewedCount + sweptCount).toBeGreaterThan(0);
       });
 
       it('is a named schedule step so a pass repairs exhausted jobs and records health', async () => {

@@ -11,7 +11,7 @@ import { LOCKED_PHASES } from './tracking-domain';
 import { observedImpressions } from './raid-progress';
 import { processTrackingLookup } from './tracking-worker';
 import { db } from './db';
-import { enqueue, finishJob } from './queue';
+import { deadLetterExhaustedJobs, enqueue, finishJob } from './queue';
 import { JobLeaseLostError, runUnderJobLease, whileJobLeaseHeld } from './job-lease';
 import { collect, ingest, refresh, snapshot } from './collection';
 import { fetchMarket } from './providers/market';
@@ -90,6 +90,7 @@ export function schedule(now = new Date()) {
   return withCorrelation(newRunCorrelationId(), () => runSchedule(now));
 }
 async function runSchedule(now: Date) {
+  await step('job-dead-letter', () => sweepExhaustedJobs());
   await step('notifications', () => runNotificationDispatch());
   await step('work-closure', () => runWorkClosureWorker());
   await step('finance-readiness', () => updateFinanceReadiness());
@@ -381,8 +382,9 @@ async function runSchedule(now: Date) {
       );
   });
 }
-async function clearCollectionError(raidId: string) {
-  const remaining = await db.job.count({
+type Client = Prisma.TransactionClient;
+async function clearCollectionError(raidId: string, client: Client = db) {
+  const remaining = await client.job.count({
     where: {
       doneAt: null,
       failedAt: null,
@@ -391,10 +393,45 @@ async function clearCollectionError(raidId: string) {
     },
   });
   if (!remaining)
-    await db.raid.updateMany({
+    await client.raid.updateMany({
       where: { id: raidId, trackingVersion: 2 },
       data: { collectionError: null },
     });
+}
+/** What a dead-lettered job leaves behind: its QUEUED submission would otherwise wait forever, and its raid error is closed. */
+async function resolveDeadJob(job: Pick<Job, 'kind' | 'payload'>, client: Client = db) {
+  const p = job.payload as { raidId?: string; submissionId?: string };
+  if (job.kind === 'submission' && p.submissionId)
+    await client.postSubmission.updateMany({
+      where: { id: p.submissionId, status: 'QUEUED' },
+      data: { status: 'EXCLUDED', reasonCode: 'LOOKUP_FAILED' },
+    });
+  if (p.raidId && ['submission', 'tracking-correction'].includes(job.kind))
+    await clearCollectionError(p.raidId, client);
+}
+/** The operator alert for a dead-lettered job: ids and kind only, never payloads, keys, leases or error text. */
+function alertDeadLetter(job: Pick<Job, 'id' | 'kind' | 'attempts'>, cause: string) {
+  console.error(
+    JSON.stringify({
+      alert: 'job-dead-letter',
+      job: job.id,
+      kind: job.kind,
+      attempts: job.attempts,
+      cause,
+      ...correlationFields(),
+    }),
+  );
+}
+/**
+ * Dead-letter every job that used all its attempts without finishing (crash or lost lease on the last one), resolve
+ * what depended on it in the same transaction and alert once per job. Returns the dead-lettered job ids.
+ */
+export async function sweepExhaustedJobs() {
+  const dead = await deadLetterExhaustedJobs(async (tx, jobs) => {
+    for (const job of jobs) await resolveDeadJob(job, tx);
+  });
+  for (const job of dead) alertDeadLetter(job, 'attempts-exhausted-without-finishing');
+  return dead.map((job) => job.id);
 }
 /** Runs one claimed job; every log line in it carries the job's correlation id, the same for every attempt. */
 export function runJob(job: Job) {
@@ -519,13 +556,8 @@ async function execute(job: Job) {
       { refundAttempt: error instanceof ProviderError && error.deferred },
     );
     if (dead) {
-      if (job.kind === 'submission' && p.submissionId)
-        await db.postSubmission.updateMany({
-          where: { id: p.submissionId, status: 'QUEUED' },
-          data: { status: 'EXCLUDED', reasonCode: 'LOOKUP_FAILED' },
-        });
-      if (p.raidId && ['submission', 'tracking-correction'].includes(job.kind))
-        await clearCollectionError(p.raidId);
+      alertDeadLetter(job, 'attempts-failed');
+      await resolveDeadJob(job);
     }
     console.error(
       JSON.stringify({ job: job.id, kind: job.kind, error: message, ...correlationFields() }),
