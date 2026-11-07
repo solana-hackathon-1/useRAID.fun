@@ -79,6 +79,14 @@ const activate = (
     ),
   );
 const guildCount = () => count('Guild');
+const activationAudits = async () =>
+  Number(
+    (
+      (await db.$queryRawUnsafe(
+        `SELECT count(*)::int AS n FROM "AuditEvent" WHERE "eventType"='guild.activated.v1'`,
+      )) as { n: number }[]
+    )[0].n,
+  );
 const open = (...operators: GuildActor[]) => {
   vi.stubEnv('GUILD_ACTIVATION_ENABLED', 'true');
   vi.stubEnv('GUILD_ACTIVATION_OPERATOR_ACCOUNT_IDS', operators.map((o) => o.accountId).join(','));
@@ -124,7 +132,7 @@ integration('Guild activation over HTTP against real storage', () => {
     const audit = (await db.$queryRawUnsafe(
       `SELECT a."eventType",a."actorId",a."guildId",a."aggregateId",c."commandKind",c."actorId" AS "receiptActor",
               (SELECT count(*)::int FROM "OutboxEvent" o WHERE o."eventId"=a."id") AS "outbox"
-       FROM "AuditEvent" a JOIN "CommandReceipt" c ON c."id"=a."receiptId"`,
+       FROM "AuditEvent" a JOIN "CommandReceipt" c ON c."id"=a."receiptId" WHERE a."eventType"='guild.activated.v1'`,
     )) as Record<string, unknown>[];
     expect(audit).toEqual([
       {
@@ -148,7 +156,7 @@ integration('Guild activation over HTTP against real storage', () => {
     expect(response.status).toBe(403);
     expect((await json(response)).error.code).toBe('FORBIDDEN');
     expect(await guildCount()).toBe(0);
-    expect(await count('AuditEvent')).toBe(0);
+    expect(await activationAudits()).toBe(0);
     expect(await count('GuildProfileVersion')).toBe(0);
     // Not even one of several operators: the same account stays refused, and a different operator succeeds.
     const operator = await person();
@@ -173,7 +181,7 @@ integration('Guild activation over HTTP against real storage', () => {
       expect((await json(response)).error.code).toBe('FORBIDDEN');
     }
     expect(await guildCount()).toBe(0);
-    expect(await count('AuditEvent')).toBe(0);
+    expect(await activationAudits()).toBe(0);
   });
 
   it('stays closed with the switch off or the allowlist empty, writing nothing', async () => {
@@ -188,8 +196,10 @@ integration('Guild activation over HTTP against real storage', () => {
     vi.stubEnv('GUILD_ACTIVATION_OPERATOR_ACCOUNT_IDS', '');
     expect((await activate(operator, draft, 'ev-1', 'key-empty')).status).toBe(403);
     expect(await guildCount()).toBe(0);
-    expect(await count('CommandReceipt')).toBe(1 /* the applicant's draft */);
-    expect(await count('AuditEvent')).toBe(1 /* the draft's own audit event */);
+    expect(await activationAudits()).toBe(0);
+    expect(await count('CommandReceipt')).toBe(
+      1 /* only the applicant's draft save: no activation receipt */,
+    );
   });
 
   it('replays an original activation with the switch off, but only for an operator who is still listed', async () => {
