@@ -14,7 +14,8 @@ process.on('SIGINT', () => {
 });
 async function main() {
   checkRuntimeConfig('worker');
-  if (config.demo) throw new Error('Worker cannot run in demo mode.');
+  if (config.demo)
+    throw Object.assign(new Error('Worker cannot run in demo mode.'), { code: 'DEMO_MODE' });
   await assertSchemaCurrent();
   let scheduled = 0;
   while (!stopping) {

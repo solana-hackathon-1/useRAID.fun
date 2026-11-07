@@ -79,11 +79,14 @@ export async function assertSchemaCurrent(
     .sort()
     .at(-1),
 ) {
-  if (!latest) throw new Error('No migrations found.');
+  if (!latest) throw Object.assign(new Error('No migrations found.'), { code: 'NO_MIGRATIONS' });
   const applied = await db.$queryRaw<
     unknown[]
   >`SELECT 1 FROM "_prisma_migrations" WHERE migration_name = ${latest} AND finished_at IS NOT NULL`;
-  if (!applied.length) throw new Error(`Database schema is behind migration ${latest}.`);
+  if (!applied.length)
+    throw Object.assign(new Error(`Database schema is behind migration ${latest}.`), {
+      code: 'SCHEMA_BEHIND',
+    });
 }
 let reconciledHour = 0;
 /** One bounded schedule pass; every step and health log line in it shares one correlation id. */

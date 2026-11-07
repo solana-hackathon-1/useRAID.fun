@@ -14,6 +14,8 @@ import { ZodError } from 'zod';
 export interface OperatorErrorFields {
   code: string;
   errorClass: string;
+  /** Violation codes of a refused configuration (a closed set of uppercase codes; never subjects or values). */
+  violations?: string[];
 }
 const SAFE_CODE = /^[A-Z][A-Z0-9_]{1,39}$/;
 const SAFE_CLASS = /^[A-Za-z][A-Za-z0-9_]{0,63}$/;
@@ -25,14 +27,31 @@ export function operatorErrorFields(error: unknown): OperatorErrorFields {
     if (!(error instanceof Error)) return { ...UNKNOWN };
     const name = error.name !== 'Error' ? error.name : error.constructor?.name;
     const errorClass = typeof name === 'string' && SAFE_CLASS.test(name) ? name : 'Error';
-    const { code, status } = error as { code?: unknown; status?: unknown };
-    if (typeof code === 'string' && SAFE_CODE.test(code)) return { code, errorClass };
+    const { code, status, violations } = error as {
+      code?: unknown;
+      status?: unknown;
+      violations?: unknown;
+    };
+    const listed = safeViolationCodes(violations);
+    const extra = listed ? { violations: listed } : {};
+    // A refused configuration is identified by its class: its message and subjects are never read.
+    if (errorClass === 'ConfigRefusedError')
+      return { code: 'CONFIG_REFUSED', errorClass, ...extra };
+    if (typeof code === 'string' && SAFE_CODE.test(code)) return { code, errorClass, ...extra };
     if (typeof status === 'number' && Number.isInteger(status) && status >= 100 && status <= 599)
-      return { code: `HTTP_${status}`, errorClass };
-    return { code: UNKNOWN.code, errorClass };
+      return { code: `HTTP_${status}`, errorClass, ...extra };
+    return { code: UNKNOWN.code, errorClass, ...extra };
   } catch {
     return { ...UNKNOWN };
   }
+}
+function safeViolationCodes(value: unknown): string[] | undefined {
+  if (!Array.isArray(value)) return undefined;
+  const codes = value
+    .map((entry) => (entry as { code?: unknown } | null)?.code)
+    .filter((code): code is string => typeof code === 'string' && SAFE_CODE.test(code))
+    .slice(0, 16);
+  return codes.length ? codes : undefined;
 }
 /** One JSON line for `console.error`: `{ event, ...context, code, errorClass }`. Context must be ids and fixed words. */
 export function operatorLogLine(
