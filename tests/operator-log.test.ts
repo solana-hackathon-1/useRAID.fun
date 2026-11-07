@@ -4,7 +4,7 @@
 import { Prisma } from '@prisma/client';
 import { ZodError } from 'zod';
 import { describe, expect, it } from 'vitest';
-import { HttpError } from '../src/lib/http';
+import { HttpError } from '../src/lib/errors';
 import { operatorErrorFields, operatorLogLine } from '../src/lib/operator-log';
 
 const SECRET = 'postgres://admin:HUNTER2-SENTINEL@db.internal:5432/useraid';

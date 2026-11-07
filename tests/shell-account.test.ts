@@ -14,7 +14,13 @@ describe('shell account', () => {
   it('renders signed out instead of throwing when the database is down', async () => {
     mocks.currentSession.mockRejectedValue(new Error('db down'));
     await expect(shellAccount()).resolves.toBeNull();
-    expect(console.error).toHaveBeenCalledWith('shell account unavailable', expect.any(Error));
+    expect(console.error).toHaveBeenCalledWith(
+      JSON.stringify({
+        event: 'shell-account-unavailable',
+        code: 'UNCLASSIFIED',
+        errorClass: 'Error',
+      }),
+    );
   });
   it('also survives a failing X account lookup', async () => {
     mocks.currentSession.mockResolvedValue({

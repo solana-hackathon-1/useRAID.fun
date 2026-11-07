@@ -23,6 +23,7 @@ import { reconcileUsdc, reconciliationJson } from './usdc-reconcile';
 import { runNotificationDispatch } from './notifications-host';
 import { runWorkClosureWorker } from './work-closure-host';
 import { recordStepOutcome } from './worker-health';
+import { operatorErrorFields } from './operator-log';
 import {
   correlationFields,
   jobCorrelationId,
@@ -60,7 +61,7 @@ async function runStep(name: string, fn: () => Promise<unknown>) {
     console.error(
       JSON.stringify({
         step: name,
-        error: error instanceof Error ? error.message : String(error),
+        ...operatorErrorFields(error),
         ...correlationFields(),
       }),
     );
@@ -465,7 +466,7 @@ async function execute(job: Job) {
         JSON.stringify({
           job: job.id,
           kind: job.kind,
-          error: error.message,
+          ...operatorErrorFields(error),
           ...correlationFields(),
         }),
       );
@@ -494,9 +495,10 @@ async function execute(job: Job) {
         JSON.stringify({
           job: job.id,
           kind: job.kind,
-          error: message,
+          ...operatorErrorFields(error),
           bookkeeping: 'failed',
-          bookkeepingError: bookkeeping instanceof Error ? bookkeeping.message : 'unavailable',
+          bookkeepingCode: operatorErrorFields(bookkeeping).code,
+          bookkeepingClass: operatorErrorFields(bookkeeping).errorClass,
           ...correlationFields(),
         }),
       );
@@ -506,7 +508,9 @@ async function execute(job: Job) {
         JSON.stringify({
           job: job.id,
           kind: job.kind,
-          error: 'Job lease was lost; failure not recorded.',
+          code: 'JOB_LEASE_LOST',
+          errorClass: operatorErrorFields(error).errorClass,
+          note: 'failure not recorded',
           ...correlationFields(),
         }),
       );
@@ -528,7 +532,12 @@ async function execute(job: Job) {
         await clearCollectionError(p.raidId);
     }
     console.error(
-      JSON.stringify({ job: job.id, kind: job.kind, error: message, ...correlationFields() }),
+      JSON.stringify({
+        job: job.id,
+        kind: job.kind,
+        ...operatorErrorFields(error),
+        ...correlationFields(),
+      }),
     );
   }
 }

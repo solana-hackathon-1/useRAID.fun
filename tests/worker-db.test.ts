@@ -315,7 +315,9 @@ suite('worker jobs module', () => {
         throw new Error('boom');
       }),
     ).resolves.toBeUndefined();
-    expect(log).toHaveBeenCalledWith(JSON.stringify({ step: 'x', error: 'boom' }));
+    expect(log).toHaveBeenCalledWith(
+      JSON.stringify({ step: 'x', code: 'UNCLASSIFIED', errorClass: 'Error' }),
+    );
   });
   describe('queue scheduling', () => {
     let creatorId: string;

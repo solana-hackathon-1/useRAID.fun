@@ -1,6 +1,7 @@
 import { currentSession } from './auth';
 import { isAdmin } from './admins';
 import { db } from './db';
+import { operatorLogLine } from './operator-log';
 import { workEntryLinks } from './work-entry-links';
 import type { StudioAccount } from '@/components/studio-account-menu';
 
@@ -19,7 +20,7 @@ export async function shellAccount(): Promise<StudioAccount | null> {
       links: workEntryLinks(),
     };
   } catch (e) {
-    console.error('shell account unavailable', e);
+    console.error(operatorLogLine('shell-account-unavailable', e));
     return null;
   }
 }
