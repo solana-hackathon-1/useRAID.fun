@@ -35,7 +35,7 @@ export async function renewJobLease(job: Held) {
  * finds the lease gone marks the run lost, so the very next assertJobLease() refuses before any further effect.
  * Nothing caps total run time here: a handler that never settles keeps renewing, so provider calls must carry their own timeouts.
  */
-export function runUnderJobLease<T>(
+export async function runUnderJobLease<T>(
   job: Held,
   fn: () => Promise<T>,
   options: { renewEveryMs?: number } = {},
@@ -63,9 +63,11 @@ export function runUnderJobLease<T>(
       }, options.renewEveryMs ?? JOB_LEASE_RENEW_MS)
     : null;
   timer?.unref();
-  return held.run(store, fn).finally(() => {
+  try {
+    return await held.run(store, fn);
+  } finally {
     if (timer) clearInterval(timer);
-  });
+  }
 }
 /**
  * Call immediately before an external side effect (provider call, broadcast, send). Throws JobLeaseLostError when
