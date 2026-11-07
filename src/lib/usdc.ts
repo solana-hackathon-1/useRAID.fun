@@ -1,12 +1,12 @@
 import { lockResource } from '../identity-locks';
 import { lockAdvisory } from './identity-protocol';
 import {
-  Connection,
   PublicKey,
   Transaction,
   TransactionInstruction,
   type ParsedTransactionWithMeta,
 } from '@solana/web3.js';
+import { solanaConnection } from './solana-rpc';
 import {
   createAssociatedTokenAccountIdempotentInstruction,
   createTransferCheckedInstruction,
@@ -121,7 +121,7 @@ export async function usdcRpc(network: string) {
   const endpoint = process.env.SOLANA_RPC_URL;
   if (!endpoint?.startsWith('https://'))
     throw new HttpError(503, 'USDC payments are not configured.');
-  const rpc = new Connection(endpoint, 'finalized');
+  const rpc = solanaConnection(endpoint);
   const expected =
     network === 'devnet'
       ? 'EtWTRABZaYq6iMfeYKouRu166VU2xqa1'

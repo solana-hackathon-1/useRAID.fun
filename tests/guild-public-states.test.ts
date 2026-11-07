@@ -160,3 +160,46 @@ describe('T015-W02 Guild directory states', () => {
     expect(html).toContain('No description published yet.');
   });
 });
+
+describe('T015-W02 stale public Guild profile (DEC-2026-11-07-01 j: 30 days)', () => {
+  const NOW = new Date('2026-11-07T12:00:00.000Z');
+  const DAY = 86_400_000;
+  const updateAgo = (ms: number) => ({
+    ...UPDATE,
+    publishedAt: new Date(+NOW - ms).toISOString(),
+  });
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(NOW);
+  });
+  afterEach(() => vi.useRealTimers());
+
+  it('says the latest update is old once it is more than 30 days old', async () => {
+    hoisted.updates.mockResolvedValue({ updates: [updateAgo(30 * DAY + 1)], nextCursor: null });
+    const html = await renderProfile();
+    expect(html).toContain('No update in the last 30 days.');
+    expect(html).toContain('may be out of date');
+    expect(html).toContain('First news');
+  });
+
+  it('is not stale at exactly 30 days or for a newer update', async () => {
+    for (const age of [30 * DAY, 29 * DAY, 0]) {
+      hoisted.updates.mockResolvedValue({ updates: [updateAgo(age)], nextCursor: null });
+      expect(await renderProfile()).not.toContain('No update in the last 30 days.');
+    }
+  });
+
+  it('does not call a Guild with no updates stale, and shows no stale note when updates cannot load', async () => {
+    expect(await renderProfile()).not.toContain('No update in the last 30 days.');
+    hoisted.updates.mockRejectedValue(new Error('db down'));
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    expect(await renderProfile()).not.toContain('No update in the last 30 days.');
+  });
+
+  it('judges staleness on the first page only', async () => {
+    hoisted.updates.mockResolvedValue({ updates: [updateAgo(90 * DAY)], nextCursor: null });
+    expect(await renderProfile({ before: '00000000-0000-4000-8000-000000000002' })).not.toContain(
+      'No update in the last 30 days.',
+    );
+  });
+});

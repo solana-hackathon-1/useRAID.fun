@@ -47,8 +47,9 @@ export async function processTrackingLookup(
     if (outcome === 'unknown') throw new Error('X returned incomplete lookup data.');
     const reasonCode = outcome === 'restricted' ? 'POST_RESTRICTED' : 'POST_UNAVAILABLE';
     if (submissionId)
-      await db.postSubmission.update({
-        where: { id: submissionId },
+      // Only a still-QUEUED submission: a dead-lettered or administrator-decided one keeps its recorded outcome.
+      await db.postSubmission.updateMany({
+        where: { id: submissionId, status: 'QUEUED' },
         data: { status: 'EXCLUDED', reasonCode },
       });
     await markTrackingUnavailable(raidId, [postId], true, correction, reasonCode);
