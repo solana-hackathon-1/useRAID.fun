@@ -106,7 +106,14 @@ export async function loadGuildPublicPage(
   } catch {
     // A failed read is "unable to refresh", never "no updates". The error itself is not shown to visitors.
     console.error('guild public page: updates read failed');
-    return { guild, updates: [], nextCursor: null, before: beforeId, updatesUnavailable: true, stale: false };
+    return {
+      guild,
+      updates: [],
+      nextCursor: null,
+      before: beforeId,
+      updatesUnavailable: true,
+      stale: false,
+    };
   }
   if (raw === null) return null;
   const page = PublicGuildUpdatesPageSchema.safeParse(raw);
