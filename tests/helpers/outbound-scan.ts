@@ -8,8 +8,11 @@ import ts from 'typescript';
  *   destructuring) and any import of another HTTP client. Server code may have none: raw fetch follows redirects, so
  *   only providerFetch (redirects refused) may reach a provider.
  * Type positions, `client.fetch`, object keys and a `function fetch` declaration are not uses.
+ * `providerFetch` must be called directly: an alias or `.call` would dodge the pinned-host check, so it counts as raw.
+ * A guard against accidents, not a sandbox: `eval`, `Reflect.get` and libraries that wrap fetch are out of reach.
  */
-const HTTP_CLIENTS = /^(?:node:)?(?:https?|http2)$|^(?:undici|axios|got|node-fetch|ky)$/;
+const HTTP_CLIENTS =
+  /^(?:node:)?(?:https?|http2)$|^(?:undici|axios|got|node-fetch|cross-fetch|isomorphic-fetch|ky|ofetch|superagent|needle)$/;
 const GLOBALS = new Set(['globalThis', 'global', 'self', 'window']);
 
 const unwrap = (node: ts.Expression): ts.Expression =>
@@ -45,14 +48,21 @@ const isNameOnly = (node: ts.Identifier) => {
   );
 };
 
-export function scanOutboundCalls(text: string) {
-  const file = ts.createSourceFile(
-    'scan.tsx',
-    text,
-    ts.ScriptTarget.Latest,
-    true,
-    ts.ScriptKind.TSX,
+const isDirectProviderUse = (node: ts.Identifier) => {
+  const parent = node.parent;
+  return (
+    (ts.isCallExpression(parent) && parent.expression === node) ||
+    (ts.isFunctionDeclaration(parent) && parent.name === node) ||
+    (ts.isImportSpecifier(parent) && !parent.propertyName)
   );
+};
+
+export function scanOutboundCalls(text: string, fileName = 'scan.ts') {
+  const kind = fileName.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
+  const file = ts.createSourceFile(fileName, text, ts.ScriptTarget.Latest, true, kind);
+  // A broken tree silently hides everything after the error, so a file that doesn't parse can never pass as clean.
+  const { parseDiagnostics } = file as unknown as { parseDiagnostics: readonly unknown[] };
+  if (parseDiagnostics.length) throw new Error(`Cannot parse ${fileName} for the outbound scan.`);
   const provider: string[] = [];
   const raw: string[] = [];
   const line = (node: ts.Node) => node.getText(file).slice(0, 120);
@@ -61,6 +71,8 @@ export function scanOutboundCalls(text: string) {
   const visit = (node: ts.Node) => {
     if (ts.isIdentifier(node) && node.text === 'fetch' && !inTypePosition(node)) {
       if (!isNameOnly(node)) raw.push(line(node.parent));
+    } else if (ts.isIdentifier(node) && node.text === 'providerFetch') {
+      if (!isDirectProviderUse(node)) raw.push(line(node.parent));
     } else if (
       ts.isElementAccessExpression(node) &&
       isGlobalObject(node.expression) &&
@@ -68,7 +80,16 @@ export function scanOutboundCalls(text: string) {
       node.argumentExpression.text === 'fetch'
     ) {
       raw.push(line(node));
-    } else if (ts.isImportDeclaration(node) && clientModule(node.moduleSpecifier)) {
+    } else if (
+      (ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) &&
+      clientModule(node.moduleSpecifier)
+    ) {
+      raw.push(line(node));
+    } else if (
+      ts.isImportEqualsDeclaration(node) &&
+      ts.isExternalModuleReference(node.moduleReference) &&
+      clientModule(node.moduleReference.expression)
+    ) {
       raw.push(line(node));
     } else if (ts.isCallExpression(node)) {
       const callee = node.expression;

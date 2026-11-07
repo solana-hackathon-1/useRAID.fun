@@ -70,7 +70,9 @@ export function settleReservation(id: string, units: number, reason: string) {
 }
 /** A reservation that stays at its upper bound. The note is bookkeeping and must not replace the provider failure. */
 const noteKeptReservation = (id: string, reason: string) =>
-  db.providerUsage.update({ where: { id }, data: { reason } }).catch(() => undefined);
+  db.providerUsage
+    .update({ where: { id }, data: { reason } })
+    .catch(() => console.warn('X reservation note failed'));
 type XReadBody = {
   data?: XPost[];
   meta?: { next_token?: string; newest_id?: string };

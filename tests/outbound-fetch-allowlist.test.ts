@@ -31,7 +31,9 @@ const server = files.filter((file) => !isBrowser(file));
 
 describe('server-side outbound fetch allowlist', () => {
   it('finds the server-side fetches it is supposed to guard', () => {
-    const found = server.flatMap((file) => scanOutboundCalls(readFileSync(file, 'utf8')).provider);
+    const found = server.flatMap(
+      (file) => scanOutboundCalls(readFileSync(file, 'utf8'), file).provider,
+    );
     expect(found.length).toBeGreaterThanOrEqual(4);
   });
   it('only fetches a literal https URL on a pinned provider host', () => {
@@ -39,7 +41,7 @@ describe('server-side outbound fetch allowlist', () => {
       `^[\`'"]https://(?:${ALLOWED_HOSTS.map((h) => h.replaceAll('.', '\\.')).join('|')})/`,
     );
     const offenders = server.flatMap((file) =>
-      scanOutboundCalls(readFileSync(file, 'utf8'))
+      scanOutboundCalls(readFileSync(file, 'utf8'), file)
         .provider.filter((argument) => !allowed.test(argument))
         .map((argument) => `${relative(root, file)}: providerFetch(${argument}`),
     );
@@ -47,11 +49,13 @@ describe('server-side outbound fetch allowlist', () => {
   });
   it('sends nothing through a raw fetch( in server code: only providerFetch (redirects refused) may', () => {
     const wrapper = join(src, 'lib/outbound-fetch.ts'); // the one place allowed to hold the global
-    expect(scanOutboundCalls(readFileSync(wrapper, 'utf8')).raw.length).toBeGreaterThan(0);
+    expect(scanOutboundCalls(readFileSync(wrapper, 'utf8'), wrapper).raw).toEqual([
+      'globalThis.fetch',
+    ]);
     const offenders = server
       .filter((file) => file !== wrapper)
       .flatMap((file) =>
-        scanOutboundCalls(readFileSync(file, 'utf8')).raw.map(
+        scanOutboundCalls(readFileSync(file, 'utf8'), file).raw.map(
           (use) => `${relative(root, file)}: ${use}`,
         ),
       );
@@ -86,6 +90,23 @@ describe('server-side outbound fetch allowlist', () => {
     ['undici', `import { request } from 'undici';`],
     ['a dynamic import', `await import('node:https');`],
     ['require', `const h = require('https');`],
+  ])('treats %s as a raw outbound call', (_name, source) => {
+    expect(scanOutboundCalls(source).raw.length).toBeGreaterThan(0);
+  });
+  it('reads generic arrows and angle casts in a .ts file, so nothing below them hides', () => {
+    const source = `const id = <T,>(x: T) => x;\nconst y = <any>z;\nfetch(u);`;
+    expect(scanOutboundCalls(source, 'host.ts').raw).toHaveLength(1);
+  });
+  it('refuses to scan a file it cannot parse rather than reporting it clean', () => {
+    expect(() => scanOutboundCalls('const = ;', 'broken.ts')).toThrow(/parse/);
+  });
+  it.each([
+    ['an alias of providerFetch', `const pf = providerFetch; pf(u);`],
+    ['providerFetch.call', `providerFetch.call(null, u);`],
+    ['import equals', `import h = require('https');`],
+    ['a re-export', `export { request } from 'undici';`],
+    ['a star re-export', `export * from 'node:https';`],
+    ['cross-fetch', `import f from 'cross-fetch';`],
   ])('treats %s as a raw outbound call', (_name, source) => {
     expect(scanOutboundCalls(source).raw.length).toBeGreaterThan(0);
   });
