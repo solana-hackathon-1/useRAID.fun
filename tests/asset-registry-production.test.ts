@@ -45,8 +45,9 @@ const codes = (config: ProductionConfig, list = allowlist) =>
   validateProductionConfig(config, list).violations.map((violation) => violation.code);
 
 describe('T029 production validation fails closed (AC41, I12, O07)', () => {
-  it('ships no supported production asset until O07 supplies one', () => {
-    expect(PRODUCTION_ASSET_ALLOWLIST).toEqual([]);
+  it('ships only canonical USDC (DEC-2026-11-07-03) and blocks any other asset by default', () => {
+    expect(PRODUCTION_ASSET_ALLOWLIST).toHaveLength(1);
+    expect(PRODUCTION_ASSET_ALLOWLIST[0].decisionRef).toBe('DEC-2026-11-07-03');
     expect(Object.isFrozen(PRODUCTION_ASSET_ALLOWLIST)).toBe(true);
     const result = validateProductionConfig(candidate());
     expect(result.ok).toBe(false);
