@@ -306,7 +306,9 @@ suite('worker jobs module', () => {
   });
   it('assertSchemaCurrent passes on the migrated database and rejects a newer migration', async () => {
     await expect(assertSchemaCurrent()).resolves.toBeUndefined();
-    await expect(assertSchemaCurrent('299901010001_future')).rejects.toThrow(/behind/);
+    await expect(assertSchemaCurrent('299901010001_future')).rejects.toMatchObject({
+      code: 'SCHEMA_BEHIND',
+    });
   });
   it('step() logs and swallows errors', async () => {
     const log = vi.spyOn(console, 'error').mockImplementation(() => {});

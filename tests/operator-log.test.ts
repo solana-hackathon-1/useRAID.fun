@@ -5,6 +5,7 @@ import { Prisma } from '@prisma/client';
 import { ZodError } from 'zod';
 import { describe, expect, it } from 'vitest';
 import { HttpError } from '../src/lib/errors';
+import { ConfigRefusedError } from '../src/config-validation';
 import { operatorErrorFields, operatorLogLine } from '../src/lib/operator-log';
 
 const SECRET = 'postgres://admin:HUNTER2-SENTINEL@db.internal:5432/useraid';
@@ -51,6 +52,35 @@ describe('operatorErrorFields', () => {
     class Sentinel extends Error {}
     Object.defineProperty(Sentinel, 'name', { value: 'bad class with spaces' });
     expect(operatorErrorFields(new Sentinel(SECRET)).errorClass).toBe('Error');
+  });
+  it('identifies a refused configuration by code and violation codes, never subjects or message', () => {
+    const fields = operatorErrorFields(
+      new ConfigRefusedError([
+        {
+          severity: 'REFUSE',
+          code: 'SIGNER_SECRET_ON_WEB',
+          subject: `OPERATOR_SECRET_KEY=${SECRET}`,
+        },
+        { severity: 'REFUSE', code: 'TEST_MODE_IN_PRODUCTION', subject: 'DATABASE_URL' },
+      ]),
+    );
+    expect(fields).toEqual({
+      code: 'CONFIG_REFUSED',
+      errorClass: 'ConfigRefusedError',
+      violations: ['SIGNER_SECRET_ON_WEB', 'TEST_MODE_IN_PRODUCTION'],
+    });
+    expect(JSON.stringify(fields)).not.toContain('HUNTER2');
+    expect(JSON.stringify(fields)).not.toContain('DATABASE_URL');
+  });
+  it('drops violation entries that are not of the safe code shape', () => {
+    const error = Object.assign(new Error('x'), {
+      violations: [{ code: SECRET }, { code: 'OK_CODE' }, 'free text', null],
+    });
+    expect(operatorErrorFields(error)).toEqual({
+      code: 'UNCLASSIFIED',
+      errorClass: 'Error',
+      violations: ['OK_CODE'],
+    });
   });
   it('is total: non-Error values, null, cyclic and throwing-getter inputs never throw or leak', () => {
     for (const value of [SECRET, { message: SECRET }, null, undefined, 42, Symbol('s')]) {
