@@ -65,7 +65,7 @@ suite('X header timeout attempts', () => {
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(headerTimeout()));
     const failure = await lookupPosts(['1']).catch((error) => error);
     expect(failure).toBeInstanceOf(ProviderError);
-    expect(failure).toMatchObject({ deferred: false, retryAfter: 60 });
+    expect(failure).toMatchObject({ deferred: false, retryAfter: 0 }); // 0: finishJob's exponential backoff applies;
     expect(failure.message).toContain('timed out');
     const usage = await db.providerUsage.findFirstOrThrow({ where: { provider: 'x' } });
     expect(usage.reservedCents).toBeGreaterThan(0);

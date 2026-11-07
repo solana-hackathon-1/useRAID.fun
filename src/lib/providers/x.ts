@@ -16,9 +16,40 @@ export class ProviderError extends Error {
     public retryAfter = 60,
     public deferred = false,
     public status?: number,
+    /** Set on a header timeout: the endpoint to block if this job then dead-letters (see blockEndpointAfterTimeouts). */
+    public timedOutEndpoint?: string,
   ) {
     super(message);
   }
+}
+/**
+ * Persistent header timeouts (DEC-2026-11-07-01 c). Each timeout keeps its reservation (X may have billed it), and
+ * time-bucketed job keys mean a dead-lettered job does not stop the next bucket's job from reserving again. When a job
+ * dead-letters on timeouts the endpoint is therefore blocked with a far-future `blockedUntil` (no invented duration:
+ * the marker is the date itself) until an administrator retries that job. While blocked, xRead refuses before any
+ * quota decrement, reservation or fetch; queued jobs are parked as deferred and re-check every 15 minutes.
+ */
+const TIMEOUT_BLOCK_AT = new Date('9999-01-01T00:00:00Z');
+const isTimeoutBlock = (until: Date) => +until >= +new Date('9000-01-01T00:00:00Z');
+export const TIMEOUT_BLOCK_NOTE =
+  'Blocked after persistent timeouts; administrator retry required.';
+export const TIMEOUT_JOB_MESSAGE = 'X request timed out.';
+export async function blockEndpointAfterTimeouts(path: string) {
+  await db.$transaction(async (tx) => {
+    await lockAdvisory(tx, lockResource('x-endpoint', path));
+    await tx.xEndpointState.upsert({
+      where: { key: path },
+      create: { key: path, blockedUntil: TIMEOUT_BLOCK_AT, lastError: TIMEOUT_BLOCK_NOTE },
+      update: { blockedUntil: TIMEOUT_BLOCK_AT, lastError: TIMEOUT_BLOCK_NOTE },
+    });
+  });
+}
+/** Lifts every timeout block; ordinary rate-limit blocks (a real reset time) are untouched. */
+export function clearTimeoutBlocks(tx: Pick<typeof db, 'xEndpointState'>) {
+  return tx.xEndpointState.updateMany({
+    where: { blockedUntil: { gte: new Date('9000-01-01T00:00:00Z') } },
+    data: { blockedUntil: null, lastError: null },
+  });
 }
 export async function reserveUsage(units: number, raidId?: string, identity = false) {
   if (!identity && (!config.liveApproved || !process.env.X_BEARER_TOKEN))
@@ -85,6 +116,12 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
   await db.$transaction(async (tx) => {
     await lockAdvisory(tx, lockResource('x-endpoint', path));
     const state = await tx.xEndpointState.findUnique({ where: { key: path } });
+    if (state?.blockedUntil && isTimeoutBlock(state.blockedUntil))
+      throw new ProviderError(
+        'X endpoint is blocked after persistent timeouts; administrator retry required.',
+        900,
+        true,
+      );
     if (state?.blockedUntil && state.blockedUntil > new Date())
       throw new ProviderError(
         'X endpoint is waiting for its rate-limit reset.',
@@ -116,7 +153,8 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
     // (DEC-2026-11-07-01 c).
     if (error instanceof DOMException && error.name === 'TimeoutError') {
       await noteKeptReservation(reservation.id, 'Timed out; reservation kept');
-      throw new ProviderError('X request timed out.', 60, false);
+      // retryAfter 0 falls through to finishJob's exponential backoff (30 * 2^attempt seconds, max 900).
+      throw new ProviderError(TIMEOUT_JOB_MESSAGE, 0, false, undefined, path);
     }
     await settleReservation(reservation.id, 0, 'Transport failure; no response');
     if (error instanceof OutboundFetchError && error.code === 'redirect')
