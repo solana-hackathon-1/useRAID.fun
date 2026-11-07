@@ -110,10 +110,15 @@ async function xRead(path: string, params: URLSearchParams, units: number, raidI
     signal: AbortSignal.timeout(20000),
     cache: 'no-store',
   }).catch(async (error) => {
-    // A timed-out request may still have been served and billed, so it keeps its reservation.
-    if (error instanceof DOMException && error.name === 'TimeoutError')
+    // A timed-out request may still have been served and billed, so it keeps its reservation. That makes a retry
+    // spend again, so it must count as an attempt (not deferred): a persistent timeout then dead-letters the job at
+    // the attempt limit instead of reserving to the budget cutoff, and an administrator retry resets the count
+    // (DEC-2026-11-07-01 c).
+    if (error instanceof DOMException && error.name === 'TimeoutError') {
       await noteKeptReservation(reservation.id, 'Timed out; reservation kept');
-    else await settleReservation(reservation.id, 0, 'Transport failure; no response');
+      throw new ProviderError('X request timed out.', 60, false);
+    }
+    await settleReservation(reservation.id, 0, 'Transport failure; no response');
     if (error instanceof OutboundFetchError && error.code === 'redirect')
       throw new ProviderError('X redirected the request; refused.', 300, true);
     throw new ProviderError('X is unreachable.', 60, true);
