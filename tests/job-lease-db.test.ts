@@ -187,8 +187,8 @@ suite('pre-effect job lease fence (T038)', () => {
     it('keeps a concurrent claimJob off the row while a fenced write holds it, then lets it claim after commit', async () => {
       await due('market:fence:race');
       const holder = (await claimJob())!;
-      // Owned by the database clock for about two more seconds, so the fence passes now and the lease expires inside it.
-      await db.$executeRaw`UPDATE "Job" SET "lockedAt"=(NOW() AT TIME ZONE 'UTC')-INTERVAL '10 minutes'+INTERVAL '2 seconds' WHERE id=${holder.id}`;
+      // Owned by the database clock for about five more seconds, so the fence passes now and the lease expires inside it.
+      await db.$executeRaw`UPDATE "Job" SET "lockedAt"=(NOW() AT TIME ZONE 'UTC')-INTERVAL '10 minutes'+INTERVAL '5 seconds' WHERE id=${holder.id}`;
       let release!: () => void;
       const gate = new Promise<void>((resolve) => (release = resolve));
       let entered!: () => void;
@@ -199,7 +199,7 @@ suite('pre-effect job lease fence (T038)', () => {
         await gate;
       });
       await inside;
-      await pause(2500); // the lease is now expired by the database clock, but the fence transaction still holds the row
+      await pause(5500); // the lease is now expired by the database clock, but the fence transaction still holds the row
       expect(await claimJob()).toBeNull(); // second connection: SKIP LOCKED, the job is not handed out mid-write
       release();
       expect(await fenced).toBe(true);

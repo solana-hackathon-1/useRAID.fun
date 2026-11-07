@@ -70,6 +70,33 @@ suite('worker monitoring signals (T038 W02), synthetic data only', () => {
         ]),
       );
     });
+    it('gives up on a blocked table instead of holding the admin read open', async () => {
+      let release!: () => void;
+      const gate = new Promise<void>((resolve) => (release = resolve));
+      let entered!: () => void;
+      const locked = new Promise<void>((resolve) => (entered = resolve));
+      const holder = db.$transaction(
+        async (tx) => {
+          await tx.$executeRawUnsafe('LOCK TABLE "FinancialTx" IN ACCESS EXCLUSIVE MODE');
+          entered();
+          await gate;
+        },
+        { timeout: 15000 },
+      );
+      await locked;
+      const fallback = setTimeout(release, 4000); // an unbounded read would otherwise wait forever on the lock
+      const started = Date.now();
+      try {
+        await expect(
+          workerHealthSnapshot(new Date(), { statementTimeoutMs: 300 }),
+        ).rejects.toThrow();
+        expect(Date.now() - started).toBeLessThan(3000);
+      } finally {
+        clearTimeout(fallback);
+        release();
+        await holder;
+      }
+    }, 20000);
     it('keeps the known step list identical to the steps schedule() actually runs', () => {
       const source = readFileSync(path.join(process.cwd(), 'src/lib/worker-jobs.ts'), 'utf8');
       const scheduled = [...source.matchAll(/\bawait step\('([a-z-]+)'/g)].map((m) => m[1]).sort();
