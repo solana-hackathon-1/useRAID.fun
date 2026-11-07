@@ -7,6 +7,7 @@ import {
   type CommandReceiptTransaction,
 } from './command-receipts';
 import { saveGuildDraft } from './guild-profiles/draft-storage';
+import { createGuildActivationHandlers } from './guild-profiles/guild-activation-http';
 import { createGuildPublicHandlers } from './guild-profiles/guild-public-http';
 import { createGuildRolesHandlers } from './guild-profiles/guild-roles-http';
 import { createGuildUpdatesHandlers } from './guild-profiles/guild-updates-http';
@@ -83,11 +84,14 @@ const operator = await account('operator');
 // A delegate who signed in with X, so the example exercises both session methods the module accepts.
 const delegate = await account('delegate', 'x');
 const stranger = await account('holder');
-// The host owns this policy: here only the operator account may record a project's verified activation.
+// The host owns this policy: a dedicated allowlist of operator accounts, separate from any other role. The module still
+// refuses an approver who owns the draft, so listing an applicant here never lets them approve their own Guild.
+const listedApplicant = await account('listed-applicant');
+const activationOperators = new Set([operator.accountId, listedApplicant.accountId]);
 const host = {
   allowNewWrites: true,
   authorizeActivation: async (_tx: CommandReceiptTransaction, who: { accountId: string }) =>
-    who.accountId === operator.accountId,
+    activationOperators.has(who.accountId),
 };
 const cmd = (actor: GuildActor, input: unknown, key: string) => ({
   actor,
@@ -468,8 +472,61 @@ try {
   );
   assert.equal(moved.transfer.applied, true);
   assert.deepEqual([await can(founder, 'PROFILE'), await can(successor, 'PROFILE')], [false, true]);
+  // Activation over HTTP: the host session names the approver; an applicant who is on the allowlist is still refused.
+  const activationHttp = createGuildActivationHandlers({
+    version: 'v1',
+    requestId: randomUUID,
+    actor: async () => signedIn,
+    checkOrigin: () => undefined,
+    rateLimit: async () => undefined,
+    activate: (command) => transaction((tx) => activateGuild(tx, command, host)),
+  });
+  const pendingSlug = 'synthetic-' + randomUUID();
+  const pending = (
+    await transaction((tx) =>
+      saveGuildDraft(
+        tx,
+        {
+          actor: { ...listedApplicant, actorAccountId: listedApplicant.accountId },
+          input: {
+            guildDraftId: null,
+            expectedRevision: 0,
+            profile: { name: 'Listed Applicant Guild', slug: pendingSlug, description: 'Private' },
+          },
+          idempotencyKey: 'draft-' + pendingSlug,
+          requestId: 'request-draft-listed',
+        },
+        { allowNewWrites: true },
+      ),
+    )
+  ).draft;
+  const pendingBody = {
+    guildDraftId: pending.id,
+    expectedDraftRevision: pending.revision,
+    activationRef: 'ticket:synthetic/2',
+  };
+  signedIn = listedApplicant;
+  assert.equal(
+    (await activationHttp.ACTIVATE(send('/api/v1/guild-activations', pendingBody, 'h-1'))).status,
+    403,
+  );
+  signedIn = await account('unlisted');
+  assert.equal(
+    (await activationHttp.ACTIVATE(send('/api/v1/guild-activations', pendingBody, 'h-2'))).status,
+    403,
+  );
+  signedIn = operator;
+  const approvedByHttp = await activationHttp.ACTIVATE(
+    send('/api/v1/guild-activations', pendingBody, 'h-3'),
+  );
+  assert.equal(approvedByHttp.status, 200);
+  assert.equal(
+    ((await approvedByHttp.json()) as { guild: { founderAccountId: string } }).guild
+      .founderAccountId,
+    listedApplicant.accountId,
+  );
   console.log(
-    'PASS: independent PG host Guild activation by approver, public allowlist, Founder edit, holder denied, treasury separate, consented ownership transfer, public updates, public HTTP reads, management HTTP, role and ownership HTTP; SIMULATED ONLY.',
+    'PASS: independent PG host Guild activation by approver (also over HTTP, allowlisted applicant refused), public allowlist, Founder edit, holder denied, treasury separate, consented ownership transfer, public updates, public HTTP reads, management HTTP, role and ownership HTTP; SIMULATED ONLY.',
   );
 } finally {
   await pool.end();
