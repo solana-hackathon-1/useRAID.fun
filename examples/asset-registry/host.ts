@@ -155,7 +155,9 @@ const result = {
   completeRewardFunded: complete.fullyFunded === true,
   excessPrecisionRefused,
   exactAmounts,
-  emptyProductionAllowlist: PRODUCTION_ASSET_ALLOWLIST.length === 0,
+  onlyCanonicalUsdcAllowlisted:
+    PRODUCTION_ASSET_ALLOWLIST.length === 1 &&
+    PRODUCTION_ASSET_ALLOWLIST[0].decisionRef === 'DEC-2026-11-07-03',
   productionBlocked,
   alternateSourceEquivalent,
   sanitizedFailure,
