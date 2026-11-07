@@ -303,6 +303,9 @@
     "tests/worker-monitoring-db.test.ts",
     "tests/worker-correlation-db.test.ts",
     "tests/worker-diagnostics.test.ts",
+    "tests/operator-log.test.ts",
+    "tests/operator-log-guard.test.ts",
+    "tests/worker-log-redaction-db.test.ts",
     "tests/x-oauth-db.test.ts",
     "tests/x-oauth-first-link-race-db.test.ts",
     "tests/x-oauth-routes.test.ts",
@@ -1194,7 +1197,10 @@
         "tests/worker-health-db.test.ts",
         "tests/worker-monitoring-db.test.ts",
         "tests/worker-correlation-db.test.ts",
-        "tests/worker-diagnostics.test.ts"
+        "tests/worker-diagnostics.test.ts",
+        "tests/operator-log.test.ts",
+        "tests/operator-log-guard.test.ts",
+        "tests/worker-log-redaction-db.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
       "required_test_layers": [
