@@ -7,7 +7,7 @@ import { scanOutboundCalls } from './helpers/outbound-scan';
  * T091 / blueprint §28.3: defend against server-side requests to internal services, credential-bearing endpoints
  * and unsafe redirects. Server code never fetches a caller-supplied URL: every server-side `providerFetch(` must begin
  * with a literal https:// plus a pinned provider host, so no input can change the scheme or host, and no server code
- * may call a raw `fetch(` at all (it would follow redirects), so providerFetch is the only way out. Adding a provider host is a
+ * may use the global `fetch` or another HTTP client at all (it would follow redirects), so providerFetch is the only way out. Adding a provider host is a
  * deliberate change to this list (and needs its own adapter contract, R15). Browser code is excluded (components with
  * 'use client' and the repo's `*-client.ts` fetch wrappers): the browser can only reach the same origin because the CSP
  * sets `connect-src 'self'`, which the last test pins so the exclusion's premise cannot silently lapse.
@@ -46,11 +46,15 @@ describe('server-side outbound fetch allowlist', () => {
     expect(offenders).toEqual([]);
   });
   it('sends nothing through a raw fetch( in server code: only providerFetch (redirects refused) may', () => {
-    const offenders = server.flatMap((file) =>
-      scanOutboundCalls(readFileSync(file, 'utf8')).raw.map(
-        (argument) => `${relative(root, file)}: fetch(${argument}`,
-      ),
-    );
+    const wrapper = join(src, 'lib/outbound-fetch.ts'); // the one place allowed to hold the global
+    expect(scanOutboundCalls(readFileSync(wrapper, 'utf8')).raw.length).toBeGreaterThan(0);
+    const offenders = server
+      .filter((file) => file !== wrapper)
+      .flatMap((file) =>
+        scanOutboundCalls(readFileSync(file, 'utf8')).raw.map(
+          (use) => `${relative(root, file)}: ${use}`,
+        ),
+      );
     expect(offenders).toEqual([]);
   });
   it('recognises a raw fetch( however it is spelled, and leaves providerFetch alone', () => {
