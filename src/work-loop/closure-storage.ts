@@ -91,7 +91,6 @@ export async function closeOverdueEngagement(tx: Tx, command: WorkCommand, host:
       request: value,
     },
     async () => {
-      if (!host.allowNewWrites) fail('WRITES_DISABLED');
       locks = await currentActor(tx, actor);
       // Missing and unauthorized engagements are one indistinguishable denial.
       const ref = await tx.query<{ guildId: string }>(
@@ -99,6 +98,8 @@ export async function closeOverdueEngagement(tx: Tx, command: WorkCommand, host:
         [value.engagementId],
       );
       if (ref.length !== 1 || !(await authorized(ref[0].guildId))) fail('FORBIDDEN');
+      // After authority and before any state or revision answer: the switch is not visible without authority (#352).
+      if (!host.allowNewWrites) fail('WRITES_DISABLED');
       const rows = await tx.query<{ state: string; revision: number; guildId: string }>(
         'SELECT "state","revision","guildId" FROM "Engagement" WHERE "id"=$1::uuid FOR UPDATE',
         [value.engagementId],

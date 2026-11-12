@@ -170,6 +170,23 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
     expect(await commitments()).toHaveLength(1);
     expect(await row('SELECT 1 FROM "EngagementClosure"')).toEqual([]);
   });
+  it('answers FORBIDDEN before WRITES_DISABLED, so the closure switch is not visible without authority (#352 item 7)', async () => {
+    const { worker, engagementId } = await setup();
+    await start(engagementId);
+    const ops = await seedWorkHuman(db, 'ops-' + randomUUID());
+    const current = await engagement(engagementId);
+    const input = { engagementId, expectedRevision: current.revision };
+    const off = { ...host, allowNewWrites: false };
+    await expect(close(worker.actor, input, off)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    await expect(
+      close(ops.actor, { ...input, engagementId: randomUUID() }, off),
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    // Authority holders still learn that writes are off, before any state or revision answer.
+    await expect(
+      close(ops.actor, { ...input, expectedRevision: current.revision + 5 }, off),
+    ).rejects.toMatchObject({ code: 'WRITES_DISABLED' });
+    expect(await row('SELECT 1 FROM "EngagementClosure"')).toEqual([]);
+  });
   it('reaches finite closure for every active state without deciding money, fault or newer capacity', async () => {
     const deadlines = {
       commitment: at(7000),
