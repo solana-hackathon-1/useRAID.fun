@@ -1,5 +1,5 @@
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import { db } from '../src/lib/db';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
 import { saveGuildDraft } from '../src/guild-profiles/draft-storage';
@@ -13,7 +13,11 @@ import {
 } from '../src/guild-profiles/guild-storage';
 import { hash } from '../src/lib/auth-primitives';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
-import type { SqlBinding } from '../src/command-receipts';
+import {
+  CommandReceiptError,
+  type CommandReceiptTransaction,
+  type SqlBinding,
+} from '../src/command-receipts';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 let counter = 0;
 async function person(): Promise<GuildActor> {
@@ -513,6 +517,81 @@ integration('T009 persisted Guild storage', () => {
     } finally {
       await other.$disconnect();
     }
+  });
+
+  /**
+   * Two approvers who each own the draft the other activates: each holds its own User row (authorization, FOR NO KEY
+   * UPDATE) and then asks for the other's (the owner check, FOR SHARE), so Postgres aborts one with 40P01. The barrier
+   * (one-shot, at the first approval) makes both hold their own row before either asks for the other's.
+   */
+  async function crossActivation() {
+    const a = await person();
+    const b = await person();
+    operators.add(a.accountId);
+    operators.add(b.accountId);
+    const draftA = await draftFor(a, 'cross-a');
+    const draftB = await draftFor(b, 'cross-b');
+    let arrived = 0;
+    let release: () => void = () => undefined;
+    const both = new Promise<void>((resolve) => (release = resolve));
+    const gate = {
+      allowNewWrites: true,
+      authorizeActivation: async (_tx: unknown, who: { accountId: string }) => {
+        if (++arrived <= 2) {
+          if (arrived === 2) release();
+          await Promise.race([
+            both,
+            new Promise((_, reject) => setTimeout(() => reject(new Error('barrier')), 10000)),
+          ]);
+        }
+        return operators.has(who.accountId);
+      },
+    };
+    const input = (draft: { id: string; revision: number }, ref: string) => ({
+      guildDraftId: draft.id,
+      expectedDraftRevision: draft.revision,
+      activationRef: ref,
+    });
+    return { a, b, draftA, draftB, gate, input };
+  }
+
+  it('#438-2: a cross-activation deadlock (40P01) from a host port that does not classify is a retryable RETRY_TRANSACTION, never STORAGE_UNAVAILABLE', async () => {
+    const { a, b, draftA, draftB, gate, input } = await crossActivation();
+    // A host port that hands the driver's raw error through, as the port contract allows a host to do.
+    const raw = (work: (port: CommandReceiptTransaction) => Promise<unknown>) =>
+      db.$transaction(
+        (tx) =>
+          work({
+            dialect: 'POSTGRESQL',
+            isolation: 'READ_COMMITTED',
+            query: async <Row>(sql: string, bindings: readonly SqlBinding[]) =>
+              tx.$queryRawUnsafe<Row[]>(sql, ...bindings),
+          }),
+        { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted, timeout: 20000 },
+      );
+    const settled = await Promise.allSettled([
+      raw((tx) => activateGuild(tx, cmd(a, input(draftB, 'cross-b')), gate)),
+      raw((tx) => activateGuild(tx, cmd(b, input(draftA, 'cross-a')), gate)),
+    ]);
+    const failed = settled.filter((r) => r.status === 'rejected');
+    expect(settled.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
+    expect(failed).toHaveLength(1);
+    const reason = (failed[0] as PromiseRejectedResult).reason;
+    expect(reason).toBeInstanceOf(CommandReceiptError);
+    expect(reason).toMatchObject({ code: 'RETRY_TRANSACTION' });
+  });
+
+  it('#438-2: with the Root host both cross-activations succeed, the deadlock victim retried as a whole', async () => {
+    const { a, b, draftA, draftB, gate, input } = await crossActivation();
+    const done = await Promise.all([
+      run((tx) => activateGuild(tx, cmd(a, input(draftB, 'cross-b')), gate)),
+      run((tx) => activateGuild(tx, cmd(b, input(draftA, 'cross-a')), gate)),
+    ]);
+    expect(done.map((r) => r.status)).toEqual(['EXECUTED', 'EXECUTED']);
+    const founders = await db.$queryRawUnsafe<{ f: string }[]>(
+      'SELECT "founderAccountId" AS f FROM "Guild" ORDER BY "slug"',
+    );
+    expect(founders.map((row) => row.f)).toEqual([a.accountId, b.accountId]);
   });
 
   it('replays an edit only to an actor whose current grant still covers its fields, and returns the stored result', async () => {
