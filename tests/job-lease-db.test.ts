@@ -237,7 +237,11 @@ suite('pre-effect job lease fence (T038)', () => {
       const job = (await claimJob())!;
       vi.spyOn(db, '$transaction').mockRejectedValueOnce(new Error('connection reset'));
       await expect(runJob(job)).resolves.toBeUndefined();
-      expect(lines.some((l) => l.includes('Market provider returned 500.'))).toBe(true);
+      // DEC-2026-11-07-01 (d): the log line names the job with a code and class, never the message (the row keeps it).
+      expect(lines.some((l) => l.includes(`"job":"${job.id}"`) && l.includes('"code":'))).toBe(
+        true,
+      );
+      expect(lines.join('\n')).not.toContain('Market provider returned 500.');
       const after = await db.job.findUniqueOrThrow({ where: { id: job.id } });
       expect(after).toMatchObject({
         error: 'Market provider returned 500.',
@@ -260,7 +264,11 @@ suite('pre-effect job lease fence (T038)', () => {
       vi.spyOn(db, '$transaction').mockRejectedValueOnce(new Error('connection reset'));
       vi.spyOn(db.job, 'updateMany').mockRejectedValueOnce(new Error('connection reset'));
       await expect(runJob(job)).rejects.toThrow('connection reset');
-      expect(lines.some((l) => l.includes('Market provider returned 500.'))).toBe(true);
+      // DEC-2026-11-07-01 (d): the log line names the job with a code and class, never the message (the row keeps it).
+      expect(lines.some((l) => l.includes(`"job":"${job.id}"`) && l.includes('"code":'))).toBe(
+        true,
+      );
+      expect(lines.join('\n')).not.toContain('Market provider returned 500.');
     });
   });
 });

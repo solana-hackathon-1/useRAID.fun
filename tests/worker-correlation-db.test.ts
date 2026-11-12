@@ -58,7 +58,12 @@ suite('correlated sanitized worker diagnostics (T038 W03)', () => {
     );
     const stepLog = logs.find((l) => l.step === 'alpha');
     const healthLog = logs.find((l) => l.step === 'worker-health');
-    expect(stepLog).toMatchObject({ step: 'alpha', error: 'boom', correlationId: 'run-abc123' });
+    expect(stepLog).toMatchObject({
+      step: 'alpha',
+      code: 'UNCLASSIFIED',
+      errorClass: 'Error',
+      correlationId: 'run-abc123',
+    });
     expect(healthLog).toMatchObject({ correlationId: 'run-abc123' });
   });
 

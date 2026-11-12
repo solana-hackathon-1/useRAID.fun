@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { ZodError, type ZodType } from 'zod';
 import { HttpError } from './auth-primitives';
+import { operatorLogLine } from './operator-log';
 /** Default ceiling for a JSON command body. Every legacy command is a few short fields. */
 export const JSON_BODY_MAX_BYTES = 64 * 1024;
 /**
@@ -71,6 +72,6 @@ export function failure(error: unknown) {
     return NextResponse.json({ error: 'Already exists.' }, { status: 409 });
   if (error instanceof Prisma.PrismaClientValidationError)
     return NextResponse.json({ error: 'Invalid request.' }, { status: 400 });
-  console.error(error instanceof Error ? error.message : 'Request failed');
+  console.error(operatorLogLine('request-failed', error));
   return NextResponse.json({ error: 'Service unavailable. Please try again.' }, { status: 503 });
 }

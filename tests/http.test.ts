@@ -33,6 +33,27 @@ describe('failure()', () => {
     expect(log).toHaveBeenCalledTimes(2);
     log.mockRestore();
   });
+  it('logs a code and safe class only: never the message, stack, cause or properties (DEC-2026-11-07-01 d)', () => {
+    const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const secret = 'postgres://admin:HUNTER2-SENTINEL@db.internal:5432/useraid';
+    const error = Object.assign(new Error(`connect failed ${secret}`, { cause: secret }), {
+      detail: secret,
+    });
+    expect(failure(error).status).toBe(503);
+    expect(failure(known('P1001')).status).toBe(503);
+    expect(failure('thrown string ' + secret).status).toBe(503);
+    const calls = [...log.mock.calls];
+    log.mockRestore();
+    const lines = calls.map((call) => JSON.stringify(call));
+    expect(lines.join('\n')).not.toContain('HUNTER2');
+    expect(lines.join('\n')).not.toContain('connect failed');
+    expect(JSON.parse(String(calls[0][0]))).toEqual({
+      event: 'request-failed',
+      code: 'UNCLASSIFIED',
+      errorClass: 'Error',
+    });
+    expect(JSON.parse(String(calls[1][0]))).toMatchObject({ code: 'P1001' });
+  });
 });
 
 describe('readJson()', () => {

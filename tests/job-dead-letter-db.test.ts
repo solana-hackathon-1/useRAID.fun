@@ -245,6 +245,12 @@ suite(
           .filter((line) => line.includes('"alert":"job-dead-letter-failed"'));
         expect(failed).toHaveLength(1);
         expect(failed[0]).toContain(poison.id);
+        // Code plus safe class only (DEC-2026-11-07-01 d): no free-form error kind or message.
+        const parsed = JSON.parse(failed[0]!);
+        expect(parsed).toMatchObject({ alert: 'job-dead-letter-failed', job: poison.id });
+        expect(typeof parsed.code).toBe('string');
+        expect(typeof parsed.errorClass).toBe('string');
+        expect(parsed).not.toHaveProperty('errorKind');
       });
 
       it('a crash-exhausted market job records the failure on its token', async () => {

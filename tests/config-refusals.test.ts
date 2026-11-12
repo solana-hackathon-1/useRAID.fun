@@ -181,12 +181,16 @@ describe('(f) a web process refused for bad configuration exits at start', () =>
     checkRuntimeConfigOrExit('web', { ...PRODUCTION, USDC_NETWORK: 'devnet', X: SECRET }, exit);
     expect(exit).toHaveBeenCalledExactlyOnceWith(1);
     const line = String(error.mock.calls[0]![0]);
-    expect(JSON.parse(line)).toMatchObject({
-      config: 'refused',
+    // Code plus safe class (DEC-2026-11-07-01 d) and the violation codes; never subjects or values.
+    expect(JSON.parse(line)).toEqual({
+      event: 'config-refused',
       role: 'web',
-      violations: [{ code: 'DEVNET_OR_DEMO_IN_PRODUCTION', subject: 'USDC_NETWORK' }],
+      code: 'CONFIG_REFUSED',
+      errorClass: 'ConfigRefusedError',
+      violations: ['DEVNET_OR_DEMO_IN_PRODUCTION'],
     });
     expect(line).not.toContain(SECRET);
+    expect(line).not.toContain('USDC_NETWORK');
   });
 
   it('does not exit for a valid or warning-only configuration', () => {

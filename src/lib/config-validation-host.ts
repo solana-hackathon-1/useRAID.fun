@@ -1,3 +1,4 @@
+import { operatorLogLine } from './operator-log';
 import { ConfigRefusedError, assertRuntimeConfig, type ConfigRole } from '../config-validation';
 
 /**
@@ -29,13 +30,8 @@ export function checkRuntimeConfigOrExit(
     return checkRuntimeConfig(role, env);
   } catch (error) {
     if (!(error instanceof ConfigRefusedError)) throw error;
-    console.error(
-      JSON.stringify({
-        config: 'refused',
-        role,
-        violations: error.violations.map(({ code, subject }) => ({ code, subject })),
-      }),
-    );
+    // Code plus safe class and the violation codes only (DEC-2026-11-07-01 d); subjects and values never reach the log.
+    console.error(operatorLogLine('config-refused', error, { role }));
     return exit(1);
   }
 }
