@@ -177,6 +177,7 @@
     "tests/outbound-fetch-callsites.test.ts",
     "tests/outbound-fetch-x-db.test.ts",
     "tests/solana-rpc-outbound.test.ts",
+    "tests/x-timeout-attempts-db.test.ts",
     "tests/usdc-devnet-genesis.test.ts",
     "tests/practice-trial-assessment-boundary.test.ts",
     "tests/practice-trial-assessment-db.test.ts",
@@ -1467,6 +1468,7 @@
         "tests/outbound-fetch-callsites.test.ts",
         "tests/outbound-fetch-x-db.test.ts",
         "tests/solana-rpc-outbound.test.ts",
+        "tests/x-timeout-attempts-db.test.ts",
         "tests/usdc-devnet-genesis.test.ts",
         "tests/security-headers.test.ts"
       ],

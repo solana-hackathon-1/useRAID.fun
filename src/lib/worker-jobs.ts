@@ -15,7 +15,7 @@ import { deadLetterExhaustedJobs, enqueue, finishJob } from './queue';
 import { JobLeaseLostError, runUnderJobLease, whileJobLeaseHeld } from './job-lease';
 import { collect, ingest, refresh, snapshot } from './collection';
 import { fetchMarket } from './providers/market';
-import { lookupPosts, ProviderError } from './providers/x';
+import { blockEndpointAfterTimeouts, lookupPosts, ProviderError } from './providers/x';
 import { financeLaunch, updateFinanceReadiness } from './rewards';
 import { reconcileLaunch } from './pump-launch';
 import { usdcSettings } from './usdc';
@@ -595,6 +595,13 @@ async function execute(job: Job) {
     );
     if (dead) {
       alertDeadLetter(job, 'attempts-failed');
+      // Persistent header timeouts stop spending for every later job, not only this one (DEC-2026-11-07-01 c).
+      if (error instanceof ProviderError && error.timedOutEndpoint)
+        await blockEndpointAfterTimeouts(error.timedOutEndpoint).catch(() =>
+          console.error(
+            JSON.stringify({ job: job.id, kind: job.kind, error: 'X endpoint block failed' }),
+          ),
+        );
       await resolveDeadJob(job);
     }
     console.error(
