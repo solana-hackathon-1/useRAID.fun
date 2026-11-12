@@ -227,6 +227,11 @@ export async function activateGuild(
       if (found[0].ownerAccountId === actor.accountId) fail('FORBIDDEN');
       const owners = await query<{ suspended: boolean }>(
         tx,
+        // FOR SHARE, not FOR KEY SHARE: a suspension is a non-key UPDATE (FOR NO KEY UPDATE), which conflicts with
+        // SHARE but not with KEY SHARE, so KEY SHARE would let a concurrent suspension commit after this read and
+        // activate a Guild for a suspended owner (#290-7; pinned by tests/guild-storage-db.test.ts). The cost is that
+        // two approvers who each own a draft the other activates can deadlock; Postgres aborts one and the host's
+        // whole-transaction retry covers it.
         'SELECT "suspended" FROM "User" WHERE "id"=$1 FOR SHARE',
         [found[0].ownerAccountId],
       );
@@ -1004,6 +1009,10 @@ export async function proposeOwnershipTransfer(
       if (recipients.length !== 1) fail('NOT_FOUND');
       if (recipients[0].suspended) fail('ACCOUNT_RESTRICTED');
       if (await holdsSeparateAuthority(tx, input.guildId, input.toAccountId)) fail('FORBIDDEN');
+      // A proposal that lapsed unanswered is recorded as EXPIRED by this proposal, the proposing Founder's next
+      // command: `decideReceiptId` is this receipt, whose `resultRef` is the successor transfer (the database checks
+      // that it is the same Founder's proposal and created a successor in this Guild). The expiry instant itself is
+      // `expiresAt`; `decidedAt` is when it was recorded.
       const lapsed = await query<{ id: string }>(
         tx,
         `UPDATE "GuildOwnershipTransfer" SET "state"='EXPIRED',"decidedAt"=clock_timestamp(),"decidedByAccountId"=$2,"decideReceiptId"=$3::uuid
@@ -1143,7 +1152,9 @@ export async function respondOwnershipTransfer(
            FROM d WHERE "id"=$1::uuid AND "state"='PROPOSED' RETURNING "state"`,
           [input.transferId, state, actor.accountId, receiptId],
         );
-        if (rows.length !== 1) fail('STORAGE_CONTRACT');
+        // The transfer row is locked and was PROPOSED a moment ago; finding it decided anyway means something else
+        // moved it inside this transaction, which is the same answer as a transfer that was no longer pending.
+        if (rows.length !== 1) fail('REVISION_CONFLICT');
         return rows[0].state;
       };
       const apply = async () => {

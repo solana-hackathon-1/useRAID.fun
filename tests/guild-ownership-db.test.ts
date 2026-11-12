@@ -596,6 +596,93 @@ integration('T009 Guild ownership transfer', () => {
     expect(revoked.grant.revokedAt).not.toBeNull();
   });
 
+  it('#294-11: a lapse recorded by the next proposal is backed by that proposal; a direct writer cannot attribute it to anything else', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const first = (await propose(founder, g.id, next.accountId, {}, 'p-1')).transfer.id;
+    await db.$executeRawUnsafe(
+      `ALTER TABLE "GuildOwnershipTransfer" DISABLE TRIGGER guild_transfer_guard_v1`,
+    );
+    try {
+      await db.$executeRawUnsafe(
+        `UPDATE "GuildOwnershipTransfer" SET "proposedAt"=clock_timestamp()-interval '2 days',"expiresAt"=clock_timestamp()-interval '1 day' WHERE "id"=$1::uuid`,
+        first,
+      );
+    } finally {
+      await db.$executeRawUnsafe(
+        `ALTER TABLE "GuildOwnershipTransfer" ENABLE TRIGGER guild_transfer_guard_v1`,
+      );
+    }
+    // A direct writer records the lapse against the lapsed proposal's own proposing receipt: no successor exists.
+    await expect(
+      db.$executeRawUnsafe(
+        `UPDATE "GuildOwnershipTransfer" SET "state"='EXPIRED',"decidedAt"=clock_timestamp(),"decidedByAccountId"="fromAccountId","decideReceiptId"="proposeReceiptId" WHERE "id"=$1::uuid`,
+        first,
+      ),
+    ).rejects.toThrow('A Guild ownership transfer decision needs the deciding account');
+    // The proposal that legitimately records it creates the successor, and the lapse points at that receipt.
+    const second = (await propose(founder, g.id, next.accountId, {}, 'p-2')).transfer.id;
+    const [row] = await db.$queryRawUnsafe<
+      { state: string; by: string; kind: string; successor: string }[]
+    >(
+      `SELECT o."state",o."decidedByAccountId" AS by,c."commandKind" AS kind,c."resultRef" AS successor
+       FROM "GuildOwnershipTransfer" o JOIN "CommandReceipt" c ON c."id"=o."decideReceiptId" WHERE o."id"=$1::uuid`,
+      first,
+    );
+    expect(row).toEqual({
+      state: 'EXPIRED',
+      by: founder.accountId,
+      kind: 'ProposeOwnershipTransfer',
+      successor: second,
+    });
+  });
+
+  it('#294-11: an accept whose transfer is decided meanwhile is refused with REVISION_CONFLICT, not an unspecific storage error', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const id = (await propose(founder, g.id, next.accountId, {}, 'p-1')).transfer.id;
+    // A misbehaving host hook withdraws the transfer through the same transaction, so the accept update finds no
+    // pending row.
+    const meddling = {
+      allowNewWrites: true,
+      authorizeOwnershipTransfer: async (tx: {
+        query: (sql: string, params: unknown[]) => Promise<unknown>;
+      }) => {
+        await tx.query(
+          `UPDATE "GuildOwnershipTransfer" SET "state"='WITHDRAWN',"decidedAt"=clock_timestamp(),"decidedByAccountId"="fromAccountId","decideReceiptId"="proposeReceiptId" WHERE "id"=$1::uuid`,
+          [id],
+        );
+        return true;
+      },
+    };
+    await expect(
+      run((tx) =>
+        respondOwnershipTransfer(
+          tx,
+          cmd(next, { guildId: g.id, transferId: id, decision: 'ACCEPT' }, 'a-1'),
+          meddling as never,
+        ),
+      ),
+    ).rejects.toMatchObject({ code: 'REVISION_CONFLICT' });
+    expect(await founderOf(g.id)).toBe(founder.accountId);
+  });
+
+  it('#294-11: the decision CHECK states the decided-state clause once and still refuses a decision without its record', async () => {
+    const [{ def }] = await db.$queryRawUnsafe<{ def: string }[]>(
+      `SELECT pg_get_constraintdef(oid) AS def FROM pg_constraint WHERE conname='GuildOwnershipTransfer_decision_check'`,
+    );
+    expect(def.match(/"decideReceiptId" IS NOT NULL/g)).toHaveLength(1);
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+    await expect(
+      db.$executeRawUnsafe(
+        `UPDATE "GuildOwnershipTransfer" SET "state"='EXPIRED',"decidedAt"="expiresAt"+interval '1 second',"decidedByAccountId"="fromAccountId" WHERE "id"=$1::uuid`,
+        id,
+      ),
+    ).rejects.toThrow('GuildOwnershipTransfer_decision_check');
+  });
+
   it('records a lapse for DECLINE and WITHDRAW too, with EXECUTED status and state EXPIRED', async () => {
     const { founder, guild: g } = await guild();
     const next = await person();

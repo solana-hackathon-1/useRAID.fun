@@ -460,6 +460,61 @@ integration('T009 persisted Guild storage', () => {
     }
   });
 
+  it('#290-7: activation holds the draft owner row against a concurrent suspension, so a suspended owner never slips through (why it is FOR SHARE, not FOR KEY SHARE)', async () => {
+    const founder = await person();
+    const operator = await person();
+    operators.add(operator.accountId);
+    const draft = await draftFor(founder, 'owner-suspension');
+    const other = new PrismaClient();
+    let calls = 0;
+    let suspension: string | null = null;
+    // The second approval runs after the owner and draft rows are locked: a suspension attempted from another
+    // connection at that instant must wait for the activation, because the suspended flag was read under that lock.
+    const probing = {
+      allowNewWrites: true,
+      authorizeActivation: async (_tx: unknown, who: { accountId: string }) => {
+        if (++calls === 2) {
+          suspension = await other
+            .$transaction(async (tx) => {
+              await tx.$executeRawUnsafe(`SET LOCAL lock_timeout='400ms'`);
+              await tx.$executeRawUnsafe(
+                'UPDATE "User" SET "suspended"=true WHERE "id"=$1',
+                founder.accountId,
+              );
+              return 'NOT_BLOCKED';
+            })
+            .catch((error: unknown) =>
+              /lock timeout|55P03/i.test(String(error)) ? 'BLOCKED' : String(error),
+            );
+        }
+        return operators.has(who.accountId);
+      },
+    };
+    try {
+      const activated = await run((tx) =>
+        activateGuild(
+          tx,
+          cmd(operator, {
+            guildDraftId: draft.id,
+            expectedDraftRevision: draft.revision,
+            activationRef: 'owner-suspension',
+          }),
+          probing,
+        ),
+      );
+      expect(activated.status).toBe('EXECUTED');
+      expect(calls).toBeGreaterThanOrEqual(2);
+      expect(suspension).toBe('BLOCKED');
+      // Once the activation has committed, the suspension is free to proceed.
+      await other.$executeRawUnsafe(
+        'UPDATE "User" SET "suspended"=true WHERE "id"=$1',
+        founder.accountId,
+      );
+    } finally {
+      await other.$disconnect();
+    }
+  });
+
   it('replays an edit only to an actor whose current grant still covers its fields, and returns the stored result', async () => {
     const { founder, guild: g } = await guild();
     const delegate = await person();
