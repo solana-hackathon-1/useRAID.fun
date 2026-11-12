@@ -949,6 +949,11 @@ aside,
   text-transform: uppercase;
   text-align: center;
 }
+.env-label-network {
+  padding: 0 8px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+}
 .env-label-detail {
   font-weight: 500;
 }

@@ -13,9 +13,12 @@ export async function fetchEnvironmentLabel(
     if (!response.ok) return null;
     const body: unknown = await response.json();
     if (typeof body !== 'object' || body === null) return null;
-    const { production, declared, label } = body as Record<string, unknown>;
+    const { production, declared, label, network } = body as Record<string, unknown>;
     if (production !== false || typeof declared !== 'boolean' || typeof label !== 'string')
       return null;
+    // An unknown network value is dropped, not guessed: the label still shows, without a network.
+    if (network === 'devnet' || network === 'mainnet' || network === 'unconfigured')
+      return { label, declared, network };
     return { label, declared };
   } catch {
     return null;

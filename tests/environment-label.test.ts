@@ -5,7 +5,7 @@ vi.mock('next/navigation', () => ({
   usePathname: () => '/',
   useRouter: () => ({ refresh() {}, push() {} }),
 }));
-import { deploymentEnvironment } from '../src/lib/deployment-environment';
+import { deploymentEnvironment, deploymentNetwork } from '../src/lib/deployment-environment';
 import { Shell } from '../src/components/shell';
 import { EnvironmentLabel } from '../src/components/environment-label';
 import { fetchEnvironmentLabel } from '../src/lib/environment-label-client';
@@ -104,7 +104,14 @@ describe('GET /api/environment', () => {
     vi.stubEnv('STUDIO_SANDBOX', '');
     const response = await environmentRoute();
     expect(response.headers.get('cache-control')).toMatch(/no-store/);
-    expect(await response.json()).toEqual({ production: false, declared: true, label: 'Staging' });
+    vi.stubEnv('USDC_NETWORK', 'devnet');
+    const withNetwork = await environmentRoute();
+    expect(await withNetwork.json()).toEqual({
+      production: false,
+      declared: true,
+      label: 'Staging',
+      network: 'devnet',
+    });
     vi.unstubAllEnvs();
   });
   it('reports production as production, and fails safe when undeclared', async () => {
@@ -147,6 +154,94 @@ describe('error page environment label (global-error replaces the layout, so it 
     expect(page).toContain('EnvironmentLabel');
     expect(page).toContain('fetchEnvironmentLabel');
     expect(page).not.toContain('env-label');
+  });
+});
+
+describe('network indicator (blueprint §30.1: persistent development-network indicator)', () => {
+  it('reads only the validated USDC_NETWORK value, exactly devnet or mainnet', () => {
+    expect(deploymentNetwork({ USDC_NETWORK: 'devnet' })).toBe('devnet');
+    expect(deploymentNetwork({ USDC_NETWORK: 'mainnet' })).toBe('mainnet');
+  });
+  it.each([[undefined], [''], ['Devnet'], [' mainnet'], ['testnet'], ['mainnet-beta']])(
+    'never guesses a network from %j: it is shown as not configured',
+    (value) => {
+      expect(deploymentNetwork({ USDC_NETWORK: value })).toBe('unconfigured');
+    },
+  );
+  it('ignores the RPC URL and every other setting', () => {
+    expect(deploymentNetwork({ SOLANA_RPC_URL: 'https://api.devnet.solana.com' })).toBe(
+      'unconfigured',
+    );
+  });
+  it('is part of the deployment environment for every non-production label', () => {
+    expect(
+      deploymentEnvironment({ RAID_ENVIRONMENT: 'staging', USDC_NETWORK: 'devnet' }),
+    ).toMatchObject({
+      network: 'devnet',
+    });
+    expect(
+      deploymentEnvironment({
+        RAID_ENVIRONMENT: 'pilot',
+        DEMO_MODE: 'true',
+        USDC_NETWORK: 'mainnet',
+      }),
+    ).toMatchObject({ network: 'mainnet' });
+  });
+  const html = (environment: { label: string; declared: boolean; network?: string }) =>
+    renderToStaticMarkup(
+      createElement(Shell, {
+        demo: false,
+        account: null,
+        environment: environment as never,
+        children: null,
+      }),
+    );
+  it('shows the network inside the same persistent label, wherever the label shows', () => {
+    const out = html({ label: 'Staging', declared: true, network: 'devnet' });
+    expect(out).toContain('<span class="env-label-network">Devnet</span>');
+    expect(out.indexOf('env-label-network')).toBeGreaterThan(out.indexOf('env-label-name'));
+    expect(out.indexOf('env-label-network')).toBeLessThan(out.indexOf('header-inner'));
+    expect(html({ label: 'Pilot', declared: true, network: 'mainnet' })).toContain('>Mainnet<');
+    expect(html({ label: 'Alpha', declared: true, network: 'unconfigured' })).toContain(
+      '>Network not configured<',
+    );
+  });
+  it('shows an undeclared environment with a mainnet setting as mainnet, not production', () => {
+    const out = html({ label: 'Environment not declared', declared: false, network: 'mainnet' });
+    expect(out).toContain('Mainnet');
+    expect(out).toMatch(/treat as not production/i);
+  });
+  it('adds no control: still not dismissible', () => {
+    const out = renderToStaticMarkup(
+      createElement(EnvironmentLabel, {
+        environment: { label: 'Staging', declared: true, network: 'devnet' },
+      }),
+    );
+    expect(out).not.toMatch(/<button|<a[ >]|aria-hidden|hidden|dismiss|close/i);
+  });
+  it('shows nothing in production, as for the label itself (§30.1: nonproduction interfaces)', () => {
+    expect(html(null as never)).not.toContain('env-label-network');
+    expect(
+      deploymentEnvironment({ RAID_ENVIRONMENT: 'production', USDC_NETWORK: 'mainnet' }).production,
+    ).toBe(true);
+  });
+  it('the error page reply carries the network only when it is one of the three known values', async () => {
+    const reply = (body: unknown) =>
+      (async () => ({ ok: true, json: async () => body })) as unknown as typeof fetch;
+    const base = { production: false, declared: true, label: 'Pilot' };
+    expect(await fetchEnvironmentLabel(reply({ ...base, network: 'devnet' }))).toEqual({
+      label: 'Pilot',
+      declared: true,
+      network: 'devnet',
+    });
+    expect(await fetchEnvironmentLabel(reply({ ...base, network: 'unconfigured' }))).toMatchObject({
+      network: 'unconfigured',
+    });
+    expect(await fetchEnvironmentLabel(reply({ ...base, network: 'testnet' }))).toEqual({
+      label: 'Pilot',
+      declared: true,
+    });
+    expect(await fetchEnvironmentLabel(reply(base))).toEqual({ label: 'Pilot', declared: true });
   });
 });
 
