@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { Plus, ArrowUpRight, Shield, Menu, X, Swords } from 'lucide-react';
 import { BrandMark } from './brand';
+import { EnvironmentLabel } from './environment-label';
 import { StudioAccountMenu, type StudioAccount } from './studio-account-menu';
 
 const navLinks = [
@@ -57,14 +58,7 @@ export function Shell({
           }
         }}
       >
-        {environment && (
-          <div className="env-label">
-            <span className="env-label-name">{environment.label}</span>
-            <span className="env-label-detail">
-              {environment.declared ? 'Not production' : 'Treat as not production'}
-            </span>
-          </div>
-        )}
+        {environment && <EnvironmentLabel environment={environment} />}
         <div className="header-inner">
           <Link
             href="/"
