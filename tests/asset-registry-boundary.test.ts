@@ -14,6 +14,7 @@ describe('T029 public module boundary and reuse contract (R15, R16, AC74)', () =
       'index.ts',
       'production.ts',
       'registry.ts',
+      'usdc.ts',
     ]);
     for (const name of names) {
       const source = await readFile(join('src/asset-registry', name), 'utf8');
@@ -43,10 +44,11 @@ describe('T029 public module boundary and reuse contract (R15, R16, AC74)', () =
     expect(combined).not.toMatch(/z\.strictObject|z\.object/);
   });
 
-  it('ships no supported production asset and no production-looking constants', async () => {
+  it('ships only the canonical USDC allow list entry and no other production-looking constants', async () => {
     const production = await readFile('src/asset-registry/production.ts', 'utf8');
     expect(production).toContain('PRODUCTION_ASSET_ALLOWLIST');
-    expect(production).toMatch(/PRODUCTION_ASSET_ALLOWLIST[^=]*=\s*Object\.freeze\(\[\]\)/);
+    expect(production).toMatch(/PRODUCTION_ASSET_ALLOWLIST[^=]*=\s*Object\.freeze\(\[/);
+    expect(production.match(/'[1-9A-HJ-NP-Za-km-z]{32,44}'/g)).toBeNull();
     const registry = await readFile('src/asset-registry/registry.ts', 'utf8');
     // Only the two Solana token program IDs are named; no mint, genesis hash or ticker allow list.
     expect(registry.match(/'[1-9A-HJ-NP-Za-km-z]{32,44}'/g)).toEqual([
@@ -97,7 +99,7 @@ describe('T029 public module boundary and reuse contract (R15, R16, AC74)', () =
         completeRewardFunded: true,
         excessPrecisionRefused: true,
         exactAmounts: true,
-        emptyProductionAllowlist: true,
+        onlyCanonicalUsdcAllowlisted: true,
         productionBlocked: true,
         alternateSourceEquivalent: true,
         sanitizedFailure: true,

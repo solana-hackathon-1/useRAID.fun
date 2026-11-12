@@ -23,6 +23,7 @@ import { reconcileUsdc, reconciliationJson } from './usdc-reconcile';
 import { runNotificationDispatch } from './notifications-host';
 import { runWorkClosureWorker } from './work-closure-host';
 import { recordStepOutcome } from './worker-health';
+import { operatorErrorFields } from './operator-log';
 import {
   correlationFields,
   jobCorrelationId,
@@ -60,7 +61,7 @@ async function runStep(name: string, fn: () => Promise<unknown>) {
     console.error(
       JSON.stringify({
         step: name,
-        error: error instanceof Error ? error.message : String(error),
+        ...operatorErrorFields(error),
         ...correlationFields(),
       }),
     );
@@ -78,11 +79,14 @@ export async function assertSchemaCurrent(
     .sort()
     .at(-1),
 ) {
-  if (!latest) throw new Error('No migrations found.');
+  if (!latest) throw Object.assign(new Error('No migrations found.'), { code: 'NO_MIGRATIONS' });
   const applied = await db.$queryRaw<
     unknown[]
   >`SELECT 1 FROM "_prisma_migrations" WHERE migration_name = ${latest} AND finished_at IS NOT NULL`;
-  if (!applied.length) throw new Error(`Database schema is behind migration ${latest}.`);
+  if (!applied.length)
+    throw Object.assign(new Error(`Database schema is behind migration ${latest}.`), {
+      code: 'SCHEMA_BEHIND',
+    });
 }
 let reconciledHour = 0;
 /** One bounded schedule pass; every step and health log line in it shares one correlation id. */
@@ -432,14 +436,14 @@ async function resolveDeadJob(
     await clearCollectionError(p.raidId, client);
 }
 /** The operator alert for a dead-lettered job: ids and kind only, never payloads, keys, leases or error text. */
-function alertDeadLetter(job: Pick<Job, 'id' | 'kind' | 'attempts'>, cause: string) {
+function alertDeadLetter(job: Pick<Job, 'id' | 'kind' | 'attempts'>, trigger: string) {
   console.error(
     JSON.stringify({
       alert: 'job-dead-letter',
       job: job.id,
       kind: job.kind,
       attempts: job.attempts,
-      cause,
+      cause: trigger, // a fixed word, never error text
       ...correlationFields(),
     }),
   );
@@ -458,7 +462,7 @@ export async function sweepExhaustedJobs() {
       JSON.stringify({
         alert: 'job-dead-letter-failed',
         job: id,
-        errorKind: error instanceof Error ? error.name : 'Unknown',
+        ...operatorErrorFields(error),
         ...correlationFields(),
       }),
     );
@@ -533,7 +537,7 @@ async function execute(job: Job) {
         JSON.stringify({
           job: job.id,
           kind: job.kind,
-          error: error.message,
+          ...operatorErrorFields(error),
           ...correlationFields(),
         }),
       );
@@ -562,9 +566,10 @@ async function execute(job: Job) {
         JSON.stringify({
           job: job.id,
           kind: job.kind,
-          error: message,
+          ...operatorErrorFields(error),
           bookkeeping: 'failed',
-          bookkeepingError: bookkeeping instanceof Error ? bookkeeping.message : 'unavailable',
+          bookkeepingCode: operatorErrorFields(bookkeeping).code,
+          bookkeepingClass: operatorErrorFields(bookkeeping).errorClass,
           ...correlationFields(),
         }),
       );
@@ -574,7 +579,9 @@ async function execute(job: Job) {
         JSON.stringify({
           job: job.id,
           kind: job.kind,
-          error: 'Job lease was lost; failure not recorded.',
+          code: 'JOB_LEASE_LOST',
+          errorClass: operatorErrorFields(error).errorClass,
+          note: 'failure not recorded',
           ...correlationFields(),
         }),
       );
@@ -598,7 +605,12 @@ async function execute(job: Job) {
       await resolveDeadJob(job);
     }
     console.error(
-      JSON.stringify({ job: job.id, kind: job.kind, error: message, ...correlationFields() }),
+      JSON.stringify({
+        job: job.id,
+        kind: job.kind,
+        ...operatorErrorFields(error),
+        ...correlationFields(),
+      }),
     );
   }
 }

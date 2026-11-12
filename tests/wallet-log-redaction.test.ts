@@ -191,11 +191,13 @@ describe('wallet failure paths never log signatures, messages, nonces, session t
     expect(logs.join('\n')).toContain('wallet challenge store failed STORAGE_UNAVAILABLE');
     expectClean(await res.text());
   });
-  it('positive control: the console spies capture an unknown error logged by failure()', async () => {
+  it('positive control: the console spies capture the code and class failure() logs for an unknown error, not its message', async () => {
     await issueChallenge();
     mocks.user.mockRejectedValue(new Error('control-line-sentinel'));
     const res = await verify(sign(issued.message));
     expect(res.status).toBe(503);
-    expect(logs.join('\n')).toContain('control-line-sentinel');
+    expect(logs.join('\n')).toContain('"event":"request-failed"');
+    expect(logs.join('\n')).toContain('"code":"UNCLASSIFIED"');
+    expect(logs.join('\n')).not.toContain('control-line-sentinel');
   });
 });
