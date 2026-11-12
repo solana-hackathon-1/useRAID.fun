@@ -977,4 +977,173 @@ integration('T009 Guild role grants and revocation', () => {
     );
     expect(n).toBe(GUILD_GRANT_LIMIT);
   });
+
+  const outcome = (work: Promise<unknown>) =>
+    work.then(
+      () => 'OK',
+      (e: { code?: string }) => e.code ?? 'ERROR',
+    );
+  /** A delegating profile grant for `lead` (field `name`), returning its id. */
+  const delegating = async (founder: GuildActor, guildId: string, lead: GuildActor) =>
+    (
+      await giveRole(founder, guildId, {
+        granteeAccountId: lead.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+        canDelegate: true,
+      })
+    ).grant.id;
+  const revokedEvents = async (guildId: string) =>
+    (
+      await db.$queryRawUnsafe<{ id: string }[]>(
+        `SELECT "payload"->>'guildRoleGrantId' AS id FROM "AuditEvent" WHERE "guildId"=$1 AND "eventType"='guild.role_revoked.v1'`,
+        guildId,
+      )
+    ).map((row) => row.id);
+  const transferFounder = async (guildId: string, from: GuildActor, to: GuildActor) => {
+    const ownerHost = { allowNewWrites: true, authorizeOwnershipTransfer: async () => true };
+    const proposed = await run((tx) =>
+      proposeOwnershipTransfer(
+        tx,
+        cmd(from, { guildId, toAccountId: to.accountId, expiresAt: future(86400000) }),
+        ownerHost,
+      ),
+    );
+    await run((tx) =>
+      respondOwnershipTransfer(
+        tx,
+        cmd(to, { guildId, transferId: proposed.transfer.id, decision: 'ACCEPT' }),
+        ownerHost,
+      ),
+    );
+  };
+
+  it('#292-6: a sub-grant racing the revocation of its issuer’s delegating grant is never left live', async () => {
+    for (const round of [1, 2, 3, 4]) {
+      const { founder, guild: g } = await guild('race-sub-' + round);
+      const lead = await person();
+      const helpers = [await person(), await person(), await person()];
+      const leadGrant = await delegating(founder, g.id, lead);
+      const settled = await Promise.all([
+        outcome(takeRole(founder, g.id, leadGrant, 'revoke-' + round)),
+        ...helpers.map((who, i) =>
+          outcome(
+            giveRole(
+              lead,
+              g.id,
+              { granteeAccountId: who.accountId, kind: 'PROFILE', fields: ['name'] },
+              `sub-${round}-${i}`,
+            ),
+          ),
+        ),
+      ]);
+      expect(settled[0]).toBe('OK');
+      // Each sub-grant either landed before the revocation (and was cascaded) or was refused after it.
+      const subs = settled.slice(1);
+      for (const result of subs) expect(['OK', 'FORBIDDEN']).toContain(result);
+      const rows = await db.$queryRawUnsafe<{ id: string; revoked: boolean }[]>(
+        `SELECT "id"::text,"revokedAt" IS NOT NULL AS revoked FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "grantedByAccountId"=$2`,
+        g.id,
+        lead.accountId,
+      );
+      expect(rows).toHaveLength(subs.filter((s) => s === 'OK').length);
+      expect(rows.every((row) => row.revoked)).toBe(true);
+      // One revocation event for the delegating grant plus exactly one per cascaded sub-grant.
+      const events = await revokedEvents(g.id);
+      expect([...events].sort()).toEqual([leadGrant, ...rows.map((row) => row.id)].sort());
+      for (const who of helpers) expect(await can(who, g.id, 'PROFILE')).toBe(false);
+    }
+  });
+
+  it('#292-6: a cascade racing a second revocation of the same sub-grant records one revocation', async () => {
+    for (const round of [1, 2, 3, 4]) {
+      const { founder, guild: g } = await guild('race-cascade-' + round);
+      const lead = await person();
+      const helper = await person();
+      const leadGrant = await delegating(founder, g.id, lead);
+      const sub = (
+        await giveRole(lead, g.id, {
+          granteeAccountId: helper.accountId,
+          kind: 'PROFILE',
+          fields: ['name'],
+        })
+      ).grant.id;
+      const [cascading, surrendering] = await Promise.all([
+        outcome(takeRole(founder, g.id, leadGrant, 'cascade-' + round)),
+        outcome(takeRole(helper, g.id, sub, 'surrender-' + round)),
+      ]);
+      expect(cascading).toBe('OK');
+      // The surrender either ran first, or found the cascade had already revoked it.
+      expect(['OK', 'GRANT_REVOKED']).toContain(surrendering);
+      const events = await revokedEvents(g.id);
+      expect(events.filter((id) => id === sub)).toHaveLength(1);
+      expect(events.filter((id) => id === leadGrant)).toHaveLength(1);
+      expect(await can(helper, g.id, 'PROFILE')).toBe(false);
+    }
+  });
+
+  it('#292-6: two concurrent revocations of one grant record exactly one', async () => {
+    for (const round of [1, 2, 3, 4]) {
+      const { founder, guild: g } = await guild('race-revoke-' + round);
+      const holder = await person();
+      const id = (
+        await giveRole(founder, g.id, { granteeAccountId: holder.accountId, kind: 'WORK' })
+      ).grant.id;
+      const settled = await Promise.all([
+        outcome(takeRole(founder, g.id, id, 'by-founder-' + round)),
+        outcome(takeRole(holder, g.id, id, 'by-holder-' + round)),
+      ]);
+      expect([...settled].sort()).toEqual(['GRANT_REVOKED', 'OK']);
+      expect(await revokedEvents(g.id)).toEqual([id]);
+    }
+  });
+
+  it('#292-6: a revoke replay by an account that is no longer involved is refused', async () => {
+    const { founder, guild: g } = await guild('replay-revoke');
+    const lead = await person();
+    const helper = await person();
+    const successor = await person();
+    await delegating(founder, g.id, lead);
+    const sub = (
+      await giveRole(lead, g.id, {
+        granteeAccountId: helper.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+      })
+    ).grant.id;
+    // The Founder revokes a grant someone else issued, so Founder status is the only thing involving them.
+    expect((await takeRole(founder, g.id, sub, 'founder-revoke')).status).toBe('EXECUTED');
+    expect((await takeRole(founder, g.id, sub, 'founder-revoke')).status).toBe('REPLAYED');
+    await transferFounder(g.id, founder, successor);
+    await expect(takeRole(founder, g.id, sub, 'founder-revoke')).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
+    // An account that is still involved is told it is already revoked; the revocation was recorded once.
+    await expect(takeRole(lead, g.id, sub, 'lead-again')).rejects.toMatchObject({
+      code: 'GRANT_REVOKED',
+    });
+    expect((await revokedEvents(g.id)).filter((id) => id === sub)).toHaveLength(1);
+  });
+
+  it('#292-6: a grant replay after the issuer lost authority is refused and returns nothing', async () => {
+    const { founder, guild: g } = await guild('replay-grant');
+    const lead = await person();
+    const helper = await person();
+    const leadGrant = await delegating(founder, g.id, lead);
+    const body = { granteeAccountId: helper.accountId, kind: 'PROFILE', fields: ['name'] };
+    const made = await giveRole(lead, g.id, body, 'sub-1');
+    expect(made.status).toBe('EXECUTED');
+    expect((await giveRole(lead, g.id, body, 'sub-1')).status).toBe('REPLAYED');
+    await takeRole(founder, g.id, leadGrant);
+    await expect(giveRole(lead, g.id, body, 'sub-1')).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    // The same holds for a Founder who handed the Guild over.
+    const other = await person();
+    const successor = await person();
+    const founderBody = { granteeAccountId: other.accountId, kind: 'WORK' };
+    expect((await giveRole(founder, g.id, founderBody, 'founder-1')).status).toBe('EXECUTED');
+    await transferFounder(g.id, founder, successor);
+    await expect(giveRole(founder, g.id, founderBody, 'founder-1')).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
+  });
 });

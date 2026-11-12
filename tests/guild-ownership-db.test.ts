@@ -356,7 +356,7 @@ integration('T009 Guild ownership transfer', () => {
     expect((await respond(next, g.id, id, 'ACCEPT')).transfer.applied).toBe(true);
   });
 
-  it('refuses a recipient who was suspended and a transfer whose Founder changed meanwhile', async () => {
+  it('refuses acceptance by a recipient who was suspended after the proposal', async () => {
     const { founder, guild: g } = await guild();
     const next = await person();
     const id = (await propose(founder, g.id, next.accountId)).transfer.id;
@@ -370,33 +370,51 @@ integration('T009 Guild ownership transfer', () => {
     const { founder, guild: g } = await guild();
     const next = await person();
     const id = (await propose(founder, g.id, next.accountId)).transfer.id;
-    const attempt = (sql: string) =>
-      db.$executeRawUnsafe(sql).then(
-        () => 'accepted',
-        (e: Error) => (/Guild/.test(e.message) ? 'guarded' : 'other:' + e.message),
-      );
-    expect(
-      await attempt(
-        `UPDATE "Guild" SET "founderAccountId"='${next.accountId}' WHERE "id"='${g.id}'`,
-      ),
-    ).toBe('guarded');
-    expect(
-      await attempt(
-        `UPDATE "GuildOwnershipTransfer" SET "toAccountId"='${founder.accountId}' WHERE "id"='${id}'`,
-      ),
-    ).toBe('guarded');
-    expect(await attempt(`DELETE FROM "GuildOwnershipTransfer" WHERE "id"='${id}'`)).toBe(
-      'guarded',
+    // Each direct write is refused by its own guard, named by the guard's message; nothing else may be the reason.
+    const refused = (sql: string, message: string) =>
+      expect(db.$executeRawUnsafe(sql)).rejects.toThrow(message);
+    await refused(
+      `UPDATE "Guild" SET "founderAccountId"='${next.accountId}' WHERE "id"='${g.id}'`,
+      'The Guild Founder changes only through an accepted ownership transfer',
+    );
+    await refused(
+      `UPDATE "GuildOwnershipTransfer" SET "toAccountId"='${founder.accountId}' WHERE "id"='${id}'`,
+      'Guild ownership transfer parties and window are immutable',
+    );
+    await refused(
+      `DELETE FROM "GuildOwnershipTransfer" WHERE "id"='${id}'`,
+      'Guild ownership transfers require reviewed retention or recovery',
     );
     // An accepted transfer cannot be left unapplied at commit.
-    expect(
-      await attempt(
-        `UPDATE "GuildOwnershipTransfer" SET "state"='ACCEPTED',"decidedAt"=clock_timestamp(),"decidedByAccountId"="toAccountId","decideReceiptId"="proposeReceiptId" WHERE "id"='${id}'`,
-      ),
-    ).toBe('guarded');
+    await refused(
+      `UPDATE "GuildOwnershipTransfer" SET "state"='ACCEPTED',"decidedAt"=clock_timestamp(),"decidedByAccountId"="toAccountId","decideReceiptId"="proposeReceiptId" WHERE "id"='${id}'`,
+      'An accepted Guild ownership transfer must be applied to the Guild',
+    );
   });
 
-  it('keeps existing grants and lets the new Founder revoke them', async () => {
+  it('lets only the recipient have accepted or declined and only the proposer have withdrawn, for a direct writer too', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const stranger = await person();
+    const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+    const decide = (state: string, by: string) =>
+      db.$executeRawUnsafe(
+        `UPDATE "GuildOwnershipTransfer" SET "state"='${state}',"decidedAt"=clock_timestamp(),"decidedByAccountId"='${by}',"decideReceiptId"="proposeReceiptId" WHERE "id"='${id}'`,
+      );
+    const decider = 'GuildOwnershipTransfer_decider_check';
+    // The recipient cannot record a withdrawal, nor can a stranger; the proposer cannot record a decline.
+    await expect(decide('WITHDRAWN', next.accountId)).rejects.toThrow(decider);
+    await expect(decide('WITHDRAWN', stranger.accountId)).rejects.toThrow(decider);
+    await expect(decide('DECLINED', founder.accountId)).rejects.toThrow(decider);
+    await expect(decide('DECLINED', stranger.accountId)).rejects.toThrow(decider);
+    const [{ state }] = await db.$queryRawUnsafe<{ state: string }[]>(
+      `SELECT "state" FROM "GuildOwnershipTransfer" WHERE "id"=$1::uuid`,
+      id,
+    );
+    expect(state).toBe('PROPOSED');
+  });
+
+  it('keeps a delegate’s existing grant, and its edit scope, across the transfer', async () => {
     const { founder, guild: g } = await guild();
     const next = await person();
     const editor = await person();
@@ -436,14 +454,16 @@ integration('T009 Guild ownership transfer', () => {
       )[0].f;
     // The Founder "accepting" for the recipient, or any non-recipient deciding an acceptance.
     await expect(forge(founder.accountId, '"proposeReceiptId"')).rejects.toThrow(
-      /GuildOwnershipTransfer/,
+      'GuildOwnershipTransfer_decider_check',
     );
     // The recipient named, but the decision is not backed by a recipient's own response receipt.
-    await expect(forge(next.accountId, '"proposeReceiptId"')).rejects.toThrow(/Guild/);
+    await expect(forge(next.accountId, '"proposeReceiptId"')).rejects.toThrow(
+      'A Guild ownership transfer decision needs the deciding account',
+    );
     // An acceptance stamped after the proposal's own window closed.
     await expect(
       forge(next.accountId, '"proposeReceiptId"', `"expiresAt"+interval '1 minute'`),
-    ).rejects.toThrow(/GuildOwnershipTransfer/);
+    ).rejects.toThrow('GuildOwnershipTransfer_timing_check');
     expect(await founderNow()).toBe(founder.accountId);
   });
   it('accepts non-canonical (uppercase) ids and commits them in canonical form', async () => {
@@ -707,5 +727,122 @@ integration('T009 Guild ownership transfer', () => {
       code: 'FORBIDDEN',
     });
     expect(await founderOf(g.id)).toBe(lapsed.accountId);
+  });
+
+  describe('an acceptance racing other Guild commands (the Guild row serializes them)', () => {
+    const outcome = (work: Promise<unknown>) =>
+      work.then(
+        () => 'OK',
+        (e: { code?: string }) => e.code ?? 'ERROR',
+      );
+    const rounds = [1, 2, 3, 4];
+    const stateOf = async (id: string) =>
+      (
+        await db.$queryRawUnsafe<{ state: string }[]>(
+          `SELECT "state" FROM "GuildOwnershipTransfer" WHERE "id"=$1::uuid`,
+          id,
+        )
+      )[0].state;
+
+    it('accept vs withdraw: exactly one decision wins and the Founder matches it', async () => {
+      for (const round of rounds) {
+        const { founder, guild: g } = await guild('race-withdraw-' + round);
+        const next = await person();
+        const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+        const [accepted, withdrawn] = await Promise.all([
+          outcome(respond(next, g.id, id, 'ACCEPT', 'acc-' + round)),
+          outcome(respond(founder, g.id, id, 'WITHDRAW', 'wd-' + round)),
+        ]);
+        if (accepted === 'OK') {
+          // The accept won: the former Founder can no longer withdraw.
+          expect(withdrawn).toBe('FORBIDDEN');
+          expect(await stateOf(id)).toBe('ACCEPTED');
+          expect(await founderOf(g.id)).toBe(next.accountId);
+        } else {
+          expect([accepted, withdrawn]).toEqual(['REVISION_CONFLICT', 'OK']);
+          expect(await stateOf(id)).toBe('WITHDRAWN');
+          expect(await founderOf(g.id)).toBe(founder.accountId);
+        }
+      }
+    });
+
+    it('accept vs edit: the edit lands under the old Founder or is refused as the former Founder, never both Founders', async () => {
+      for (const round of rounds) {
+        const { founder, guild: g } = await guild('race-edit-' + round);
+        const next = await person();
+        const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+        const [accepted, edited] = await Promise.all([
+          outcome(respond(next, g.id, id, 'ACCEPT', 'acc-' + round)),
+          outcome(edit(founder, g.id, 1, { name: 'Raced ' + round }, 'edit-' + round)),
+        ]);
+        expect(accepted).toBe('OK');
+        expect(await founderOf(g.id)).toBe(next.accountId);
+        const managed = await run((tx) => readManagedGuild(tx, next, g.id));
+        if (edited === 'OK') expect(managed.guild).toMatchObject({ revision: 2 });
+        else {
+          expect(edited).toBe('FORBIDDEN');
+          expect(managed.guild).toMatchObject({ revision: 1 });
+        }
+        // The new Founder continues from whatever revision the race left.
+        const after = await edit(next, g.id, managed.guild.revision, { name: 'After ' + round });
+        expect(after.guild.name).toBe('After ' + round);
+      }
+    });
+
+    it('accept vs a treasury grant to the recipient: the new Founder never holds treasury authority', async () => {
+      for (const round of rounds) {
+        const { founder, guild: g } = await guild('race-grant-' + round);
+        const next = await person();
+        const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+        const [accepted, granted] = await Promise.all([
+          outcome(respond(next, g.id, id, 'ACCEPT', 'acc-' + round)),
+          outcome(
+            grant(
+              founder,
+              { guildId: g.id, granteeAccountId: next.accountId, kind: 'TREASURY' },
+              'grant-' + round,
+            ),
+          ),
+        ]);
+        const [{ live }] = await db.$queryRawUnsafe<{ live: number }[]>(
+          `SELECT count(*)::int AS live FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2 AND "kind"='TREASURY' AND "revokedAt" IS NULL`,
+          g.id,
+          next.accountId,
+        );
+        if (granted === 'OK') {
+          // The grant won, so the acceptance is refused and the Founder is unchanged.
+          expect(accepted).toBe('FORBIDDEN');
+          expect(live).toBe(1);
+          expect(await founderOf(g.id)).toBe(founder.accountId);
+        } else {
+          // The accept won, so the former Founder cannot issue treasury authority to the new Founder.
+          expect([accepted, granted]).toEqual(['OK', 'FORBIDDEN']);
+          expect(live).toBe(0);
+          expect(await founderOf(g.id)).toBe(next.accountId);
+        }
+      }
+    });
+
+    it('accept vs a second proposal: one transfer is decided and no second proposal is left open', async () => {
+      for (const round of rounds) {
+        const { founder, guild: g } = await guild('race-propose-' + round);
+        const next = await person();
+        const third = await person();
+        const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+        const [accepted, proposed] = await Promise.all([
+          outcome(respond(next, g.id, id, 'ACCEPT', 'acc-' + round)),
+          outcome(propose(founder, g.id, third.accountId, {}, 'again-' + round)),
+        ]);
+        expect(accepted).toBe('OK');
+        // Whichever ran second sees the other's effect: a pending proposal, or a Founder that changed.
+        expect(['TRANSFER_PENDING', 'FORBIDDEN']).toContain(proposed);
+        expect(await founderOf(g.id)).toBe(next.accountId);
+        const rows = await db.$queryRawUnsafe<{ state: string }[]>(
+          `SELECT "state" FROM "GuildOwnershipTransfer" WHERE "guildId"=$1::uuid`,
+          g.id,
+        );
+        expect(rows).toEqual([{ state: 'ACCEPTED' }]);
+      }
+    });
   });
 });
