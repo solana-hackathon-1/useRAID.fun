@@ -77,6 +77,12 @@ async function query<Row>(
     return rows;
   } catch (error) {
     if (error instanceof GuildStorageError || error instanceof CommandReceiptError) throw error;
+    // A deadlock or serialization abort is retryable whole, never an outage. A host port classifies these itself; one
+    // that hands the driver error through (the SQLSTATE directly, or Prisma's raw-query `meta.code`) gets the same
+    // answer here, so two approvers activating each other's drafts (#438-2) never surface STORAGE_UNAVAILABLE.
+    const source = error as { code?: unknown; meta?: { code?: unknown } } | null;
+    const state = source?.code === 'P2010' ? source.meta?.code : source?.code;
+    if (state === '40P01' || state === '40001') throw new CommandReceiptError('RETRY_TRANSACTION');
     return fail('STORAGE_UNAVAILABLE');
   }
 }
@@ -230,8 +236,9 @@ export async function activateGuild(
         // FOR SHARE, not FOR KEY SHARE: a suspension is a non-key UPDATE (FOR NO KEY UPDATE), which conflicts with
         // SHARE but not with KEY SHARE, so KEY SHARE would let a concurrent suspension commit after this read and
         // activate a Guild for a suspended owner (#290-7; pinned by tests/guild-storage-db.test.ts). The cost is that
-        // two approvers who each own a draft the other activates can deadlock; Postgres aborts one and the host's
-        // whole-transaction retry covers it.
+        // two approvers who each own a draft the other activates can deadlock (#438-2); Postgres aborts one, which
+        // surfaces as the retryable RETRY_TRANSACTION, and the host's whole-transaction retry covers it. The share lock
+        // also blocks any other update of the owner's User row (including from a host hook) until commit.
         'SELECT "suspended" FROM "User" WHERE "id"=$1 FOR SHARE',
         [found[0].ownerAccountId],
       );
