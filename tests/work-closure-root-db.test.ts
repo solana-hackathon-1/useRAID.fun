@@ -493,6 +493,9 @@ integration('T024 root composition: worker closure and operator closure route', 
       closeEngagementFromHost(cmd(ops.actor, { ...(await input()), expectedRevision: 99 })),
     ).rejects.toMatchObject({ code: 'REVISION_CONFLICT' });
     vi.stubEnv('WORK_CLOSURE_ENABLED', '');
+    await expect(closeEngagementFromHost(cmd(stranger.actor, await input()))).rejects.toMatchObject(
+      { code: 'FORBIDDEN' },
+    );
     await expect(closeEngagementFromHost(cmd(ops.actor, await input()))).rejects.toMatchObject({
       code: 'WRITES_DISABLED',
     });
