@@ -538,7 +538,8 @@ integration('PostgreSQL integration', () => {
           throw new DOMException('slow', 'TimeoutError');
         }),
       );
-      await expect(lookupPosts(['1', '2', '3'], raidId)).rejects.toMatchObject({ deferred: true });
+      // DEC-2026-11-07-01 c: a timeout counts as an attempt, so it is not deferred.
+      await expect(lookupPosts(['1', '2', '3'], raidId)).rejects.toMatchObject({ deferred: false });
       expect(await usage()).toMatchObject([
         { reservedCents: 2, reason: 'Timed out; reservation kept' },
       ]);
