@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { afterAll, beforeEach, describe, expect, it } from 'vitest';
+import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { canonicalRequestDigest } from '../src/command-receipts';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
@@ -22,6 +22,20 @@ import {
   syntheticAcceptanceHost,
 } from './helpers/work-loop-db';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+// The consent and acceptance paths read the time through the shared `clock` port of engagement-authority, the same
+// import consent-storage uses. Replace that export, not SQL text, so a reformatted query cannot silently disable it.
+const fixedClock = vi.hoisted(() => ({ at: null as Date | null, reads: 0 }));
+vi.mock('../src/work-loop/engagement-authority', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../src/work-loop/engagement-authority')>();
+  return {
+    ...actual,
+    clock: async (tx: Parameters<typeof actual.clock>[0]) => {
+      if (!fixedClock.at) return actual.clock(tx);
+      fixedClock.reads++;
+      return fixedClock.at;
+    },
+  };
+});
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 const db = new PrismaClient();
 const run = <T>(work: Parameters<typeof runCommandTransaction<T>>[1]) =>
@@ -392,26 +406,17 @@ integration('T021 applications and offers', () => {
     });
     expect(await db.$queryRawUnsafe('SELECT 1 FROM "WorkAcceptanceConsent"')).toHaveLength(1);
   });
-  // Deterministic clock at the port; fails loudly if the stubbed statement is never issued.
-  const withClock = async <T>(
-    at: Date,
-    work: (tx: Parameters<Parameters<typeof run>[0]>[0], hits: () => number) => Promise<T>,
-  ) => {
-    let hit = 0;
-    const result = await run((tx) =>
-      work(
-        {
-          ...tx,
-          async query<Row>(sql: string, bindings: readonly (string | null)[]) {
-            if (sql === 'SELECT clock_timestamp() AS now') return (hit++, [{ now: at }]) as Row[];
-            return tx.query<Row>(sql, bindings);
-          },
-        } as typeof tx,
-        () => hit,
-      ),
-    );
-    expect(hit).toBeGreaterThan(0);
-    return result;
+  // Runs `work` with the port clock fixed at `at`; fails loudly if the work never reads the clock.
+  const withClock = async <T>(at: Date, work: () => Promise<T>) => {
+    fixedClock.at = at;
+    fixedClock.reads = 0;
+    try {
+      const result = await work();
+      expect(fixedClock.reads).toBeGreaterThan(0);
+      return result;
+    } finally {
+      fixedClock.at = null;
+    }
   };
   it('refuses consent for an expired offer with the code acceptance uses', async () => {
     const { applicant, founder, slot, apply } = await setup();
@@ -421,18 +426,7 @@ integration('T021 applications and offers', () => {
       cmd(founder.actor, { applicationId: a.application.id, expiresAt: expiry() }),
     );
     const after = new Date(Date.parse(o.offer.expiresAt) + 1000);
-    const consent = (c: Date) =>
-      withClock(c, (tx) =>
-        recordAcceptanceConsent(
-          tx,
-          cmd(applicant.actor, {
-            slotId: slot.slotId,
-            termsVersionId: slot.termsVersionId,
-            termsDigest: digest,
-          }),
-          { allowNewWrites: true },
-        ),
-      );
+    const consent = (c: Date) => withClock(c, () => consentTo(applicant.actor, slot, digest));
     await expect(consent(after)).rejects.toMatchObject({ code: 'OFFER_EXPIRED' });
     expect(await db.$queryRawUnsafe('SELECT 1 FROM "WorkAcceptanceConsent"')).toEqual([]);
     await expect(consent(new Date(Date.parse(o.offer.expiresAt) - 1000))).resolves.toMatchObject({
@@ -457,6 +451,51 @@ integration('T021 applications and offers', () => {
     const slot = await seedWorkSlot(db);
     await expect(
       consentTo(human.actor, slot, await digestOf(slot.termsVersionId)),
+    ).resolves.toMatchObject({ status: 'EXECUTED' });
+  });
+  it('records consent and commits an INSTANT Raid without consulting any offer', async () => {
+    const human = await seedWorkHuman(db);
+    const slot = await seedWorkSlot(db, undefined, { admission: 'INSTANT' });
+    const digest = await digestOf(slot.termsVersionId);
+    const offerReads: string[] = [];
+    const consent = await run((tx) =>
+      recordAcceptanceConsent(
+        {
+          ...tx,
+          async query<Row>(sql: string, bindings: readonly (string | null)[]) {
+            if (sql.includes('"RaidOffer"')) offerReads.push(sql);
+            return tx.query<Row>(sql, bindings);
+          },
+        } as typeof tx,
+        cmd(human.actor, {
+          slotId: slot.slotId,
+          termsVersionId: slot.termsVersionId,
+          termsDigest: digest,
+        }),
+        { allowNewWrites: true },
+      ),
+    );
+    expect(consent.status).toBe('EXECUTED');
+    expect(offerReads).toEqual([]);
+    // Wherever the clock sits within the window, an INSTANT Raid needs no offer; only the deadline gates it.
+    const [{ commitment }] = (await db.$queryRawUnsafe(
+      `SELECT "snapshot"->'deadlines'->>'commitment' AS commitment FROM "TermsVersion" WHERE "id"=$1::uuid`,
+      slot.termsVersionId,
+    )) as { commitment: string }[];
+    await expect(
+      withClock(new Date(Date.parse(commitment) - 1000), () =>
+        consentTo(human.actor, slot, digest),
+      ),
+    ).resolves.toMatchObject({ status: 'EXECUTED' });
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "WorkAcceptanceConsent"')).toHaveLength(1);
+    await expect(
+      run((tx) =>
+        commitEngagement(
+          tx,
+          cmd(human.actor, { slotId: slot.slotId, termsVersionId: slot.termsVersionId }),
+          syntheticAcceptanceHost,
+        ),
+      ),
     ).resolves.toMatchObject({ status: 'EXECUTED' });
   });
   it('reports a blocked publication apart from a passed deadline', async () => {
@@ -502,26 +541,9 @@ integration('T021 applications and offers', () => {
       `SELECT "snapshot"->'deadlines'->>'commitment' AS commitment FROM "TermsVersion" WHERE "id"=$1::uuid`,
       slot.termsVersionId,
     )) as { commitment: string }[];
+    // The commitment deadline has just been reached.
     await expect(
-      run((tx) =>
-        recordAcceptanceConsent(
-          {
-            ...tx,
-            async query<Row>(sql: string, bindings: readonly (string | null)[]) {
-              // Deterministic clock at the port: the commitment deadline has just been reached.
-              if (sql === 'SELECT clock_timestamp() AS now')
-                return [{ now: new Date(commitment) }] as Row[];
-              return tx.query<Row>(sql, bindings);
-            },
-          } as typeof tx,
-          cmd(human.actor, {
-            slotId: slot.slotId,
-            termsVersionId: slot.termsVersionId,
-            termsDigest: digest,
-          }),
-          { allowNewWrites: true },
-        ),
-      ),
+      withClock(new Date(commitment), () => consentTo(human.actor, slot, digest)),
     ).rejects.toMatchObject({ code: 'DEADLINE_PASSED' });
     expect(await db.$queryRawUnsafe('SELECT 1 FROM "WorkAcceptanceConsent"')).toEqual([]);
   });
