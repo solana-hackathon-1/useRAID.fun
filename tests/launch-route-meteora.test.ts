@@ -125,7 +125,10 @@ describe('T026 Meteora DBC launch route adapter (DEC-2026-11-07-04, R15)', () =>
           client: m.client,
           now: () => T0,
           economics: economics({
-            configParameters: { nested: { a: '2', b: '1' }, placeholderA: 'x' },
+            configParameters: {
+              migrationFee: { creatorFeePercentage: '1', feePercentage: '2' },
+              poolCreationFee: 'x',
+            },
           }),
         },
         [DEC],
@@ -153,9 +156,9 @@ describe('T026 Meteora DBC launch route adapter (DEC-2026-11-07-04, R15)', () =>
         economics({ configParameters: { quoteMint: addr(99) } }),
         economics({ graduation: 'DAMM_V1' }),
         economics({ feeClaimer: 'nope' }),
-        economics({ configParameters: { n: Number.NaN } }),
-        economics({ configParameters: { n: 10n } }),
-        economics({ configParameters: { f() {} } }),
+        economics({ configParameters: { poolCreationFee: Number.NaN } }),
+        economics({ configParameters: { poolCreationFee: 10n } }),
+        economics({ configParameters: { poolCreationFee() {} } }),
       ]) {
         const m = mockClient();
         const route = createMeteoraDbcLaunchRouteWithDecisions(

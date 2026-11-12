@@ -54,25 +54,101 @@ const BASE64 = /^[A-Za-z0-9+/]+={0,2}$/;
 const AMOUNT_KEY = /^[A-Za-z][A-Za-z0-9_]{0,63}$/;
 const AMOUNT_VALUE = /^(0|[1-9][0-9]{0,38})$/;
 const MAX_TRANSACTIONS = 8;
-const MAX_CONFIG_DEPTH = 16;
-const MAX_CONFIG_NODES = 2000;
-const QUOTE_KEYS: ReadonlySet<string> = new Set([
-  'quotemint',
-  'quoteasset',
-  'quotetoken',
-  'quotetokenmint',
-  'quotemintaddress',
-  'quotecurrency',
-]);
-const MIGRATION_KEYS: ReadonlySet<string> = new Set([
-  'migration',
-  'migrationoption',
-  'migrationtarget',
-  'migrationprotocol',
-  'migrationdestination',
-  'migrationprogram',
-  'graduation',
-]);
+/** On-chain `PoolConfig.curve` capacity (`MAX_CURVE_POINT_CONFIG`). */
+const MAX_CURVE_POINTS = 20;
+/**
+ * Allow-list of `configParameters` (the Meteora `ConfigParameters` struct). A node is `SCALAR`
+ * (string, finite number, boolean or null), an object listing every key it may hold, or a list of
+ * such objects. Any other key at any depth, and any other shape, is refused: the route never
+ * forwards a field it was not told about, so a custom curve or program cannot hide under an
+ * unlisted name. Names come from Meteora's documentation (program snake_case, SDK camelCase):
+ * <https://docs.meteora.ag/developer-guides/dbc/typescript-sdk/reference.md> and the program accounts
+ * page. The quote mint is not a field: the route pins devnet USDC. Values stay with O02 and O08.
+ * Adding a name needs a reviewed change.
+ */
+const SCALAR = 'scalar';
+interface ObjectShape {
+  readonly [key: string]: Shape;
+}
+interface ListShape {
+  readonly list: ObjectShape;
+  readonly max: number;
+}
+type Shape = typeof SCALAR | ObjectShape | ListShape;
+const scalars = (...keys: string[]): ObjectShape =>
+  Object.freeze(Object.fromEntries(keys.map((key) => [key, SCALAR] as const)));
+const CONFIG_SHAPE: ObjectShape = Object.freeze({
+  poolFees: Object.freeze({
+    baseFee: scalars(
+      'cliffFeeNumerator',
+      'firstFactor',
+      'secondFactor',
+      'thirdFactor',
+      'baseFeeMode',
+    ),
+    dynamicFee: scalars(
+      'binStep',
+      'binStepU128',
+      'filterPeriod',
+      'decayPeriod',
+      'reductionFactor',
+      'variableFeeControl',
+      'maxVolatilityAccumulator',
+    ),
+  }),
+  collectFeeMode: SCALAR,
+  migrationOption: SCALAR,
+  activationType: SCALAR,
+  tokenType: SCALAR,
+  tokenDecimal: SCALAR,
+  partnerLiquidityPercentage: SCALAR,
+  creatorLiquidityPercentage: SCALAR,
+  partnerPermanentLockedLiquidityPercentage: SCALAR,
+  creatorPermanentLockedLiquidityPercentage: SCALAR,
+  migrationQuoteThreshold: SCALAR,
+  sqrtStartPrice: SCALAR,
+  lockedVesting: scalars(
+    'amountPerPeriod',
+    'cliffDurationFromMigrationTime',
+    'frequency',
+    'numberOfPeriod',
+    'cliffUnlockAmount',
+    'totalLockedVestingAmount',
+    'numberOfVestingPeriod',
+    'totalVestingDuration',
+  ),
+  migrationFeeOption: SCALAR,
+  migrationFee: scalars('feePercentage', 'creatorFeePercentage'),
+  tokenSupply: scalars('preMigrationTokenSupply', 'postMigrationTokenSupply'),
+  creatorTradingFeePercentage: SCALAR,
+  tokenAuthorityOption: SCALAR,
+  migratedPoolFee: scalars('collectFeeMode', 'dynamicFee', 'poolFeeBps', 'compoundingFeeBps'),
+  poolCreationFee: SCALAR,
+  partnerLiquidityVestingInfo: scalars(
+    'vestingPercentage',
+    'bpsPerPeriod',
+    'numberOfPeriods',
+    'cliffDurationFromMigrationTime',
+    'totalDuration',
+  ),
+  creatorLiquidityVestingInfo: scalars(
+    'vestingPercentage',
+    'bpsPerPeriod',
+    'numberOfPeriods',
+    'cliffDurationFromMigrationTime',
+    'totalDuration',
+  ),
+  migratedPoolBaseFeeMode: SCALAR,
+  migratedPoolMarketCapFeeSchedulerParams: scalars(
+    'endingBaseFeeBps',
+    'numberOfPeriod',
+    'priceMultiple',
+    'schedulerExpirationDuration',
+  ),
+  enableFirstSwapWithMinFee: SCALAR,
+  compoundingFeeBps: SCALAR,
+  curve: Object.freeze({ list: scalars('sqrtPrice', 'liquidity'), max: MAX_CURVE_POINTS }),
+});
 const ID = /^[A-Za-z0-9][A-Za-z0-9._:-]{0,199}$/;
 const PHASES: Record<number, MarketPhase> = {
   0: 'PRE_BONDING_CURVE',
@@ -124,41 +200,42 @@ function canonical(value: unknown): string | undefined {
 
 const sha256 = (text: string) => createHash('sha256').update(text).digest('hex');
 
-/**
- * Fixed rules over `configParameters` at every depth: quote asset must be devnet USDC, the
- * migration target DAMM v2 and no custom-curve key. Key names are compared normalized (case and
- * punctuation ignored). A deny-list by key: the O02 decision must add an allow-list schema.
- */
-function configViolation(root: unknown): string | undefined {
-  let nodes = 0;
-  const visit = (value: unknown, depth: number): string | undefined => {
-    if (++nodes > MAX_CONFIG_NODES) return 'SIZE';
-    if (depth > MAX_CONFIG_DEPTH) return 'DEPTH';
-    if (Array.isArray(value)) {
-      for (const item of value) {
-        const found = visit(item, depth + 1);
-        if (found) return found;
-      }
-      return undefined;
-    }
-    if (!isPlain(value)) return undefined;
-    for (const key of Object.keys(value)) {
-      const k = key
-        .normalize('NFKC')
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, '');
-      const inner = value[key];
-      if (QUOTE_KEYS.has(k) && inner !== METEORA_DBC_QUOTE_MINT) return 'QUOTE_MINT';
-      if (MIGRATION_KEYS.has(k) && inner !== 'DAMM_V2' && !(k === 'migrationoption' && inner === 1))
-        return 'MIGRATION';
-      if (k.includes('customcurve') || k.includes('curveprogram') || k.includes('custombonding'))
-        return 'CUSTOM_CURVE';
-      const found = visit(inner, depth + 1);
+const isScalar = (v: unknown) =>
+  v === null ||
+  typeof v === 'string' ||
+  typeof v === 'boolean' ||
+  (typeof v === 'number' && Number.isFinite(v));
+
+/** Walks `value` against `shape`; returns a fixed violation token, or undefined when it conforms. */
+function shapeViolation(value: unknown, shape: Shape): string | undefined {
+  if (shape === SCALAR) return isScalar(value) ? undefined : 'SHAPE';
+  if ('list' in shape && typeof shape.max === 'number') {
+    if (!Array.isArray(value) || value.length > shape.max) return 'SHAPE';
+    for (const item of value) {
+      const found = shapeViolation(item, shape.list);
       if (found) return found;
     }
     return undefined;
-  };
-  return visit(root, 0);
+  }
+  if (!isPlain(value)) return 'SHAPE';
+  for (const key of Object.keys(value)) {
+    if (!Object.hasOwn(shape, key)) return 'UNKNOWN_KEY';
+    const found = shapeViolation(value[key], (shape as ObjectShape)[key]);
+    if (found) return found;
+  }
+  return undefined;
+}
+
+/**
+ * `configParameters` must match `CONFIG_SHAPE` exactly (allow-list, fail closed), and the migration
+ * target must be DAMM v2 (`migrationOption` 1 or `DAMM_V2`). The quote asset is not a parameter.
+ */
+function configViolation(root: unknown): string | undefined {
+  const found = shapeViolation(root, CONFIG_SHAPE);
+  if (found) return found;
+  const migration = (root as Record<string, unknown>).migrationOption;
+  if (migration !== undefined && migration !== 1 && migration !== 'DAMM_V2') return 'MIGRATION';
+  return undefined;
 }
 
 /** Decimal base-unit strings only, bounded; undefined if anything else. */

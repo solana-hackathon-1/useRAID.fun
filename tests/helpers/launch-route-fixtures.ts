@@ -19,7 +19,7 @@ export const MAINNET_GENESIS = '5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d';
 export const DEC = 'DEC-2030-01-01-01';
 /** sha256 of the canonical (sorted-key) JSON of the default `economics().configParameters`. */
 export const CONFIG_HASH = createHash('sha256')
-  .update('{"nested":{"a":"2","b":"1"},"placeholderA":"x"}')
+  .update('{"migrationFee":{"creatorFeePercentage":"1","feePercentage":"2"},"poolCreationFee":"x"}')
   .digest('hex');
 export const T0 = new Date('2026-11-07T12:00:00.000Z');
 
@@ -33,7 +33,10 @@ export const economics = (over: Record<string, unknown> = {}) => ({
   decisionRef: DEC,
   feeClaimer: FEE_CLAIMER,
   graduation: 'DAMM_V2' as const,
-  configParameters: { placeholderA: 'x', nested: { b: '1', a: '2' } },
+  configParameters: {
+    poolCreationFee: 'x',
+    migrationFee: { feePercentage: '2', creatorFeePercentage: '1' },
+  },
   ...over,
 });
 

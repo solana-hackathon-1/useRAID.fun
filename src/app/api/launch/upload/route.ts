@@ -4,9 +4,11 @@ import { pinFile, signAsset, validateImage } from '@/lib/launch-ipfs';
 import { launchEnabled } from '@/lib/pump-launch';
 import { failure } from '@/lib/http';
 import { assertLaunchpadsAvailable } from '@/lib/release';
+import { assertNewLaunchIntentsAllowed } from '@/lib/launch-route-state';
 export async function POST(request: Request) {
   try {
     assertLaunchpadsAvailable();
+    assertNewLaunchIntentsAllowed();
     checkOrigin(request);
     const user = await requireUser();
     if (!launchEnabled()) throw new HttpError(503, 'Token launches unavailable.');

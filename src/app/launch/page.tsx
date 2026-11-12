@@ -1,8 +1,5 @@
 import Link from 'next/link';
-import { LaunchWizard } from '@/components/launch-wizard';
-import { currentUser } from '@/lib/auth';
-import { db } from '@/lib/db';
-import { launchEnabled } from '@/lib/pump-launch';
+import { launchRouteState } from '@/lib/launch-route-state';
 import { launchpadsAvailable } from '@/lib/release';
 export const dynamic = 'force-dynamic';
 export default async function LaunchPage() {
@@ -23,38 +20,21 @@ export default async function LaunchPage() {
         </Link>
       </section>
     );
-  const user = await currentUser();
-  const wallet = user ? await db.walletIdentity.findUnique({ where: { userId: user.id } }) : null;
-  const settings = launchEnabled()
-    ? await db.settings.findUnique({ where: { id: 'global' } })
-    : null;
-  const recoveries = user
-    ? await db.tokenLaunch.findMany({
-        where: { userId: user.id, status: { in: ['PREPARED', 'SUBMITTED'] } },
-        orderBy: { createdAt: 'desc' },
-        take: 5,
-        select: { id: true, name: true, symbol: true, status: true },
-      })
-    : [];
-  const enabled =
-    launchEnabled() &&
-    !!settings?.collectionEnabled &&
-    !settings.launchPaused &&
-    !settings.payoutPaused &&
-    !!settings.payoutWorkerAt &&
-    +settings.payoutWorkerAt > Date.now() - 120000 &&
-    settings.operatorAddress === process.env.OPERATOR_PUBLIC_KEY;
+  // DEC-2026-11-07-04: the launch route is a state, never a form, until O02 and O08 are decided.
+  const route = launchRouteState();
   return (
-    <>
-      <div className="page-title">
-        <h1>Launch a token</h1>
-        <p>SOL-paired pump.fun launch. Creator fees fund raider rewards.</p>
-      </div>
-      <LaunchWizard
-        sessionWallet={wallet?.address || null}
-        enabled={enabled}
-        recoveries={recoveries}
-      />
-    </>
+    <section className="panel access-card">
+      <span className="status-pill">Not configured</span>
+      <h1>Launch a token</h1>
+      <p>
+        Token launch is not configured yet. It waits on owner decisions{' '}
+        {route.openDecisions.join(' and ')} (launch supply, allocation, curve and fees). No values
+        are assumed, and nothing can be started until they are decided.
+      </p>
+      <p>Create Raids for existing projects, join campaigns, and track verified X contributions.</p>
+      <Link className="button" href="/creator">
+        Create a Raid
+      </Link>
+    </section>
   );
 }
