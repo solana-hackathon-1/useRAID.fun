@@ -94,6 +94,22 @@ describe('DEC-2026-11-07-03 canonical USDC production allow list', () => {
     expect(registry.evaluateSupport(USDC_MAINNET_ASSET_ID).supported).toBe(true);
   });
 
+  it('refuses canonical USDC declared with any decimals other than 6 (review MAJOR)', () => {
+    for (const verifiedDecimals of [0, 5, 7, 9]) {
+      const wrong = config(USDC_MAINNET_ASSET_ID, {
+        policies: [policy(USDC_MAINNET_ASSET_ID, 'fixture-v1', { verifiedDecimals })],
+      });
+      expect(codes(wrong)).toContain('ASSET_DECIMALS_MISMATCH');
+      expect(codeOf(() => createProductionAssetRegistry(wrong))).toBe('PRODUCTION_BLOCKED');
+    }
+    expect(PRODUCTION_ASSET_ALLOWLIST[0].decimals).toBe(6);
+  });
+
+  it('refuses canonical USDC with no policy snapshot', () => {
+    const none = config(USDC_MAINNET_ASSET_ID, { policies: [] });
+    expect(codes(none)).toContain('ASSET_POLICY_UNSUPPORTED');
+  });
+
   it('requires the matching decision reference', () => {
     expect(codes(config(USDC_MAINNET_ASSET_ID, {}, null))).toContain('ASSET_NOT_APPROVED');
     expect(codes(config(USDC_MAINNET_ASSET_ID, {}, { decisionRef: 'other' }))).toContain(

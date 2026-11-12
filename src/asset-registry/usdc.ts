@@ -12,6 +12,8 @@ import { SPL_TOKEN_PROGRAM_ID, type RegisteredAssetInput } from './registry';
  * Freeze authority on the mint is accepted by decision: a transfer blocked after funding is a
  * settlement incident that keeps the obligation; it is never a reason to discharge it (16.5).
  */
+/** Canonical USDC has 6 decimals; production blocks a registry declaring any other value. */
+export const USDC_DECIMALS = 6;
 export const USDC_DECISION_REF = 'DEC-2026-11-07-03';
 export const SOLANA_MAINNET_GENESIS = '5eykt4UsFv8P8NJdTREpY1vzqKqZKvdpKuc147dw2N9d';
 export const SOLANA_DEVNET_GENESIS = 'EtWTRABZaYq6iMfeYKouRu166VU2xqa1wcaWoxPkrZBG';

@@ -7,7 +7,7 @@ import {
   type AssetRegistry,
   type AssetRegistryInput,
 } from './registry';
-import { USDC_DECISION_REF, USDC_MAINNET_ASSET_ID } from './usdc';
+import { USDC_DECIMALS, USDC_DECISION_REF, USDC_MAINNET_ASSET_ID } from './usdc';
 
 /**
  * Fail-closed production validation (blueprint 16.5, I12, AC41). DEC-2026-11-07-03 resolves O07 for
@@ -33,6 +33,8 @@ export interface AllowlistEntry {
   assetId: AssetIdInput;
   /** Recorded owner decision (for example the O07 resolution) that supports this asset. */
   decisionRef: string;
+  /** When set, the latest policy snapshot's `verifiedDecimals` must equal it (a mis-scaled asset is blocked). */
+  decimals?: number;
 }
 export interface ProductionValidation {
   readonly ok: boolean;
@@ -40,7 +42,11 @@ export interface ProductionValidation {
 }
 
 export const PRODUCTION_ASSET_ALLOWLIST: readonly AllowlistEntry[] = Object.freeze([
-  Object.freeze({ assetId: USDC_MAINNET_ASSET_ID, decisionRef: USDC_DECISION_REF }),
+  Object.freeze({
+    assetId: USDC_MAINNET_ASSET_ID,
+    decisionRef: USDC_DECISION_REF,
+    decimals: USDC_DECIMALS,
+  }),
 ]);
 
 /**
@@ -62,7 +68,11 @@ export function validateWithAllowlist(
       throw new AssetRegistryError('INVALID_CONFIGURATION');
     const keyOf = (value: unknown) => assetKey(value as AssetIdInput);
     const listed = new Map<string, string>();
-    for (const entry of allowlist) listed.set(keyOf(entry.assetId), entry.decisionRef);
+    const requiredDecimals = new Map<string, number>();
+    for (const entry of allowlist) {
+      listed.set(keyOf(entry.assetId), entry.decisionRef);
+      if (entry.decimals !== undefined) requiredDecimals.set(keyOf(entry.assetId), entry.decimals);
+    }
     const networks = Array.isArray(config.networks) ? config.networks : [];
     networks.forEach((network, index) => {
       if (network?.cluster !== 'MAINNET') add('NETWORK_NOT_MAINNET', `networks[${index}]`);
@@ -108,8 +118,14 @@ export function validateWithAllowlist(
     }
     if (registry)
       registry.assets().forEach((asset, index) => {
-        if (!registry.evaluateSupport(asset.assetId).supported)
-          add('ASSET_POLICY_UNSUPPORTED', `assets[${index}]`);
+        {
+          if (!registry.evaluateSupport(asset.assetId).supported)
+            add('ASSET_POLICY_UNSUPPORTED', `assets[${index}]`);
+          const required = requiredDecimals.get(assetKey(asset.assetId));
+          const latest = registry.policies(asset.assetId).at(-1);
+          if (required !== undefined && latest && latest.verifiedDecimals !== required)
+            add('ASSET_DECIMALS_MISMATCH', `assets[${index}]`);
+        }
       });
   } catch {
     add('INVALID_CONFIGURATION', 'config');
