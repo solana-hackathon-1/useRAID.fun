@@ -26,7 +26,7 @@ import { processTrackingLookup } from '../src/lib/tracking-worker';
 import { settleNextRound } from '../src/lib/rewards';
 import { collect, refresh } from '../src/lib/collection';
 import { claimJob, finishJob, JOB_MAX_ATTEMPTS } from '../src/lib/queue';
-import { runJob, schedule } from '../src/lib/worker-jobs';
+import { runJob, schedule, sweepExhaustedJobs } from '../src/lib/worker-jobs';
 import { searchPosts } from '../src/lib/providers/x';
 import type { XPost } from '../src/lib/domain';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
@@ -988,6 +988,18 @@ suite('tracking v2 database lifecycle', () => {
         await db.postSubmission.findUniqueOrThrow({ where: { id: submitted.id } }),
       ).toMatchObject({ status: 'EXCLUDED', reasonCode: 'OUTSIDE_RAID' });
     });
+    it('does not overwrite a submission that is no longer QUEUED when a late lookup finds the post gone', async () => {
+      const submitted = await submitTrackingPost(raidId, userId, '403');
+      await db.postSubmission.update({
+        where: { id: submitted.id },
+        data: { status: 'EXCLUDED', reasonCode: 'LOOKUP_FAILED' },
+      });
+      respond({ data: [], errors: [problem('resource-not-found', '403')] });
+      await processTrackingLookup(raidId, '403', 'late', submitted.id);
+      expect(
+        await db.postSubmission.findUniqueOrThrow({ where: { id: submitted.id } }),
+      ).toMatchObject({ status: 'EXCLUDED', reasonCode: 'LOOKUP_FAILED' });
+    });
     it('caps repeated review extensions at 24 hours from the first result', async () => {
       await ingestTracking(raidId, [xpost('501')]);
       await close();
@@ -1303,5 +1315,107 @@ suite('tracking v2 database lifecycle', () => {
     expect(ops.raids.map((r) => r.id)).toEqual([raidId]);
     await db.raid.update({ where: { id: raidId }, data: { trackingPhase: 'ALLOCATED' } });
     expect((await loadTrackingOps()).raids).toEqual([]);
+  });
+
+  describe('crash-exhausted collection jobs never let a Raid settle on incomplete data', () => {
+    const crashed = (key: string, kind: string, payload: Record<string, unknown>) =>
+      db.job.create({
+        data: {
+          key,
+          kind,
+          payload: payload as never,
+          attempts: JOB_MAX_ATTEMPTS,
+          lockedAt: new Date(Date.now() - 11 * 60000),
+          lease: 'gone',
+        },
+      });
+    const rpcMock = () =>
+      ({
+        getLatestBlockhash: vi.fn(async () => ({
+          blockhash: Keypair.generate().publicKey.toBase58(),
+          lastValidBlockHeight: 1,
+        })),
+        getFeeForMessage: vi.fn(async () => ({ value: 5000 })),
+      }) as unknown as Connection;
+    it('v2: a crash-exhausted final refresh marks the Raid partial and finalization stays blocked after the sweep', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      await ingestTracking(raidId, [xpost('601')]);
+      await close();
+      await crashed('final-refresh', 'refresh', { raidId, after: '', final: true });
+      await finalizeTracking(raidId);
+      expect(await db.campaignResult.count()).toBe(0); // blocked while the job is outstanding
+      expect(await sweepExhaustedJobs()).toHaveLength(1);
+      const raid = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      expect(raid.coverage).toBe('partial');
+      expect(raid.collectionError).toBeTruthy();
+      await db.raid.update({
+        where: { id: raidId },
+        data: { reviewEndsAt: new Date(Date.now() - 1) },
+      });
+      await finalizeTracking(raidId);
+      expect(await db.campaignResult.count()).toBe(0); // still no result from incomplete data
+      expect((await db.raid.findUniqueOrThrow({ where: { id: raidId } })).trackingPhase).not.toBe(
+        'APPROVED',
+      );
+      // and no reward round can be built from it
+      const launch = await db.tokenLaunch.findUniqueOrThrow({ where: { id: launchId } });
+      await db.feeClaim.create({
+        data: {
+          launchId,
+          raidId,
+          signature: randomUUID(),
+          source: 'test',
+          grossLamports: 10_000_000n,
+          costLamports: 5000n,
+        },
+      });
+      expect(await settleNextRound(rpcMock(), launch)).toBe(false);
+      expect(await db.rewardRound.count()).toBe(0);
+    });
+    it('v1: a crash-exhausted final refresh marks the Raid partial so no reward round settles from it', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      await close();
+      await db.raid.update({
+        where: { id: raidId },
+        data: { trackingVersion: 1, finalRefreshed: false, status: 'ENDED' },
+      });
+      await crashed('v1-final', 'refresh', { raidId, after: '', final: true });
+      await db.feeClaim.create({
+        data: {
+          launchId,
+          raidId: null,
+          signature: randomUUID(),
+          source: 'test',
+          grossLamports: 10_000_000n,
+          costLamports: 5000n,
+          claimedAt: new Date(+started + 1000),
+        },
+      });
+      await sweepExhaustedJobs();
+      const raid = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      expect(raid.coverage).toBe('partial');
+      expect(raid.collectionError).toBeTruthy();
+      const launch = await db.tokenLaunch.findUniqueOrThrow({ where: { id: launchId } });
+      expect(await settleNextRound(rpcMock(), launch)).toBe(false);
+      expect(await db.rewardRound.count()).toBe(0);
+    });
+    it('a crash-exhausted collect job marks the Raid partial too', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      await close();
+      await crashed('c1', 'collect', { raidId, final: true });
+      await sweepExhaustedJobs();
+      const raid = await db.raid.findUniqueOrThrow({ where: { id: raidId } });
+      expect(raid.coverage).toBe('partial');
+    });
+    it('a crash-exhausted finance job alone leaves coverage and the error untouched', async () => {
+      vi.spyOn(console, 'error').mockImplementation(() => {});
+      await close();
+      await crashed('f2', 'finance', { launchId, raidId });
+      await sweepExhaustedJobs();
+      expect(await db.raid.findUniqueOrThrow({ where: { id: raidId } })).toMatchObject({
+        coverage: 'complete',
+        collectionError: null,
+      });
+    });
   });
 });

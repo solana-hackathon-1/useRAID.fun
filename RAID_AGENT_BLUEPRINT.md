@@ -314,6 +314,94 @@ After one week, measure PRs/task, documentation-to-source line ratio and tasks c
 
 **DEC-2026-10-27-01 — accepted, project owner:** coding agents run `bash scripts/verify.sh fast` (format of changed files, types, lint, planning contracts, non-database unit tests) while working and `bash scripts/verify.sh full` (fast tier plus `scripts/local-ci.sh` and the affected feature browser suites) before pushing. A passing run writes a tree-bound receipt under `.git/raid-verify/`; the pre-push hook that enforces it is opt-in (`bash scripts/verify.sh install`) and has a logged one-push bypass. A receipt is a local pre-screen, not independent verification: manual Checks stays the independent gate and is dispatched once per completed candidate (DEC-2026-10-26-02). Staging publication reuses a successful dispatched Checks run only when that run's commit tree equals the tree being published; otherwise, or if the lookup fails, it repeats every check. It always repeats image build, runtime smoke and registry publication, and it gains no new credential or deployment authority. Hosted-minute reduction is preferred over wall-clock reduction: sharding that adds minutes is not adopted. [Contract and consumer](docs/ci-checks.md). Measured savings are recorded in the PR; branch protection, rulesets and production gates are unchanged.
 
+### 02.21 Accepted owner decisions — 7 November 2026
+
+Recorded in the section 40.4 format. Date and owner for every record: 7 November 2026, project owner. **DIRECTION** records steer design but are not final policy; their named gates stay OPEN. Policy text is the owner's; reason and alternatives lines summarize the recorded question and state only what was on record. No record authorizes real funds, mainnet actions or new secrets.
+
+**DEC-2026-11-07-01 — operational hardening**
+
+- Related OPEN item: none; owner questions in the 7 November checkpoint and [#161](https://github.com/solana-hackathon-1/useRAID.fun/issues/161).
+- Question: how must jobs, configuration, logs, outbound calls and public state behave on the failure paths left undecided?
+- Chosen policy/values: (a) a crash-exhausted job dead-letters and alerts, including a lease-lost 8th attempt that leaves a PostSubmission QUEUED; (b) long jobs renew their lease; (c) an X header timeout counts as an attempt, a persistent timeout stops spending, and an admin retry can reset it; (d) operator logs carry a code plus safe class only, including `failure()`; (e) `RAID_ENVIRONMENT=production` is refused with devnet or demo settings; (f) a web process refused for bad configuration exits at start rather than returning 500; (g) production refuses test-looking database names and the sample `OPERATOR_PUBLIC_KEY`; (h) synthetic `WORK_*` flags may not coexist with real-money flags in one deployment; (i) redirect refusal and size limits apply to Solana RPC; (j) the T015 stale threshold is 30 days; (k) public pause text is the neutral "Payouts paused", and the owner keeps the fixed detail.
+- Status: accepted.
+- Reason and tradeoffs: fail closed and stop spending. A refused process is visible at deploy time; a persistent X timeout needs an operator reset.
+- Alternatives considered: `deferred=true` with the reservation kept, which reserves to the budget cutoff; returning 500 on bad configuration.
+- Affected requirements/contracts: I12, D12, AC41; sections 28, 29.1–29.2, 30.1; [module reuse](docs/raid-module-reuse.md) worker health, job lease and configuration validation.
+- Effect on existing accepted work: none on recorded rewards or obligations.
+- Migration or rollout plan: deployments that fail the new refusals must correct their environment before rollout; audit non-staging environments first.
+- Required verification: failing behavior tests per item; independent review for job, lease, configuration and security changes.
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-07-02 — Guild activation approver ([#305](https://github.com/solana-hackathon-1/useRAID.fun/issues/305))**
+
+- Related OPEN item: #305; T010 stays open.
+- Question: which accounts may approve Guild activation in the first release, and on what evidence?
+- Chosen policy/values: option 2. A dedicated `GUILD_ACTIVATION_OPERATOR_ACCOUNT_IDS` allowlist behind a default-off flag, simulated funds only. An applicant can never approve their own Guild, with a test proving it. An audit record is required. A free-form `activationRef` is acceptable until T010 defines the evidence record.
+- Status: accepted.
+- Reason and tradeoffs: keeps Guild creation separate from Raid-listing authority. Any allowlisted operator can still create a Founder, so this is not the T010 trust root.
+- Alternatives considered: reuse `RAID_WORK_OPERATOR_ACCOUNT_IDS`; wait for T010.
+- Affected requirements/contracts: sections 05.5, 06, 28; `activateGuild` host contract.
+- Effect on existing accepted work: none. Admin approval does not replace control evidence for existing projects (05.5).
+- Migration or rollout plan: the flag stays off until the allowlist is deliberately set.
+- Required verification: real-database route tests including self-approval denial and the audit record; independent review.
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-07-03 — first release asset allowlist (O07)**
+
+- Related OPEN item: O07.
+- Question: which assets are supported first, and what is the extension and freeze policy?
+- Chosen policy/values: canonical USDC on Solana only, using the mints in `src/lib/usdc.ts`. Arbitrary SPL tokens, Token-2022 and wrapped SOL are rejected for Raid funding. SOL pays network fees only. Existing legacy handling stays separate. Guild tokens are not Raid rewards in v1. The mint is allowlisted rather than banning freeze authority: a transfer blocked after funding creates a settlement incident and keeps the obligation (16.5).
+- Status: accepted.
+- Reason and tradeoffs: a freeze-authority ban is not the chosen control; the residual risk is handled as an incident, never by discharging the obligation.
+- Alternatives considered: banning freeze authority.
+- Affected requirements/contracts: P05, I12, AC41; sections 16.2–16.5; [asset registry](docs/raid-asset-registry.md).
+- Effect on existing accepted work: `PRODUCTION_ASSET_ALLOWLIST` gains an entry in the T029 change; G04 evidence is still required before enablement.
+- Migration or rollout plan: registry change only; no live funds.
+- Required verification: rejection tests for each excluded class; G04 stays NOT VERIFIED.
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-07-04 — launch route (O01)**
+
+- Related OPEN item: O01. O02 and O08 stay OPEN.
+- Question: which launch mechanism and provider is first?
+- Chosen policy/values: Meteora Dynamic Bonding Curve graduating to DAMM v2, no custom curve, USDC quote, behind an R15 typed adapter. Devnet only. Pump code stays disabled. While O02 and O08 are OPEN, launch shows a controlled "not configured" state and no supply, allocation, curve or fee value is invented. Immutable metadata support must be verified against Meteora documentation before it is relied on.
+- Status: accepted for the route; economics remain OPEN.
+- Reason and tradeoffs: one supported route first, without carrying a custom curve.
+- Alternatives considered: the disabled Pump route.
+- Affected requirements/contracts: R01, R02, R15, R16; sections 05, 22; launch route adapter family in [module reuse](docs/raid-module-reuse.md).
+- Effect on existing accepted work: existing launch intents stay pinned to their protocol.
+- Migration or rollout plan: Pump retirement: keep it disabled with no new intents; reconcile any existing intents against their pinned protocol; then remove the code in a later reviewed change.
+- Required verification: T026 typed errors and a verified consuming example; T028 and release gates stay NOT VERIFIED.
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-07-05 — escrow design (O05), DIRECTION**
+
+- Related OPEN item: O05, which stays OPEN as a final decision; O06.
+- Question: which escrow and custody model, and which upgrade authority?
+- Chosen policy/values: DIRECTION, not final. Custom per-agreement PDA escrow following 16.6 and 16.7, with no generic admin withdrawal. Fee, launch, settlement and upgrade authorities are separately defined. Upgrades need a 2-of-3 Squads multisig, with no person or device holding two keys, plus a timelock. Devnet only. Never described as trustless.
+- Status: accepted as DIRECTION.
+- Reason and tradeoffs: constrained authority, at the cost of owning program security.
+- Alternatives considered: an escrow provider, per the O05 question.
+- Affected requirements/contracts: sections 16.6, 16.7; escrow adapter family in [module reuse](docs/raid-module-reuse.md).
+- Effect on existing accepted work: none.
+- Migration or rollout plan: mainnet is blocked on O06 and an external human security audit. Agent review cannot satisfy that audit.
+- Required verification: design record, devnet-only proof, T030 capability evidence.
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-07-06 — identity and privacy (O11), DIRECTION**
+
+- Related OPEN item: O11, which stays OPEN as a final decision; O12.
+- Question: what identity attestation and data policy applies now?
+- Chosen policy/values: DIRECTION, not final. Wallet signature plus X OAuth, no government ID, minimal data, for simulation and devnet only. Real payouts are blocked on O12 and counsel on KYC and sanctions.
+- Status: accepted as DIRECTION.
+- Reason and tradeoffs: identity for simulation without collecting documents.
+- Alternatives considered: none on record.
+- Affected requirements/contracts: section 07; T090, T092.
+- Effect on existing accepted work: none.
+- Migration or rollout plan: no values are invented. Retention periods, deletion versus immutable records, and whether X and wallet are both required remain OPEN.
+- Required verification: none until those values are decided.
+- Supersedes / superseded by: none.
+
 ---
 
 ## 03. Vocabulary
@@ -2620,27 +2708,27 @@ The runner stops further spend, records the artifacts and usage, and follows the
 
 The following decisions are unresolved in the available product discussion. They do not prevent completing this blueprint or building independent foundations. They block only the feature that depends on them.
 
-| ID  | Decision needed                                                                           | Proposed working position                                                      | Dependency/owner                                                  |
-| --- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------------- |
-| O01 | Exact launch mechanism and protocol/provider.                                             | Typed adapter; choose one supported route first.                               | M3; product and Solana lead.                                      |
-| O02 | Launch supply, decimals, distribution, authorities, liquidity/curve and migration policy. | No invented economics; expose only selected route's supported parameters.      | Real launch; Founder/product authority.                           |
-| O03 | Real RAID token plan and utility activation.                                              | Separate milestone; no presumed supply/price/allocations.                      | Token launch/utility; project owner.                              |
-| O04 | Any flat RAID access license after removal of rank-linked stakes.                         | Off by default; preserve optional policy interface.                            | License feature; project owner.                                   |
-| O05 | Escrow provider/custom program and custody/upgrade authority.                             | Mediated candidate design with constrained authority, pending review.          | Real rewards; product/Solana/security/operations.                 |
-| O06 | Dispute mediator, quorum, notice/appeal/finality and abandoned-case recovery.             | Bounded operations and protected claims; commercial finality must be selected. | Live settlements/awards; product/operations.                      |
-| O07 | Initial supported assets and extension/freeze policy.                                     | Small reviewed allowlist; full-identity asset model.                           | Each enabled payment asset; treasury/security.                    |
-| O08 | Platform fees, launch fees, promotion prices and AI charging/refunds.                     | Exact quotes and net rewards; examples not binding.                            | Monetized features; product/finance.                              |
-| O09 | Numeric skill/score thresholds and calibration.                                           | Qualitative skill rubric, evidence metrics and confidence first.               | Automated scoring/promotion; trust lead.                          |
-| O10 | Selection/prize rights, stipend rules, no-qualifier/tie and appeal policy.                | Paid bounded selection first; separate prize mode.                             | Challenge launch; product/legal-template owner.                   |
-| O11 | Formal privacy, retention, account deletion and identity-attestation policy.              | Minimal necessary data; no automatic mandatory KYC assumption.                 | Public operations; product/security.                              |
-| O12 | Supported jurisdictions/users and contract/service terms.                                 | Resolve for the actual launch/work/payment model.                              | Public paid operations; project owner with appropriate expertise. |
-| O13 | GitHub organization/provider plans and supported grant mechanism.                         | Verify actual capability; scoped resource and effective-access reconciliation. | Confidential work; access/integration lead.                       |
-| O14 | Model providers, data retention/training permissions, tool providers, price cards.        | Provider-agnostic policy; explicit per-task permission.                        | Managed AI; execution/product lead.                               |
-| O15 | Organization AI-operator registration/concurrency policy.                                 | Individual-operator pilot cap as specified; no silent scale-up.                | Broader agent marketplace; product/trust.                         |
-| O16 | Social channels and allowed APIs/automation/metrics.                                      | Manual evidence before approved automated publishing.                          | Influencer automation; integration/product.                       |
-| O17 | Sponsored auction mechanism and reserve/charge/refund rules.                              | Fixed slots first; first-price candidate remains disabled.                     | Bidding; product/treasury.                                        |
-| O18 | Hosting, selected package/runtime versions, provider SLOs and budgets.                    | Simple web/worker/PostgreSQL topology; verify against deployment environment.  | Production release; engineering/operations.                       |
-| O19 | Ongoing Role contracts/cadence and operator support hours.                                | One active duty period; no concurrency loophole.                               | Roles and live service; product/operations.                       |
+| ID  | Decision needed                                                                           | Proposed working position                                                                                                                                                 | Dependency/owner                                                  |
+| --- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| O01 | Exact launch mechanism and protocol/provider.                                             | Typed adapter; choose one supported route first. **Route resolved: DEC-2026-11-07-04** (Meteora DBC to DAMM v2, USDC quote, devnet only).                                 | M3; product and Solana lead.                                      |
+| O02 | Launch supply, decimals, distribution, authorities, liquidity/curve and migration policy. | No invented economics; expose only selected route's supported parameters.                                                                                                 | Real launch; Founder/product authority.                           |
+| O03 | Real RAID token plan and utility activation.                                              | Separate milestone; no presumed supply/price/allocations.                                                                                                                 | Token launch/utility; project owner.                              |
+| O04 | Any flat RAID access license after removal of rank-linked stakes.                         | Off by default; preserve optional policy interface.                                                                                                                       | License feature; project owner.                                   |
+| O05 | Escrow provider/custom program and custody/upgrade authority.                             | Mediated candidate design with constrained authority, pending review. **DIRECTION only: DEC-2026-11-07-05.** Still OPEN; mainnet blocked on O06 and external audit.       | Real rewards; product/Solana/security/operations.                 |
+| O06 | Dispute mediator, quorum, notice/appeal/finality and abandoned-case recovery.             | Bounded operations and protected claims; commercial finality must be selected.                                                                                            | Live settlements/awards; product/operations.                      |
+| O07 | Initial supported assets and extension/freeze policy.                                     | Small reviewed allowlist; full-identity asset model. **Resolved for first release: DEC-2026-11-07-03** (canonical USDC only); G04 still required.                         | Each enabled payment asset; treasury/security.                    |
+| O08 | Platform fees, launch fees, promotion prices and AI charging/refunds.                     | Exact quotes and net rewards; examples not binding.                                                                                                                       | Monetized features; product/finance.                              |
+| O09 | Numeric skill/score thresholds and calibration.                                           | Qualitative skill rubric, evidence metrics and confidence first.                                                                                                          | Automated scoring/promotion; trust lead.                          |
+| O10 | Selection/prize rights, stipend rules, no-qualifier/tie and appeal policy.                | Paid bounded selection first; separate prize mode.                                                                                                                        | Challenge launch; product/legal-template owner.                   |
+| O11 | Formal privacy, retention, account deletion and identity-attestation policy.              | Minimal necessary data; no automatic mandatory KYC assumption. **DIRECTION only: DEC-2026-11-07-06.** Still OPEN; retention, deletion and X-plus-wallet values undecided. | Public operations; product/security.                              |
+| O12 | Supported jurisdictions/users and contract/service terms.                                 | Resolve for the actual launch/work/payment model.                                                                                                                         | Public paid operations; project owner with appropriate expertise. |
+| O13 | GitHub organization/provider plans and supported grant mechanism.                         | Verify actual capability; scoped resource and effective-access reconciliation.                                                                                            | Confidential work; access/integration lead.                       |
+| O14 | Model providers, data retention/training permissions, tool providers, price cards.        | Provider-agnostic policy; explicit per-task permission.                                                                                                                   | Managed AI; execution/product lead.                               |
+| O15 | Organization AI-operator registration/concurrency policy.                                 | Individual-operator pilot cap as specified; no silent scale-up.                                                                                                           | Broader agent marketplace; product/trust.                         |
+| O16 | Social channels and allowed APIs/automation/metrics.                                      | Manual evidence before approved automated publishing.                                                                                                                     | Influencer automation; integration/product.                       |
+| O17 | Sponsored auction mechanism and reserve/charge/refund rules.                              | Fixed slots first; first-price candidate remains disabled.                                                                                                                | Bidding; product/treasury.                                        |
+| O18 | Hosting, selected package/runtime versions, provider SLOs and budgets.                    | Simple web/worker/PostgreSQL topology; verify against deployment environment.                                                                                             | Production release; engineering/operations.                       |
+| O19 | Ongoing Role contracts/cadence and operator support hours.                                | One active duty period; no concurrency loophole.                                                                                                                          | Roles and live service; product/operations.                       |
 
 When resolving one item, create a decision record with exact chosen values, rationale, alternatives rejected, owner, date, affected requirements, migration effect, and tests. Update this table to point to that decision. Do not delete the fact that older examples differed.
 
