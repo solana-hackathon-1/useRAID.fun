@@ -4,6 +4,7 @@ import { assertJobLease } from './job-lease';
 import { lockAdvisory } from './identity-protocol';
 import { newTrackingRules, trackingSettlementEnabled } from './config';
 import { assertLaunchpadsAvailable, launchpadsAvailable } from './release';
+import { assertNewLaunchIntentsAllowed } from './launch-route-state';
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import {
@@ -86,7 +87,7 @@ const outstanding = (userId: string, excludeId?: string) => ({
   OR: [{ status: 'SUBMITTED' }, { status: 'PREPARED', reservationExpiresAt: { gt: new Date() } }],
 });
 export async function prepareLaunch(userId: string, input: unknown) {
-  if (!launchEnabled()) throw new HttpError(503, 'Token launches unavailable.');
+  assertNewLaunchIntentsAllowed();
   await assertLauncherAccess(userId);
   const data = launchInput.parse(input);
   verifyAsset(data.imageUri, 'logo', userId, data.imageProof);

@@ -230,24 +230,45 @@ describe('T026 review fix (c): economics need a recorded decision; fixed rules a
     expect(route.capabilities().configured).toBe(false);
   });
   it.each([
-    ['quote mint', { quoteMint: addr(99) }],
-    ['nested quote asset', { a: { b: [{ QUOTE_ASSET: addr(99) }] } }],
-    ['quote token mint', { quote_token_mint: 'So11111111111111111111111111111111111111112' }],
+    ['unknown top-level key', { placeholderA: 'x' }],
+    ['custom curve under an unlisted name', { bespokeCurve: [{ sqrtPrice: '1', liquidity: '1' }] }],
+    ['custom curve program under an unlisted name', { pricingEngine: addr(5) }],
+    ['deep custom curve', { migrationFee: { feePercentage: '1', bonding: { points: [] } } }],
+    ['unknown key beside a known one', { migrationFee: { feePercentage: '1', surprise: 'x' } }],
+    ['own __proto__ key', JSON.parse('{"__proto__":{"polluted":true}}')],
+    ['alias spelling of a known key', { pool_creation_fee: 'x' }],
+    ['quote mint key (the route pins it)', { quoteMint: METEORA_DBC_QUOTE_MINT }],
+    ['quote asset key', { quote_asset: addr(99) }],
+    ['object where a scalar is expected', { tokenDecimal: { value: 6 } }],
+    ['array where a scalar is expected', { tokenDecimal: [6] }],
+    ['scalar where an object is expected', { migrationFee: '1' }],
     ['migration option DAMM v1', { migrationOption: 0 }],
-    ['nested migration target', { x: { migration: 'DAMM_V1' } }],
-    ['custom curve', { customCurve: [{ sqrtPrice: '1', liquidity: '1' }] }],
-    ['deep custom curve', { a: { b: { c: [{ custom_curve_points: [] }] } } }],
-    ['curve program', { bondingCurveProgramId: addr(5) }],
-  ])('rejects %s at any depth as UNSUPPORTED_PARAMETERS', async (_n, configParameters) => {
-    const { route } = build({}, { configParameters });
-    expect(code(await route.validateLaunch(request()))).toBe('UNSUPPORTED_PARAMETERS');
-  });
-  it('accepts the fixed values themselves and ordinary parameters', async () => {
+    ['migration option by name other than DAMM v2', { migrationOption: 'DAMM_V1' }],
+    ['curve point with an extra key', { curve: [{ sqrtPrice: '1', liquidity: '1', extra: '1' }] }],
+    ['curve that is not a list', { curve: { sqrtPrice: '1', liquidity: '1' } }],
+    [
+      'curve beyond the on-chain capacity',
+      { curve: Array.from({ length: 21 }, () => ({ sqrtPrice: '1', liquidity: '1' })) },
+    ],
+  ])(
+    'rejects %s as UNSUPPORTED_PARAMETERS (allow-list, fail closed)',
+    async (_n, configParameters) => {
+      const { route } = build({}, { configParameters });
+      expect(code(await route.validateLaunch(request()))).toBe('UNSUPPORTED_PARAMETERS');
+    },
+  );
+  it('accepts only documented ConfigParameters field names, with scalar values', async () => {
     for (const configParameters of [
-      { quoteMint: METEORA_DBC_QUOTE_MINT },
       { migrationOption: 1 },
-      { migration: 'DAMM_V2' },
-      { migrationQuoteThreshold: '100', nested: { quote_mint: METEORA_DBC_QUOTE_MINT } },
+      { migrationOption: 'DAMM_V2' },
+      {
+        migrationQuoteThreshold: '100',
+        creatorTradingFeePercentage: 0,
+        enableFirstSwapWithMinFee: false,
+      },
+      { tokenSupply: { preMigrationTokenSupply: '1', postMigrationTokenSupply: '1' } },
+      { curve: [{ sqrtPrice: '1', liquidity: '1' }] },
+      { curve: Array.from({ length: 20 }, () => ({ sqrtPrice: '1', liquidity: '1' })) },
     ]) {
       const { route } = build({}, { configParameters });
       expect(code(await route.validateLaunch(request()))).toBe('OK');

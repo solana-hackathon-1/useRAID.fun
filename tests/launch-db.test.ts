@@ -144,33 +144,14 @@ suite('launch flow', () => {
     db.user.create({ data: { xId, handle: xId, approved } });
   const launchRow = (id: string) => db.tokenLaunch.findUniqueOrThrow({ where: { id } });
 
-  describe('preparing a launch', () => {
-    it('allows creators without legacy approval but rejects missing or suspended accounts', async () => {
-      await db.user.update({ where: { id: userId }, data: { approved: false } });
-      await expect(prepareLaunch(userId, input)).resolves.toMatchObject({
-        transaction: expect.any(String),
+  describe('preparing a launch (DEC-2026-11-07-04: Pump takes no new intents)', () => {
+    it('refuses as not configured and creates no launch row, reservation or secret', async () => {
+      await expect(prepareLaunch(userId, input)).rejects.toMatchObject({
+        status: 503,
+        message: expect.stringMatching(/not configured/i),
       });
-      await expect(prepareLaunch('missing-creator', input)).rejects.toMatchObject({ status: 403 });
-      await db.user.update({ where: { id: userId }, data: { suspended: true } });
-      await expect(prepareLaunch(userId, input)).rejects.toMatchObject({ status: 403 });
-    });
-    it('allows one outstanding reservation per user until it expires', async () => {
-      const first = await prepareLaunch(userId, input);
-      expect('transaction' in first && first.transaction).toBeTruthy();
-      await expect(prepareLaunch(userId, input)).rejects.toMatchObject({ status: 409 });
-      const row = await launchRow(first.id);
-      expect(+row.reservationExpiresAt! - Date.now()).toBeLessThanOrEqual(20 * 60000);
-      await db.tokenLaunch.update({
-        where: { id: first.id },
-        data: { reservationExpiresAt: new Date(Date.now() - 1000) },
-      });
-      await expect(prepareLaunch(userId, input)).resolves.toMatchObject({
-        transaction: expect.any(String),
-      });
-    });
-    it('seals the fee wallet secret so only the worker key opens it', async () => {
-      const prepared = await prepareLaunch(userId, input);
-      expect((await launchRow(prepared.id)).feeSecret).toMatch(/^s1:/);
+      await expect(prepareLaunch('missing-creator', input)).rejects.toMatchObject({ status: 503 });
+      expect(await db.tokenLaunch.count()).toBe(0);
     });
   });
 

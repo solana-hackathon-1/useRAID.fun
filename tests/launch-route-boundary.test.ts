@@ -30,12 +30,12 @@ describe('T026 launch route boundary and reuse contract (R15, R16)', () => {
     expect(own).toContain(`METEORA_DBC_QUOTE_MINT = '${devnet}'`);
   });
 
-  it('adds no dependency and leaves the disabled Pump route untouched', async () => {
+  it('adds no dependency and keeps the retired Pump route off the adapter (only the host state gate)', async () => {
     const pkg = JSON.parse(await readFile('package.json', 'utf8'));
     const all = JSON.stringify({ ...pkg.dependencies, ...pkg.devDependencies });
     expect(all).not.toMatch(/meteora/i);
     const pump = await readFile('src/lib/pump-launch.ts', 'utf8');
-    expect(pump).not.toMatch(/launch-route|meteora/i);
+    expect(pump).not.toMatch(/meteora|from '\.\.\/launch-route'/i);
   });
 
   it('runs the declared minimal host outside the application', async () => {

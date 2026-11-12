@@ -28,8 +28,10 @@ const request = {
 };
 
 const DECISION = 'DEC-2030-01-01-01'; // synthetic; no recorded economics decision exists
-const CONFIG = { placeholder: 'host-supplied' };
-const CONFIG_HASH = createHash('sha256').update('{"placeholder":"host-supplied"}').digest('hex');
+const CONFIG = { poolCreationFee: 'host-supplied' };
+const CONFIG_HASH = createHash('sha256')
+  .update('{"poolCreationFee":"host-supplied"}')
+  .digest('hex');
 let genesis = SOLANA_DEVNET_GENESIS_HASH;
 let pool: MeteoraPoolObservation | null = null;
 const issued = new Map<
