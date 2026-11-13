@@ -13,12 +13,14 @@ export class JobLeaseLostError extends Error {
 /** Renew at a third of the lease, so two consecutive failed renewals still leave a third of it. Derived, not tuned. */
 export const JOB_LEASE_RENEW_MS = (JOB_LEASE_MINUTES * 60000) / 3;
 /**
- * Total-run cap on renewal (DEC-2026-11-13-07 a, provisional): one attempt renews its lease for at most this long.
- * After it the lease runs out, the next assertJobLease() refuses further effects and the attempt counts as lost
- * (retried or dead-lettered as usual), so a hung handler cannot hold a job forever.
+ * Total-run cap on renewal (DEC-2026-11-13-07 a, provisional): one attempt renews its lease for at most this long,
+ * measured from the claim by the database clock. At the cap the run is marked lost, so assertJobLease() refuses at
+ * once; the lease row then runs out and the attempt counts as lost (retried or dead-lettered as usual), so a hung
+ * handler cannot hold a job forever.
  */
 export const JOB_LEASE_MAX_RUN_MS = 60 * 60000;
-type Held = Pick<Job, 'id' | 'lease'>;
+/** `lockedAt` is the claim time returned by claimJob(); the cap is measured from it. */
+type Held = Pick<Job, 'id' | 'lease'> & { lockedAt?: Date | null };
 /** `lost` is set by the renewal timer the moment the database says this worker no longer owns the job. */
 const held = new AsyncLocalStorage<Held & { lost: boolean }>();
 /**
@@ -40,9 +42,14 @@ export async function renewJobLease(job: Held) {
  * of being reclaimed mid-run; renewal stops when the handler settles. A failed renewal (database blip) is retried on
  * the next tick and never aborts the job: the next assertJobLease() still decides from the database. A renewal that
  * finds the lease gone marks the run lost, so the very next assertJobLease() refuses before any further effect.
- * Renewal stops for good once the attempt has run `maxRunMs` (JOB_LEASE_MAX_RUN_MS, 60 minutes): the lease then expires
- * by the database clock and the next assertJobLease() refuses, without marking the run lost earlier than the database
- * would. Provider calls should still carry their own timeouts.
+ *
+ * Total-run cap: on each tick the database clock is asked whether `maxRunMs` (JOB_LEASE_MAX_RUN_MS, 60 minutes) have
+ * passed since the claim (`job.lockedAt`, read from the row when the caller has no claim time). If so the run is
+ * marked lost, renewal stops for good and one JOB_LEASE_CAP line is logged; assertJobLease() refuses immediately.
+ * Tolerance: the cap is noticed only on a tick, so in-process refusal begins between `maxRunMs` and `maxRunMs` plus
+ * one tick (60 to about 63.3 minutes); the last renewal still leaves the row leased for up to a further lease, so
+ * another worker cannot reclaim before about 70 minutes after the claim. An effect already in flight when the cap is
+ * noticed is not interrupted; provider calls should still carry their own timeouts. No app clock is consulted.
  */
 export async function runUnderJobLease<T>(
   job: Held,
@@ -50,29 +57,37 @@ export async function runUnderJobLease<T>(
   options: { renewEveryMs?: number; maxRunMs?: number } = {},
 ) {
   const store = { id: job.id, lease: job.lease, lost: false };
-  let renewing = false;
-  const startedAt = performance.now();
   const maxRunMs = options.maxRunMs ?? JOB_LEASE_MAX_RUN_MS;
+  let claimedAt: Date | null = null;
+  if (job.lease)
+    claimedAt =
+      job.lockedAt ??
+      (
+        await db.$queryRaw<
+          { at: Date }[]
+        >`SELECT COALESCE((SELECT "lockedAt" FROM "Job" WHERE id=${job.id} AND "lease"=${job.lease}), NOW() AT TIME ZONE 'UTC') AS at`
+      )[0].at;
+  let renewing = false;
+  const stopAtCap = () => {
+    store.lost = true;
+    clearInterval(timer!);
+    console.error(
+      JSON.stringify({
+        job: job.id,
+        code: 'JOB_LEASE_CAP',
+        note: 'lease renewal stopped at the total-run cap',
+        ...correlationFields(),
+      }),
+    );
+  };
   const timer: ReturnType<typeof setInterval> | null = job.lease
     ? setInterval(() => {
-        if (performance.now() - startedAt >= maxRunMs) {
-          // Cap reached: stop renewing; the lease expires and assertJobLease() refuses from then on.
-          clearInterval(timer!);
-          console.error(
-            JSON.stringify({
-              job: job.id,
-              code: 'JOB_LEASE_CAP',
-              note: 'lease renewal stopped at the total-run cap',
-              ...correlationFields(),
-            }),
-          );
-          return;
-        }
         if (renewing || store.lost) return;
         renewing = true;
-        renewJobLease(store)
-          .then((ok) => {
-            if (ok) return;
+        capReached(claimedAt!, maxRunMs)
+          .then(async (capped) => {
+            if (capped) return stopAtCap();
+            if (await renewJobLease(store)) return;
             store.lost = true;
             console.error(
               JSON.stringify({ job: job.id, error: 'Job lease was lost while running.' }),
@@ -92,6 +107,13 @@ export async function runUnderJobLease<T>(
   } finally {
     if (timer) clearInterval(timer);
   }
+}
+/** Has `maxRunMs` passed since `claimedAt`, by the database clock (the one that decides lease expiry)? */
+async function capReached(claimedAt: Date, maxRunMs: number) {
+  const [row] = await db.$queryRaw<
+    { capped: boolean }[]
+  >`SELECT ((NOW() AT TIME ZONE 'UTC') >= ${claimedAt}::timestamp + make_interval(secs => ${maxRunMs / 1000}::float8)) AS capped`;
+  return row.capped;
 }
 /**
  * Call immediately before an external side effect (provider call, broadcast, send). Throws JobLeaseLostError when
