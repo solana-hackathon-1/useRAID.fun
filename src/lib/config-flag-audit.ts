@@ -14,7 +14,7 @@ import {
  * Root host for the configuration flag-change audit (DEC-2026-11-13-01, T037-W03). After the validator passes, each web
  * and worker process compares its flag snapshot with the latest recorded one for its environment and process kind
  * and appends one `ConfigFlagChange` row per changed flag. The first start of an environment and process kind records
- * a baseline as `INITIAL_OBSERVATION`. A per-(environment, process kind) transaction advisory lock makes concurrent
+ * a baseline as `INITIAL_OBSERVATION`. A transaction table lock (SHARE ROW EXCLUSIVE; no advisory key, which the identity-lock architecture scan restricts) makes concurrent
  * replicas record a change once. Only flag names and the words true/false/unset/invalid are stored.
  *
  * With `RAID_ENVIRONMENT=production` a failed write throws `CONFIG_AUDIT_FAILED` (web exits 1, the worker's start
@@ -43,7 +43,9 @@ async function record(client: AuditClient, role: ConfigRole, env: Env) {
   const next = flagSnapshot(env);
   return client.$transaction(
     async (tx) => {
-      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtextextended(${`ConfigFlagChange:${environment}:${role}`}, 0))`;
+      // SHARE ROW EXCLUSIVE conflicts with itself and with inserts, never with plain reads: concurrent replicas
+      // queue here (a startup-only, tiny table), so the second one sees the first one's rows and records nothing.
+      await tx.$executeRaw`LOCK TABLE "ConfigFlagChange" IN SHARE ROW EXCLUSIVE MODE`;
       const latest = await tx.$queryRaw<{ flagName: string; newValue: FlagValue }[]>`
         SELECT DISTINCT ON ("flagName") "flagName", "newValue" FROM "ConfigFlagChange"
         WHERE "environment" = ${environment} AND "processKind" = ${role}
