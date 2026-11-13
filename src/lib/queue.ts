@@ -55,18 +55,26 @@ export async function finishJob(
     return { dead: false };
   }
   const dead = !options.refundAttempt && job.attempts >= JOB_MAX_ATTEMPTS;
-  const updated = await db.job.updateMany({
+  const runAt = new Date(
+    Date.now() + (delaySeconds || Math.min(900, 30 * 2 ** job.attempts)) * 1000,
+  );
+  if (dead) {
+    // failedAt is judged against the database clock (submission repair grace), so it is stamped by it, never new Date().
+    const updated =
+      await db.$executeRaw`UPDATE "Job" SET "lockedAt"=NULL, "lease"=NULL, "error"=${error}, "failedAt"=(NOW() AT TIME ZONE 'UTC'), "runAt"=(${runAt}::timestamptz AT TIME ZONE 'UTC') WHERE id=${job.id} AND "lease" IS NOT DISTINCT FROM ${job.lease}`;
+    return { dead: updated === 1 };
+  }
+  await db.job.updateMany({
     where: { id: job.id, lease: job.lease },
     data: {
       lockedAt: null,
       lease: null,
       error,
       ...(options.refundAttempt ? { attempts: { decrement: 1 } } : {}),
-      ...(dead ? { failedAt: new Date() } : {}),
-      runAt: new Date(Date.now() + (delaySeconds || Math.min(900, 30 * 2 ** job.attempts)) * 1000),
+      runAt,
     },
   });
-  return { dead: dead && updated.count === 1 };
+  return { dead: false };
 }
 export const EXHAUSTED_JOB_ERROR =
   'The job used all its attempts without finishing (worker crash or lost lease).';
