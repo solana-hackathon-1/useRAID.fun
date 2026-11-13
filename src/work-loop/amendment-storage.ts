@@ -1,6 +1,7 @@
 import {
   canonicalRequestDigest,
   executeIdempotentCommand,
+  CommandReceiptError,
   type CommandReceiptTransaction as Tx,
 } from '../command-receipts';
 import { TermsSnapshotSchema, type TermsSnapshot } from '../contracts/entities';
@@ -15,6 +16,8 @@ import {
   WithdrawAmendmentInput,
   type Amendment,
   type AmendmentHost,
+  type AmendmentDeskHost,
+  type AmendmentSnapshotReader,
   type RewardIncrease,
 } from './amendment-contracts';
 import { fail, validate, session, currentActor, currentHuman, clock } from './engagement-authority';
@@ -89,7 +92,7 @@ function apply(
   if (!parsed.success) fail('INVALID_INPUT');
   return parsed.data;
 }
-async function effective(tx: Tx, engagementId: string) {
+async function effective(tx: Pick<Tx, 'query'>, engagementId: string) {
   const rows = await tx.query<{ terms: unknown; digest: string }>(
     `SELECT raid_effective_terms(e."id") AS terms,COALESCE((SELECT a."digest" FROM "EngagementAmendment" a WHERE a."engagementId"=e."id" AND a."state"='ACCEPTED' ORDER BY a."sequence" DESC LIMIT 1),e."acceptedDigest") AS digest FROM "Engagement" e WHERE e."id"=$1::uuid`,
     [engagementId],
@@ -104,7 +107,7 @@ async function effective(tx: Tx, engagementId: string) {
   return parsed.data;
 }
 /** Only the listing's Founder with current host authority; never an affected member. Null covers missing and denied. */
-async function founderBinding(tx: Tx, engagementId: string, accountId: string) {
+async function founderBinding(tx: Pick<Tx, 'query'>, engagementId: string, accountId: string) {
   const rows = await tx.query<{ guildId: string; creatorAccountId: string }>(
     'SELECT e."guildId",l."creatorAccountId" FROM "Engagement" e JOIN "RaidSlot" s ON s."id"=e."slotId" JOIN "WorkListing" l ON l."id"=s."listingId" WHERE e."id"=$1::uuid',
     [engagementId],
@@ -499,4 +502,112 @@ export async function readEngagementAmendments(
     [engagementId],
   );
   return rows.map(view);
+}
+const SNAPSHOT_SQL = /^\s*(?:SELECT|WITH|SHOW)\b/i;
+const SNAPSHOT_LOCK = /advisory|\bFOR\s+(?:NO\s+KEY\s+)?(?:UPDATE|SHARE)\b|\bLOCK\s+TABLE\b/i;
+/** Guards what a host may run on the desk snapshot; a refusal is recorded so the engagement is omitted even if swallowed. */
+function snapshotReader(tx: Pick<Tx, 'query'>) {
+  const state = { refused: false };
+  const reader: AmendmentSnapshotReader = {
+    query: async <Row>(sql: string, bindings: readonly (string | null)[]) => {
+      if (typeof sql !== 'string' || !SNAPSHOT_SQL.test(sql) || SNAPSHOT_LOCK.test(sql)) {
+        state.refused = true;
+        fail('STORAGE_CONTRACT');
+      }
+      return tx.query<Row>(sql, bindings);
+    },
+  };
+  return { reader, state };
+}
+const isRetry = (error: unknown) =>
+  error instanceof CommandReceiptError && error.code === 'RETRY_TRANSACTION';
+/**
+ * Asks the host about one Founder engagement inside a savepoint so a misbehaving host (lock, write, thrown error)
+ * costs only that engagement: the savepoint rolls back and the snapshot, which a rollback never changes, stays usable.
+ */
+async function founderReadAuthority(
+  tx: Pick<Tx, 'query'>,
+  engagementId: string,
+  actor: WorkActor,
+  host: AmendmentDeskHost,
+) {
+  const guildId = await founderBinding(tx, engagementId, actor.accountId);
+  if (guildId === null) return false;
+  const { reader, state } = snapshotReader(tx);
+  await tx.query('SAVEPOINT desk_authorize', []);
+  let allowed = false;
+  try {
+    allowed = (await host.authorizeRead(reader, actor, { engagementId, guildId })) === true;
+  } catch (error) {
+    if (isRetry(error)) throw error;
+  }
+  if (allowed && !state.refused) {
+    try {
+      await tx.query('RELEASE SAVEPOINT desk_authorize', []);
+      return true;
+    } catch (error) {
+      // The host swallowed a database error: the transaction is aborted until the savepoint rolls back.
+      if (isRetry(error)) throw error;
+    }
+  }
+  await tx.query('ROLLBACK TO SAVEPOINT desk_authorize', []);
+  await tx.query('RELEASE SAVEPOINT desk_authorize', []);
+  return false;
+}
+/**
+ * Own-view desk entries read inside ONE caller-owned `REPEATABLE READ`, `READ ONLY` snapshot (#361-5). Unlike the
+ * per-engagement readers above it takes no identity advisory locks and writes nothing, so it has no lock order to
+ * keep; authority is judged against that same snapshot as the history and terms it guards (fixed at snapshot time, so
+ * no staler than the transaction's timeout). The caller's own current Session and human Participant are still
+ * required (a lapsed Session fails the whole desk closed), but a candidate the caller does not hold authority over at
+ * the snapshot (not a member, or not the listing's authorized Founder) is omitted rather than failing the rest.
+ * Founder authority comes from `AmendmentDeskHost.authorizeRead`, which only ever sees a query-only snapshot port.
+ * Reading stops once `limit` entries are shown. Every entry's history and terms describe the same instant.
+ */
+export async function readAmendmentDeskEntries(
+  tx: Pick<Tx, 'query'>,
+  actor: WorkActor,
+  candidates: readonly { engagementId: string; role: 'MEMBER' | 'FOUNDER' }[],
+  host: Partial<AmendmentDeskHost>,
+  limit: number,
+) {
+  if (typeof tx?.query !== 'function') fail('STORAGE_CONTRACT');
+  if (
+    !InternalId.safeParse(actor?.accountId).success ||
+    !/^[a-f0-9]{64}$/.test(actor?.sessionHash ?? '')
+  )
+    fail('UNAUTHENTICATED');
+  await session(tx, actor);
+  const participants = await tx.query<{ id: string; kind: string }>(
+    'SELECT "id"::text,"kind" FROM "Participant" WHERE "accountId"=$1',
+    [actor.accountId],
+  );
+  if (participants.length !== 1 || participants[0].kind !== 'HUMAN') fail('FORBIDDEN');
+  const entries = [];
+  for (const { engagementId, role } of candidates) {
+    if (entries.length >= limit) break;
+    if (!/^[0-9a-f-]{36}$/.test(String(engagementId))) fail('INVALID_INPUT');
+    if (role === 'MEMBER') {
+      const member = await tx.query(
+        'SELECT 1 FROM "EngagementMember" WHERE "engagementId"=$1::uuid AND "participantId"=$2::uuid',
+        [engagementId, participants[0].id],
+      );
+      if (member.length !== 1) continue;
+    } else {
+      if (typeof host?.authorizeRead !== 'function') fail('STORAGE_CONTRACT');
+      if (!(await founderReadAuthority(tx, engagementId, actor, host as AmendmentDeskHost)))
+        continue;
+    }
+    const rows = await tx.query<Row>(
+      `SELECT ${COLUMNS} FROM "EngagementAmendment" a WHERE a."engagementId"=$1::uuid ORDER BY a."sequence"`,
+      [engagementId],
+    );
+    entries.push({
+      engagementId,
+      role,
+      amendments: rows.map(view),
+      effectiveTerms: await effective(tx, engagementId),
+    });
+  }
+  return entries;
 }

@@ -7,6 +7,7 @@ const mocks = vi.hoisted(() => ({
   revoke: vi.fn(),
   propose: vi.fn(),
   respond: vi.fn(),
+  list: vi.fn(),
 }));
 vi.mock('next/headers', () => ({ cookies: async () => ({ get: mocks.cookie }) }));
 vi.mock('../src/lib/auth', async (original) => ({
@@ -19,10 +20,14 @@ vi.mock('../src/lib/guild-roles-host', () => ({
   revokeRole: mocks.revoke,
   proposeTransfer: mocks.propose,
   respondTransfer: mocks.respond,
+  listTransfers: mocks.list,
 }));
 import { POST as grantRoute } from '../src/app/api/v1/guild-grants/route';
 import { POST as revokeRoute } from '../src/app/api/v1/guild-grants/[grantId]/revoke/route';
-import { POST as proposeRoute } from '../src/app/api/v1/guild-ownership-transfers/route';
+import {
+  GET as listRoute,
+  POST as proposeRoute,
+} from '../src/app/api/v1/guild-ownership-transfers/route';
 import { POST as respondRoute } from '../src/app/api/v1/guild-ownership-transfers/[transferId]/route';
 import { hash, HttpError } from '../src/lib/auth-primitives';
 import { config } from '../src/lib/config';
@@ -115,4 +120,28 @@ it('refuses bodies carrying an actor, a role grant id or unknown fields with 422
     (await grantRoute(send('/api/v1/guild-grants', grantBody, { 'Idempotency-Key': '' }))).status,
   ).toBe(422);
   expect(none()).toBe(true);
+});
+
+it('lists pending transfers for the cookie-derived actor in the read bucket, with no command checks', async () => {
+  mocks.list.mockResolvedValue({ version: 'v1', transfers: [], truncated: false });
+  const response = await listRoute(routeRequest(origin + '/api/v1/guild-ownership-transfers'));
+  expect(response.status).toBe(200);
+  expect(mocks.list).toHaveBeenCalledWith({
+    accountId: 'synthetic-self',
+    sessionHash: hash('synthetic-cookie'),
+  });
+  expect(mocks.rate).toHaveBeenCalledWith('guild-roles-read:synthetic-self', 120, 60);
+});
+
+it('refuses an anonymous or throttled list before any host call', async () => {
+  mocks.user.mockRejectedValue(new HttpError(401, 'Sign in'));
+  expect((await listRoute(routeRequest(origin + '/api/v1/guild-ownership-transfers'))).status).toBe(
+    401,
+  );
+  mocks.user.mockResolvedValue({ id: 'synthetic-self' });
+  mocks.rate.mockRejectedValue(new HttpError(429, 'Slow down'));
+  expect((await listRoute(routeRequest(origin + '/api/v1/guild-ownership-transfers'))).status).toBe(
+    429,
+  );
+  expect(mocks.list).not.toHaveBeenCalled();
 });

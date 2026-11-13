@@ -14,6 +14,7 @@ import {
   GuildRoleGrantViewSchema,
   GuildStorageError,
   OwnershipTransferViewSchema,
+  PendingOwnershipTransferListSchema,
   ProposeOwnershipTransferInputSchema,
   type GuildActor,
   type GuildCommand,
@@ -28,8 +29,8 @@ export class GuildRolesHttpError extends GuildHttpAuthorityError {
 /**
  * Transport-neutral host: authority comes from the host's own session, never from the request body. The commands are
  * the host's wiring of `grantGuildRole`, `revokeGuildRole`, `proposeOwnershipTransfer` and `respondOwnershipTransfer`
- * (the last with the host's own `authorizeOwnershipTransfer` policy). There are no reads here, so only the command
- * throttle scope is used.
+ * (the last with the host's own `authorizeOwnershipTransfer` policy), plus `listTransfers`, the one read: the open
+ * proposals the caller is a party to (the read throttle scope; every other call uses the command scope).
  */
 export interface GuildRolesHttpHost {
   readonly version: 'v1';
@@ -41,6 +42,7 @@ export interface GuildRolesHttpHost {
   revoke(command: GuildCommand): Promise<unknown>;
   propose(command: GuildCommand): Promise<unknown>;
   respond(command: GuildCommand): Promise<unknown>;
+  listTransfers(actor: GuildActor): Promise<unknown>;
 }
 const GrantResultSchema = z.strictObject({
   status: z.enum(['EXECUTED', 'REPLAYED']),
@@ -76,6 +78,7 @@ export function createGuildRolesHandlers(host: GuildRolesHttpHost) {
     'revoke',
     'propose',
     'respond',
+    'listTransfers',
   ]);
   const correlation = () => guildCorrelation(host);
   /** Origin, then the session actor, then the command throttle; the body is read only after all three passed. */
@@ -93,6 +96,35 @@ export function createGuildRolesHandlers(host: GuildRolesHttpHost) {
     });
   const ok = (value: unknown) => Response.json(value, { headers: guildHttpHeaders });
   return {
+    /** The caller's own open proposals, from the session alone: no query, so nobody can ask about another account. */
+    async LIST(request: Request) {
+      const requestId = correlation();
+      try {
+        const actor = await host.actor();
+        await host.rateLimit(actor, 'READ');
+        if (new URL(request.url).searchParams.size !== 0) throw new JsonBodyFailure(422);
+        const value = PendingOwnershipTransferListSchema.safeParse(await host.listTransfers(actor));
+        if (
+          !value.success ||
+          value.data.transfers.some(
+            (t) =>
+              // Storage answers only for the two parties of an open proposal, and the proposer's id only to the
+              // proposer: a recipient's row carries `null`. Anything else is a faulty host (or a leak).
+              !(
+                t.fromAccountId === actor.accountId ||
+                (t.toAccountId === actor.accountId && t.fromAccountId === null)
+              ) ||
+              t.state !== 'PROPOSED' ||
+              t.decidedAt !== null ||
+              t.applied,
+          )
+        )
+          throw contract();
+        return ok(value.data);
+      } catch (error) {
+        return guildHttpFailure(error, requestId, STORAGE_CODES);
+      }
+    },
     async GRANT(request: Request) {
       const requestId = correlation();
       try {
@@ -200,12 +232,14 @@ export function createGuildRolesHandlers(host: GuildRolesHttpHost) {
         );
         if (!value.success) throw contract();
         const { transfer } = value.data;
-        const party =
-          body.data.decision === 'WITHDRAW' ? transfer.fromAccountId : transfer.toAccountId;
+        const withdraw = body.data.decision === 'WITHDRAW';
         if (
           !same(transfer.id, target) ||
           !same(transfer.guildId, body.data.guildId) ||
-          party !== actor.accountId ||
+          // The proposer withdraws and sees their own id; the recipient decides and must not be told who proposed (#448).
+          (withdraw
+            ? transfer.fromAccountId !== actor.accountId
+            : transfer.toAccountId !== actor.accountId || transfer.fromAccountId !== null) ||
           // A decision is final, so a replay shows the same outcome as the fresh answer: the requested
           // decision, or the lapse that overtook it (which moves nothing).
           (transfer.state !== FINAL_STATE[body.data.decision] && transfer.state !== 'EXPIRED') ||

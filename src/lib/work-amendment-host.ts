@@ -4,15 +4,13 @@ import {
   proposeAmendment,
   respondToAmendment,
   withdrawAmendment,
-  readEngagementAmendments,
-  readEffectiveTerms,
+  readAmendmentDeskEntries,
 } from '../work-loop/amendment-storage';
 import type { AmendmentDesk } from '../work-loop/amendment-desk-contracts';
-import { TermsSnapshotSchema } from '../contracts/entities';
 import { samePolicy, type RewardAsset } from '../work-loop/creation-form';
 import { assetKey } from '../contracts/assets';
 import { workAmendmentsEnabled } from './config';
-import { runCommandTransaction } from './command-receipts-adapter';
+import { runCommandTransaction, runSnapshotReadTransaction } from './command-receipts-adapter';
 import { isWorkOperator, workWorkspaceConfiguration } from './work-workspace-host';
 import { rewardCatalog } from './work-creation-host';
 import { db } from './db';
@@ -55,6 +53,8 @@ export function createRootAmendmentHost(config: RootAmendmentConfig): AmendmentH
   return {
     allowNewWrites: config.allowNewWrites,
     authorize: async (_tx, actor) => isOperator(actor.accountId),
+    /** Desk reads: the same synthetic allowlist, answered without touching the snapshot port. */
+    authorizeRead: async (_snapshot, actor) => isOperator(actor.accountId),
     authorizeProposer: async (_tx, proposer) => isOperator(proposer.accountId),
     reserveAdditionalFunding: async (_tx, binding) =>
       covered(catalog, binding.increase) ? reservationRef(binding.amendmentId) : null,
@@ -86,30 +86,26 @@ interface Row {
 /**
  * The caller's own amendable engagements, as member and (for an allowlisted listing creator) as Founder, with every
  * recorded version of their terms. Reads stay available when writes are off; they need the workspace read switch.
- * Each storage read presents the caller's own current Session in its own transaction (one identity lock set per
- * transaction), so a lapsed Session fails the desk closed; the list query alone grants nothing.
  *
- * Known behaviour (#361-5): the desk is NOT one snapshot. It is one list transaction plus, per engagement (at most
- * LIMIT = 20), one history transaction and, for a member, one effective-terms transaction: up to 41 in all. They
- * cannot share a transaction because an identity lock set is prepared once per transaction and then sealed
- * (`prepareModuleIdentity`), and each storage read prepares its own. Authority is therefore re-proven per engagement,
- * and an engagement whose member was removed, or whose Founder left the operator allowlist, between the list and its
- * read fails the whole desk closed (FORBIDDEN/NOT_FOUND) instead of omitting that one row. This is safe, never
- * widens access and a reload shows the current set; merging the reads would need a storage entry that accepts a
- * prepared lock capability, which is a storage-contract change outside this host.
+ * One snapshot (#361-5): the engagement lists, each history and each effective-terms copy are read in ONE
+ * `REPEATABLE READ`, `READ ONLY` transaction (`runSnapshotReadTransaction`), so a consent or withdrawal committing
+ * mid-read can never show a history from before it beside terms from after it. The read takes no identity advisory
+ * locks (write paths keep their lock order, unchanged); the caller's own current Session and human Participant are
+ * checked inside the snapshot and fail the desk closed, but an engagement the caller no longer has authority over is
+ * omitted instead of failing the whole desk. The list query alone grants nothing: every entry re-proves authority.
  */
 export async function readAmendmentDeskFromHost(actor: WorkActor): Promise<AmendmentDesk> {
   if (!workWorkspaceConfiguration().readsAvailable) throw new WorkError('STORAGE_CONTRACT');
   const readHost = host();
-  const { members, founder } = await runCommandTransaction(db, async (tx) => ({
-    members: await tx.query<Row>(
+  const engagements = await runSnapshotReadTransaction(db, async (tx) => {
+    const members = await tx.query<Row>(
       `SELECT e."id"::text AS id,e."state",t."snapshot"->>'title' AS title FROM "Engagement" e
        JOIN "EngagementMember" m ON m."engagementId"=e."id" JOIN "Participant" p ON p."id"=m."participantId"
        JOIN "TermsVersion" t ON t."id"=e."termsVersionId"
        WHERE p."accountId"=$1 AND e."state" IN ('ACCESS_PENDING','IN_PROGRESS') ORDER BY e."createdAt" DESC LIMIT ${LIMIT}`,
       [actor.accountId],
-    ),
-    founder: isWorkOperator(actor.accountId)
+    );
+    const founder = isWorkOperator(actor.accountId)
       ? await tx.query<Row>(
           `SELECT e."id"::text AS id,e."state",t."snapshot"->>'title' AS title FROM "Engagement" e
            JOIN "RaidSlot" s ON s."id"=e."slotId" JOIN "WorkListing" l ON l."id"=s."listingId"
@@ -119,43 +115,36 @@ export async function readAmendmentDeskFromHost(actor: WorkActor): Promise<Amend
            ORDER BY e."createdAt" DESC LIMIT ${LIMIT}`,
           [actor.accountId],
         )
-      : [],
-  }));
-  const engagements = [];
-  for (const [role, rows] of [
-    ['MEMBER', members],
-    ['FOUNDER', founder],
-  ] as const)
-    for (const row of rows) {
-      if (engagements.length >= LIMIT) break;
-      // Both copies are read AFTER the history, so a consent in between shows the newer terms rather than a stale
-      // promise. The member's copy has its own authorized storage read. The Founder's is read in the history's own
-      // transaction, once `readEngagementAmendments` has proven Founder authority there (the Session identity locks
-      // it takes are held to the end of that transaction), so it cannot be older than the history beside it.
-      let founderTerms: unknown;
-      const amendments = await runCommandTransaction(db, async (tx) => {
-        const history = await readEngagementAmendments(tx, actor, row.id, readHost);
-        if (role === 'FOUNDER') {
-          const read = await tx.query<{ terms: unknown }>(
-            'SELECT raid_effective_terms($1::uuid) AS terms',
-            [row.id],
-          );
-          founderTerms = read[0]?.terms;
-        }
-        return history;
-      });
-      const effectiveTerms =
-        role === 'MEMBER'
-          ? await runCommandTransaction(db, (tx) => readEffectiveTerms(tx, actor, row.id))
-          : TermsSnapshotSchema.parse(founderTerms);
-      engagements.push({
-        engagementId: row.id,
-        title: row.title,
-        state: row.state,
-        role,
-        effectiveTerms,
-        amendments,
-      });
-    }
+      : [];
+    const candidates = [
+      ...members.map((row) => ({ row, role: 'MEMBER' as const })),
+      ...founder.map((row) => ({ row, role: 'FOUNDER' as const })),
+    ];
+    const entries = await readAmendmentDeskEntries(
+      tx,
+      actor,
+      candidates.map(({ row, role }) => ({ engagementId: row.id, role })),
+      readHost,
+      LIMIT,
+    );
+    const shown = new Map(entries.map((entry) => [`${entry.role}:${entry.engagementId}`, entry]));
+    return candidates
+      .flatMap(({ row, role }) => {
+        const entry = shown.get(`${role}:${row.id}`);
+        return entry
+          ? [
+              {
+                engagementId: row.id,
+                title: row.title,
+                state: row.state,
+                role,
+                effectiveTerms: entry.effectiveTerms,
+                amendments: entry.amendments,
+              },
+            ]
+          : [];
+      })
+      .slice(0, LIMIT);
+  });
   return { version: 'v1' as const, proposalsAvailable: workAmendmentsEnabled(), engagements };
 }

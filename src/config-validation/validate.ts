@@ -106,8 +106,20 @@ const TEST_DATABASE_WORDS = Object.freeze([
   'sample',
   'tmp',
   'scratch',
+  // DEC-2026-11-13-08 (1): non-production environment names are also refused as whole words.
+  'demo',
+  'dev',
+  'development',
+  'local',
+  'staging',
 ]);
 /** Well-known placeholder addresses: the system program, any sysvar, and `.env.example`-style stand-ins. */
+/**
+ * Non-blank `OPERATOR_PUBLIC_KEY` values shipped in `.env.example` (DEC-2026-11-13-08 (2)); refused in production
+ * even when no sample prefix matches. The file leaves the key blank today (unset stays allowed), so this is empty;
+ * `tests/config-refusals.test.ts` fails if `.env.example` gains a value that is not listed here.
+ */
+export const ENV_EXAMPLE_OPERATOR_PUBLIC_KEYS: readonly string[] = Object.freeze([]);
 const SAMPLE_KEY = /^(1{32}|sysvar|your|sample|example|placeholder|changeme|todo|xxx)/i;
 
 /** `undefined` when unset or blank, `null` when present but not a URL (never echoed). */
@@ -238,7 +250,8 @@ export function validateRuntimeConfig(env: ConfigEnv, role: ConfigRole): ConfigV
         .some((w) => TEST_DATABASE_WORDS.includes(w))
     )
       add('REFUSE', 'TEST_DATABASE_IN_PRODUCTION', 'DATABASE_URL');
-    if (SAMPLE_KEY.test((env.OPERATOR_PUBLIC_KEY ?? '').trim()))
+    const operatorKey = (env.OPERATOR_PUBLIC_KEY ?? '').trim();
+    if (SAMPLE_KEY.test(operatorKey) || ENV_EXAMPLE_OPERATOR_PUBLIC_KEYS.includes(operatorKey))
       add('REFUSE', 'SAMPLE_OPERATOR_KEY_IN_PRODUCTION', 'OPERATOR_PUBLIC_KEY');
   }
 
