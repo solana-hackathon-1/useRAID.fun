@@ -11,8 +11,9 @@ import { config } from './config';
 import { db } from './db';
 
 /**
- * Exact-string flag, default off. It gates new grants, proposals and responses. Revocation never waits for it: storage
- * keeps taking authority away possible during an incident, so switching writes off can never block undoing access.
+ * Exact-string flag, default off. It gates new grants, proposals and acceptances. Revocation, and withdrawing or
+ * declining an ownership transfer, never wait for it: storage keeps taking authority away (or cancelling pending
+ * authority) possible during an incident, so switching writes off can never block undoing access (DEC-2026-11-13-03).
  */
 export function guildRolesWriteConfiguration() {
   const writesAvailable = !config.demo && process.env.GUILD_ROLE_MANAGEMENT_ENABLED === 'true';

@@ -760,7 +760,37 @@ export async function grantGuildRole(
   return { status: result.status, grant: await loadGrant(tx, input.guildId, result.resultRef) };
 }
 /**
- * Revokes a grant: by the Founder, the account that issued it, or its grantee (surrender). Revoking a delegating profile
+ * Who may revoke a grant (DEC-2026-11-13-03 a): the current Founder, the grantee (surrender), or the issuer only while
+ * the issuer still holds the authority the grant was issued under, that is, is still the Founder or holds a live
+ * delegating `PROFILE` grant covering every field of a `PROFILE` grant. A former Founder therefore loses revoke power
+ * over what they issued as Founder (`TREASURY` and `DISPUTE` included); those grants stay in force until the new
+ * Founder or the grantee revokes them. Judged on the database clock against the current rows, never cached.
+ */
+async function revokeStanding(
+  tx: CommandReceiptTransaction,
+  guildId: string,
+  grantId: string,
+  accountId: string,
+): Promise<{ found: boolean; revoked: boolean; involved: boolean } | null> {
+  const rows = await query<{ found: boolean; revoked: boolean; involved: boolean }>(
+    tx,
+    `SELECT r."id" IS NOT NULL AS found,COALESCE(r."revokedAt" IS NOT NULL,false) AS revoked,
+       (g."founderAccountId"=$3 OR COALESCE(r."granteeAccountId"=$3,false) OR COALESCE(
+         r."grantedByAccountId"=$3 AND r."kind"='PROFILE'
+           AND EXISTS (SELECT 1 FROM "GuildRoleGrant" d WHERE d."guildId"=g."id" AND d."granteeAccountId"=$3
+             AND d."kind"='PROFILE' AND d."canDelegate" AND ${liveGrantSql('d.')})
+           AND NOT EXISTS (SELECT 1 FROM unnest(r."fields") f WHERE NOT EXISTS (
+             SELECT 1 FROM "GuildRoleGrant" d WHERE d."guildId"=g."id" AND d."granteeAccountId"=$3
+               AND d."kind"='PROFILE' AND d."canDelegate" AND ${liveGrantSql('d.')} AND f=ANY(d."fields"))),false)
+       ) AS involved
+     FROM "Guild" g LEFT JOIN "GuildRoleGrant" r ON r."id"=$2::uuid AND r."guildId"=g."id" WHERE g."id"=$1::uuid`,
+    [guildId, grantId, accountId],
+  );
+  return rows.length === 1 ? rows[0] : null;
+}
+/**
+ * Revokes a grant: by the current Founder, its grantee (surrender), or its issuer while the issuer still holds the
+ * authority it issued under (`revokeStanding`; a former Founder does not). Revoking a delegating profile
  * grant also revokes what that grantee passed on, except grants whose every field is still covered by another live
  * delegating grant of the grantee that lasts at least as long. Never blocked by the new-writes switch: taking authority
  * away must stay possible in an incident. A repeat revocation fails with `GRANT_REVOKED`, which callers treat as done.
@@ -776,8 +806,6 @@ export async function revokeGuildRole(
   if (!parsed.success) fail('INVALID_INPUT');
   const input = parsed.data,
     actor = command.actor;
-  const involved = (row: { founder: boolean; grantedBy: string; grantee: string }) =>
-    row.founder || row.grantedBy === actor.accountId || row.grantee === actor.accountId;
   const result = await executeIdempotentCommand(
     tx,
     {
@@ -789,31 +817,13 @@ export async function revokeGuildRole(
     },
     async () => {
       await authorize(tx, actor);
-      // Standing first, without a lock: only the Founder or someone involved in the grant may take it further, so a
-      // stranger cannot stall the Guild or learn whether a Guild or grant id exists (all answer FORBIDDEN).
-      const standing = await query<{
-        founder: boolean;
-        grantedBy: string | null;
-        grantee: string | null;
-        revoked: boolean | null;
-      }>(
-        tx,
-        `SELECT g."founderAccountId"=$3 AS founder,r."grantedByAccountId" AS "grantedBy",r."granteeAccountId" AS grantee,
-           r."revokedAt" IS NOT NULL AS revoked
-         FROM "Guild" g LEFT JOIN "GuildRoleGrant" r ON r."id"=$2::uuid AND r."guildId"=g."id" WHERE g."id"=$1::uuid`,
-        [input.guildId, input.grantId, actor.accountId],
-      );
-      if (
-        standing.length !== 1 ||
-        !(
-          standing[0].founder ||
-          standing[0].grantedBy === actor.accountId ||
-          standing[0].grantee === actor.accountId
-        )
-      )
-        fail('FORBIDDEN');
+      // Standing first, without a lock: only the current Founder, the grantee or an issuer who still holds the issuing
+      // authority may take it further, so a stranger (or a former Founder) cannot stall the Guild or learn whether a
+      // Guild or grant id exists (all answer FORBIDDEN).
+      const standing = await revokeStanding(tx, input.guildId, input.grantId, actor.accountId);
+      if (standing === null || !standing.involved) fail('FORBIDDEN');
       // The caller is involved, so naming the revoked state leaks nothing and needs no Guild lock.
-      if (standing[0].revoked) fail('GRANT_REVOKED');
+      if (standing.revoked) fail('GRANT_REVOKED');
       // The Guild row serializes revocation with profile edits, grants and other revocations.
       const guilds = await query<{ founderAccountId: string; revision: number }>(
         tx,
@@ -836,8 +846,8 @@ export async function revokeGuildRole(
       );
       if (grants.length !== 1) fail('NOT_FOUND');
       const grant = grants[0];
-      if (!involved({ founder: guilds[0].founderAccountId === actor.accountId, ...grant }))
-        fail('FORBIDDEN');
+      const locked = await revokeStanding(tx, input.guildId, input.grantId, actor.accountId);
+      if (locked === null || !locked.involved) fail('FORBIDDEN');
       if (grant.revoked) fail('GRANT_REVOKED');
       await query(
         tx,
@@ -879,15 +889,12 @@ export async function revokeGuildRole(
       };
     },
   );
-  // A replay is for the people involved in the grant, judged by identity rather than by whether the grant is live.
+  // A replay re-proves current standing like the first call (DEC-2026-11-13-03 a): a caller who has since lost the
+  // authority to revoke gets FORBIDDEN and no data. The grantee and the current Founder are judged by identity, and
+  // whether the grant is still live does not matter.
   await authorize(tx, actor);
-  const again = await query<{ founder: boolean; grantedBy: string; grantee: string }>(
-    tx,
-    `SELECT g."founderAccountId"=$3 AS founder,r."grantedByAccountId" AS "grantedBy",r."granteeAccountId" AS grantee
-     FROM "GuildRoleGrant" r JOIN "Guild" g ON g."id"=r."guildId" WHERE r."id"=$1::uuid AND r."guildId"=$2::uuid`,
-    [input.grantId, input.guildId, actor.accountId],
-  );
-  if (again.length !== 1 || !involved(again[0])) fail('FORBIDDEN');
+  const again = await revokeStanding(tx, input.guildId, input.grantId, actor.accountId);
+  if (again === null || !again.found || !again.involved) fail('FORBIDDEN');
   const grant = await loadGrant(tx, input.guildId, result.resultRef);
   // Only the Founder and profile managers may learn who issued the grant (the Founder id for non-profile kinds).
   const { kinds } = await authorityKinds(tx, actor.accountId, input.guildId);
@@ -1086,7 +1093,8 @@ export async function proposeOwnershipTransfer(
   return { status: result.status, transfer };
 }
 /**
- * The recipient accepts or declines; the proposing Founder withdraws. Accepting changes the Guild's Founder in the same
+ * The recipient accepts or declines; the proposing Founder withdraws. Only accepting is gated by `allowNewWrites`:
+ * withdrawing and declining stay possible with the flag off and writes disabled (DEC-2026-11-13-03 b). Accepting changes the Guild's Founder in the same
  * transaction, after the host approves the change and only if the recipient holds no live treasury or dispute grant in
  * the Guild (`FORBIDDEN`; they may surrender it and accept again).
  *
@@ -1123,7 +1131,9 @@ export async function respondOwnershipTransfer(
     },
     async ({ receiptId }) => {
       await authorize(tx, actor);
-      if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      // Only ACCEPT is a new write. WITHDRAW and DECLINE only cancel pending authority, so like revocation they are
+      // exempt from the role-management flag and the kill switch (DEC-2026-11-13-03 b).
+      if (input.decision === 'ACCEPT' && !host.allowNewWrites) fail('WRITES_DISABLED');
       // Standing first, without a lock: only the right party of this transfer (or the Founder, who may learn that a
       // transfer id is missing) may take it further, so a stranger cannot queue behind the Guild row and learns nothing
       // about which Guilds or transfers exist (all answer FORBIDDEN). The same rule is judged again under the lock.
