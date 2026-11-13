@@ -188,6 +188,7 @@ describe('#361-5 desk reads in one read-only snapshot', () => {
     snapshotRead.mockImplementation(async (_db, work) =>
       work({
         query: async (sql: string, bindings: string[]) => {
+          if (/SAVEPOINT/.test(sql)) return [];
           if (sql.includes('"suspended"')) return [{ suspended: false }];
           if (sql.includes('FROM "Participant" WHERE')) return [{ id: memberId, kind: 'HUMAN' }];
           if (sql.includes('"creatorAccountId"=$1')) return [row(engagementId), row(lostId)];
@@ -213,5 +214,38 @@ describe('#361-5 desk reads in one read-only snapshot', () => {
     expect(desk.engagements.map((e) => e.engagementId)).toEqual([engagementId]);
     expect(desk.engagements[0]).toMatchObject({ role: 'FOUNDER' });
     expect(desk.engagements[0].effectiveTerms.scope).toBe('Scope after the consent.');
+  });
+  it('stops reading engagements once the desk limit is shown', async () => {
+    vi.stubEnv('WORK_WORKSPACE_READS_ENABLED', 'true');
+    vi.stubEnv('RAID_WORK_OPERATOR_ACCOUNT_IDS', 'founder-1');
+    const id = (i: number) => `00000000-0000-4000-8000-${String(i).padStart(12, '0')}`;
+    const rows = (n: number, from = 0) =>
+      Array.from({ length: n }, (_, i) => ({ id: id(from + i), state: 'IN_PROGRESS', title: 'T' }));
+    const effectiveReads: string[] = [];
+    snapshotRead.mockImplementation(async (_db, work) =>
+      work({
+        query: async (sql: string, bindings: string[]) => {
+          if (/SAVEPOINT/.test(sql)) return [];
+          if (sql.includes('"suspended"')) return [{ suspended: false }];
+          if (sql.includes('FROM "Participant" WHERE')) return [{ id: 'p', kind: 'HUMAN' }];
+          if (sql.includes('p."accountId"=$1 AND e."state"')) return rows(20);
+          if (sql.includes('"creatorAccountId"=$1')) return rows(20, 20);
+          if (sql.includes('FROM "EngagementMember" WHERE')) return [{ '?column?': 1 }];
+          if (sql.includes('l."creatorAccountId" FROM'))
+            return [{ guildId: 'g', creatorAccountId: 'founder-1' }];
+          if (sql.includes('FROM "EngagementMember" m JOIN')) return [];
+          if (sql.includes('SELECT raid_effective_terms')) {
+            effectiveReads.push(bindings[0]);
+            return [{ terms: after, digest: canonicalRequestDigest(after) }];
+          }
+          if (sql.includes('FROM "EngagementAmendment" a WHERE')) return [];
+          throw new Error('unexpected query: ' + sql);
+        },
+      }),
+    );
+    const desk = await readAmendmentDeskFromHost(actor);
+    expect(desk.engagements).toHaveLength(20);
+    // 40 candidates were listed, but nothing beyond the 20 shown is read.
+    expect(effectiveReads).toHaveLength(20);
   });
 });

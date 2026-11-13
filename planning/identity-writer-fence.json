@@ -68,7 +68,7 @@
     "src/identity-storage/index.ts#ensureHumanParticipant": "50643d7ca39d0e18e6063b59433a6d6396c559c04e512f9542cab0a0e1aa3382",
     "src/lib/identity-storage-adapter.ts#createPrismaIdentityTransaction": "3f6b0ae6accd364b3e0d04a19793d6851edf75a5a45429fabffb3bfec4c6e3fd",
     "src/lib/command-receipts-adapter.ts#createPrismaCommandTransaction": "c5be3ad2be20a90ea985483cbea387f9c16048a4d864a02cf15e57d972115122",
-    "src/lib/command-receipts-adapter.ts#createPrismaSnapshotPort": "d189e13213a4e8824000c6ed2684556c8b7f8b6e3438a8797a082190370b151c",
+    "src/lib/command-receipts-adapter.ts#createPrismaSnapshotPort": "b21c9fc692ab3b4b1b8d433443b10ad0264aaa3b79fe56e2fa0d2bc8af34e62b",
     "src/lib/identity-cleanup.ts#sweepIdentityLeaves": "aeae026ed6329597b70db0be4af345591fcabd26e0c1442561c7cd20b85c2828"
   },
   "multiUserFunctions": {

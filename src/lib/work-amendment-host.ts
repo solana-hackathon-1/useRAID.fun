@@ -53,6 +53,8 @@ export function createRootAmendmentHost(config: RootAmendmentConfig): AmendmentH
   return {
     allowNewWrites: config.allowNewWrites,
     authorize: async (_tx, actor) => isOperator(actor.accountId),
+    /** Desk reads: the same synthetic allowlist, answered without touching the snapshot port. */
+    authorizeRead: async (_snapshot, actor) => isOperator(actor.accountId),
     authorizeProposer: async (_tx, proposer) => isOperator(proposer.accountId),
     reserveAdditionalFunding: async (_tx, binding) =>
       covered(catalog, binding.increase) ? reservationRef(binding.amendmentId) : null,
@@ -123,6 +125,7 @@ export async function readAmendmentDeskFromHost(actor: WorkActor): Promise<Amend
       actor,
       candidates.map(({ row, role }) => ({ engagementId: row.id, role })),
       readHost,
+      LIMIT,
     );
     const shown = new Map(entries.map((entry) => [`${entry.role}:${entry.engagementId}`, entry]));
     return candidates

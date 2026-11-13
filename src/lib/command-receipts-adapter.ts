@@ -53,6 +53,9 @@ export function createPrismaCommandTransaction(
     },
   };
 }
+/** Explicit bounds: a snapshot never holds a connection longer than this, so authority read in it is at most this stale. */
+const SNAPSHOT_MAX_WAIT_MS = 2000;
+const SNAPSHOT_TIMEOUT_MS = 5000;
 /**
  * Read-only query port for one consistent snapshot. It deliberately is NOT a `CommandReceiptTransaction`: that port is
  * READ COMMITTED and its readers take identity advisory locks, neither of which a snapshot read does.
@@ -61,7 +64,7 @@ export interface SnapshotReadTransaction {
   query<Row>(sql: string, bindings: readonly SqlBinding[]): Promise<Row[]>;
 }
 /** Binds the snapshot port to the already READ ONLY transaction; module-owned SQL only, errors classified. */
-export function createPrismaSnapshotPort(tx: Prisma.TransactionClient): SnapshotReadTransaction {
+function createPrismaSnapshotPort(tx: Prisma.TransactionClient): SnapshotReadTransaction {
   return {
     async query<Row>(sql: string, bindings: readonly SqlBinding[]): Promise<Row[]> {
       try {
@@ -102,8 +105,8 @@ export async function runSnapshotReadTransaction<T>(
           },
           {
             isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead,
-            maxWait: options.transaction?.maxWait ?? 2000,
-            timeout: options.transaction?.timeout ?? 5000,
+            maxWait: options.transaction?.maxWait ?? SNAPSHOT_MAX_WAIT_MS,
+            timeout: options.transaction?.timeout ?? SNAPSHOT_TIMEOUT_MS,
           },
         ),
       {
@@ -114,6 +117,9 @@ export async function runSnapshotReadTransaction<T>(
   } catch (error) {
     const classified = classifyCommandReceiptFailure(error);
     if (classified.code === 'RETRY_TRANSACTION') throw classified;
+    // An expired transaction (P2028) or no connection in time (P2024) is the sanitized unavailable answer, not raw Prisma.
+    const code = (error as { code?: unknown } | null)?.code;
+    if (code === 'P2028' || code === 'P2024') throw classified;
     throw error;
   }
 }
