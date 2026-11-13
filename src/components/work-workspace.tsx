@@ -485,14 +485,14 @@ function EngagementCard({
 export function MyRaidsWorkspace({
   initial,
   submissionsAvailable,
-  applicationsAvailable,
   startAvailable = false,
   api = defaultClient,
   amendmentApi,
 }: {
   initial: MyRaidsView;
   submissionsAvailable: boolean;
-  applicationsAvailable: boolean;
+  /** Reported by the host for compatibility. Withdrawing never depends on it (#273-7). */
+  applicationsAvailable?: boolean;
   startAvailable?: boolean;
   api?: Client;
   amendmentApi?: AmendmentClient;
@@ -572,7 +572,7 @@ export function MyRaidsWorkspace({
                   <button
                     type="button"
                     className="button secondary"
-                    disabled={!ready || !applicationsAvailable || runner.busy !== null}
+                    disabled={!ready || runner.busy !== null}
                     onClick={() =>
                       void runner.run(
                         intent,
@@ -584,9 +584,6 @@ export function MyRaidsWorkspace({
                   >
                     Withdraw application
                   </button>
-                  {!applicationsAvailable && (
-                    <p role="status">Withdrawing is currently unavailable.</p>
-                  )}
                 </>
               )}
             </section>

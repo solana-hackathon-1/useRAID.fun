@@ -134,3 +134,23 @@ it('re-raises a persistent missing worker session at a bounded interval so a los
   port.pass.mockResolvedValue(ok);
   expect(await runWorkClosureWorker(clock)).toEqual(ok);
 });
+it('raises one operator alert per stuck engagement with code and counts only', async () => {
+  vi.stubEnv('WORK_CLOSURE_ENABLED', 'true');
+  vi.stubEnv('WORK_CLOSURE_WORKER_ACCOUNT_ID', 'operator-1');
+  const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+  port.pass.mockResolvedValue({
+    considered: 1,
+    closed: 0,
+    skipped: [],
+    failed: [{ engagementId: 'e1', code: 'FORBIDDEN' }],
+    stuck: [{ engagementId: 'e1', code: 'FORBIDDEN', failures: 10 }],
+  });
+  await expect(runWorkClosureWorker()).rejects.toThrow(/FORBIDDEN/);
+  const alerts = log.mock.calls
+    .map(([line]) => JSON.parse(String(line)))
+    .filter((l) => l.alert === 'work-closure-stuck');
+  expect(alerts).toHaveLength(1);
+  expect(alerts[0]).toMatchObject({ engagementId: 'e1', code: 'FORBIDDEN', failures: 10 });
+  expect(JSON.stringify(alerts[0])).not.toMatch(/message|stack/);
+  log.mockRestore();
+});

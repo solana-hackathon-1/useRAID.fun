@@ -426,6 +426,7 @@ integration('T024 root composition: worker closure and operator closure route', 
     expect(await closures()).toEqual([]);
     expect(await commitments()).toHaveLength(4);
     // A larger budget on the same rows attempts all of them, so the bound above came from `maxFailures` alone.
+    await db.$executeRawUnsafe(`DELETE FROM "EngagementClosureBackoff"`);
     const wide = await closeOverdueBatch(ports({ host, limit: 10, maxFailures: 4 }));
     expect(wide.considered).toBe(4);
     expect(wide.failed.map((f) => f.engagementId)).toEqual(rows.map((r) => r.engagementId));
@@ -517,4 +518,151 @@ integration('T024 root composition: worker closure and operator closure route', 
     ).rejects.toMatchObject({ code: 'WRITES_DISABLED' });
     expect(await closures()).toHaveLength(1);
   }, 40000);
+
+  describe('durable per-engagement back-off (DEC-2026-11-13-06 a, #352 item 2)', () => {
+    const backoff = () =>
+      row<{
+        engagementId: string;
+        consecutiveFailures: number;
+        lastFailureCode: string;
+        delay: number;
+        alerted: boolean;
+      }>(
+        `SELECT "engagementId"::text,"consecutiveFailures","lastFailureCode",EXTRACT(EPOCH FROM "nextAttemptAt"-clock_timestamp())::float8 AS delay,"alertedAt" IS NOT NULL AS alerted FROM "EngagementClosureBackoff" ORDER BY 1`,
+      );
+    /** Makes every back-off due now, as if the delay had elapsed, without waiting for it. */
+    const elapse = () =>
+      db.$executeRawUnsafe(
+        `UPDATE "EngagementClosureBackoff" SET "nextAttemptAt"=clock_timestamp()`,
+      );
+    const denying = (failing: Set<string>) => {
+      const attempts: string[] = [];
+      return {
+        attempts,
+        host: {
+          allowNewWrites: true,
+          authorize: async (_tx: unknown, _a: unknown, t: { engagementId: string }) => {
+            attempts.push(t.engagementId);
+            return !failing.has(t.engagementId);
+          },
+        },
+      };
+    };
+    async function overdue() {
+      const a = await setup(soon());
+      await seedWorkHuman(db, operatorId);
+      await untilPast(soon().operationalClosure);
+      return a;
+    }
+
+    it('skips a failed engagement until its recorded next attempt, without closing or releasing it', async () => {
+      const a = await overdue();
+      const { host, attempts } = denying(new Set([a.engagementId]));
+      const first = await closeOverdueBatch(ports({ host }));
+      expect(first.failed).toEqual([{ engagementId: a.engagementId, code: 'FORBIDDEN' }]);
+      const [rec] = await backoff();
+      expect(rec).toMatchObject({
+        engagementId: a.engagementId,
+        consecutiveFailures: 1,
+        lastFailureCode: 'FORBIDDEN',
+        alerted: false,
+      });
+      expect(rec.delay).toBeGreaterThan(50);
+      expect(rec.delay).toBeLessThanOrEqual(60);
+      // A later pass inside the delay does not touch it: no attempt, no new failure, nothing closed or released.
+      const second = await closeOverdueBatch(ports({ host }));
+      expect(second).toMatchObject({ considered: 0, closed: 0, failed: [], skipped: [] });
+      expect(attempts).toEqual([a.engagementId]);
+      expect((await backoff())[0].consecutiveFailures).toBe(1);
+      expect(await closures()).toEqual([]);
+      expect(await commitments()).toHaveLength(1);
+    }, 60000);
+
+    it('doubles the delay from 1 minute to a 1 hour cap and keeps retrying at the cap', async () => {
+      const a = await overdue();
+      const { host } = denying(new Set([a.engagementId]));
+      const seen: number[] = [];
+      for (let n = 1; n <= 9; n++) {
+        await closeOverdueBatch(ports({ host }));
+        const [rec] = await backoff();
+        expect(rec.consecutiveFailures).toBe(n);
+        seen.push(Math.round(rec.delay / 10) * 10);
+        await elapse();
+      }
+      expect(seen).toEqual([60, 120, 240, 480, 960, 1920, 3600, 3600, 3600]);
+      expect(await commitments()).toHaveLength(1);
+    }, 60000);
+
+    it('resets on a successful close and drops the record of an engagement that is no longer active', async () => {
+      const a = await overdue();
+      const failing = new Set([a.engagementId]);
+      const { host } = denying(failing);
+      await closeOverdueBatch(ports({ host }));
+      expect(await backoff()).toHaveLength(1);
+      failing.clear();
+      await elapse();
+      expect(await closeOverdueBatch(ports({ host }))).toMatchObject({ closed: 1, failed: [] });
+      expect(await backoff()).toEqual([]);
+      expect(await commitments()).toEqual([]);
+      // Closed by another path while backing off: the next pass removes the stale record.
+      const b = await setup(soon());
+      await untilPast(soon().operationalClosure);
+      failing.add(b.engagementId);
+      await closeOverdueBatch(ports({ host }));
+      expect(await backoff()).toHaveLength(1);
+      await db.$transaction(async (t) => {
+        await t.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
+        await t.$executeRawUnsafe(
+          `UPDATE "Engagement" SET "state"='TERMINATED',"revision"="revision"+1 WHERE "id"=$1::uuid`,
+          b.engagementId,
+        );
+      });
+      await closeOverdueBatch(ports({ host }));
+      expect(await backoff()).toEqual([]);
+    }, 60000);
+
+    it('raises exactly one stuck alert at the 10th consecutive failure and still retries afterwards', async () => {
+      const a = await overdue();
+      const { host, attempts } = denying(new Set([a.engagementId]));
+      const stuck: unknown[] = [];
+      for (let n = 1; n <= 12; n++) {
+        const pass = await closeOverdueBatch(ports({ host }));
+        stuck.push(pass.stuck);
+        await elapse();
+      }
+      expect(stuck.slice(0, 9)).toEqual(Array(9).fill([]));
+      expect(stuck[9]).toEqual([{ engagementId: a.engagementId, code: 'FORBIDDEN', failures: 10 }]);
+      expect(stuck.slice(10)).toEqual([[], []]);
+      expect(attempts).toHaveLength(12);
+      expect((await backoff())[0]).toMatchObject({ consecutiveFailures: 12, alerted: true });
+      expect(await commitments()).toHaveLength(1);
+      // Worker health shows the stuck engagement while the closure worker is on.
+      const { workerHealthSnapshot } = await import('../src/lib/worker-health');
+      const health = await workerHealthSnapshot(new Date(), { closureEnabled: true });
+      expect(health.commitments).toMatchObject({ backingOff: 0, stuck: 1 });
+      await closeOverdueBatch(ports({ host }));
+      expect(
+        (await workerHealthSnapshot(new Date(), { closureEnabled: true })).commitments,
+      ).toMatchObject({ backingOff: 1, stuck: 1 });
+      expect(health.reasons).toContain('closure-stuck');
+      const quiet = await workerHealthSnapshot(new Date(), { closureEnabled: false });
+      expect(quiet.reasons).not.toContain('closure-stuck');
+    }, 90000);
+
+    it('backs off an engagement whose terms cannot be read', async () => {
+      const poison = await setup({ ...soon(), operationalClosure: at(8800) });
+      await seedWorkHuman(db, operatorId);
+      await db.$transaction(async (t) => {
+        await t.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
+        await t.$executeRawUnsafe(
+          `UPDATE "Engagement" SET "acceptedTerms"=jsonb_set("acceptedTerms",'{deadlines,operationalClosure}','"not-a-date"') WHERE "id"=$1::uuid`,
+          poison.engagementId,
+        );
+      });
+      const first = await closeOverdueBatch(ports());
+      expect(first.failed).toEqual([{ engagementId: poison.engagementId, code: 'TERMS_INVALID' }]);
+      expect(await closeOverdueBatch(ports())).toMatchObject({ considered: 0, failed: [] });
+      expect((await backoff())[0]).toMatchObject({ lastFailureCode: 'TERMS_INVALID' });
+    }, 60000);
+  });
 });

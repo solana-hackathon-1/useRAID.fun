@@ -432,4 +432,58 @@ integration('T042 safe lifecycle notifications and preferences', () => {
       ),
     ).rejects.toThrow(/payload/);
   });
+  it('pages the list with a stable keyset cursor: no repeats or gaps across ties, microseconds and new rows', async () => {
+    const worker = await seedWorkHuman(db, 'pager-' + randomUUID());
+    const other = await seedWorkHuman(db, 'other-' + randomUUID());
+    const insert = (account: string, count: number, prefix: string) =>
+      db.$executeRawUnsafe(
+        `INSERT INTO "Notification" ("accountId","kind","category","dedupeKey","payload","createdAt")
+         SELECT $1,'WORK_CLOSED','TRANSACTIONAL',$2||i::text,'{}'::jsonb,
+                timestamptz '2026-11-01 00:00:00+00' + ((i/4) * interval '1 microsecond')
+         FROM generate_series(1,$3::int) AS i`,
+        account,
+        prefix,
+        count,
+      );
+    await insert(worker.actor.accountId, 120, 'p');
+    await insert(other.actor.accountId, 3, 'o');
+    const first = await own(worker.actor);
+    expect(first.items).toHaveLength(50);
+    expect(first.unread).toBe(120);
+    expect(first.nextCursor).toMatch(/^[A-Za-z0-9_-]{1,200}$/);
+    const seen = first.items.map((n) => n.id);
+    let cursor = first.nextCursor;
+    let pages = 1;
+    while (cursor) {
+      if (pages === 1)
+        // A newer row arriving between pages must not shift or repeat older rows.
+        await db.$executeRawUnsafe(
+          `INSERT INTO "Notification" ("accountId","kind","category","dedupeKey","payload","createdAt") VALUES ($1,'WORK_CLOSED','TRANSACTIONAL','late','{}'::jsonb,timestamptz '2026-12-01 00:00:00+00')`,
+          worker.actor.accountId,
+        );
+      const page = await run((tx) => listOwnNotifications(tx, worker.actor, { cursor }));
+      expect(page.items.length).toBeLessThanOrEqual(50);
+      seen.push(...page.items.map((n) => n.id));
+      cursor = page.nextCursor;
+      pages += 1;
+    }
+    expect(pages).toBe(3);
+    expect(new Set(seen).size).toBe(120);
+    const order = await row<{ id: string }>(
+      `SELECT "id"::text FROM "Notification" WHERE "accountId"=$1 AND "dedupeKey"<>'late' ORDER BY "createdAt" DESC,"id" DESC`,
+      worker.actor.accountId,
+    );
+    expect(seen).toEqual(order.map((r) => r.id));
+    // Exactly 50 rows and no more: no cursor is offered.
+    expect((await own(other.actor)).nextCursor).toBeUndefined();
+    // Malformed or forged cursors are refused, and one person's cursor cannot reveal another's rows.
+    for (const bad of ['', 'x', '!!', Buffer.from('2026-11-01|nope').toString('base64url')])
+      await expect(
+        run((tx) => listOwnNotifications(tx, worker.actor, { cursor: bad })),
+      ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    const foreign = await run((tx) =>
+      listOwnNotifications(tx, other.actor, { cursor: first.nextCursor }),
+    );
+    expect(foreign.items.map((n) => n.id).filter((x) => seen.includes(x))).toEqual([]);
+  });
 });

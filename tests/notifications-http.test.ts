@@ -176,5 +176,46 @@ describe('T042 notification client and panel', () => {
       createElement(NotificationsPanel, { initial: { ...state, items: [], unread: 0 } }),
     );
     expect(empty).toContain('No notifications yet.');
+    expect(html).not.toContain('Show older');
+    const more = renderToStaticMarkup(
+      createElement(NotificationsPanel, { initial: { ...state, nextCursor: 'abc_-DEF123' } }),
+    );
+    expect(more).toMatch(/<button[^>]*disabled[^>]*>Show older notifications<\/button>/);
+  });
+  it('passes only a well-formed cursor to the host, accepts an additive nextCursor and refuses other queries', async () => {
+    const seen: unknown[] = [];
+    const paged = createNotificationHandlers(
+      host({
+        state: async (_a, options) => {
+          seen.push(options);
+          return { ...state, nextCursor: 'MjAyNi0xMS0wMVQwMDowMDowMC4wMDAwMDBafDExMQ' };
+        },
+      }),
+    );
+    const url = 'http://localhost/api/v1/notifications';
+    const first = await paged.STATE(new Request(url));
+    expect((await first.json()).nextCursor).toBe('MjAyNi0xMS0wMVQwMDowMDowMC4wMDAwMDBafDExMQ');
+    expect((await paged.STATE(new Request(url + '?cursor=abc_-DEF123'))).status).toBe(200);
+    expect(seen).toEqual([undefined, { cursor: 'abc_-DEF123' }]);
+    for (const q of ['?cursor=', '?cursor=a&cursor=b', '?cursor=a&x=1', '?cursor=bad$', '?limit=5'])
+      expect((await paged.STATE(new Request(url + q))).status, q).toBe(422);
+    expect(seen).toHaveLength(2);
+    // Without a next page the response is byte-compatible with the earlier v1 shape.
+    expect(NotificationStateSchema.safeParse({ ...state, nextCursor: 'bad cursor!' }).success).toBe(
+      false,
+    );
+    expect(NotificationStateSchema.safeParse(state).success).toBe(true);
+  });
+  it('the client sends the cursor as the only query parameter', async () => {
+    const calls: string[] = [];
+    const client = createNotificationClient({
+      request: async (_m, path) => {
+        calls.push(path);
+        return { status: 200, body: state };
+      },
+    } as WorkTransport);
+    await client.state();
+    await client.state('abc_-DEF123');
+    expect(calls).toEqual(['/api/v1/notifications', '/api/v1/notifications?cursor=abc_-DEF123']);
   });
 });

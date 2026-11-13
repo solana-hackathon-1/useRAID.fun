@@ -42,6 +42,15 @@ const buckets = (counts: number[]) =>
     bucket,
     count: counts[index],
   }));
+const workListingFunnel = {
+  unit: 'WORK_LISTING',
+  drafted: { count: 0, definition: 'Synthetic definition text.', exclusions: prose },
+  fundedFromDrafted: metric,
+  acceptedFromFunded: metric,
+  workAcceptedFromAccepted: metric,
+  workAcceptedFromDrafted: metric,
+  paid: null,
+};
 const empty = {
   version: 'v1',
   generatedAt: '2026-10-30T00:00:00.000Z',
@@ -58,15 +67,9 @@ const empty = {
     guildToFirstOutcome: timing,
     raiderToFirstOutcome: timing,
   },
-  launchConversion: {
-    unit: 'WORK_LISTING',
-    drafted: { count: 0, definition: 'Synthetic definition text.', exclusions: prose },
-    fundedFromDrafted: metric,
-    acceptedFromFunded: metric,
-    workAcceptedFromAccepted: metric,
-    workAcceptedFromDrafted: metric,
-    paid: null,
-  },
+  workListingFunnel,
+  /** Deprecated one-version alias of `workListingFunnel` (DEC-2026-11-13-10). */
+  launchConversion: workListingFunnel,
   settlement: {
     definition: 'Synthetic definition text.',
     exclusions: prose,
@@ -226,8 +229,15 @@ describe('operator product-metrics HTTP boundary', () => {
         },
       },
       { ...valid, disputes: { ...valid.disputes, open: 5 } },
-      { ...valid, launchConversion: { ...valid.launchConversion, paid: 0 } },
-      { ...valid, launchConversion: { ...valid.launchConversion, unit: 'PARTICIPANT' } },
+      { ...valid, workListingFunnel: { ...valid.workListingFunnel, paid: 0 } },
+      { ...valid, workListingFunnel: { ...valid.workListingFunnel, unit: 'PARTICIPANT' } },
+      {
+        ...valid,
+        launchConversion: {
+          ...valid.workListingFunnel,
+          drafted: { ...valid.workListingFunnel.drafted, count: 9 },
+        },
+      },
     ]) {
       const response = await createProductMetricsHandlers(host({ metrics: async () => drift })).GET(
         get(),

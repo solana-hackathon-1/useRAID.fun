@@ -3,6 +3,7 @@ import type { WorkActor } from '../work-loop/contracts';
 import { fail, validate, currentActor } from '../work-loop/engagement-authority';
 import {
   NotificationListSchema,
+  NotificationCursorSchema,
   PreferencesSchema,
   describeNotification,
   type NotificationKind,
@@ -157,11 +158,39 @@ export async function dispatchDeadlineReminders(
   return { created };
 }
 const LIST_LIMIT = 50;
-async function listRows(tx: Tx, actor: WorkActor) {
-  const rows = await tx.query<{ id: string; kind: string; createdAt: Date; readAt: Date | null }>(
-    `SELECT "id"::text,"kind","createdAt","readAt" FROM "Notification" WHERE "accountId"=$1 ORDER BY "createdAt" DESC,"id" DESC LIMIT ${LIST_LIMIT}`,
-    [actor.accountId],
+const CURSOR_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z$/;
+/** The exact (createdAt microseconds, id) of the last row served; ordering is createdAt DESC, id DESC. */
+const encodeCursor = (createdAt: string, id: string) =>
+  Buffer.from(`${createdAt}|${id}`, 'utf8').toString('base64url');
+function decodeCursor(cursor: unknown): { createdAt: string; id: string } | null {
+  if (!NotificationCursorSchema.safeParse(cursor).success) return null;
+  const [createdAt, id, ...rest] = Buffer.from(cursor as string, 'base64url')
+    .toString('utf8')
+    .split('|');
+  if (rest.length || !CURSOR_TIME.test(createdAt ?? '') || !isUuid(id)) return null;
+  return { createdAt: createdAt!, id };
+}
+/**
+ * Keyset page, newest first: rows strictly older than the cursor's exact (createdAt, id). One extra row
+ * tells whether older notifications exist; the cursor is the last row served. No offsets.
+ */
+async function listRows(tx: Tx, actor: WorkActor, options: { cursor?: string } = {}) {
+  const position = options.cursor === undefined ? null : decodeCursor(options.cursor);
+  if (options.cursor !== undefined && !position) fail('INVALID_INPUT');
+  const fetched = await tx.query<{
+    id: string;
+    kind: string;
+    createdAt: Date;
+    readAt: Date | null;
+    position: string;
+  }>(
+    `SELECT "id"::text,"kind","createdAt","readAt",to_char("createdAt" AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.US"Z"') AS "position" FROM "Notification" WHERE "accountId"=$1${position ? ' AND ("createdAt","id")<($2::timestamptz,$3::uuid)' : ''} ORDER BY "createdAt" DESC,"id" DESC LIMIT ${LIST_LIMIT + 1}`,
+    position ? [actor.accountId, position.createdAt, position.id] : [actor.accountId],
   );
+  const rows = fetched.slice(0, LIST_LIMIT);
+  const last = rows[LIST_LIMIT - 1];
+  const nextCursor =
+    fetched.length > LIST_LIMIT && last ? encodeCursor(last.position, last.id) : undefined;
   const [unread] = await tx.query<{ n: number }>(
     'SELECT count(*)::int AS n FROM "Notification" WHERE "accountId"=$1 AND "readAt" IS NULL',
     [actor.accountId],
@@ -180,6 +209,7 @@ async function listRows(tx: Tx, actor: WorkActor) {
       };
     }),
     unread: unread?.n ?? 0,
+    ...(nextCursor ? { nextCursor } : {}),
   });
   if (!parsed.success) fail('STORAGE_CONTRACT');
   return parsed.data;
@@ -192,16 +222,24 @@ async function preferenceRow(tx: Tx, actor: WorkActor) {
   return PreferencesSchema.parse({ promotional: rows[0]?.promotional ?? false });
 }
 /** The person's own notifications, newest first, with an unread count. Text comes from the kind, never storage. */
-export async function listOwnNotifications(tx: Tx, actor: WorkActor) {
+export async function listOwnNotifications(
+  tx: Tx,
+  actor: WorkActor,
+  options: { cursor?: string } = {},
+) {
   validate(tx, actor);
   await currentActor(tx, actor);
-  return listRows(tx, actor);
+  return listRows(tx, actor, options);
 }
 /** List and preferences under one current-Session proof. */
-export async function readOwnNotificationState(tx: Tx, actor: WorkActor) {
+export async function readOwnNotificationState(
+  tx: Tx,
+  actor: WorkActor,
+  options: { cursor?: string } = {},
+) {
   validate(tx, actor);
   await currentActor(tx, actor);
-  return { ...(await listRows(tx, actor)), preferences: await preferenceRow(tx, actor) };
+  return { ...(await listRows(tx, actor, options)), preferences: await preferenceRow(tx, actor) };
 }
 /** Marks the person's own notification read. Idempotent; another person's or an absent id is one NOT_FOUND. */
 export async function markNotificationRead(tx: Tx, actor: WorkActor, id: string) {

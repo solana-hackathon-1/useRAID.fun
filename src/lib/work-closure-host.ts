@@ -6,6 +6,7 @@ import { workClosureEnabled } from './config';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { isWorkOperator } from './work-workspace-host';
 import { db } from './db';
+import { correlationFields } from './worker-diagnostics';
 
 /**
  * Closure host for the shared Root. Operations authority is the explicit synthetic operator allowlist
@@ -62,6 +63,18 @@ export async function runWorkClosureWorker(now: () => number = Date.now) {
     throw error;
   }
   sessionOutageReportedAt = null;
+  // One alert per engagement when it reaches the stuck threshold (code and counts only, never error text); the pass
+  // keeps retrying it at the back-off cap, and worker health keeps showing it until it closes or leaves the active states.
+  for (const s of result.stuck ?? [])
+    console.error(
+      JSON.stringify({
+        alert: 'work-closure-stuck',
+        engagementId: s.engagementId,
+        code: s.code,
+        failures: s.failures,
+        ...correlationFields(),
+      }),
+    );
   if (result.failed.length)
     throw new Error(
       `Work closure pass left ${result.failed.length} engagement(s) open: ${[
