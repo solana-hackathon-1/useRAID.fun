@@ -106,7 +106,8 @@ export async function revokeOfferFromHost(command: WorkCommand) {
 }
 export async function withdrawApplicationFromHost(command: WorkCommand) {
   requireReads();
-  const host = admission(workWorkspaceConfiguration().applicationsAvailable);
+  // #273-7: an applicant may always withdraw, so WORK_APPLICATIONS_ENABLED (new applications only) never gates it.
+  const host = admission(true);
   return runCommandTransaction(db, (tx) => withdrawApplication(tx, command, host));
 }
 export async function submitApplicationFromHost(command: WorkCommand) {

@@ -154,6 +154,15 @@ it('opens new applications only with the applications flag and the explicit limi
     applicationLimit: 3,
   });
 });
+it('never gates withdrawing an application on the applications flag (#273-7)', async () => {
+  vi.stubEnv('WORK_WORKSPACE_READS_ENABLED', 'true');
+  port.withdraw.mockResolvedValue('withdrawn');
+  await withdrawApplicationFromHost(command);
+  expect(port.withdraw.mock.calls.at(-1)![2]).toMatchObject({ allowNewWrites: true });
+  vi.stubEnv('WORK_APPLICATIONS_ENABLED', 'true');
+  await withdrawApplicationFromHost(command);
+  expect(port.withdraw.mock.calls.at(-1)![2]).toMatchObject({ allowNewWrites: true });
+});
 it('opens acceptance only with the flag and a configured taxonomy, and hands the commit a real Root host', async () => {
   vi.stubEnv('WORK_WORKSPACE_READS_ENABLED', 'true');
   port.consent.mockResolvedValue('consented');

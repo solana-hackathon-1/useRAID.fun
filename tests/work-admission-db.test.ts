@@ -205,6 +205,67 @@ integration('T021 applications and offers', () => {
       applyTo({ ...apply, input: { ...(apply.input as object), slotId: randomUUID() } }),
     ).rejects.toMatchObject({ code: 'IDEMPOTENCY_KEY_REUSED' });
   });
+  it('always lets an applicant withdraw their own application, even with new writes disabled (#273-7)', async () => {
+    const { applicant, founder, apply } = await setup(),
+      closed = { ...host, allowNewWrites: false };
+    const saved = await applyTo(apply);
+    await offerTo(
+      cmd(founder.actor, {
+        applicationId: saved.application.id,
+        expiresAt: new Date(Date.now() + 3600000).toISOString(),
+      }),
+    );
+    const withdrawn = await run((tx) =>
+      withdrawApplication(
+        tx,
+        cmd(applicant.actor, { applicationId: saved.application.id }),
+        closed,
+      ),
+    );
+    expect(withdrawn).toMatchObject({
+      status: 'EXECUTED',
+      application: { id: saved.application.id, state: 'WITHDRAWN' },
+    });
+    expect(
+      await db.raidOffer.findMany({ where: { applicationId: saved.application.id } }),
+    ).toMatchObject([{ state: 'REVOKED' }]);
+    // Only the applicant: another account is still refused, and applying stays closed.
+    const other = await seedWorkHuman(db);
+    await expect(
+      run((tx) =>
+        withdrawApplication(tx, cmd(other.actor, { applicationId: saved.application.id }), closed),
+      ),
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    const fresh = await seedWorkSlot(db, founder.actor.accountId, { admission: 'APPLICATION' });
+    await expect(
+      applyTo(
+        cmd(applicant.actor, {
+          slotId: fresh.slotId,
+          termsVersionId: fresh.termsVersionId,
+          evidenceRefs: [],
+        }),
+        closed,
+      ),
+    ).rejects.toMatchObject({ code: 'WRITES_DISABLED' });
+  });
+  it('still refuses a suspended account the withdrawal exemption (#273-7)', async () => {
+    const { applicant, apply } = await setup();
+    const saved = await applyTo(apply);
+    await db.user.update({ where: { id: applicant.actor.accountId }, data: { suspended: true } });
+    await expect(
+      run((tx) =>
+        withdrawApplication(tx, cmd(applicant.actor, { applicationId: saved.application.id }), {
+          ...host,
+          allowNewWrites: false,
+        }),
+      ),
+    ).rejects.toMatchObject({ code: 'ACCOUNT_RESTRICTED' });
+    expect(
+      await db.raidApplication.findUnique({ where: { id: saved.application.id } }),
+    ).toMatchObject({
+      state: 'SUBMITTED',
+    });
+  });
   it('does not revive a revoked application path outside its current quota', async () => {
     const { founder, apply } = await setup();
     const a = await applyTo(apply);
