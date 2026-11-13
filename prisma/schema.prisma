@@ -1358,6 +1358,7 @@ model RaidSlot {
 
 model Engagement {
   closure EngagementClosure?
+  closureBackoff EngagementClosureBackoff?
   acceptedOffer RaidOffer?
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   slotId String @unique @db.Uuid
@@ -1605,6 +1606,17 @@ model EngagementClosure {
   closedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
   engagement Engagement @relation(fields: [engagementId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   closedBy User @relation(fields: [closedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+}
+// Scheduled closure back-off (DEC-2026-11-13-06 a): operational retry state only; absent means "attempt now".
+model EngagementClosureBackoff {
+  engagementId String @id @db.Uuid
+  consecutiveFailures Int
+  lastFailureCode String
+  nextAttemptAt DateTime @db.Timestamptz(6)
+  alertedAt DateTime? @db.Timestamptz(6)
+  updatedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  engagement Engagement @relation(fields: [engagementId], references: [id], onDelete: Cascade, onUpdate: Restrict)
+  @@index([nextAttemptAt])
 }
 
 // Persisted Guild: operator-attested activation of an owner's draft. Founder authority comes from this record only.
