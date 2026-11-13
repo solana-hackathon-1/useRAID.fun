@@ -7,6 +7,7 @@ import { createSimulatedReservations } from '../work-loop/simulated-reservation'
 import { RewardAssetSchema, toDraftView } from '../work-loop/creation-contracts';
 import { RubricSchema } from '../work-loop/recommendation-contracts';
 import { recommend } from '../work-loop/recommendation';
+import { hasGuildAuthority } from '../guild-profiles/guild-storage';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { db } from './db';
 
@@ -55,13 +56,31 @@ function workHost(allowNewWrites: boolean): WorkHost {
 function requireReads() {
   if (!workCreationConfiguration().readsAvailable) throw new WorkError('STORAGE_CONTRACT');
 }
+const NON_PRODUCTION_LABELS = ['staging', 'pilot', 'alpha', 'demo', 'local'];
+/**
+ * DEC-2026-11-13-15 (2): only a deployment that declares one recognised non-production label keeps the synthetic
+ * catalog open to any signed-in account. Everything else fails closed, including `production` (even beside a demo
+ * flag), an undeclared environment under NODE_ENV=production, and a mistyped label such as `prod`.
+ */
+function catalogRestricted(env: Record<string, string | undefined> = process.env) {
+  const label = (env.RAID_ENVIRONMENT ?? '').trim().toLowerCase();
+  if (label === 'production') return true;
+  return env.NODE_ENV === 'production' && !NON_PRODUCTION_LABELS.includes(label);
+}
 export async function creationStateFromHost(actor: WorkActor) {
   requireReads();
   const config = workCreationConfiguration();
   const catalog = rewardCatalog();
-  const drafts = await runCommandTransaction(db, (tx) =>
-    readCreationDrafts(tx, actor, workHost(false)),
-  );
+  const drafts = await runCommandTransaction(db, async (tx) => {
+    // Production catalog: the Guild's Founder or a live WORK grantee only, recomputed here by the Guild host. Anyone
+    // else, and any answer that is not exactly `true`, gets the settled not-found shape so existence does not leak.
+    if (
+      catalogRestricted() &&
+      (await hasGuildAuthority(tx, actor.accountId, guildId(), 'WORK')) !== true
+    )
+      throw new WorkError('NOT_FOUND');
+    return readCreationDrafts(tx, actor, workHost(false));
+  });
   return {
     version: 'v1' as const,
     assets: catalog,
