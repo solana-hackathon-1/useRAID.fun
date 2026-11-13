@@ -1,4 +1,4 @@
-import { afterAll, beforeEach, describe, expect, it } from 'vitest';
+import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { db } from '../src/lib/db';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
@@ -715,6 +715,61 @@ integration('T009 Guild ownership transfer', () => {
     expect(accepts[0].n).toBe(0);
     // And the transfer is still answerable afterwards.
     expect((await respond(next, g.id, id, 'ACCEPT', 'a-2')).transfer.state).toBe('ACCEPTED');
+  });
+
+  it('#438-3: the contract-breaking host hook case logs one operator line of ids and fixed words, nothing else', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const id = (await propose(founder, g.id, next.accountId, {}, 'p-1')).transfer.id;
+    const meddling = {
+      allowNewWrites: true,
+      authorizeOwnershipTransfer: async (tx: {
+        query: (sql: string, params: unknown[]) => Promise<unknown>;
+      }) => {
+        await tx.query(
+          `UPDATE "GuildOwnershipTransfer" SET "state"='WITHDRAWN',"decidedAt"=clock_timestamp(),"decidedByAccountId"="fromAccountId","decideReceiptId"="proposeReceiptId" WHERE "id"=$1::uuid`,
+          [id],
+        );
+        return true;
+      },
+    };
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    try {
+      await expect(
+        run((tx) =>
+          respondOwnershipTransfer(
+            tx,
+            cmd(next, { guildId: g.id, transferId: id, decision: 'ACCEPT' }, 'a-1'),
+            meddling as never,
+          ),
+        ),
+      ).rejects.toMatchObject({ code: 'REVISION_CONFLICT' });
+      expect(spy).toHaveBeenCalledTimes(1);
+      const line = String(spy.mock.calls[0][0]);
+      expect(JSON.parse(line)).toEqual({
+        event: 'guild-transfer-decision-conflict',
+        code: 'REVISION_CONFLICT',
+        guildId: g.id,
+        transferId: id,
+        decision: 'ACCEPT',
+      });
+      // No actor, session or receipt material reaches the line.
+      for (const secret of [next.accountId, founder.accountId, next.sessionHash, 'a-1'])
+        expect(line).not.toContain(secret);
+    } finally {
+      spy.mockRestore();
+    }
+    // An ordinary stale accept (transfer already decided before the call) is a normal refusal and logs nothing.
+    const quiet = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    try {
+      await respond(next, g.id, id, 'ACCEPT', 'a-2');
+      await expect(respond(next, g.id, id, 'ACCEPT', 'a-3')).rejects.toMatchObject({
+        code: 'REVISION_CONFLICT',
+      });
+      expect(quiet).not.toHaveBeenCalled();
+    } finally {
+      quiet.mockRestore();
+    }
   });
 
   it('#294-11: the decision CHECK refuses every decided state missing any part of its record, and a pending one carrying a decision', async () => {

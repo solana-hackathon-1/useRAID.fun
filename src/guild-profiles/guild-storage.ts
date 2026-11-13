@@ -1161,7 +1161,21 @@ export async function respondOwnershipTransfer(
         );
         // The transfer row is locked and was PROPOSED a moment ago; finding it decided anyway means something else
         // moved it inside this transaction, which is the same answer as a transfer that was no longer pending.
-        if (rows.length !== 1) fail('REVISION_CONFLICT');
+        if (rows.length !== 1) {
+          // Reachable only when a host hook broke its contract, so an operator needs to see it. Same one-line JSON
+          // shape as `operatorLogLine` (this portable module cannot import the app's `src/lib`): ids and fixed words
+          // only, never the actor, session, receipt or any error text.
+          console.error(
+            JSON.stringify({
+              event: 'guild-transfer-decision-conflict',
+              code: 'REVISION_CONFLICT',
+              guildId: input.guildId,
+              transferId: input.transferId,
+              decision: input.decision,
+            }),
+          );
+          fail('REVISION_CONFLICT');
+        }
         return rows[0].state;
       };
       const apply = async () => {
