@@ -14,7 +14,7 @@ const exampleEnv = () =>
 
 describe('T037 configuration validator reuse contract (R15, R16)', () => {
   it('is portable: no environment, framework, database, SDK or app import', () => {
-    expect(readdirSync(dir).sort()).toEqual(['flags.ts', 'index.ts', 'validate.ts']);
+    expect(readdirSync(dir).sort()).toEqual(['flags.ts', 'index.ts', 'snapshot.ts', 'validate.ts']);
     for (const name of readdirSync(dir)) {
       const source = readFileSync(join(dir, name), 'utf8');
       expect(source, name).not.toMatch(
