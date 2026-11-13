@@ -503,6 +503,32 @@ suite(
         expect((await submission(sub.id)).status).toBe('QUEUED');
       });
 
+      it('stamps failedAt with the database clock: a lagging app clock cannot backdate it past the grace period', async () => {
+        const { sub } = await submissionFixture();
+        await db.job.deleteMany();
+        const job = await enqueue(
+          'submission',
+          'sub:skew',
+          { raidId: (await db.raid.findFirstOrThrow()).id, submissionId: sub.id, postId: '5' },
+          past(),
+        );
+        await db.job.update({ where: { id: job.id }, data: { attempts: JOB_MAX_ATTEMPTS - 1 } });
+        const claimed = (await claimJob())!;
+        expect(claimed.attempts).toBe(JOB_MAX_ATTEMPTS);
+        vi.useFakeTimers({ toFake: ['Date'], now: Date.now() - 3_600_000 }); // app clock one hour behind the database
+        try {
+          expect(await finishJob(claimed, 'X lookup failed')).toEqual({ dead: true });
+        } finally {
+          vi.useRealTimers();
+        }
+        const [{ skew }] = await db.$queryRaw<
+          { skew: number }[]
+        >`SELECT ABS(EXTRACT(EPOCH FROM ((NOW() AT TIME ZONE 'UTC') - "failedAt")))::float8 AS skew FROM "Job" WHERE id=${job.id}`;
+        expect(skew).toBeLessThan(30);
+        await sweepExhaustedJobs(); // inside the grace period by the database clock: not mistaken for a crash
+        expect((await submission(sub.id)).status).toBe('QUEUED');
+      });
+
       it('concurrent sweeps repair and alert exactly once', async () => {
         const { sub } = await failedThenCrashed('sub:two');
         await Promise.all([sweepExhaustedJobs(), sweepExhaustedJobs(), sweepExhaustedJobs()]);
@@ -543,6 +569,48 @@ suite(
         );
         const lines = errors.mock.calls.map((c) => String(c[0]));
         expect(lines.filter((l) => l.includes('"code":"JOB_LEASE_CAP"'))).toHaveLength(1);
+      });
+
+      describe('with a non-UTC session TimeZone', () => {
+        const withTimeZone = async (zone: string, fn: () => Promise<void>) => {
+          await db.$executeRawUnsafe(`ALTER ROLE CURRENT_USER SET TimeZone='${zone}'`);
+          await db.$disconnect();
+          await db.$connect();
+          try {
+            await fn();
+          } finally {
+            await db.$executeRawUnsafe(`ALTER ROLE CURRENT_USER RESET TimeZone`);
+            await db.$disconnect();
+            await db.$connect();
+          }
+        };
+        const hold = async (key: string, claimedAgoMs: number, probe: () => Promise<void>) => {
+          await enqueue('collect', key, { raidId: key }, past());
+          const claimed = (await claimJob())!;
+          const lockedAt = new Date(Date.now() - claimedAgoMs);
+          await runUnderJobLease({ ...claimed, lockedAt }, probe, {
+            renewEveryMs: 20,
+            maxRunMs: 3_600_000,
+          });
+        };
+
+        it('caps a run that is past 60 minutes when the session zone is ahead of UTC', async () => {
+          await withTimeZone('Pacific/Kiritimati', async () => {
+            await hold('tz-ahead', 2 * 3_600_000, async () => {
+              await sleep(200);
+              await expect(assertJobLease()).rejects.toBeInstanceOf(JobLeaseLostError);
+            });
+          });
+        });
+
+        it('does not cap a young run early when the session zone is behind UTC', async () => {
+          await withTimeZone('Pacific/Pago_Pago', async () => {
+            await hold('tz-behind', 1000, async () => {
+              await sleep(200);
+              await assertJobLease();
+            });
+          });
+        });
       });
 
       it('still renews before the cap', async () => {

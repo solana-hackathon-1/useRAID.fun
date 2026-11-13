@@ -112,7 +112,7 @@ export async function runUnderJobLease<T>(
 async function capReached(claimedAt: Date, maxRunMs: number) {
   const [row] = await db.$queryRaw<
     { capped: boolean }[]
-  >`SELECT ((NOW() AT TIME ZONE 'UTC') >= ${claimedAt}::timestamp + make_interval(secs => ${maxRunMs / 1000}::float8)) AS capped`;
+  >`SELECT ((NOW() AT TIME ZONE 'UTC') >= (${claimedAt}::timestamptz AT TIME ZONE 'UTC') + make_interval(secs => ${maxRunMs / 1000}::float8)) AS capped`;
   return row.capped;
 }
 /**
