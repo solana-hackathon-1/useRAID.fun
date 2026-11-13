@@ -20,6 +20,12 @@ export interface ClosurePassPorts {
    * `limit`, so persistently failing old rows cannot starve newer ones until more than this many fail at once.
    */
   maxFailures?: number;
+  /**
+   * Receives value-free operational lines (ids, codes and counts only, never error text): the one
+   * `work-closure-stuck` alert, raised right after the stuck flag commits so a pass that fails later cannot lose it, and
+   * `work-closure-backoff-unrecorded` when a failure could not be recorded. Defaults to discarding them.
+   */
+  log?: (line: Record<string, string | number>) => void;
 }
 export interface ClosurePassResult {
   considered: number;
@@ -38,6 +44,12 @@ export const CLOSURE_BACKOFF_CAP_SECONDS = 3600;
 export const CLOSURE_STUCK_FAILURES = 10;
 /** Another writer reached a settled answer first; nothing is wrong and the next pass will not see it again. */
 const BENIGN = new Set(['ENGAGEMENT_STATE', 'REVISION_CONFLICT', 'DEADLINE_NOT_REACHED']);
+/**
+ * Refusals that say the operator or the switch is wrong for every engagement, not that one engagement is stuck. They
+ * are reported by the pass (the worker raises one summary line) but never recorded: a per-engagement record would
+ * back every engagement off for an hour and raise one stuck alert each.
+ */
+const SYSTEMIC = new Set(['WRITES_DISABLED', 'FORBIDDEN']);
 const ACTIVE = "('ACCESS_PENDING','IN_PROGRESS','SUBMITTED','REVISION_REQUESTED')";
 interface Candidate {
   engagementId: string;
@@ -67,9 +79,11 @@ async function recordFailure(ports: ClosurePassPorts, engagementId: string, code
   try {
     return await ports.run(async (tx) => {
       const [rec] = await tx.query<{ failures: number; alerted: boolean }>(
-        `INSERT INTO "EngagementClosureBackoff" ("engagementId","consecutiveFailures","lastFailureCode","nextAttemptAt") SELECT e."id",1,$2,clock_timestamp()+make_interval(secs=>${CLOSURE_BACKOFF_BASE_SECONDS}) FROM "Engagement" e WHERE e."id"=$1::uuid AND e."state" IN ${ACTIVE} ON CONFLICT ("engagementId") DO UPDATE SET "consecutiveFailures"="EngagementClosureBackoff"."consecutiveFailures"+1,"lastFailureCode"=EXCLUDED."lastFailureCode","nextAttemptAt"=clock_timestamp()+make_interval(secs=>LEAST(${CLOSURE_BACKOFF_CAP_SECONDS},${CLOSURE_BACKOFF_BASE_SECONDS}*power(2,LEAST("EngagementClosureBackoff"."consecutiveFailures",20)))),"updatedAt"=clock_timestamp() RETURNING "consecutiveFailures" AS "failures","alertedAt" IS NOT NULL AS "alerted"`,
+        `INSERT INTO "EngagementClosureBackoff" ("engagementId","consecutiveFailures","lastFailureCode","nextAttemptAt") SELECT e."id",1,$2,clock_timestamp()+make_interval(secs=>${CLOSURE_BACKOFF_BASE_SECONDS}) FROM "Engagement" e WHERE e."id"=$1::uuid AND e."state" IN ${ACTIVE} ON CONFLICT ("engagementId") DO UPDATE SET "consecutiveFailures"="EngagementClosureBackoff"."consecutiveFailures"+1,"lastFailureCode"=EXCLUDED."lastFailureCode","nextAttemptAt"=clock_timestamp()+make_interval(secs=>LEAST(${CLOSURE_BACKOFF_CAP_SECONDS},${CLOSURE_BACKOFF_BASE_SECONDS}*power(2,LEAST("EngagementClosureBackoff"."consecutiveFailures",20)))),"updatedAt"=clock_timestamp() WHERE "EngagementClosureBackoff"."nextAttemptAt"<=clock_timestamp() RETURNING "consecutiveFailures" AS "failures","alertedAt" IS NOT NULL AS "alerted"`,
         [engagementId, code.slice(0, 80)],
       );
+      // No row: the engagement left the active states, or a concurrent pass already recorded this attempt (its
+      // back-off is not yet due), so this loser changes nothing.
       if (!rec || rec.alerted || rec.failures < CLOSURE_STUCK_FAILURES) return null;
       // The upsert holds the row lock, so exactly one pass flips this and raises the alert.
       const flipped = await tx.query(
@@ -79,6 +93,11 @@ async function recordFailure(ports: ClosurePassPorts, engagementId: string, code
       return flipped.length ? rec.failures : null;
     });
   } catch {
+    ports.log?.({
+      event: 'work-closure-backoff-unrecorded',
+      engagementId,
+      code: code.slice(0, 80),
+    });
     return null;
   }
 }
@@ -130,8 +149,11 @@ export async function closeOverdueBatch(ports: ClosurePassPorts): Promise<Closur
   };
   const fail = async (engagementId: string, code: string) => {
     result.failed.push({ engagementId, code });
+    if (SYSTEMIC.has(code)) return;
     const failures = await recordFailure(ports, engagementId, code);
-    if (failures !== null) result.stuck.push({ engagementId, code, failures });
+    if (failures === null) return;
+    result.stuck.push({ engagementId, code, failures });
+    ports.log?.({ alert: 'work-closure-stuck', engagementId, code, failures });
   };
   // Bounded and deterministic: at most `limit` engagements closed or settled and at most `maxFailures` failures, so a
   // few persistently failing old rows cannot use up the batch, yet one pass never runs unbounded.

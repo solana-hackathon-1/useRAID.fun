@@ -543,7 +543,9 @@ integration('T024 root composition: worker closure and operator closure route', 
           allowNewWrites: true,
           authorize: async (_tx: unknown, _a: unknown, t: { engagementId: string }) => {
             attempts.push(t.engagementId);
-            return !failing.has(t.engagementId);
+            // A per-engagement fault (not the systemic FORBIDDEN / WRITES_DISABLED, which are never backed off).
+            if (failing.has(t.engagementId)) throw new Error('synthetic storage fault');
+            return true;
           },
         },
       };
@@ -559,12 +561,12 @@ integration('T024 root composition: worker closure and operator closure route', 
       const a = await overdue();
       const { host, attempts } = denying(new Set([a.engagementId]));
       const first = await closeOverdueBatch(ports({ host }));
-      expect(first.failed).toEqual([{ engagementId: a.engagementId, code: 'FORBIDDEN' }]);
+      expect(first.failed).toEqual([{ engagementId: a.engagementId, code: 'STORAGE_UNAVAILABLE' }]);
       const [rec] = await backoff();
       expect(rec).toMatchObject({
         engagementId: a.engagementId,
         consecutiveFailures: 1,
-        lastFailureCode: 'FORBIDDEN',
+        lastFailureCode: 'STORAGE_UNAVAILABLE',
         alerted: false,
       });
       expect(rec.delay).toBeGreaterThan(50);
@@ -631,7 +633,9 @@ integration('T024 root composition: worker closure and operator closure route', 
         await elapse();
       }
       expect(stuck.slice(0, 9)).toEqual(Array(9).fill([]));
-      expect(stuck[9]).toEqual([{ engagementId: a.engagementId, code: 'FORBIDDEN', failures: 10 }]);
+      expect(stuck[9]).toEqual([
+        { engagementId: a.engagementId, code: 'STORAGE_UNAVAILABLE', failures: 10 },
+      ]);
       expect(stuck.slice(10)).toEqual([[], []]);
       expect(attempts).toHaveLength(12);
       expect((await backoff())[0]).toMatchObject({ consecutiveFailures: 12, alerted: true });
@@ -648,6 +652,133 @@ integration('T024 root composition: worker closure and operator closure route', 
       const quiet = await workerHealthSnapshot(new Date(), { closureEnabled: false });
       expect(quiet.reasons).not.toContain('closure-stuck');
     }, 90000);
+
+    it('counts a failure once when two workers fail the same engagement at the same time (#460 item 1)', async () => {
+      const a = await overdue();
+      const { host } = denying(new Set([a.engagementId]));
+      // Both passes select the engagement before either records, then record concurrently.
+      let arrived = 0;
+      let release: () => void = () => {};
+      const both = new Promise<void>((resolve) => (release = resolve));
+      const gated = (): ClosurePassPorts =>
+        ports({
+          host,
+          run: async (work) => {
+            try {
+              return await runCommandTransaction(db, work);
+            } catch (error) {
+              if (++arrived === 2) release();
+              await Promise.race([both, new Promise((r) => setTimeout(r, 5000))]);
+              throw error;
+            }
+          },
+        });
+      const passes = await Promise.all([closeOverdueBatch(gated()), closeOverdueBatch(gated())]);
+      expect(arrived).toBe(2);
+      for (const p of passes)
+        expect(p.failed).toEqual([{ engagementId: a.engagementId, code: 'STORAGE_UNAVAILABLE' }]);
+      const [rec] = await backoff();
+      expect(rec).toMatchObject({ consecutiveFailures: 1, alerted: false });
+      expect(rec.delay).toBeGreaterThan(50);
+      // Due again, two more racing workers still add exactly one failure.
+      await elapse();
+      arrived = 0;
+      await Promise.all([closeOverdueBatch(gated()), closeOverdueBatch(gated())]);
+      expect((await backoff())[0].consecutiveFailures).toBe(2);
+    }, 60000);
+
+    it('does not back off the systemic FORBIDDEN and WRITES_DISABLED refusals, so no per-engagement stuck alerts (#460 item 3)', async () => {
+      const a = await overdue();
+      const b = await setup(soon());
+      await untilPast(soon().operationalClosure);
+      const logged: unknown[] = [];
+      for (const [host, code] of [
+        [{ allowNewWrites: true, authorize: async () => false }, 'FORBIDDEN'],
+        [{ allowNewWrites: false, authorize: async () => true }, 'WRITES_DISABLED'],
+      ] as const) {
+        for (let n = 1; n <= 12; n++) {
+          const pass = await closeOverdueBatch(ports({ host, log: (l) => logged.push(l) }));
+          // Both stay candidates every pass and are reported, never recorded, never alerted.
+          expect(pass.failed.map((f) => f.code)).toEqual([code, code]);
+          expect(pass.failed.map((f) => f.engagementId).sort()).toEqual(
+            [a, b].map((e) => e.engagementId).sort(),
+          );
+          expect(pass.stuck).toEqual([]);
+        }
+        expect(await backoff()).toEqual([]);
+      }
+      expect(logged).toEqual([]);
+      expect(await closures()).toEqual([]);
+      expect(await commitments()).toHaveLength(2);
+    }, 90000);
+
+    it('logs the stuck alert right after the alertedAt flip, even if the pass then fails (#460 item 2)', async () => {
+      const a = await overdue();
+      const { host } = denying(new Set([a.engagementId]));
+      const logged: Record<string, unknown>[] = [];
+      for (let n = 1; n <= 9; n++) {
+        await closeOverdueBatch(ports({ host, log: (l) => logged.push(l) }));
+        await elapse();
+      }
+      expect(logged).toEqual([]);
+      // The 10th pass dies after recording its failure (the next candidate read is lost).
+      let fails = false;
+      const dying = ports({
+        host,
+        log: (l) => {
+          logged.push(l);
+          fails = true;
+        },
+        run: (work) =>
+          fails ? Promise.reject(new Error('connection lost')) : runCommandTransaction(db, work),
+      });
+      await expect(closeOverdueBatch(dying)).rejects.toThrow('connection lost');
+      expect(logged).toEqual([
+        {
+          alert: 'work-closure-stuck',
+          engagementId: a.engagementId,
+          code: 'STORAGE_UNAVAILABLE',
+          failures: 10,
+        },
+      ]);
+      expect((await backoff())[0]).toMatchObject({ consecutiveFailures: 10, alerted: true });
+      await elapse();
+      await closeOverdueBatch(ports({ host, log: (l) => logged.push(l) }));
+      expect(logged).toHaveLength(1);
+    }, 90000);
+
+    it('logs a value-free line when a failure cannot be recorded (#460 item 4)', async () => {
+      const a = await overdue();
+      const { host } = denying(new Set([a.engagementId]));
+      const logged: unknown[] = [];
+      const pass = await closeOverdueBatch(
+        ports({
+          host,
+          log: (l) => logged.push(l),
+          run: (work) =>
+            runCommandTransaction(db, (tx) =>
+              work({
+                ...tx,
+                query: (sql: string, args: Parameters<typeof tx.query>[1] = []) => {
+                  if (sql.includes('INSERT INTO "EngagementClosureBackoff"'))
+                    throw new Error('secret connection string postgres://user:pw@host');
+                  return tx.query(sql, args);
+                },
+              } as typeof tx),
+            ),
+        }),
+      );
+      expect(pass.failed).toEqual([{ engagementId: a.engagementId, code: 'STORAGE_UNAVAILABLE' }]);
+      expect(logged).toEqual([
+        {
+          event: 'work-closure-backoff-unrecorded',
+          engagementId: a.engagementId,
+          code: 'STORAGE_UNAVAILABLE',
+        },
+      ]);
+      expect(JSON.stringify(logged)).not.toMatch(/secret|postgres|pw@/);
+      expect(await backoff()).toEqual([]);
+    }, 60000);
 
     it('backs off an engagement whose terms cannot be read', async () => {
       const poison = await setup({ ...soon(), operationalClosure: at(8800) });
