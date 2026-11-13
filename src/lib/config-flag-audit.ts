@@ -40,9 +40,13 @@ async function record(client: AuditClient, role: ConfigRole, env: Env) {
   const environment = auditEnvironment(env);
   const raw = (env.RAID_DEPLOYMENT_ID ?? '').trim();
   const deploymentId = DEPLOYMENT_ID.test(raw) ? raw : null;
+  // Value-free: the rejected text itself is never logged.
+  if (raw !== '' && deploymentId === null)
+    console.warn(JSON.stringify({ config: 'deployment-id-ignored', role }));
   const next = flagSnapshot(env);
   return client.$transaction(
     async (tx) => {
+      await tx.$executeRaw`SET LOCAL lock_timeout = '5s'`;
       // SHARE ROW EXCLUSIVE conflicts with itself and with inserts, never with plain reads: concurrent replicas
       // queue here (a startup-only, tiny table), so the second one sees the first one's rows and records nothing.
       await tx.$executeRaw`LOCK TABLE "ConfigFlagChange" IN SHARE ROW EXCLUSIVE MODE`;
@@ -99,6 +103,8 @@ export async function auditConfigFlagsOrExit(
   client: AuditClient = db,
   exit: (code: number) => never = process.exit,
 ) {
+  // A demo web process is read-only and may have no database; the audit is for real deployments.
+  if (role === 'web' && env.DEMO_MODE === 'true') return { recorded: 0, skipped: true as const };
   try {
     return await auditConfigFlags(role, env, client);
   } catch (error) {

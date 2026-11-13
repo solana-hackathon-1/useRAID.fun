@@ -105,6 +105,56 @@ describe('production refuses to start when the flag audit cannot be written', ()
   );
 });
 
+describe('audit transaction and start-up policy', () => {
+  it('bounds the wait for the table lock before taking it', async () => {
+    const sql: string[] = [];
+    const tx = {
+      $executeRaw: async (strings: TemplateStringsArray) => {
+        sql.push(strings.join('?'));
+        return 0;
+      },
+      $queryRaw: async () => [],
+      configFlagChange: { createMany: async () => ({ count: 0 }) },
+    };
+    await auditConfigFlags('web', { RAID_ENVIRONMENT: 'staging' }, {
+      $transaction: async (fn: (t: typeof tx) => Promise<number>) => fn(tx),
+    } as never);
+    expect(sql[0]).toMatch(/SET LOCAL lock_timeout = '5s'/);
+    expect(sql[1]).toMatch(/LOCK TABLE "ConfigFlagChange"/);
+  });
+
+  it('web in demo mode skips the audit (no database is required there)', async () => {
+    const transaction = vi.fn();
+    await expect(
+      auditConfigFlagsOrExit('web', { DEMO_MODE: 'true', RAID_ENVIRONMENT: 'demo' }, {
+        $transaction: transaction,
+      } as never),
+    ).resolves.toEqual({ recorded: 0, skipped: true });
+    expect(transaction).not.toHaveBeenCalled();
+  });
+
+  it('an invalid deployment id is ignored with one value-free log line', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const written: unknown[] = [];
+    const tx = {
+      $executeRaw: async () => 0,
+      $queryRaw: async () => [],
+      configFlagChange: {
+        createMany: async ({ data }: { data: unknown[] }) => (written.push(...data), { count: 1 }),
+      },
+    };
+    await auditConfigFlags('web', { RAID_DEPLOYMENT_ID: 'bad id & hunter2' }, {
+      $transaction: async (fn: (t: typeof tx) => Promise<number>) => fn(tx),
+    } as never);
+    expect(written.length).toBeGreaterThan(0);
+    expect(written.every((r) => (r as { deploymentId: unknown }).deploymentId === null)).toBe(true);
+    expect(warn).toHaveBeenCalledTimes(1);
+    const line = String(warn.mock.calls[0]![0]);
+    expect(JSON.parse(line)).toEqual({ config: 'deployment-id-ignored', role: 'web' });
+    expect(line).not.toContain('hunter2');
+  });
+});
+
 describe('wiring', () => {
   const text = (p: string) => readFileSync(p, 'utf8');
   it('web audits after validation; the worker audits after the schema check and before any job', () => {

@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { db } from '../src/lib/db';
 import { auditConfigFlags } from '../src/lib/config-flag-audit';
-import { assertTestDatabase } from './helpers/db-guard';
+import { assertTestDatabase, truncateAll } from './helpers/db-guard';
 
 const suite = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 const rows = () => db.configFlagChange.findMany({ orderBy: { id: 'asc' } });
@@ -9,8 +9,12 @@ const rows = () => db.configFlagChange.findMany({ orderBy: { id: 'asc' } });
 suite('DEC-2026-11-13-01 ConfigFlagChange audit on real PostgreSQL', () => {
   beforeAll(() => assertTestDatabase());
   beforeEach(async () => {
-    // Append-only against row changes; TRUNCATE is how the test database is emptied between cases.
-    await db.$executeRawUnsafe('TRUNCATE TABLE "ConfigFlagChange"');
+    // The table rejects UPDATE, DELETE and TRUNCATE. Only the test database's superuser may empty it between cases,
+    // by suspending ordinary triggers for one transaction.
+    await db.$transaction([
+      db.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`),
+      db.$executeRawUnsafe(`DELETE FROM "ConfigFlagChange"`),
+    ]);
   });
   afterAll(() => db.$disconnect());
 
@@ -108,6 +112,19 @@ suite('DEC-2026-11-13-01 ConfigFlagChange audit on real PostgreSQL', () => {
     await expect(db.$executeRawUnsafe(`DELETE FROM "ConfigFlagChange"`)).rejects.toThrow(
       /append-only/,
     );
+  });
+
+  it('is append-only: TRUNCATE is rejected too, and the shared test truncation leaves the table alone', async () => {
+    await auditConfigFlags('web', { RAID_ENVIRONMENT: 'staging' });
+    const count = (await rows()).length;
+    await expect(db.$executeRawUnsafe(`TRUNCATE TABLE "ConfigFlagChange"`)).rejects.toThrow(
+      /append-only/,
+    );
+    await expect(db.$executeRawUnsafe(`TRUNCATE TABLE "ConfigFlagChange" CASCADE`)).rejects.toThrow(
+      /append-only/,
+    );
+    await truncateAll(db);
+    expect((await rows()).length).toBe(count);
   });
 
   it('refuses a value or kind outside the closed vocabularies', async () => {

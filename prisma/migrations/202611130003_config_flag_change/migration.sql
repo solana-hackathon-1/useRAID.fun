@@ -30,8 +30,12 @@ CREATE TABLE "ConfigFlagChange" (
 CREATE INDEX "ConfigFlagChange_environment_processKind_flagName_id_idx"
   ON "ConfigFlagChange" ("environment", "processKind", "flagName", "id");
 
--- Same guard as AuditEvent (202610090001): the shared function rejects every row UPDATE and DELETE.
+-- Same guard as AuditEvent (202610090001): the shared function rejects every row UPDATE and DELETE. A row trigger never
+-- fires for TRUNCATE, so a statement-level trigger with the same function closes that route as well.
 CREATE TRIGGER config_flag_change_guard_v1
 BEFORE UPDATE OR DELETE ON "ConfigFlagChange"
 FOR EACH ROW EXECUTE FUNCTION raid_append_only_guard_v1();
+CREATE TRIGGER config_flag_change_truncate_guard_v1
+BEFORE TRUNCATE ON "ConfigFlagChange"
+FOR EACH STATEMENT EXECUTE FUNCTION raid_append_only_guard_v1();
 COMMIT;
