@@ -6,6 +6,9 @@ export async function register() {
   if (process.env.NEXT_RUNTIME !== 'nodejs') return;
   const { checkRuntimeConfigOrExit } = await import('./lib/config-validation-host');
   checkRuntimeConfigOrExit('web');
+  // DEC-2026-11-13-01: audit deploy-time flag changes; production exits 1 when the audit cannot be written.
+  const { auditConfigFlagsOrExit } = await import('./lib/config-flag-audit');
+  await auditConfigFlagsOrExit('web');
 }
 
 const SAFE_METHOD = /^[A-Z]{3,10}$/;

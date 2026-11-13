@@ -538,6 +538,21 @@ model WorkerStepHealth {
   consecutiveFailures Int @default(0)
   lastErrorKind String?
 }
+// Append-only audit of deploy-time flag changes (DEC-2026-11-13-01): a startup snapshot diff, never an input to any
+// decision. Values are the closed words true/false/unset/invalid; a database trigger rejects UPDATE and DELETE.
+model ConfigFlagChange {
+  id BigInt @id @default(autoincrement())
+  environment String
+  processKind String
+  flagName String
+  previousValue String?
+  newValue String
+  kind String
+  deploymentId String?
+  actor String @default("deployment, unattributed")
+  recordedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  @@index([environment, processKind, flagName, id])
+}
 model Settings {
   id String @id @default("global")
   collectionEnabled Boolean @default(false)
