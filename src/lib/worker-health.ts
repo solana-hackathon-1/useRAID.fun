@@ -124,7 +124,7 @@ export interface WorkerHealthOptions {
 const seconds = (value: number | null) => (value === null ? null : Math.max(0, Math.floor(value)));
 /** Each health query's ceiling: these are full scans on an operator path, so a slow one fails rather than lingers. */
 export const HEALTH_STATEMENT_TIMEOUT_MS = 5000;
-const HEALTH_QUERY_COUNT = 8;
+const HEALTH_QUERY_COUNT = 9;
 export async function workerHealthSnapshot(now = new Date(), options: WorkerHealthOptions = {}) {
   const limit = options.statementTimeoutMs ?? HEALTH_STATEMENT_TIMEOUT_MS;
   return db.$transaction(
@@ -205,6 +205,11 @@ async function readSnapshot(
     SELECT COUNT(*) FILTER (WHERE due <= clock_timestamp()) AS past,
       EXTRACT(EPOCH FROM (clock_timestamp() - MIN(due) FILTER (WHERE due <= clock_timestamp())))::float8 AS oldest
     FROM t`;
+  // Durable closure back-off (DEC-2026-11-13-06 a): engagements the pass is retrying later, and those past the stuck alert.
+  const [backoffRow] = await client.$queryRaw<{ waiting: bigint; stuck: bigint }[]>`
+    SELECT COUNT(*) FILTER (WHERE k."nextAttemptAt" > clock_timestamp()) AS waiting, COUNT(*) FILTER (WHERE k."alertedAt" IS NOT NULL) AS stuck
+    FROM "EngagementClosureBackoff" k JOIN "Engagement" e ON e."id"=k."engagementId"
+    WHERE e."state" IN ('ACCESS_PENDING','IN_PROGRESS','SUBMITTED','REVISION_REQUESTED')`;
   // Signed transactions and submitted launches whose chain outcome the reconcilers have not yet recorded.
   const [txRow] = await client.$queryRaw<{ pending: bigint; oldest: number | null }[]>`
     SELECT COUNT(*) AS pending, EXTRACT(EPOCH FROM ((NOW() AT TIME ZONE 'UTC') - MIN(p."at")))::float8 AS oldest
@@ -239,6 +244,8 @@ async function readSnapshot(
     closureEnabled: !!options.closureEnabled,
     pastDeadline: Number(commitmentRow.past),
     oldestPastDeadlineSeconds: seconds(commitmentRow.oldest),
+    backingOff: Number(backoffRow.waiting),
+    stuck: Number(backoffRow.stuck),
   };
   const transactions = {
     pending: Number(txRow.pending),
@@ -282,6 +289,7 @@ async function readSnapshot(
     commitments.oldestPastDeadlineSeconds >= commitmentOverdueSeconds
       ? ['commitment-deadline-overdue']
       : []),
+    ...(commitments.closureEnabled && commitments.stuck > 0 ? ['closure-stuck'] : []),
     ...((transactions.oldestPendingAgeSeconds ?? 0) > TX_UNKNOWN_SECONDS
       ? ['tx-unknown-overdue']
       : []),
