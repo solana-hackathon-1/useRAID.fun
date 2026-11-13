@@ -7,6 +7,7 @@ import { createSimulatedReservations } from '../work-loop/simulated-reservation'
 import { RewardAssetSchema, toDraftView } from '../work-loop/creation-contracts';
 import { RubricSchema } from '../work-loop/recommendation-contracts';
 import { recommend } from '../work-loop/recommendation';
+import { hasGuildAuthority } from '../guild-profiles/guild-storage';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { db } from './db';
 
@@ -55,13 +56,34 @@ function workHost(allowNewWrites: boolean): WorkHost {
 function requireReads() {
   if (!workCreationConfiguration().readsAvailable) throw new WorkError('STORAGE_CONTRACT');
 }
+/** Labels that keep the synthetic catalog open on a hosted (NODE_ENV=production) deployment. */
+const HOSTED_NON_PRODUCTION_LABELS = ['staging', 'pilot', 'alpha'];
+/**
+ * DEC-2026-11-13-15 (2): fail closed. `RAID_ENVIRONMENT=production` always restricts, even beside a demo flag. Under
+ * NODE_ENV=production (every hosted deployment) only an affirmatively declared staging, pilot or alpha label keeps
+ * the synthetic catalog open; `demo`, `local`, a mistyped label such as `prod` and a missing label all restrict, so a
+ * hosted non-production deployment must declare RAID_ENVIRONMENT. Outside NODE_ENV=production (development, tests)
+ * the synthetic catalog stays open.
+ */
+function catalogRestricted(env: Record<string, string | undefined> = process.env) {
+  const label = (env.RAID_ENVIRONMENT ?? '').trim().toLowerCase();
+  if (label === 'production') return true;
+  return env.NODE_ENV === 'production' && !HOSTED_NON_PRODUCTION_LABELS.includes(label);
+}
 export async function creationStateFromHost(actor: WorkActor) {
   requireReads();
   const config = workCreationConfiguration();
   const catalog = rewardCatalog();
-  const drafts = await runCommandTransaction(db, (tx) =>
-    readCreationDrafts(tx, actor, workHost(false)),
-  );
+  const drafts = await runCommandTransaction(db, async (tx) => {
+    // Production catalog: the Guild's Founder or a live WORK grantee only, recomputed here by the Guild host. Anyone
+    // else, and any answer that is not exactly `true`, gets the settled not-found shape so existence does not leak.
+    if (
+      catalogRestricted() &&
+      (await hasGuildAuthority(tx, actor.accountId, guildId(), 'WORK')) !== true
+    )
+      throw new WorkError('NOT_FOUND');
+    return readCreationDrafts(tx, actor, workHost(false));
+  });
   return {
     version: 'v1' as const,
     assets: catalog,

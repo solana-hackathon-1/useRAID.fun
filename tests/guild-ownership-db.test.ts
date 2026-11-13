@@ -582,19 +582,124 @@ integration('T009 Guild ownership transfer', () => {
     );
   });
 
-  it('lets the former Founder revoke grants they issued after the transfer', async () => {
+  it('DEC-2026-11-13-03 a: a former Founder cannot revoke what they issued; grants stay in force until the new Founder or the grantee revokes them', async () => {
     const { founder, guild: g } = await guild();
     const next = await person();
-    const editor = await person();
-    const issued = await grant(founder, {
-      guildId: g.id,
-      granteeAccountId: editor.accountId,
-      kind: 'WORK',
-    });
+    const holders = [await person(), await person(), await person(), await person()];
+    const kinds = ['WORK', 'TREASURY', 'DISPUTE', 'PROFILE'] as const;
+    const issued = [];
+    for (const [i, kind] of kinds.entries())
+      issued.push(
+        await grant(founder, {
+          guildId: g.id,
+          granteeAccountId: holders[i].accountId,
+          kind,
+          ...(kind === 'PROFILE' ? { fields: ['name'] } : {}),
+        }),
+      );
     const id = (await propose(founder, g.id, next.accountId)).transfer.id;
     await respond(next, g.id, id, 'ACCEPT');
-    const revoked = await revoke(founder, g.id, issued.grant.id);
-    expect(revoked.grant.revokedAt).not.toBeNull();
+    // FORBIDDEN, also when the same key is sent again, and nothing is revoked.
+    for (const [i, made] of issued.entries())
+      for (let attempt = 0; attempt < 2; attempt++)
+        await expect(revoke(founder, g.id, made.grant.id, 'former-' + i)).rejects.toMatchObject({
+          code: 'FORBIDDEN',
+        });
+    const live = async () =>
+      (
+        await db.$queryRawUnsafe<{ id: string; revoked: boolean }[]>(
+          `SELECT "id"::text,"revokedAt" IS NOT NULL AS revoked FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid`,
+          g.id,
+        )
+      ).filter((r) => !r.revoked).length;
+    expect(await live()).toBe(4);
+    for (const [i, kind] of kinds.entries())
+      expect(await run((tx) => hasGuildAuthority(tx, holders[i].accountId, g.id, kind))).toBe(true);
+    // The new Founder revokes any of them, and a grantee still surrenders their own.
+    expect((await revoke(next, g.id, issued[1].grant.id)).grant.revokedAt).not.toBeNull();
+    expect((await revoke(holders[2], g.id, issued[2].grant.id)).grant.revokedAt).not.toBeNull();
+    expect((await revoke(next, g.id, issued[0].grant.id)).grant.revokedAt).not.toBeNull();
+    expect(await live()).toBe(1);
+    // A revoked grant answers the former Founder the same: they are not involved any more.
+    await expect(revoke(founder, g.id, issued[0].grant.id, 'former-again')).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
+    // The former Founder cannot issue new roles either.
+    await expect(
+      grant(founder, { guildId: g.id, granteeAccountId: holders[0].accountId, kind: 'WORK' }),
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+  });
+
+  it('DEC-2026-11-13-03 a: a former Founder holding a new delegating grant revokes only what that grant covers', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const nameHolder = await person();
+    const descriptionHolder = await person();
+    const workHolder = await person();
+    const given = (who: GuildActor, extra: Record<string, unknown>) =>
+      grant(founder, { guildId: g.id, granteeAccountId: who.accountId, ...extra });
+    const byName = await given(nameHolder, { kind: 'PROFILE', fields: ['name'] });
+    const byDescription = await given(descriptionHolder, {
+      kind: 'PROFILE',
+      fields: ['description'],
+    });
+    const work = await given(workHolder, { kind: 'WORK' });
+    const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+    await respond(next, g.id, id, 'ACCEPT');
+    await grant(next, {
+      guildId: g.id,
+      granteeAccountId: founder.accountId,
+      kind: 'PROFILE',
+      fields: ['name'],
+      canDelegate: true,
+    });
+    // The literal rule: a live delegating PROFILE grant covering the grant's fields. Nothing else widens it.
+    await expect(revoke(founder, g.id, byDescription.grant.id)).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
+    await expect(revoke(founder, g.id, work.grant.id)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    expect((await revoke(founder, g.id, byName.grant.id)).grant.revokedAt).not.toBeNull();
+  });
+
+  it('DEC-2026-11-13-03 b: WITHDRAW and DECLINE work with the flag off and writes disabled; PROPOSE and ACCEPT stay gated', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const stranger = await person();
+    await expect(propose(founder, g.id, next.accountId, {}, 'p-off', false)).rejects.toMatchObject({
+      code: 'WRITES_DISABLED',
+    });
+    const toWithdraw = (await propose(founder, g.id, next.accountId, {}, 'p-w')).transfer.id;
+    await expect(respond(next, g.id, toWithdraw, 'ACCEPT', 'a-off', false)).rejects.toMatchObject({
+      code: 'WRITES_DISABLED',
+    });
+    // Still bound to the right party with writes off.
+    for (const [who, decision] of [
+      [stranger, 'WITHDRAW'],
+      [stranger, 'DECLINE'],
+      [next, 'WITHDRAW'],
+      [founder, 'DECLINE'],
+    ] as const)
+      await expect(
+        respond(who, g.id, toWithdraw, decision, undefined, false),
+      ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    const withdrawn = await respond(founder, g.id, toWithdraw, 'WITHDRAW', 'w-off', false);
+    expect(withdrawn).toMatchObject({
+      status: 'EXECUTED',
+      transfer: { state: 'WITHDRAWN', applied: false },
+    });
+    expect((await respond(founder, g.id, toWithdraw, 'WITHDRAW', 'w-off', false)).status).toBe(
+      'REPLAYED',
+    );
+    const toDecline = (await propose(founder, g.id, next.accountId, {}, 'p-d')).transfer.id;
+    const declined = await respond(next, g.id, toDecline, 'DECLINE', 'd-off', false);
+    expect(declined).toMatchObject({
+      status: 'EXECUTED',
+      transfer: { state: 'DECLINED', applied: false },
+    });
+    expect(await founderOf(g.id)).toBe(founder.accountId);
+    await expect(respond(next, g.id, toDecline, 'DECLINE', 'd-again', false)).rejects.toMatchObject(
+      { code: 'REVISION_CONFLICT' },
+    );
   });
 
   it('#294-11: a lapse recorded by the next proposal is backed by that proposal; a direct writer cannot attribute it to anything else', async () => {

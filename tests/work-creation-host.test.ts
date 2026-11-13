@@ -1,4 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest';
+import { createCreationHandlers } from '../src/work-http/creation-http';
 import { exampleRubric } from '../examples/raid-terms/recommendation-fixture';
 import { rewardAssets } from './helpers/work-creation-fixture';
 import { raidTerms } from './helpers/raid-terms-fixture';
@@ -8,6 +9,7 @@ const port = vi.hoisted(() => ({
   drafts: vi.fn(),
   save: vi.fn(),
   publish: vi.fn(),
+  authority: vi.fn(),
 }));
 vi.mock('../src/lib/db', () => ({ db: {} }));
 vi.mock('../src/lib/command-receipts-adapter', () => ({
@@ -18,6 +20,7 @@ vi.mock('../src/work-loop/storage', () => ({
   saveRaidTerms: port.save,
   publishRaid: port.publish,
 }));
+vi.mock('../src/guild-profiles/guild-storage', () => ({ hasGuildAuthority: port.authority }));
 import {
   creationStateFromHost,
   publishDraftFromHost,
@@ -37,9 +40,12 @@ const ENV = [
   'RAID_WORK_GUILD_ID',
   'WORK_REWARD_ASSETS_JSON',
   'WORK_RECOMMENDATION_RUBRIC_JSON',
+  'RAID_ENVIRONMENT',
+  'DEMO_MODE',
 ];
 afterEach(() => {
   for (const name of ENV) delete process.env[name];
+  vi.unstubAllEnvs();
   vi.clearAllMocks();
 });
 it('is off by default and only exact "true" enables a flag', () => {
@@ -170,4 +176,103 @@ it('reads the exact receipt version instead of searching the latest twenty draft
     listingId: saved.listingId,
     termsVersionId: saved.termsVersionId,
   });
+});
+
+// DEC-2026-11-13-15 (2), #253: in production the catalog is for Founder or live WORK authority only.
+const GUILD = '99999999-9999-4999-8999-999999999999';
+function catalogHost(environment: Record<string, string>) {
+  process.env.WORK_CREATION_READS_ENABLED = 'true';
+  process.env.RAID_WORK_GUILD_ID = GUILD;
+  process.env.WORK_REWARD_ASSETS_JSON = JSON.stringify(rewardAssets());
+  for (const [name, value] of Object.entries(environment)) vi.stubEnv(name, value);
+  port.drafts.mockResolvedValue([]);
+}
+it('serves the catalog in production only to Founder or WORK authority recorded by the Guild host', async () => {
+  catalogHost({ RAID_ENVIRONMENT: 'production' });
+  port.authority.mockResolvedValue(true);
+  const state = await creationStateFromHost(actor);
+  expect(state.assets.map((a) => a.label)).toEqual(['Synthetic SOL', 'Synthetic token']);
+  expect(port.authority).toHaveBeenCalledWith(port.tx, actor.accountId, GUILD, 'WORK');
+});
+it('answers a stranger in production with the existing not-found shape and reads nothing else', async () => {
+  catalogHost({ RAID_ENVIRONMENT: 'production' });
+  port.authority.mockResolvedValue(false);
+  await expect(creationStateFromHost(actor)).rejects.toMatchObject({ code: 'NOT_FOUND' });
+  expect(port.drafts).not.toHaveBeenCalled();
+});
+it('fails closed in production when the authority check errors or answers anything but true', async () => {
+  catalogHost({ RAID_ENVIRONMENT: 'production' });
+  port.authority.mockRejectedValue(new Error('database down'));
+  await expect(creationStateFromHost(actor)).rejects.toThrow();
+  for (const answer of [undefined, null, 'true', 1, {}]) {
+    port.authority.mockResolvedValue(answer);
+    await expect(creationStateFromHost(actor)).rejects.toMatchObject({ code: 'NOT_FOUND' });
+  }
+  expect(port.drafts).not.toHaveBeenCalled();
+});
+it('does not let an operator allowlist, a demo flag or a draft stand in for Guild authority in production', async () => {
+  catalogHost({ RAID_ENVIRONMENT: ' Production ', DEMO_MODE: 'true' });
+  process.env.RAID_WORK_OPERATOR_ACCOUNT_IDS = actor.accountId;
+  port.authority.mockResolvedValue(false);
+  await expect(creationStateFromHost(actor)).rejects.toMatchObject({ code: 'NOT_FOUND' });
+});
+it('treats an undeclared, unrecognised, demo or local environment under NODE_ENV=production as production', async () => {
+  for (const label of [undefined, '', 'prod', 'live', 'demo', 'local', ' Demo ']) {
+    catalogHost({
+      NODE_ENV: 'production',
+      ...(label === undefined ? {} : { RAID_ENVIRONMENT: label }),
+    });
+    port.authority.mockResolvedValue(false);
+    await expect(creationStateFromHost(actor), String(label)).rejects.toMatchObject({
+      code: 'NOT_FOUND',
+    });
+    vi.unstubAllEnvs();
+  }
+});
+it('keeps the synthetic catalog for any signed-in account only where non-production is affirmatively declared', async () => {
+  // Hosted deployments run with NODE_ENV=production, so only staging, pilot and alpha may stay open there.
+  for (const label of ['staging', 'pilot', 'alpha', ' Staging ']) {
+    catalogHost({ NODE_ENV: 'production', RAID_ENVIRONMENT: label });
+    const state = await creationStateFromHost(actor);
+    expect(state.assets).toHaveLength(2);
+    vi.unstubAllEnvs();
+  }
+  // Outside NODE_ENV=production (local development, tests) demo and local labels, or none, stay open.
+  for (const label of ['demo', 'local', undefined]) {
+    catalogHost({ NODE_ENV: 'development', ...(label ? { RAID_ENVIRONMENT: label } : {}) });
+    expect((await creationStateFromHost(actor)).assets).toHaveLength(2);
+    vi.unstubAllEnvs();
+  }
+  catalogHost({});
+  expect((await creationStateFromHost(actor)).assets).toHaveLength(2);
+  expect(port.authority).not.toHaveBeenCalled();
+});
+it('answers a denied production caller with the shaped 404 and an authority error with a bare 503', async () => {
+  catalogHost({ RAID_ENVIRONMENT: 'production' });
+  const handlers = createCreationHandlers({
+    version: 'v1',
+    requestId: () => 'request-1',
+    actor: async () => actor,
+    checkOrigin: () => {},
+    rateLimit: () => {},
+    state: creationStateFromHost,
+    saveDraft: async () => ({}),
+    publishDraft: async () => ({}),
+    recommend: async () => ({}),
+  });
+  const get = () => handlers.STATE(new Request('http://localhost/api/v1/work/creation'));
+  port.authority.mockResolvedValue(false);
+  const denied = await get();
+  const deniedText = await denied.text();
+  expect(denied.status).toBe(404);
+  expect(JSON.parse(deniedText)).toEqual({
+    error: { code: 'NOT_FOUND', message: 'Not found.', retryable: false, requestId: 'request-1' },
+  });
+  expect(deniedText).not.toMatch(/Synthetic|asset|funded|drafts/i);
+  port.authority.mockRejectedValue(new Error('secret connection detail'));
+  const failed = await get();
+  const failedText = await failed.text();
+  expect(failed.status).toBe(503);
+  expect(JSON.parse(failedText).error.code).toBe('SERVICE_UNAVAILABLE');
+  expect(failedText).not.toMatch(/secret|connection|Synthetic|NOT_FOUND/);
 });

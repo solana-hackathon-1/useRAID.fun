@@ -804,7 +804,7 @@ integration('T009 Guild role grants and revocation', () => {
     expect(replay.grant.grantedByAccountId).toBe(founder.accountId);
   });
 
-  it('redacts the issuer from a former Founder who issued the grant (#318)', async () => {
+  it('a former Founder is refused with no data (DEC-2026-11-13-03); the new Founder still sees the issuer (#318)', async () => {
     const { founder, guild: g } = await guild('redact-former');
     const grantee = await person();
     const successor = await person();
@@ -835,13 +835,14 @@ integration('T009 Guild role grants and revocation', () => {
       ),
     );
     expect(await can(founder, g.id, 'PROFILE')).toBe(false);
-    // Still the issuer, so still involved, but no longer a profile manager: the id is withheld.
-    const former = await takeRole(founder, g.id, made.id, 'former-revoke');
-    expect(former.status).toBe('EXECUTED');
-    expect(former.grant.grantedByAccountId).toBeNull();
-    const replay = await takeRole(founder, g.id, made.id, 'former-revoke');
-    expect(replay.status).toBe('REPLAYED');
-    expect(replay.grant.grantedByAccountId).toBeNull();
+    // No longer involved: refused, also on a repeat of the same key, so no issuer id can reach them.
+    for (let attempt = 0; attempt < 2; attempt++)
+      await expect(takeRole(founder, g.id, made.id, 'former-revoke')).rejects.toMatchObject({
+        code: 'FORBIDDEN',
+      });
+    // The new Founder is a profile manager, so they see the issuer.
+    const current = await takeRole(successor, g.id, made.id, 'current-revoke');
+    expect(current.grant.grantedByAccountId).toBe(founder.accountId);
   });
 
   it('redacts the issuer when the only profile grant the caller held is expired or revoked (#318)', async () => {
@@ -1145,5 +1146,72 @@ integration('T009 Guild role grants and revocation', () => {
     await expect(giveRole(founder, g.id, founderBody, 'founder-1')).rejects.toMatchObject({
       code: 'FORBIDDEN',
     });
+  });
+  it('DEC-2026-11-13-03 a: a delegating issuer revokes only while their delegating cover still covers the grant', async () => {
+    const { founder, guild: g } = await guild('issuer-cover');
+    const lead = await person();
+    const helper = await person();
+    const other = await person();
+    const leadGrant = (
+      await giveRole(founder, g.id, {
+        granteeAccountId: lead.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+        canDelegate: true,
+      })
+    ).grant.id;
+    const sub = (
+      await giveRole(lead, g.id, {
+        granteeAccountId: helper.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+      })
+    ).grant.id;
+    // Rows a direct writer places as the lead's own, which the lead's cover does not reach.
+    const place = async (kind: string, fields: string) =>
+      (
+        await db.$queryRawUnsafe<{ id: string }[]>(
+          `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","grantedByAccountId") VALUES ($1::uuid,$2,$3,$4::text[],$5) RETURNING "id"::text`,
+          g.id,
+          other.accountId,
+          kind,
+          fields,
+          lead.accountId,
+        )
+      )[0].id;
+    const wider = await place('PROFILE', '{description}');
+    const work = await place('WORK', '{}');
+    await expect(takeRole(lead, g.id, wider)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    await expect(takeRole(lead, g.id, work)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    // Covered and live: the issuer may revoke what they passed on.
+    expect((await takeRole(lead, g.id, sub)).grant.revokedAt).not.toBeNull();
+    // Once the cover goes, so does the power over every row, live or already cascaded (no GRANT_REVOKED leak either).
+    const again = await place('PROFILE', '{name}');
+    await takeRole(founder, g.id, leadGrant);
+    for (const id of [again, wider, work, sub])
+      await expect(takeRole(lead, g.id, id)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    // The grantee and the Founder remain able to (the unbacked profile rows were cascaded; the WORK row was not).
+    expect((await takeRole(other, g.id, work)).grant.revokedAt).not.toBeNull();
+    await expect(takeRole(founder, g.id, work)).rejects.toMatchObject({ code: 'GRANT_REVOKED' });
+  });
+
+  it('DEC-2026-11-13-03 a: an issuer whose delegating cover expired cannot revoke or replay a live row', async () => {
+    const { founder, guild: g } = await guild('issuer-expired');
+    const lead = await person();
+    const holder = await person();
+    await db.$executeRawUnsafe(
+      `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","canDelegate","validFrom","expiresAt","grantedByAccountId") VALUES ($1::uuid,$2,'PROFILE',ARRAY['name'],true,clock_timestamp()-interval '2 hours',clock_timestamp()-interval '1 hour',$3)`,
+      g.id,
+      lead.accountId,
+      founder.accountId,
+    );
+    const [{ id }] = await db.$queryRawUnsafe<{ id: string }[]>(
+      `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","grantedByAccountId") VALUES ($1::uuid,$2,'PROFILE',ARRAY['name'],$3) RETURNING "id"::text`,
+      g.id,
+      holder.accountId,
+      lead.accountId,
+    );
+    await expect(takeRole(lead, g.id, id)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    expect(await can(holder, g.id, 'PROFILE')).toBe(true);
   });
 });
