@@ -375,6 +375,40 @@ suite('tracking v2 database lifecycle', () => {
     expect(await db.campaignResult.count()).toBe(2);
     expect((await trackingView(raidId, userId))!.ownContributions).toHaveLength(2);
   });
+  it('admin import-post requeues a lookup-failed submission and the dead-letter repair sweep leaves it queued', async () => {
+    await ingestTracking(raidId, [xpost('105')]);
+    await close();
+    await finalizeTracking(raidId);
+    const submitted = await submitTrackingPost(raidId, userId, '106');
+    // The original submission job failed ordinarily and its worker crashed before resolving the submission.
+    const failed = await db.job.update({
+      where: { key: `submission:${submitted.id}` },
+      data: { attempts: JOB_MAX_ATTEMPTS, error: 'X lookup failed' },
+    });
+    await db.$executeRaw`UPDATE "Job" SET "failedAt"=(NOW() AT TIME ZONE 'UTC')-INTERVAL '10 minutes' WHERE id=${failed.id}`;
+    const dispute = await openDispute(raidId, userId, {
+      category: 'MISSING_POST',
+      reason: 'My post was missed',
+      postId: '106',
+    });
+    await resolveTracking(raidId, adminId, {
+      action: 'import-post',
+      disputeId: dispute.id,
+      reason: 'Post exists; importing',
+    });
+    const imported = await db.job.findFirstOrThrow({
+      where: { key: { startsWith: 'dispute-import:' } },
+    });
+    expect(imported).toMatchObject({ failedAt: null, doneAt: null });
+    await sweepExhaustedJobs();
+    expect(
+      await db.postSubmission.findUniqueOrThrow({ where: { id: submitted.id } }),
+    ).toMatchObject({
+      status: 'QUEUED',
+      reasonCode: null,
+    });
+    expect((await db.job.findUniqueOrThrow({ where: { id: imported.id } })).failedAt).toBeNull();
+  });
   it('holds empty results without allocating funds', async () => {
     await close();
     await finalizeTracking(raidId);

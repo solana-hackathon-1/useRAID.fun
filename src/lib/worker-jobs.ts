@@ -436,10 +436,14 @@ async function resolveDeadJob(
     await clearCollectionError(p.raidId, client);
 }
 /** The operator alert for a dead-lettered job: ids and kind only, never payloads, keys, leases or error text. */
-function alertDeadLetter(job: Pick<Job, 'id' | 'kind' | 'attempts'>, trigger: string) {
+function alertDeadLetter(
+  job: Pick<Job, 'id' | 'kind' | 'attempts'>,
+  trigger: string,
+  event: 'dead-lettered' | 'repaired' = 'dead-lettered',
+) {
   console.error(
     JSON.stringify({
-      alert: 'job-dead-letter',
+      alert: event === 'repaired' ? 'job-dead-letter-repaired' : 'job-dead-letter',
       job: job.id,
       kind: job.kind,
       attempts: job.attempts,
@@ -447,6 +451,61 @@ function alertDeadLetter(job: Pick<Job, 'id' | 'kind' | 'attempts'>, trigger: st
       ...correlationFields(),
     }),
   );
+}
+/** A failed job's own worker resolves its submission within moments; only a failure older than this is a crash. */
+export const REPAIR_GRACE_MINUTES = 5;
+/**
+ * A submission job that failed ordinarily dead-letters (failedAt) and only then resolves its QUEUED PostSubmission, so
+ * a worker that crashes between the two leaves the submission QUEUED behind a failed job (DEC-2026-11-13-07 b). Repair
+ * it as the dead-letter itself does: EXCLUDED/LOOKUP_FAILED and the Raid error closed, in one transaction per job.
+ *
+ * Only a job whose failedAt is older than REPAIR_GRACE_MINUTES (database clock) and that holds no lease qualifies, so
+ * the gap between finishJob committing failedAt and the worker's own resolveDeadJob is never mistaken for a crash.
+ * A submission also waited on by another live job (failed and done both null; an administrator import-post requeues the
+ * submission with a new dispute-import job) is never excluded. Locking order is job row, then submission row, then the
+ * live-job check on a fresh statement: an import holds the submission row while it inserts its job, so the sweep waits
+ * for it to commit and then sees that job. Administrator retry locks job then submission too, so there is no cycle.
+ * Never re-posts: the job itself is not touched and only an administrator retry revives it. Returns the jobs repaired
+ * and the jobs whose repair threw (rolled back alone, retried by the next sweep).
+ */
+async function repairFailedSubmissions() {
+  const candidates = await db.$queryRaw<
+    { id: string }[]
+  >`SELECT j.id FROM "Job" j WHERE j.kind='submission' AND j."failedAt" IS NOT NULL AND j."doneAt" IS NULL AND j."lease" IS NULL AND j."failedAt"<(NOW() AT TIME ZONE 'UTC')-make_interval(mins => ${REPAIR_GRACE_MINUTES}::int) AND EXISTS (SELECT 1 FROM "PostSubmission" s WHERE s.id=j.payload->>'submissionId' AND s.status='QUEUED') AND NOT EXISTS (SELECT 1 FROM "Job" live WHERE live.id<>j.id AND live."failedAt" IS NULL AND live."doneAt" IS NULL AND live.payload->>'submissionId'=j.payload->>'submissionId') ORDER BY j."failedAt" LIMIT 200`;
+  const repaired: Job[] = [];
+  const failed: { id: string; error: unknown }[] = [];
+  for (const { id } of candidates) {
+    try {
+      const job = await db.$transaction(async (tx) => {
+        const [row] = await tx.$queryRaw<
+          Job[]
+        >`SELECT * FROM "Job" WHERE id=${id} AND kind='submission' AND "failedAt" IS NOT NULL AND "doneAt" IS NULL AND "lease" IS NULL AND "failedAt"<(NOW() AT TIME ZONE 'UTC')-make_interval(mins => ${REPAIR_GRACE_MINUTES}::int) FOR UPDATE`;
+        if (!row) return null;
+        const payload = row.payload as { submissionId?: unknown; raidId?: unknown };
+        if (typeof payload.submissionId !== 'string') return null;
+        const submissionId = payload.submissionId;
+        // Wait for any transaction holding the submission (an import-post requeue), then judge from what it committed.
+        const queued = await tx.$queryRaw<
+          { id: string }[]
+        >`SELECT id FROM "PostSubmission" WHERE id=${submissionId} AND status='QUEUED' FOR UPDATE`;
+        if (!queued.length) return null;
+        const live = await tx.$queryRaw<
+          { id: string }[]
+        >`SELECT id FROM "Job" WHERE id<>${id} AND "failedAt" IS NULL AND "doneAt" IS NULL AND payload->>'submissionId'=${submissionId} LIMIT 1`;
+        if (live.length) return null;
+        await tx.postSubmission.update({
+          where: { id: submissionId },
+          data: { status: 'EXCLUDED', reasonCode: 'LOOKUP_FAILED' },
+        });
+        if (typeof payload.raidId === 'string') await clearCollectionError(payload.raidId, tx);
+        return row;
+      });
+      if (job) repaired.push(job);
+    } catch (error) {
+      failed.push({ id, error });
+    }
+  }
+  return { repaired, failed };
 }
 /**
  * Dead-letter every job that used all its attempts without finishing (crash or lost lease on the last one), resolve
@@ -457,6 +516,19 @@ export async function sweepExhaustedJobs() {
     resolveDeadJob(job, tx, { recordFailure: true }),
   );
   for (const job of dead) alertDeadLetter(job, 'attempts-exhausted-without-finishing');
+  // The repair is a separate concern: a throw in it must not skip the failed-alert loop below.
+  const repaired = await repairFailedSubmissions().catch((error) => {
+    console.error(
+      JSON.stringify({
+        alert: 'job-repair-failed',
+        ...operatorErrorFields(error),
+        ...correlationFields(),
+      }),
+    );
+    return { repaired: [] as Job[], failed: [] as { id: string; error: unknown }[] };
+  });
+  failed.push(...repaired.failed);
+  for (const job of repaired.repaired) alertDeadLetter(job, 'submission-left-queued', 'repaired');
   for (const { id, error } of failed)
     console.error(
       JSON.stringify({
