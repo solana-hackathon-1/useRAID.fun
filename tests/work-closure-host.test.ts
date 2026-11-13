@@ -134,7 +134,7 @@ it('re-raises a persistent missing worker session at a bounded interval so a los
   port.pass.mockResolvedValue(ok);
   expect(await runWorkClosureWorker(clock)).toEqual(ok);
 });
-it('raises one operator alert per stuck engagement with code and counts only', async () => {
+it('passes the pass a value-free logger that adds correlation fields, and logs no stuck alert after the pass (#460)', async () => {
   vi.stubEnv('WORK_CLOSURE_ENABLED', 'true');
   vi.stubEnv('WORK_CLOSURE_WORKER_ACCOUNT_ID', 'operator-1');
   const log = vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -145,12 +145,16 @@ it('raises one operator alert per stuck engagement with code and counts only', a
     failed: [{ engagementId: 'e1', code: 'FORBIDDEN' }],
     stuck: [{ engagementId: 'e1', code: 'FORBIDDEN', failures: 10 }],
   });
+  // One summary line for the failure; the stuck alert is the pass's own, raised when it happens.
   await expect(runWorkClosureWorker()).rejects.toThrow(/FORBIDDEN/);
-  const alerts = log.mock.calls
-    .map(([line]) => JSON.parse(String(line)))
-    .filter((l) => l.alert === 'work-closure-stuck');
-  expect(alerts).toHaveLength(1);
-  expect(alerts[0]).toMatchObject({ engagementId: 'e1', code: 'FORBIDDEN', failures: 10 });
-  expect(JSON.stringify(alerts[0])).not.toMatch(/message|stack/);
+  expect(log).not.toHaveBeenCalled();
+  const pass = port.pass.mock.calls[0][0] as { log: (line: Record<string, unknown>) => void };
+  pass.log({ alert: 'work-closure-stuck', engagementId: 'e1', code: 'X', failures: 10 });
+  pass.log({ event: 'work-closure-backoff-unrecorded', engagementId: 'e2', code: 'Y' });
+  const lines = log.mock.calls.map(([line]) => JSON.parse(String(line)));
+  expect(lines).toHaveLength(2);
+  expect(lines[0]).toMatchObject({ alert: 'work-closure-stuck', engagementId: 'e1', failures: 10 });
+  expect(lines[1]).toMatchObject({ event: 'work-closure-backoff-unrecorded', engagementId: 'e2' });
+  expect(JSON.stringify(lines)).not.toMatch(/message|stack/);
   log.mockRestore();
 });

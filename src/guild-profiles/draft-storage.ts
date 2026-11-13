@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { InternalId } from '../contracts/ids';
 import {
   CommandReceiptError,
   executeIdempotentCommand,
@@ -18,41 +17,19 @@ import {
   type GuildDraftSaveOptions,
   type SavedGuildDraft,
 } from './draft-storage-contracts';
+import { createStorageQuery, validateOwnSessionActor } from './storage-sql';
 export * from './draft-storage-contracts';
 function fail(code: GuildDraftStorageError['code']): never {
   throw new GuildDraftStorageError(code);
 }
 function validateActor(actor: GuildDraftActor) {
-  if (
-    !InternalId.safeParse(actor?.accountId).success ||
-    !InternalId.safeParse(actor?.actorAccountId).success
-  )
-    fail('INVALID_INPUT');
-  if (actor.accountId !== actor.actorAccountId) fail('WRONG_ACTOR');
-  if (typeof actor.sessionHash !== 'string' || !/^[a-f0-9]{64}$/.test(actor.sessionHash))
-    fail('UNAUTHENTICATED');
+  validateOwnSessionActor(fail, actor);
 }
-async function query<Row>(
-  tx: CommandReceiptTransaction,
-  sql: string,
-  bindings: readonly SqlBinding[],
-): Promise<Row[]> {
-  if (
-    tx?.dialect !== 'POSTGRESQL' ||
-    tx?.isolation !== 'READ_COMMITTED' ||
-    typeof tx.query !== 'function'
-  )
-    fail('STORAGE_CONTRACT');
-  try {
-    const rows = await tx.query<Row>(sql, bindings);
-    if (!Array.isArray(rows)) fail('STORAGE_CONTRACT');
-    return rows;
-  } catch (error) {
-    if (error instanceof GuildDraftStorageError || error instanceof CommandReceiptError)
-      throw error;
-    return fail('STORAGE_UNAVAILABLE');
-  }
-}
+const query = createStorageQuery(
+  fail,
+  (error): error is GuildDraftStorageError => error instanceof GuildDraftStorageError,
+  { retryTransient: false },
+);
 /** Receipt → User → Session → Draft. Actual cookie-derived authority is held to commit. */
 async function authorize(tx: CommandReceiptTransaction, actor: GuildDraftActor) {
   const users = await query<{ suspended: boolean }>(

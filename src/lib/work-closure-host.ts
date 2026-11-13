@@ -46,6 +46,8 @@ export async function runWorkClosureWorker(now: () => number = Date.now) {
       run: (work) => runCommandTransaction(db, work),
       host: createRootClosureHost(true),
       workerAccountId,
+      // Value-free lines (ids, codes, counts) are written when they happen, not after the pass.
+      log: (line) => console.error(JSON.stringify({ ...line, ...correlationFields() })),
     });
   } catch (error) {
     // No live session for the worker account: the pass fails closed on every tick. Raise it once per outage and then
@@ -63,18 +65,8 @@ export async function runWorkClosureWorker(now: () => number = Date.now) {
     throw error;
   }
   sessionOutageReportedAt = null;
-  // One alert per engagement when it reaches the stuck threshold (code and counts only, never error text); the pass
-  // keeps retrying it at the back-off cap, and worker health keeps showing it until it closes or leaves the active states.
-  for (const s of result.stuck ?? [])
-    console.error(
-      JSON.stringify({
-        alert: 'work-closure-stuck',
-        engagementId: s.engagementId,
-        code: s.code,
-        failures: s.failures,
-        ...correlationFields(),
-      }),
-    );
+  // The stuck alert (one per engagement, at the 10th consecutive failure) was logged by the pass itself. Systemic
+  // refusals are not backed off per engagement; the single summary below, codes only, is their one log line.
   if (result.failed.length)
     throw new Error(
       `Work closure pass left ${result.failed.length} engagement(s) open: ${[
