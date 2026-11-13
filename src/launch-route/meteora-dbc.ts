@@ -61,9 +61,10 @@ const MAX_CURVE_POINTS = 20;
  * (string, finite number, boolean or null), an object listing every key it may hold, or a list of
  * such objects. Any other key at any depth, and any other shape, is refused: the route never
  * forwards a field it was not told about, so a custom curve or program cannot hide under an
- * unlisted name. Names come from Meteora's documentation (program snake_case, SDK camelCase):
- * <https://docs.meteora.ag/developer-guides/dbc/typescript-sdk/reference.md> and the program accounts
- * page. The quote mint is not a field: the route pins devnet USDC. Values stay with O02 and O08.
+ * unlisted name. Names are the field names of the SDK's `ConfigParameters` (the IDL struct
+ * `configParameters` and its nested structs) as recorded in
+ * `tests/launch-route-meteora-allowlist.test.ts` (Meteora DBC TypeScript SDK 2.0.0);
+ * the reserved `padding` array is host-filled and not listed. The quote mint is not a field: the route pins devnet USDC. Values stay with O02 and O08.
  * Adding a name needs a reviewed change.
  */
 const SCALAR = 'scalar';
@@ -113,37 +114,34 @@ const CONFIG_SHAPE: ObjectShape = Object.freeze({
     'frequency',
     'numberOfPeriod',
     'cliffUnlockAmount',
-    'totalLockedVestingAmount',
-    'numberOfVestingPeriod',
-    'totalVestingDuration',
   ),
   migrationFeeOption: SCALAR,
   migrationFee: scalars('feePercentage', 'creatorFeePercentage'),
   tokenSupply: scalars('preMigrationTokenSupply', 'postMigrationTokenSupply'),
   creatorTradingFeePercentage: SCALAR,
-  tokenAuthorityOption: SCALAR,
-  migratedPoolFee: scalars('collectFeeMode', 'dynamicFee', 'poolFeeBps', 'compoundingFeeBps'),
+  tokenUpdateAuthority: SCALAR,
+  migratedPoolFee: scalars('collectFeeMode', 'dynamicFee', 'poolFeeBps'),
   poolCreationFee: SCALAR,
   partnerLiquidityVestingInfo: scalars(
     'vestingPercentage',
     'bpsPerPeriod',
     'numberOfPeriods',
     'cliffDurationFromMigrationTime',
-    'totalDuration',
+    'frequency',
   ),
   creatorLiquidityVestingInfo: scalars(
     'vestingPercentage',
     'bpsPerPeriod',
     'numberOfPeriods',
     'cliffDurationFromMigrationTime',
-    'totalDuration',
+    'frequency',
   ),
   migratedPoolBaseFeeMode: SCALAR,
   migratedPoolMarketCapFeeSchedulerParams: scalars(
-    'endingBaseFeeBps',
     'numberOfPeriod',
-    'priceMultiple',
+    'sqrtPriceStepBps',
     'schedulerExpirationDuration',
+    'reductionFactor',
   ),
   enableFirstSwapWithMinFee: SCALAR,
   compoundingFeeBps: SCALAR,

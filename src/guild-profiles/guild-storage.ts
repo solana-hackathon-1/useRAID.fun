@@ -1207,7 +1207,21 @@ export async function respondOwnershipTransfer(
         );
         // The transfer row is locked and was PROPOSED a moment ago; finding it decided anyway means something else
         // moved it inside this transaction, which is the same answer as a transfer that was no longer pending.
-        if (rows.length !== 1) fail('REVISION_CONFLICT');
+        if (rows.length !== 1) {
+          // Reachable only when a host hook broke its contract, so an operator needs to see it. Same one-line JSON
+          // shape as `operatorLogLine` (this portable module cannot import the app's `src/lib`): ids and fixed words
+          // only, never the actor, session, receipt or any error text.
+          console.error(
+            JSON.stringify({
+              event: 'guild-transfer-decision-conflict',
+              code: 'REVISION_CONFLICT',
+              guildId: input.guildId,
+              transferId: input.transferId,
+              decision: input.decision,
+            }),
+          );
+          fail('REVISION_CONFLICT');
+        }
         return rows[0].state;
       };
       const apply = async () => {
@@ -1297,12 +1311,17 @@ async function loadUpdate(
   if (rows.length !== 1) fail('STORAGE_CONTRACT');
   return parseUpdate(rows[0]);
 }
-const updateEvent = (type: string, guildId: string, revision: number, id: string) => ({
+/**
+ * A public update is its own aggregate (#296 item 4): `aggregateId` is the update id and `aggregateVersion` counts that
+ * update's events from 1 (drafted, then published and/or withdrawn), so (aggregateId, aggregateVersion) is unique and
+ * orders its lifecycle. It is no longer the Guild's profile revision, which update commands never bump.
+ */
+const updateEvent = (type: string, guildId: string, updateId: string, version: number) => ({
   type,
-  aggregateId: guildId,
-  aggregateVersion: revision,
+  aggregateId: updateId,
+  aggregateVersion: version,
   guildId,
-  payload: { guildUpdateId: id },
+  payload: { guildUpdateId: updateId },
   publish: false,
 });
 /** Drafts a public update: the Founder or a profile delegate. Nothing is public until the Founder publishes it. */
@@ -1329,9 +1348,9 @@ export async function draftGuildUpdate(
     async ({ receiptId }) => {
       await authorize(tx, actor);
       if (!host.allowNewWrites) fail('WRITES_DISABLED');
-      const guilds = await query<{ revision: number }>(
+      const guilds = await query<{ id: string }>(
         tx,
-        'SELECT "revision" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
+        'SELECT "id"::text FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
         [input.guildId],
       );
       if (guilds.length !== 1) fail('NOT_FOUND');
@@ -1361,9 +1380,7 @@ export async function draftGuildUpdate(
       await authorize(tx, actor);
       return {
         resultRef: rows[0].id,
-        events: [
-          updateEvent('guild.update_drafted.v1', input.guildId, guilds[0].revision, rows[0].id),
-        ],
+        events: [updateEvent('guild.update_drafted.v1', input.guildId, rows[0].id, 1)],
       };
     },
   );
@@ -1405,9 +1422,9 @@ async function moveUpdate(
       const standing = await authorityKinds(tx, actor.accountId, input.guildId);
       if (step === 'PUBLISH' ? !standing.founder : !standing.kinds.includes('PROFILE'))
         fail('FORBIDDEN');
-      const guilds = await query<{ founderAccountId: string; revision: number }>(
+      const guilds = await query<{ founderAccountId: string }>(
         tx,
-        'SELECT "founderAccountId","revision" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
+        'SELECT "founderAccountId" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
         [input.guildId],
       );
       if (guilds.length !== 1) fail('NOT_FOUND');
@@ -1420,6 +1437,13 @@ async function moveUpdate(
       if (updates.length !== 1) fail('NOT_FOUND');
       const founder = guilds[0].founderAccountId === actor.accountId;
       const current = updates[0];
+      // The update row is locked, so no other command can add an event to this aggregate before this one commits.
+      const prior = await query<{ n: number }>(
+        tx,
+        'SELECT count(*)::int AS n FROM "AuditEvent" WHERE "aggregateId"=$1',
+        [input.updateId],
+      );
+      const version = (prior[0]?.n ?? 0) + 1;
       if (step === 'PUBLISH') {
         if (!founder) fail('FORBIDDEN');
         if (current.state !== 'DRAFT') fail('REVISION_CONFLICT');
@@ -1454,8 +1478,8 @@ async function moveUpdate(
           updateEvent(
             step === 'PUBLISH' ? 'guild.update_published.v1' : 'guild.update_withdrawn.v1',
             input.guildId,
-            guilds[0].revision,
             input.updateId,
+            version,
           ),
         ],
       };
