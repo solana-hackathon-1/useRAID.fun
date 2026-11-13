@@ -170,7 +170,8 @@ export type ProductMetrics = z.infer<typeof ProductMetricsSchema>;
 export type RatioMetric = z.infer<typeof RatioMetricSchema>;
 export class MetricsError extends Error {
   constructor(
-    readonly code: 'STORAGE_CONTRACT' | 'INVALID_INPUT' | 'SUBJECT_NOT_FOUND' | 'CONFLICT',
+    readonly code:
+      'STORAGE_CONTRACT' | 'INVALID_INPUT' | 'SUBJECT_NOT_FOUND' | 'CONFLICT' | 'FORBIDDEN',
   ) {
     super(code);
     this.name = 'MetricsError';

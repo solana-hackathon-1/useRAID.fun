@@ -29,12 +29,9 @@ export const METRICS_EXCLUSION_REASONS = [
 ] as const;
 const SubjectId = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._:-]{0,199}$/);
 const MarkerId = z.uuid();
-// Free text is an evidence reference (a ticket or review id), not a narrative: bounded, single-purpose, no controls.
-const EvidenceRef = z
-  .string()
-  .min(1)
-  .max(200)
-  .regex(/^[^\p{Cc}]*\S[^\p{Cc}]*$/u);
+// Evidence is an id or ticket reference, never free text: markers are append-only, so personal data or a secret stored
+// here could never be removed. No whitespace, '@', control, bidi or zero-width character can match.
+const EvidenceRef = z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._:/#-]{0,199}$/);
 export const SetMetricsExclusionInputSchema = z
   .strictObject({
     subjectType: z.enum(METRICS_EXCLUSION_SUBJECTS),
@@ -61,6 +58,12 @@ export const MetricsExclusionRecordSchema = z.strictObject({
   recordedAt: UtcTimestamp,
 });
 export type MetricsExclusionRecord = z.infer<typeof MetricsExclusionRecordSchema>;
+export const MetricsExclusionOutcomeSchema = z.strictObject({
+  /** `REPLAYED` when the same operator retried the same key and payload: the stored marker, nothing new. */
+  status: z.enum(['EXECUTED', 'REPLAYED']),
+  marker: MetricsExclusionRecordSchema,
+});
+export type MetricsExclusionOutcome = z.infer<typeof MetricsExclusionOutcomeSchema>;
 
 const SUBJECT_TABLE: Record<(typeof METRICS_EXCLUSION_SUBJECTS)[number], string> = {
   GUILD: 'Guild',
@@ -82,7 +85,7 @@ interface Row {
 
 /**
  * Appends one marker as `operatorAccountId`, which the host must already have authorized as an operator. The command
- * is idempotent per (operator, `idempotencyKey`): a retry returns the same marker, another payload under the same key is
+ * is idempotent per (operator, `idempotencyKey`): a retry returns the same marker with status `REPLAYED`, another payload under the same key is
  * `IDEMPOTENCY_KEY_REUSED`, and one private audit event records the operator, the marker and the request. A missing
  * subject is `SUBJECT_NOT_FOUND`; a first marker for a subject that has one, or a supersede of anything but the current
  * head of the same subject, is `CONFLICT` (also when two operators race: the database admits one).
@@ -90,7 +93,7 @@ interface Row {
 export async function setMetricsExclusion(
   tx: Tx,
   command: { operatorAccountId: string; input: unknown; idempotencyKey: string; requestId: string },
-): Promise<MetricsExclusionRecord> {
+): Promise<MetricsExclusionOutcome> {
   if (
     tx?.dialect !== 'POSTGRESQL' ||
     tx?.isolation !== 'READ_COMMITTED' ||
@@ -104,6 +107,13 @@ export async function setMetricsExclusion(
   if (!parsed.success || !actor.success || !key.success || !request.success)
     throw new MetricsError('INVALID_INPUT');
   const input = parsed.data;
+  // Same rule as the host's isAdmin (active ADMIN account with an X id; the environment allowlist is the host's), checked
+  // before the receipt is claimed so a demoted operator cannot replay either. The actor trigger repeats it in the database.
+  const operator = await tx.query<{ ok: number }>(
+    `SELECT 1 AS ok FROM "User" WHERE "id"=$1 AND "role"='ADMIN' AND NOT "suspended" AND "xId" IS NOT NULL AND "xId"<>''`,
+    [actor.data],
+  );
+  if (!operator.length) throw new MetricsError('FORBIDDEN');
   const result = await executeIdempotentCommand(
     tx,
     {
@@ -162,8 +172,11 @@ export async function setMetricsExclusion(
     [result.resultRef],
   );
   if (!row) throw new MetricsError('STORAGE_CONTRACT');
-  return MetricsExclusionRecordSchema.parse({
-    ...row,
-    recordedAt: new Date(row.recordedAt).toISOString(),
-  });
+  return {
+    status: result.status,
+    marker: MetricsExclusionRecordSchema.parse({
+      ...row,
+      recordedAt: new Date(row.recordedAt).toISOString(),
+    }),
+  };
 }

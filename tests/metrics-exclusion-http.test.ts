@@ -27,7 +27,7 @@ const body = {
   supersedesMarkerId: null,
 };
 function host(overrides: Partial<MetricsExclusionHttpHost> = {}) {
-  const set = vi.fn<MetricsExclusionHttpHost['set']>(async () => marker);
+  const set = vi.fn<MetricsExclusionHttpHost['set']>(async () => ({ status: 'EXECUTED', marker }));
   const value: MetricsExclusionHttpHost = {
     version: 'v1',
     requestId: () => 'request-1',
@@ -143,6 +143,42 @@ describe('POST /api/v1/admin/metrics/exclusions', () => {
     expect(set).toHaveBeenCalledWith('operator-1', body, 'key-1', 'request-1');
   });
 
+  it('answers 200 with the same marker for an idempotent replay, and 201 only for a new marker', async () => {
+    const { value } = host({ set: async () => ({ status: 'REPLAYED', marker }) });
+    const response = await createMetricsExclusionHandlers(value).POST(post());
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(marker);
+  });
+
+  it('maps a non-operator actor refused by the storage layer to 403, never 503', async () => {
+    const { value } = host({
+      set: async () => {
+        throw new MetricsError('FORBIDDEN');
+      },
+    });
+    expect((await createMetricsExclusionHandlers(value).POST(post())).status).toBe(403);
+  });
+
+  it('rejects evidence that is not an id or ticket reference before storage', async () => {
+    for (const evidenceRef of [
+      'alice@example.com',
+      'two words',
+      'tab\there',
+      'new\nline',
+      'rtl\u202Eoverride',
+      'zero\u200Bwidth',
+      '.leading-dot',
+      'x'.repeat(201),
+    ]) {
+      const { value, set } = host();
+      const response = await createMetricsExclusionHandlers(value).POST(
+        post({ ...body, evidenceRef }),
+      );
+      expect(response.status, evidenceRef).toBe(422);
+      expect(set).not.toHaveBeenCalled();
+    }
+  });
+
   it('maps a missing subject to 404 and a chain conflict to 409, and forwards nothing outside the schema', async () => {
     for (const [code, status] of [
       ['SUBJECT_NOT_FOUND', 404],
@@ -156,7 +192,9 @@ describe('POST /api/v1/admin/metrics/exclusions', () => {
       });
       expect((await createMetricsExclusionHandlers(value).POST(post())).status).toBe(status);
     }
-    const { value } = host({ set: async () => ({ ...marker, secret: 'x' }) });
+    const { value } = host({
+      set: async () => ({ status: 'EXECUTED', marker: { ...marker, secret: 'x' } }),
+    });
     expect((await createMetricsExclusionHandlers(value).POST(post())).status).toBe(503);
   });
 

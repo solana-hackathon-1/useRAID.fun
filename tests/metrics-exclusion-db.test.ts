@@ -18,7 +18,7 @@ type Input = SetMetricsExclusionInput;
 const guild = async (slug: string) =>
   (await syntheticGuild(slug, 'Guild ' + slug, 'Synthetic ' + slug)).guild.id as string;
 let operator: string;
-const mark = (
+const markResult = (
   input: Partial<Input> & Pick<Input, 'subjectType' | 'subjectId'>,
   actor = operator,
   idempotencyKey = 'key-' + randomUUID(),
@@ -37,6 +37,7 @@ const mark = (
       } as Input,
     }),
   );
+const mark = async (...args: Parameters<typeof markResult>) => (await markResult(...args)).marker;
 /** Two verified Guilds, each with one accepted engagement by its own worker. */
 async function twoGuilds() {
   const [a, b] = [await guild('excl-a'), await guild('excl-b')];
@@ -121,8 +122,26 @@ integration('DEC-2026-11-13-10 MetricsExclusion marker (T043)', { timeout: 12000
           suspended: true,
         },
       });
-      for (const actor of [creator.id, suspended.id, 'no-such-user'])
-        await expect(mark({ subjectType: 'GUILD', subjectId: a }, actor)).rejects.toThrow();
+      const noX = await db.user.create({
+        data: { handle: 'nox-' + randomUUID(), role: 'ADMIN', xId: null },
+      });
+      const blankX = await db.user.create({
+        data: { handle: 'blankx-' + randomUUID(), role: 'ADMIN', xId: '' },
+      });
+      // The module answers a non-operator actor with FORBIDDEN (a 403 at the edge), not a storage fault.
+      for (const actor of [creator.id, suspended.id, noX.id, blankX.id, 'no-such-user'])
+        await expect(mark({ subjectType: 'GUILD', subjectId: a }, actor)).rejects.toMatchObject({
+          code: 'FORBIDDEN',
+        });
+      // Raw SQL that bypasses the module is refused by the same trigger, including an ADMIN without an X id.
+      for (const actor of [noX.id, blankX.id])
+        await expect(
+          db.$executeRawUnsafe(
+            `INSERT INTO "MetricsExclusion" ("subjectType","subjectId","reason","evidenceRef","effect","actorAccountId") VALUES ('GUILD',$1,'FIXTURE','e','EXCLUDE',$2)`,
+            a,
+            actor,
+          ),
+        ).rejects.toThrow(/administrator/i);
       // Raw SQL that bypasses the module is refused by the same trigger.
       await expect(
         db.$executeRawUnsafe(
@@ -158,8 +177,8 @@ integration('DEC-2026-11-13-10 MetricsExclusion marker (T043)', { timeout: 12000
       const { a, b } = await twoGuilds();
       const key = 'retry-' + randomUUID();
       const first = await mark({ subjectType: 'GUILD', subjectId: a }, operator, key);
-      const again = await mark({ subjectType: 'GUILD', subjectId: a }, operator, key);
-      expect(again).toEqual(first);
+      const again = await markResult({ subjectType: 'GUILD', subjectId: a }, operator, key);
+      expect(again).toEqual({ status: 'REPLAYED', marker: first });
       expect(await db.$queryRawUnsafe(`SELECT 1 FROM "MetricsExclusion"`)).toHaveLength(1);
       await expect(
         mark({ subjectType: 'GUILD', subjectId: b }, operator, key),
@@ -177,6 +196,67 @@ integration('DEC-2026-11-13-10 MetricsExclusion marker (T043)', { timeout: 12000
         code: 'CONFLICT',
       });
       expect(await receipts()).toBe(1);
+    });
+
+    it('accepts only id or ticket references as evidence, in the module and in the database', async () => {
+      const { a, b } = await twoGuilds();
+      const bad = [
+        'alice@example.com',
+        'two words',
+        'tab\there',
+        'new\nline',
+        'rtl\u202Eoverride',
+        'zero\u200Bwidth',
+        'caf\u00e9',
+        '.leading-dot',
+        '-leading-dash',
+        'password=hunter2!',
+        'x'.repeat(201),
+      ];
+      for (const evidenceRef of bad) {
+        await expect(
+          mark({ subjectType: 'GUILD', subjectId: a, evidenceRef }),
+          evidenceRef,
+        ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+        await expect(
+          db.$executeRawUnsafe(
+            `INSERT INTO "MetricsExclusion" ("subjectType","subjectId","reason","evidenceRef","effect","actorAccountId") VALUES ('GUILD',$1,'FIXTURE',$2,'EXCLUDE',$3)`,
+            a,
+            evidenceRef,
+            operator,
+          ),
+          evidenceRef,
+        ).rejects.toThrow();
+      }
+      expect(await db.$queryRawUnsafe(`SELECT 1 FROM "MetricsExclusion"`)).toHaveLength(0);
+      for (const [subjectId, evidenceRef] of [
+        [a, 'TICKET-77'],
+        [b, 'org/repo#12'],
+      ])
+        await mark({ subjectType: 'GUILD', subjectId, evidenceRef });
+      expect(await db.$queryRawUnsafe(`SELECT 1 FROM "MetricsExclusion"`)).toHaveLength(2);
+    });
+
+    it('keeps the reason a closed set in the module and the database', async () => {
+      const { a } = await twoGuilds();
+      for (const reason of ['fixture', 'FIXTURE ', 'free text about alice@example.com'])
+        await expect(
+          mark({ subjectType: 'GUILD', subjectId: a, reason: reason as never }),
+        ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+      await expect(
+        db.$executeRawUnsafe(
+          `INSERT INTO "MetricsExclusion" ("subjectType","subjectId","reason","evidenceRef","effect","actorAccountId") VALUES ('GUILD',$1,'FIXTURE ','e','EXCLUDE',$2)`,
+          a,
+          operator,
+        ),
+      ).rejects.toThrow();
+    });
+
+    it('indexes markers by subject for the per-subject chain lookup', async () => {
+      const rows = await db.$queryRawUnsafe<{ indexdef: string }[]>(
+        `SELECT indexdef FROM pg_indexes WHERE tablename='MetricsExclusion' AND indexdef NOT LIKE '%UNIQUE%'`,
+      );
+      expect(rows.some((row) => /\("subjectType", "subjectId"\)/.test(row.indexdef))).toBe(true);
     });
 
     it('rejects an unknown subject type, reason, malformed subject id and blank evidence', async () => {

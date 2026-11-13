@@ -21,7 +21,7 @@ CREATE TABLE "MetricsExclusion" (
   CONSTRAINT "MetricsExclusion_subjectType_check" CHECK ("subjectType" IN ('GUILD','WORK_LISTING','ENGAGEMENT','PARTICIPANT')),
   CONSTRAINT "MetricsExclusion_subjectId_check" CHECK ("subjectId" ~ '^[A-Za-z0-9][A-Za-z0-9._:-]{0,199}$'),
   CONSTRAINT "MetricsExclusion_reason_check" CHECK ("reason" IN ('FIXTURE','INTERNAL_DEMO','SELF_DEALING','DUPLICATE','KNOWN_ABUSE')),
-  CONSTRAINT "MetricsExclusion_evidenceRef_check" CHECK (char_length("evidenceRef") BETWEEN 1 AND 200 AND btrim("evidenceRef") <> '' AND "evidenceRef" !~ '[[:cntrl:]]'),
+  CONSTRAINT "MetricsExclusion_evidenceRef_check" CHECK ("evidenceRef" ~ '^[A-Za-z0-9][A-Za-z0-9._:/#-]{0,199}$'),
   CONSTRAINT "MetricsExclusion_effect_check" CHECK ("effect" IN ('EXCLUDE','RELEASE')),
   CONSTRAINT "MetricsExclusion_release_check" CHECK ("effect" = 'EXCLUDE' OR "supersedesMarkerId" IS NOT NULL),
   CONSTRAINT "MetricsExclusion_actor_check" CHECK (char_length("actorAccountId") BETWEEN 1 AND 200)
@@ -31,13 +31,18 @@ CREATE UNIQUE INDEX "MetricsExclusion_supersedesMarkerId_key" ON "MetricsExclusi
 CREATE UNIQUE INDEX "MetricsExclusion_subject_root_key" ON "MetricsExclusion" ("subjectType", "subjectId")
   WHERE "supersedesMarkerId" IS NULL;
 
+-- Evidence is an id or ticket reference, never free text: the table is append-only, so personal data or a secret
+-- written here could never be removed. The pattern admits no whitespace, '@', bidi or zero-width character.
+CREATE INDEX "MetricsExclusion_subjectType_subjectId_idx" ON "MetricsExclusion" ("subjectType", "subjectId");
+
 -- Defence in depth for "operators only": the environment allowlist is enforced by the host on every request; the
--- database additionally refuses an actor that is not an active administrator account.
+-- database additionally refuses an actor that is not an active administrator account with an X id (as isAdmin).
 CREATE FUNCTION raid_metrics_exclusion_actor_v1() RETURNS trigger
 LANGUAGE plpgsql AS $$
 BEGIN
   IF NOT EXISTS (
     SELECT 1 FROM "User" WHERE "id" = NEW."actorAccountId" AND "role" = 'ADMIN' AND NOT "suspended"
+      AND "xId" IS NOT NULL AND "xId" <> ''
   ) THEN
     RAISE EXCEPTION 'A metrics exclusion must be set by an active administrator account'
       USING ERRCODE = '42501';

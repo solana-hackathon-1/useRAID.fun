@@ -3,7 +3,7 @@ import { InternalId } from '../contracts/ids';
 import { createErrorEnvelope, type ErrorCode } from '../contracts/protocol';
 import { readBoundedJson, JsonBodyFailure } from '../http-contracts/json';
 import { MetricsError } from './contracts';
-import { MetricsExclusionRecordSchema, SetMetricsExclusionInputSchema } from './exclusion';
+import { MetricsExclusionOutcomeSchema, SetMetricsExclusionInputSchema } from './exclusion';
 import { MetricsHttpError } from './http';
 
 /**
@@ -69,11 +69,15 @@ export function createMetricsExclusionHandlers(host: MetricsExclusionHttpHost) {
         if (!key.success) return respond('INVALID_COMMAND', id);
         const input = SetMetricsExclusionInputSchema.safeParse(await readBoundedJson(request));
         if (!input.success) return respond('INVALID_COMMAND', id);
-        const record = MetricsExclusionRecordSchema.safeParse(
+        const outcome = MetricsExclusionOutcomeSchema.safeParse(
           await host.set(operator.data, input.data, key.data, id),
         );
-        return record.success
-          ? Response.json(record.data, { status: 201, headers })
+        // 201 for a new marker, 200 for an idempotent replay of the same command.
+        return outcome.success
+          ? Response.json(outcome.data.marker, {
+              status: outcome.data.status === 'REPLAYED' ? 200 : 201,
+              headers,
+            })
           : respond('SERVICE_UNAVAILABLE', id);
       } catch (error) {
         if (error instanceof MetricsHttpError)
@@ -89,6 +93,7 @@ export function createMetricsExclusionHandlers(host: MetricsExclusionHttpHost) {
         if (error instanceof CommandReceiptError && error.code === 'IDEMPOTENCY_KEY_REUSED')
           return respond('IDEMPOTENCY_KEY_REUSED', id);
         if (error instanceof MetricsError) {
+          if (error.code === 'FORBIDDEN') return respond('FORBIDDEN', id);
           if (error.code === 'SUBJECT_NOT_FOUND') return respond('NOT_FOUND', id);
           if (error.code === 'CONFLICT') return respond('REVISION_CHANGED', id);
           if (error.code === 'INVALID_INPUT') return respond('INVALID_COMMAND', id);

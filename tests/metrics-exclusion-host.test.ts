@@ -75,10 +75,13 @@ it('requires the shared administrator rule and a same-origin request, then sets 
 
   port.require.mockResolvedValue({ id: 'operator-1' });
   port.set.mockResolvedValue({
-    id: '11111111-1111-4111-8111-111111111111',
-    ...body,
-    actorAccountId: 'operator-1',
-    recordedAt: '2026-11-13T10:00:00.000Z',
+    status: 'EXECUTED',
+    marker: {
+      id: '11111111-1111-4111-8111-111111111111',
+      ...body,
+      actorAccountId: 'operator-1',
+      recordedAt: '2026-11-13T10:00:00.000Z',
+    },
   });
   expect((await metricsExclusionHandlers.POST(post())).status).toBe(201);
   expect(port.require).toHaveBeenCalledWith(true);
