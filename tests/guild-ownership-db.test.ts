@@ -740,7 +740,7 @@ integration('T009 Guild ownership transfer', () => {
         run((tx) =>
           respondOwnershipTransfer(
             tx,
-            cmd(next, { guildId: g.id, transferId: id, decision: 'ACCEPT' }, 'a-1'),
+            cmd(next, { guildId: g.id, transferId: id, decision: 'ACCEPT' }, 'idem-key-438-3'),
             meddling as never,
           ),
         ),
@@ -755,7 +755,7 @@ integration('T009 Guild ownership transfer', () => {
         decision: 'ACCEPT',
       });
       // No actor, session or receipt material reaches the line.
-      for (const secret of [next.accountId, founder.accountId, next.sessionHash, 'a-1'])
+      for (const secret of [next.accountId, founder.accountId, next.sessionHash, 'idem-key-438-3'])
         expect(line).not.toContain(secret);
     } finally {
       spy.mockRestore();

@@ -1,12 +1,19 @@
 import { z } from 'zod';
+import { InternalId } from '../contracts/ids';
 import {
   CommandReceiptError,
   executeIdempotentCommand,
   type CommandReceiptTransaction,
   type SqlBinding,
 } from '../command-receipts';
-import { InternalId } from '../contracts/ids';
 import { PublicGuildSchema } from '../contracts/entities';
+import {
+  createStorageQuery,
+  liveGrantAtSql,
+  liveGrantSql,
+  unexpiredGrantSql,
+  validateSessionActor,
+} from './storage-sql';
 import { evaluateGuildProfilePermission, projectPublicGuildProfile } from './index';
 import {
   ActivateGuildInputSchema,
@@ -59,36 +66,13 @@ function fail(code: GuildStorageError['code']): never {
   throw new GuildStorageError(code);
 }
 function validateActor(actor: GuildActor) {
-  if (!InternalId.safeParse(actor?.accountId).success) fail('INVALID_INPUT');
-  if (typeof actor.sessionHash !== 'string' || !/^[a-f0-9]{64}$/.test(actor.sessionHash))
-    fail('UNAUTHENTICATED');
+  validateSessionActor(fail, actor);
 }
-async function query<Row>(
-  tx: CommandReceiptTransaction,
-  sql: string,
-  bindings: readonly SqlBinding[],
-): Promise<Row[]> {
-  if (
-    tx?.dialect !== 'POSTGRESQL' ||
-    tx?.isolation !== 'READ_COMMITTED' ||
-    typeof tx.query !== 'function'
-  )
-    fail('STORAGE_CONTRACT');
-  try {
-    const rows = await tx.query<Row>(sql, bindings);
-    if (!Array.isArray(rows)) fail('STORAGE_CONTRACT');
-    return rows;
-  } catch (error) {
-    if (error instanceof GuildStorageError || error instanceof CommandReceiptError) throw error;
-    // A deadlock or serialization abort is retryable whole, never an outage. A host port classifies these itself; one
-    // that hands the driver error through (the SQLSTATE directly, or Prisma's raw-query `meta.code`) gets the same
-    // answer here, so two approvers activating each other's drafts (#438-2) never surface STORAGE_UNAVAILABLE.
-    const source = error as { code?: unknown; meta?: { code?: unknown } } | null;
-    const state = source?.code === 'P2010' ? source.meta?.code : source?.code;
-    if (state === '40P01' || state === '40001') throw new CommandReceiptError('RETRY_TRANSACTION');
-    return fail('STORAGE_UNAVAILABLE');
-  }
-}
+const query = createStorageQuery(
+  fail,
+  (error): error is GuildStorageError => error instanceof GuildStorageError,
+  { retryTransient: true },
+);
 /** User → Session, with the database clock after any row wait. Held to commit. */
 async function authorize(tx: CommandReceiptTransaction, actor: GuildActor) {
   const users = await query<{ suspended: boolean }>(
@@ -160,8 +144,7 @@ async function authorityKinds(
     tx,
     `SELECT g."founderAccountId"=$2 AS founder,
        (SELECT array_agg(DISTINCT r."kind") FROM "GuildRoleGrant" r
-         WHERE r."guildId"=g."id" AND r."granteeAccountId"=$2 AND r."revokedAt" IS NULL
-          AND r."validFrom"<=clock_timestamp() AND (r."expiresAt" IS NULL OR r."expiresAt">clock_timestamp())) AS kinds
+         WHERE r."guildId"=g."id" AND r."granteeAccountId"=$2 AND ${liveGrantSql('r.')}) AS kinds
      FROM "Guild" g JOIN "User" u ON u."id"=$2 AND NOT u."suspended" WHERE g."id"=$1::uuid`,
     [guildId, accountId],
   );
@@ -352,8 +335,7 @@ async function profileDecision(
     `SELECT "id"::text,"fields","canDelegate",
        date_trunc('milliseconds',"validFrom")+CASE WHEN "validFrom">date_trunc('milliseconds',"validFrom") THEN interval '1 millisecond' ELSE interval '0' END AS "validFrom",
        date_trunc('milliseconds',"expiresAt") AS "expiresAt"
-     FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2 AND "kind"='PROFILE' AND "revokedAt" IS NULL
-      AND "validFrom"<=$3::timestamptz AND ("expiresAt" IS NULL OR "expiresAt">$3::timestamptz)`,
+     FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2 AND "kind"='PROFILE' AND ${liveGrantAtSql(3)}`,
     // One clock reading: the grants are selected at the same instant the policy is asked about.
     [guild.id, actor.accountId, guild.now.toISOString()],
   );
@@ -602,10 +584,7 @@ export async function readManagedGuild(
   await authorize(tx, actor);
   return { guild, authority };
 }
-const LIVE = `"revokedAt" IS NULL AND "validFrom"<=clock_timestamp() AND ("expiresAt" IS NULL OR "expiresAt">clock_timestamp())`;
-/** Live at a bound instant (placeholder `$n`), so several reads in one command judge grants at the same moment. */
-const liveAt = (n: number, alias = '') =>
-  `${alias}"revokedAt" IS NULL AND ${alias}"validFrom"<=$${n}::timestamptz AND (${alias}"expiresAt" IS NULL OR ${alias}"expiresAt">$${n}::timestamptz)`;
+const LIVE = liveGrantSql();
 async function loadGrant(
   tx: CommandReceiptTransaction,
   guildId: string,
@@ -708,7 +687,7 @@ export async function grantGuildRole(
           tx,
           `SELECT f AS field,max("expiresAt") AS bound,bool_or("expiresAt" IS NULL) AS unbounded
            FROM "GuildRoleGrant" r CROSS JOIN LATERAL unnest(r."fields") f
-           WHERE r."guildId"=$1::uuid AND r."granteeAccountId"=$2 AND r."kind"='PROFILE' AND r."canDelegate" AND ${liveAt(4, 'r.')} AND f=ANY($3::text[])
+           WHERE r."guildId"=$1::uuid AND r."granteeAccountId"=$2 AND r."kind"='PROFILE' AND r."canDelegate" AND ${liveGrantAtSql(4, 'r.')} AND f=ANY($3::text[])
            GROUP BY f`,
           // The same instant the policy judged: cover cannot lapse between the two reads.
           [input.guildId, actor.accountId, `{${input.fields.join(',')}}`, guild.now.toISOString()],
@@ -724,14 +703,14 @@ export async function grantGuildRole(
         }
         const passed = await query<{ n: number }>(
           tx,
-          `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "grantedByAccountId"=$2 AND ${liveAt(3)}`,
+          `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "grantedByAccountId"=$2 AND ${liveGrantAtSql(3)}`,
           [input.guildId, actor.accountId, guild.now.toISOString()],
         );
         if ((passed[0]?.n ?? 0) >= DELEGATED_GRANT_LIMIT) fail('GRANT_LIMIT');
       }
       const live = await query<{ n: number }>(
         tx,
-        `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND ${liveAt(2)}`,
+        `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND ${liveGrantAtSql(2)}`,
         [input.guildId, guild.now.toISOString()],
       );
       if ((live[0]?.n ?? 0) >= GUILD_GRANT_LIMIT) fail('GRANT_LIMIT');
@@ -873,14 +852,12 @@ export async function revokeGuildRole(
         const cascaded = await query<{ id: string }>(
           tx,
           `UPDATE "GuildRoleGrant" s SET "revokedAt"=GREATEST(clock_timestamp(),s."validFrom")
-           WHERE s."guildId"=$1::uuid AND s."grantedByAccountId"=$2 AND s."kind"='PROFILE' AND s."revokedAt" IS NULL
-             AND (s."expiresAt" IS NULL OR s."expiresAt">clock_timestamp())
+           WHERE s."guildId"=$1::uuid AND s."grantedByAccountId"=$2 AND s."kind"='PROFILE' AND ${unexpiredGrantSql('s.')}
              AND EXISTS (
                SELECT 1 FROM unnest(s."fields") f WHERE NOT EXISTS (
                  SELECT 1 FROM "GuildRoleGrant" d
                  WHERE d."guildId"=$1::uuid AND d."granteeAccountId"=$2 AND d."kind"='PROFILE' AND d."canDelegate"
-                   AND d."revokedAt" IS NULL AND d."validFrom"<=clock_timestamp()
-                   AND (d."expiresAt" IS NULL OR d."expiresAt">clock_timestamp())
+                   AND ${liveGrantSql('d.')}
                    AND f=ANY(d."fields")
                    AND (d."expiresAt" IS NULL OR (s."expiresAt" IS NOT NULL AND s."expiresAt"<=d."expiresAt"))))
            RETURNING s."id"::text`,
@@ -957,7 +934,7 @@ async function holdsSeparateAuthority(
   const rows = await query(
     tx,
     `SELECT 1 FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2 AND "kind" IN ('TREASURY','DISPUTE')
-       AND "revokedAt" IS NULL AND ("expiresAt" IS NULL OR "expiresAt">clock_timestamp()) LIMIT 1`,
+       AND ${unexpiredGrantSql()} LIMIT 1`,
     [guildId, accountId],
   );
   return rows.length > 0;
