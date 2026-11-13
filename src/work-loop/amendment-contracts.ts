@@ -10,7 +10,29 @@ export interface RewardIncrease {
   policy: z.infer<typeof AssetPolicySnapshotSchema>;
   amount: string;
 }
-export interface AmendmentHost {
+/**
+ * Query-only port for desk reads (#361-5): one `REPEATABLE READ`, `READ ONLY` snapshot shared by the whole desk. It is
+ * NOT a `CommandReceiptTransaction`: it has no dialect or READ COMMITTED guarantee, and no identity lock set is
+ * prepared on it. Only `SELECT`/`WITH`/`SHOW` text is accepted; a lock request (advisory or `FOR UPDATE/SHARE`) or a
+ * write is refused and costs the host that ONE engagement (omitted), never the desk.
+ */
+export interface AmendmentSnapshotReader {
+  query<Row>(sql: string, bindings: readonly (string | null)[]): Promise<Row[]>;
+}
+/** The only host port the desk uses: a snapshot-safe answer to "is this caller the authorized Founder here?". */
+export interface AmendmentDeskHost {
+  /**
+   * Current scoped Founder authority over this engagement's source, answered from the desk's snapshot. Must be
+   * read-only and lock-free: take no locks, write nothing and do not wait on another session. A thrown error or a
+   * `false` omits that engagement from the desk.
+   */
+  authorizeRead(
+    snapshot: AmendmentSnapshotReader,
+    actor: WorkActor,
+    target: { engagementId: string; guildId: string },
+  ): Promise<boolean>;
+}
+export interface AmendmentHost extends Partial<AmendmentDeskHost> {
   allowNewWrites: boolean;
   /** Current scoped Founder authority over this engagement's source, rechecked by the host in this transaction. */
   authorize(

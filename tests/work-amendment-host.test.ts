@@ -3,17 +3,14 @@ import { workAmendmentsEnabled } from '../src/lib/config';
 import { createRootAmendmentHost, readAmendmentDeskFromHost } from '../src/lib/work-amendment-host';
 import { TermsSnapshotSchema } from '../src/contracts/entities';
 import type { AssetPolicySnapshot } from '../src/contracts/assets';
+import { canonicalRequestDigest } from '../src/command-receipts';
 import { raidTerms } from './helpers/raid-terms-fixture';
 
-const { transaction, historyRead } = vi.hoisted(() => ({
-  transaction: vi.fn(),
-  historyRead: vi.fn(),
-}));
+const { snapshotRead } = vi.hoisted(() => ({ snapshotRead: vi.fn() }));
 vi.mock('../src/lib/db', () => ({ db: {} }));
-vi.mock('../src/lib/command-receipts-adapter', () => ({ runCommandTransaction: transaction }));
-vi.mock('../src/work-loop/amendment-storage', async (original) => ({
-  ...(await original<typeof import('../src/work-loop/amendment-storage')>()),
-  readEngagementAmendments: historyRead,
+vi.mock('../src/lib/command-receipts-adapter', () => ({
+  runCommandTransaction: vi.fn(),
+  runSnapshotReadTransaction: snapshotRead,
 }));
 
 const policy = raidTerms().rewards[0].policy as unknown as AssetPolicySnapshot;
@@ -133,8 +130,9 @@ describe('T025 root amendment host ports', () => {
   });
 });
 
-describe('#361-4 desk reads the Founder current terms after the history', () => {
+describe('#361-5 desk reads in one read-only snapshot', () => {
   const engagementId = '44444444-4444-4444-8444-444444444444';
+  const lostId = '66666666-6666-4666-8666-666666666666';
   const snapshot = (scope: string) =>
     TermsSnapshotSchema.parse({
       id: '11111111-1111-4111-8111-111111111111',
@@ -182,31 +180,72 @@ describe('#361-4 desk reads the Founder current terms after the history', () => 
     vi.unstubAllEnvs();
     vi.clearAllMocks();
   });
-  it('shows terms agreed between the engagement list and the history read, not the listed copy', async () => {
+  it('reads the whole desk in one snapshot transaction and omits an engagement the caller lost authority over', async () => {
     vi.stubEnv('WORK_WORKSPACE_READS_ENABLED', 'true');
     vi.stubEnv('RAID_WORK_OPERATOR_ACCOUNT_IDS', 'founder-1');
-    let consented = false;
-    historyRead.mockImplementation(async () => {
-      // The member's consent commits after the engagement list was read and before the history is.
-      consented = true;
-      return [];
-    });
-    transaction.mockImplementation(async (_db, work) =>
+    const memberId = '99999999-9999-4999-8999-999999999999';
+    const row = (id: string) => ({ id, state: 'IN_PROGRESS', title: 'Task' });
+    snapshotRead.mockImplementation(async (_db, work) =>
       work({
-        query: async (sql: string) => {
-          if (sql.includes('"creatorAccountId"'))
-            return [{ id: engagementId, state: 'IN_PROGRESS', title: 'Task', terms: before }];
-          if (sql.includes('p."accountId"=$1')) return [];
-          if (sql.includes('raid_effective_terms')) return [{ terms: consented ? after : before }];
+        query: async (sql: string, bindings: string[]) => {
+          if (/SAVEPOINT/.test(sql)) return [];
+          if (sql.includes('"suspended"')) return [{ suspended: false }];
+          if (sql.includes('FROM "Participant" WHERE')) return [{ id: memberId, kind: 'HUMAN' }];
+          if (sql.includes('"creatorAccountId"=$1')) return [row(engagementId), row(lostId)];
+          if (sql.includes('p."accountId"=$1 AND e."state"')) return [];
+          // Founder binding: the second engagement belongs to another listing creator.
+          if (sql.includes('l."creatorAccountId" FROM'))
+            return [
+              {
+                guildId: 'g',
+                creatorAccountId: bindings[0] === lostId ? 'someone-else' : 'founder-1',
+              },
+            ];
+          if (sql.includes('FROM "EngagementMember" m JOIN')) return [];
+          if (sql.includes('SELECT raid_effective_terms'))
+            return [{ terms: after, digest: canonicalRequestDigest(after) }];
+          if (sql.includes('FROM "EngagementAmendment" a WHERE')) return [];
           throw new Error('unexpected query: ' + sql);
         },
       }),
     );
     const desk = await readAmendmentDeskFromHost(actor);
-    expect(desk.engagements).toHaveLength(1);
-    expect(desk.engagements[0]).toMatchObject({ role: 'FOUNDER', engagementId });
+    expect(snapshotRead).toHaveBeenCalledTimes(1);
+    expect(desk.engagements.map((e) => e.engagementId)).toEqual([engagementId]);
+    expect(desk.engagements[0]).toMatchObject({ role: 'FOUNDER' });
     expect(desk.engagements[0].effectiveTerms.scope).toBe('Scope after the consent.');
-    // The history read still proves Founder authority first; the fresh copy is read in that same transaction.
-    expect(historyRead).toHaveBeenCalledTimes(1);
+  });
+  it('stops reading engagements once the desk limit is shown', async () => {
+    vi.stubEnv('WORK_WORKSPACE_READS_ENABLED', 'true');
+    vi.stubEnv('RAID_WORK_OPERATOR_ACCOUNT_IDS', 'founder-1');
+    const id = (i: number) => `00000000-0000-4000-8000-${String(i).padStart(12, '0')}`;
+    const rows = (n: number, from = 0) =>
+      Array.from({ length: n }, (_, i) => ({ id: id(from + i), state: 'IN_PROGRESS', title: 'T' }));
+    const effectiveReads: string[] = [];
+    snapshotRead.mockImplementation(async (_db, work) =>
+      work({
+        query: async (sql: string, bindings: string[]) => {
+          if (/SAVEPOINT/.test(sql)) return [];
+          if (sql.includes('"suspended"')) return [{ suspended: false }];
+          if (sql.includes('FROM "Participant" WHERE')) return [{ id: 'p', kind: 'HUMAN' }];
+          if (sql.includes('p."accountId"=$1 AND e."state"')) return rows(20);
+          if (sql.includes('"creatorAccountId"=$1')) return rows(20, 20);
+          if (sql.includes('FROM "EngagementMember" WHERE')) return [{ '?column?': 1 }];
+          if (sql.includes('l."creatorAccountId" FROM'))
+            return [{ guildId: 'g', creatorAccountId: 'founder-1' }];
+          if (sql.includes('FROM "EngagementMember" m JOIN')) return [];
+          if (sql.includes('SELECT raid_effective_terms')) {
+            effectiveReads.push(bindings[0]);
+            return [{ terms: after, digest: canonicalRequestDigest(after) }];
+          }
+          if (sql.includes('FROM "EngagementAmendment" a WHERE')) return [];
+          throw new Error('unexpected query: ' + sql);
+        },
+      }),
+    );
+    const desk = await readAmendmentDeskFromHost(actor);
+    expect(desk.engagements).toHaveLength(20);
+    // 40 candidates were listed, but nothing beyond the 20 shown is read.
+    expect(effectiveReads).toHaveLength(20);
   });
 });
