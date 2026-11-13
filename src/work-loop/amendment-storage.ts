@@ -500,3 +500,56 @@ export async function readEngagementAmendments(
   );
   return rows.map(view);
 }
+/**
+ * Own-view desk entries read inside ONE caller-owned `REPEATABLE READ`, `READ ONLY` snapshot (#361-5). Unlike the
+ * per-engagement readers above it takes no identity advisory locks and writes nothing, so it has no lock order to
+ * keep; authority is judged against that same snapshot as the history and terms it guards. The caller's own current
+ * Session and human Participant are still required (a lapsed Session fails the whole desk closed), but a candidate the
+ * caller does not hold authority over at the snapshot (not a member, or not the listing's authorized Founder) is
+ * omitted rather than failing the rest. Every entry's history and effective terms describe the same instant.
+ */
+export async function readAmendmentDeskEntries(
+  tx: Pick<Tx, 'query'>,
+  actor: WorkActor,
+  candidates: readonly { engagementId: string; role: 'MEMBER' | 'FOUNDER' }[],
+  host: Pick<AmendmentHost, 'authorize'>,
+) {
+  if (typeof tx?.query !== 'function' || typeof host?.authorize !== 'function')
+    fail('STORAGE_CONTRACT');
+  if (
+    !InternalId.safeParse(actor?.accountId).success ||
+    !/^[a-f0-9]{64}$/.test(actor?.sessionHash ?? '')
+  )
+    fail('UNAUTHENTICATED');
+  await session(tx, actor);
+  const participants = await tx.query<{ id: string; kind: string }>(
+    'SELECT "id"::text,"kind" FROM "Participant" WHERE "accountId"=$1',
+    [actor.accountId],
+  );
+  if (participants.length !== 1 || participants[0].kind !== 'HUMAN') fail('FORBIDDEN');
+  const entries = [];
+  for (const { engagementId, role } of candidates) {
+    if (!/^[0-9a-f-]{36}$/.test(String(engagementId))) fail('INVALID_INPUT');
+    if (role === 'MEMBER') {
+      const member = await tx.query(
+        'SELECT 1 FROM "EngagementMember" WHERE "engagementId"=$1::uuid AND "participantId"=$2::uuid',
+        [engagementId, participants[0].id],
+      );
+      if (member.length !== 1) continue;
+    } else if (
+      (await founderAuthority(tx as Tx, engagementId, actor, host as AmendmentHost)) === null
+    )
+      continue;
+    const rows = await tx.query<Row>(
+      `SELECT ${COLUMNS} FROM "EngagementAmendment" a WHERE a."engagementId"=$1::uuid ORDER BY a."sequence"`,
+      [engagementId],
+    );
+    entries.push({
+      engagementId,
+      role,
+      amendments: rows.map(view),
+      effectiveTerms: await effective(tx as Tx, engagementId),
+    });
+  }
+  return entries;
+}

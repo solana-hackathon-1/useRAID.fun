@@ -53,6 +53,70 @@ export function createPrismaCommandTransaction(
     },
   };
 }
+/**
+ * Read-only query port for one consistent snapshot. It deliberately is NOT a `CommandReceiptTransaction`: that port is
+ * READ COMMITTED and its readers take identity advisory locks, neither of which a snapshot read does.
+ */
+export interface SnapshotReadTransaction {
+  query<Row>(sql: string, bindings: readonly SqlBinding[]): Promise<Row[]>;
+}
+/** Binds the snapshot port to the already READ ONLY transaction; module-owned SQL only, errors classified. */
+export function createPrismaSnapshotPort(tx: Prisma.TransactionClient): SnapshotReadTransaction {
+  return {
+    async query<Row>(sql: string, bindings: readonly SqlBinding[]): Promise<Row[]> {
+      try {
+        return await tx.$queryRawUnsafe<Row[]>(sql, ...bindings);
+      } catch (error) {
+        throw classifyCommandReceiptFailure(error);
+      }
+    },
+  };
+}
+/**
+ * Runs `work` in ONE `REPEATABLE READ`, `READ ONLY` transaction: every query in it sees the same committed state, writes
+ * are impossible, and no identity advisory lock is taken (so no lock-order obligation arises; write paths keep theirs).
+ * `SET TRANSACTION READ ONLY` precedes the first query, and isolation and access mode are verified before `work` runs.
+ * Serialization failures retry the whole transaction, like `runCommandTransaction`; other errors propagate unchanged.
+ */
+export async function runSnapshotReadTransaction<T>(
+  db: Pick<PrismaClient, '$transaction'>,
+  work: (port: SnapshotReadTransaction) => Promise<T>,
+  options: RunCommandTransactionOptions = {},
+): Promise<T> {
+  try {
+    return await retryWholeTransaction(
+      () =>
+        db.$transaction(
+          async (tx) => {
+            await tx.$executeRawUnsafe('SET TRANSACTION READ ONLY');
+            const modes = await tx.$queryRawUnsafe<{ isolation: string; read_only: string }[]>(
+              `SELECT current_setting('transaction_isolation') AS isolation, current_setting('transaction_read_only') AS read_only`,
+            );
+            if (
+              modes.length !== 1 ||
+              modes[0].isolation !== 'repeatable read' ||
+              modes[0].read_only !== 'on'
+            )
+              throw new CommandReceiptError('STORAGE_CONTRACT');
+            return work(createPrismaSnapshotPort(tx));
+          },
+          {
+            isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead,
+            maxWait: options.transaction?.maxWait ?? 2000,
+            timeout: options.transaction?.timeout ?? 5000,
+          },
+        ),
+      {
+        maxAttempts: options.maxAttempts,
+        isRetryable: (error) => classifyCommandReceiptFailure(error).code === 'RETRY_TRANSACTION',
+      },
+    );
+  } catch (error) {
+    const classified = classifyCommandReceiptFailure(error);
+    if (classified.code === 'RETRY_TRANSACTION') throw classified;
+    throw error;
+  }
+}
 export interface RunCommandTransactionOptions {
   maxAttempts?: number;
   maxElapsedMs?: number;
