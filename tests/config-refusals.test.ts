@@ -1,5 +1,11 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { validateRuntimeConfig, type ConfigViolation } from '../src/config-validation/index';
+import {
+  ENV_EXAMPLE_OPERATOR_PUBLIC_KEYS,
+  validateRuntimeConfig,
+  type ConfigViolation,
+} from '../src/config-validation/index';
 import { checkRuntimeConfigOrExit } from '../src/lib/config-validation-host';
 
 // DEC-2026-11-07-01 (e)(f)(g)(h): production refusals, exit-at-start, synthetic/real-money separation.
@@ -54,6 +60,12 @@ describe('(g) production refuses test-looking database names and the sample oper
     'postgres://u:p@db:5432/useraid-e2e?sslmode=require',
     'postgresql://u:p@db:5432/Useraid_Tests',
     'postgresql://u:p@db:5432/ci_useraid',
+    // DEC-2026-11-13-08 (1): demo, dev, development, local and staging join the list.
+    'postgresql://u:p@db:5432/useraid_demo',
+    'postgresql://u:p@db:5432/dev',
+    'postgresql://u:p@db:5432/useraid-development',
+    'postgresql://u:p@db:5432/Local_useraid',
+    'postgresql://u:p@db:5432/useraid_staging',
   ])('refuses database %s', (url) => {
     const result = validateRuntimeConfig({ ...PRODUCTION, DATABASE_URL: url }, 'web');
     expect(codes(result.violations)).toEqual(['REFUSE:TEST_DATABASE_IN_PRODUCTION:DATABASE_URL']);
@@ -63,6 +75,10 @@ describe('(g) production refuses test-looking database names and the sample oper
     'postgresql://u:p@db:5432/useraid',
     'postgresql://u:p@db:5432/useraid_production',
     'postgresql://u:p@db:5432/contestants', // "test" inside a word is not a token
+    'postgresql://u:p@db:5432/devotion', // new words are whole-word too
+    'postgresql://u:p@db:5432/locale_useraid',
+    'postgresql://u:p@db:5432/demonstration',
+    'postgresql://u:p@db:5432/useraid_stagingarea',
     'postgresql://u:p@db-test.internal:5432/useraid', // host is not the database name
     '',
   ])('accepts database %s', (url) => {
@@ -91,6 +107,22 @@ describe('(g) production refuses test-looking database names and the sample oper
       'REFUSE:SAMPLE_OPERATOR_KEY_IN_PRODUCTION:OPERATOR_PUBLIC_KEY',
     ]);
     expect(JSON.stringify(result)).not.toContain(key);
+  });
+
+  it('refuses the exact OPERATOR_PUBLIC_KEY value shipped in .env.example (DEC-2026-11-13-08 (2))', () => {
+    const line = readFileSync(join(__dirname, '..', '.env.example'), 'utf8')
+      .split('\n')
+      .find((l) => l.startsWith('OPERATOR_PUBLIC_KEY='));
+    expect(line, '.env.example must declare OPERATOR_PUBLIC_KEY').toBeDefined();
+    // Blank today: unset stays allowed. A non-blank value added later must be refused by name.
+    const shipped = line!.slice('OPERATOR_PUBLIC_KEY='.length).trim();
+    expect(shipped === '' || ENV_EXAMPLE_OPERATOR_PUBLIC_KEYS.includes(shipped)).toBe(true);
+    if (shipped !== '') {
+      const result = validateRuntimeConfig({ ...PRODUCTION, OPERATOR_PUBLIC_KEY: shipped }, 'web');
+      expect(codes(result.violations)).toEqual([
+        'REFUSE:SAMPLE_OPERATOR_KEY_IN_PRODUCTION:OPERATOR_PUBLIC_KEY',
+      ]);
+    }
   });
 
   it('accepts a real-looking key, unset key, and the sample key outside production', () => {
