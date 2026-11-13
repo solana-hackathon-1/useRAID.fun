@@ -708,6 +708,18 @@ export async function grantGuildRole(
         );
         if ((passed[0]?.n ?? 0) >= DELEGATED_GRANT_LIMIT) fail('GRANT_LIMIT');
       }
+      if (input.kind === 'TREASURY' || input.kind === 'DISPUTE') {
+        // DEC-2026-11-13-04 (c)(d), refused early under the Guild lock with a stable code; the database enforces the
+        // same separation for a direct writer. The payer never adjudicates (no account holds both kinds), and
+        // the recipient of an open ownership proposal is refused now rather than only at acceptance.
+        const separation = await query<{ held: boolean; pending: boolean }>(
+          tx,
+          `SELECT EXISTS(SELECT 1 FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2 AND "kind" IN ('TREASURY','DISPUTE') AND "kind"<>$3 AND ${unexpiredGrantSql()}) AS held,
+             EXISTS(SELECT 1 FROM "GuildOwnershipTransfer" WHERE "guildId"=$1::uuid AND "toAccountId"=$2 AND "state"='PROPOSED' AND "expiresAt">clock_timestamp()) AS pending`,
+          [input.guildId, input.granteeAccountId, input.kind],
+        );
+        if (separation[0]?.held !== false || separation[0].pending !== false) fail('FORBIDDEN');
+      }
       const live = await query<{ n: number }>(
         tx,
         `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND ${liveGrantAtSql(2)}`,

@@ -560,19 +560,24 @@ integration('T009 Guild ownership transfer', () => {
     await expect(propose(founder, g.id, arbiter.accountId)).rejects.toMatchObject({
       code: 'FORBIDDEN',
     });
-    // A grant issued after the proposal is caught at acceptance; nothing moves.
     const id = (await propose(founder, g.id, editor.accountId, {}, 'p-editor')).transfer.id;
-    const late = await grant(founder, {
-      guildId: g.id,
-      granteeAccountId: editor.accountId,
-      kind: 'TREASURY',
-    });
+    // DEC-2026-11-13-04 d: the application refuses the grant to an open proposal's recipient up front.
+    await expect(
+      grant(founder, { guildId: g.id, granteeAccountId: editor.accountId, kind: 'TREASURY' }),
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    // A grant that still reaches the table after the proposal (a direct writer) is caught at acceptance; nothing moves.
+    const [late] = await db.$queryRawUnsafe<{ id: string }[]>(
+      `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","grantedByAccountId") VALUES ($1::uuid,$2,'TREASURY',ARRAY[]::text[],$3) RETURNING "id"::text`,
+      g.id,
+      editor.accountId,
+      founder.accountId,
+    );
     await expect(respond(editor, g.id, id, 'ACCEPT', 'a-1')).rejects.toMatchObject({
       code: 'FORBIDDEN',
     });
     expect(await founderOf(g.id)).toBe(founder.accountId);
     // Once the recipient surrenders the separate authority, the proposal can be accepted.
-    await revoke(editor, g.id, late.grant.id);
+    await revoke(editor, g.id, late.id);
     expect((await respond(editor, g.id, id, 'ACCEPT', 'a-2')).transfer.applied).toBe(true);
     expect(await founderOf(g.id)).toBe(editor.accountId);
     // A revoked or expired treasury grant is history, not authority.

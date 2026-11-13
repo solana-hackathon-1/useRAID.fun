@@ -13,6 +13,7 @@ try {
     'migrations/followup-guards.sql',
     'migrations/followup-ownership.sql',
     'migrations/followup-lapse-successor.sql',
+    'migrations/role-separation.sql',
   ])
     await client.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   console.log(
