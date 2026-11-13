@@ -195,7 +195,7 @@ export async function readProductMetrics(tx: Tx): Promise<ProductMetrics> {
     'Work listings under a persisted (operator-activated) Guild, in any state, including drafts that were never published.';
   const FUNDED =
     'Funded means a slot of the listing holds a simulated funding reference; no live balance is implied.';
-  return ProductMetricsSchema.parse({
+  const page = {
     version: 'v1',
     generatedAt: now.now.toISOString(),
     fundingMode: 'SIMULATED',
@@ -241,7 +241,7 @@ export async function readProductMetrics(tx: Tx): Promise<ProductMetrics> {
       'Distinct participants with at least one work-accepted engagement. Numerator: those with two or more.',
       [VERIFIED, NO_MARKERS, 'Each member of a shared engagement is counted once per engagement.'],
     ),
-    launchConversion: {
+    workListingFunnel: {
       unit: 'WORK_LISTING',
       drafted: {
         count: funnel.drafted,
@@ -364,5 +364,7 @@ export async function readProductMetrics(tx: Tx): Promise<ProductMetrics> {
       submissionsWithoutVerifiedGuild: delay.unverified,
     },
     notMeasured: NOT_MEASURED,
-  });
+  };
+  // DEC-2026-11-13-10(b): `launchConversion` is the deprecated one-version alias of the work-listing funnel.
+  return ProductMetricsSchema.parse({ ...page, launchConversion: page.workListingFunnel });
 }

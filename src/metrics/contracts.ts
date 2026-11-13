@@ -41,7 +41,7 @@ export const CountMetricSchema = z.strictObject({
   exclusions: z.array(z.string().min(1).max(600)).min(1).max(12),
 });
 /** One step of the work funnel: each step is a share of the step before it, so a step can never exceed its parent. */
-export const LaunchConversionSchema = z.strictObject({
+export const WorkListingFunnelSchema = z.strictObject({
   /** The funnel counts work listings (a drafted Raid), whichever of its slots or engagements reached each step. */
   unit: z.literal('WORK_LISTING'),
   drafted: CountMetricSchema,
@@ -125,36 +125,47 @@ export const ReviewDelaySchema = z
       delay.timing.samples === delay.decided.numerator,
     { message: 'distribution does not account for every decided submission' },
   );
-export const ProductMetricsSchema = z.strictObject({
-  version: z.literal('v1'),
-  generatedAt: UtcTimestamp,
-  fundingMode: z.literal('SIMULATED'),
-  /** The measure definitions are defaults chosen by the implementation; no owner decision approves them yet. */
-  definitions: z.literal('DEFAULT_NOT_OWNER_POLICY'),
-  guildActivation: RatioMetricSchema,
-  guildFirstOutcome: RatioMetricSchema,
-  guildRepeat: RatioMetricSchema,
-  raiderActivation: RatioMetricSchema,
-  raiderFirstOutcome: RatioMetricSchema,
-  raiderRepeat: RatioMetricSchema,
-  timings: z.strictObject({
-    guildToFirstFundedOffering: TimingSchema,
-    guildToFirstOutcome: TimingSchema,
-    raiderToFirstOutcome: TimingSchema,
-  }),
-  launchConversion: LaunchConversionSchema,
-  settlement: SettlementSchema,
-  disputes: DisputesSchema,
-  reviewDelay: ReviewDelaySchema,
-  /** Work that was left out of every figure above because its Guild id has no persisted Guild. */
-  excluded: z.strictObject({
-    listingsWithoutVerifiedGuild: z.number().int().min(0),
-    engagementsWithoutVerifiedGuild: z.number().int().min(0),
-    submissionsWithoutVerifiedGuild: z.number().int().min(0),
-  }),
-  /** Named so a reader cannot mistake absence for zero. */
-  notMeasured: z.array(z.string().min(1).max(64)).min(1),
-});
+export const ProductMetricsSchema = z
+  .strictObject({
+    version: z.literal('v1'),
+    generatedAt: UtcTimestamp,
+    fundingMode: z.literal('SIMULATED'),
+    /** The measure definitions are defaults chosen by the implementation; no owner decision approves them yet. */
+    definitions: z.literal('DEFAULT_NOT_OWNER_POLICY'),
+    guildActivation: RatioMetricSchema,
+    guildFirstOutcome: RatioMetricSchema,
+    guildRepeat: RatioMetricSchema,
+    raiderActivation: RatioMetricSchema,
+    raiderFirstOutcome: RatioMetricSchema,
+    raiderRepeat: RatioMetricSchema,
+    timings: z.strictObject({
+      guildToFirstFundedOffering: TimingSchema,
+      guildToFirstOutcome: TimingSchema,
+      raiderToFirstOutcome: TimingSchema,
+    }),
+    /** DEC-2026-11-13-10(b): the work-listing funnel. "Launch conversion" is `tokenLaunchConversion`, which is not measured. */
+    workListingFunnel: WorkListingFunnelSchema,
+    /** @deprecated Old name of `workListingFunnel`, kept for one version; always identical to it. Not token-launch conversion. */
+    launchConversion: WorkListingFunnelSchema,
+    settlement: SettlementSchema,
+    disputes: DisputesSchema,
+    reviewDelay: ReviewDelaySchema,
+    /** Work that was left out of every figure above because its Guild id has no persisted Guild. */
+    excluded: z.strictObject({
+      listingsWithoutVerifiedGuild: z.number().int().min(0),
+      engagementsWithoutVerifiedGuild: z.number().int().min(0),
+      submissionsWithoutVerifiedGuild: z.number().int().min(0),
+    }),
+    /** Named so a reader cannot mistake absence for zero. */
+    notMeasured: z.array(z.string().min(1).max(64)).min(1),
+  })
+  .refine(
+    (page) => JSON.stringify(page.launchConversion) === JSON.stringify(page.workListingFunnel),
+    {
+      message: 'deprecated launchConversion must equal workListingFunnel',
+      path: ['launchConversion'],
+    },
+  );
 export type ProductMetrics = z.infer<typeof ProductMetricsSchema>;
 export type RatioMetric = z.infer<typeof RatioMetricSchema>;
 export class MetricsError extends Error {

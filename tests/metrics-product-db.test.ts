@@ -83,12 +83,12 @@ integration('T043 product activation and repeat metrics', { timeout: 120000 }, (
       engagementsWithoutVerifiedGuild: 0,
       submissionsWithoutVerifiedGuild: 0,
     });
-    expect(page.launchConversion.drafted.count).toBe(0);
+    expect(page.workListingFunnel.drafted.count).toBe(0);
     for (const step of [
-      page.launchConversion.fundedFromDrafted,
-      page.launchConversion.acceptedFromFunded,
-      page.launchConversion.workAcceptedFromAccepted,
-      page.launchConversion.workAcceptedFromDrafted,
+      page.workListingFunnel.fundedFromDrafted,
+      page.workListingFunnel.acceptedFromFunded,
+      page.workListingFunnel.workAcceptedFromAccepted,
+      page.workListingFunnel.workAcceptedFromDrafted,
       page.reviewDelay.decided,
     ])
       expect(step).toMatchObject({ numerator: 0, denominator: 0, rate: null });
@@ -161,10 +161,10 @@ integration('T043 product activation and repeat metrics', { timeout: 120000 }, (
       page.raiderActivation,
       page.raiderFirstOutcome,
       page.raiderRepeat,
-      page.launchConversion.fundedFromDrafted,
-      page.launchConversion.acceptedFromFunded,
-      page.launchConversion.workAcceptedFromAccepted,
-      page.launchConversion.workAcceptedFromDrafted,
+      page.workListingFunnel.fundedFromDrafted,
+      page.workListingFunnel.acceptedFromFunded,
+      page.workListingFunnel.workAcceptedFromAccepted,
+      page.workListingFunnel.workAcceptedFromDrafted,
       page.reviewDelay.decided,
     ]) {
       expect(metric.denominatorDefinition.length).toBeGreaterThan(10);
@@ -206,7 +206,7 @@ integration('T043 product activation and repeat metrics', { timeout: 120000 }, (
       'ACCEPTED',
     );
 
-    const { launchConversion: funnel } = ProductMetricsSchema.parse(await metrics());
+    const { workListingFunnel: funnel } = ProductMetricsSchema.parse(await metrics());
     expect(funnel.unit).toBe('WORK_LISTING');
     expect(funnel.drafted.count).toBe(5);
     expect(funnel.fundedFromDrafted).toMatchObject({ numerator: 4, denominator: 5, rate: 0.8 });
@@ -215,6 +215,9 @@ integration('T043 product activation and repeat metrics', { timeout: 120000 }, (
     expect(funnel.workAcceptedFromDrafted).toMatchObject({ numerator: 1, denominator: 5 });
     // Settlement is not built, so no listing can be reported as paid and absence is never zero.
     expect(funnel.paid).toBeNull();
+    // DEC-2026-11-13-10(b): the deprecated name is one-version alias of the same funnel, not token-launch conversion.
+    const aliased = ProductMetricsSchema.parse(await metrics());
+    expect(aliased.launchConversion).toEqual(aliased.workListingFunnel);
     for (const step of [
       funnel.fundedFromDrafted,
       funnel.acceptedFromFunded,
@@ -382,6 +385,7 @@ integration('T043 product activation and repeat metrics', { timeout: 120000 }, (
         'tokenLaunchConversion',
       ]),
     );
+    expect(page.notMeasured).not.toContain('workListingFunnel');
     expect(page.notMeasured).not.toContain('launchConversion');
     expect(page.notMeasured).not.toContain('settlementCompletion');
   });
