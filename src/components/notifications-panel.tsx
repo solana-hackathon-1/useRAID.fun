@@ -25,18 +25,45 @@ export function NotificationsPanel({
 }) {
   const ready = useSyncExternalStore(subscribeReady, clientReady, serverReady);
   const [state, setState] = useState(initial);
+  // Older pages already shown, and where the next older page starts; absent when nothing older exists.
+  const [loaded, setLoaded] = useState<NotificationState['items']>([]);
+  const [olderCursor, setOlderCursor] = useState<{ value: string | undefined } | null>(null);
   const [problem, setProblem] = useState('');
   const [busy, setBusy] = useState(false);
-  async function refresh() {
-    setState(await client.state());
+  const items = [...state.items, ...loaded.filter((o) => !state.items.some((n) => n.id === o.id))];
+  const nextCursor = olderCursor ? olderCursor.value : state.nextCursor;
+  async function refresh(readId?: string) {
+    const fresh = await client.state();
+    const freshIds = new Set(fresh.items.map((n) => n.id));
+    // Keep what was already loaded (an item pushed off the first page by a newer one stays visible).
+    setLoaded(
+      [...state.items, ...loaded]
+        .filter((o) => !freshIds.has(o.id))
+        .map((o) => (o.id === readId ? { ...o, read: true } : o)),
+    );
+    setState(fresh);
   }
-  async function run(work: () => Promise<unknown>) {
+  async function older() {
+    if (busy || !nextCursor) return;
+    setBusy(true);
+    setProblem('');
+    try {
+      const page = await client.state(nextCursor);
+      const known = new Set(items.map((n) => n.id));
+      setLoaded([...loaded, ...page.items.filter((n) => !known.has(n.id))]);
+      setOlderCursor({ value: page.nextCursor });
+    } catch {
+      setProblem('That did not go through. Nothing was lost; try again.');
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function run(work: () => Promise<string | void>) {
     if (busy) return;
     setBusy(true);
     setProblem('');
     try {
-      await work();
-      await refresh();
+      await refresh((await work()) || undefined);
     } catch {
       setProblem('That did not go through. Nothing was lost; try again.');
     } finally {
@@ -67,11 +94,11 @@ export function NotificationsPanel({
         details of your work.
       </p>
       {problem && <p role="alert">{problem}</p>}
-      {state.items.length === 0 ? (
+      {items.length === 0 ? (
         <p>No notifications yet.</p>
       ) : (
         <ul aria-labelledby="notifications-title">
-          {state.items.map((item) => (
+          {items.map((item) => (
             <li key={item.id}>
               <p>
                 {!item.read && <strong>New: </strong>}
@@ -85,7 +112,7 @@ export function NotificationsPanel({
                   type="button"
                   className="button secondary"
                   disabled={!ready || busy}
-                  onClick={() => run(() => client.markRead(item.id))}
+                  onClick={() => run(async () => (await client.markRead(item.id)).id)}
                 >
                   Mark as read
                 </button>
@@ -93,6 +120,16 @@ export function NotificationsPanel({
             </li>
           ))}
         </ul>
+      )}
+      {nextCursor && (
+        <button
+          type="button"
+          className="button secondary"
+          disabled={!ready || busy}
+          onClick={older}
+        >
+          Show older notifications
+        </button>
       )}
       <form onSubmit={(e) => e.preventDefault()} aria-label="Notification preferences">
         <fieldset className="orientation-fields" disabled={!ready || busy}>

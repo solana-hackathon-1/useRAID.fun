@@ -30,7 +30,15 @@ export function createNotificationClient(transport: WorkTransport = fetchTranspo
       : new WorkClientError('CONTRACT', status);
   }
   return {
-    state: () => call(NotificationStateSchema, 'GET', '/api/v1/notifications'),
+    /** First page, or the older page after an opaque `cursor` from a previous response. */
+    state: (cursor?: string) =>
+      call(
+        NotificationStateSchema,
+        'GET',
+        cursor === undefined
+          ? '/api/v1/notifications'
+          : `/api/v1/notifications?cursor=${encodeURIComponent(cursor)}`,
+      ),
     markRead: (id: string) =>
       call(Read, 'POST', `/api/v1/notifications/${encodeURIComponent(id)}/read`, {}),
     setPreferences: (promotional: boolean) =>

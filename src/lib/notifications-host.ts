@@ -20,9 +20,11 @@ export function notificationsConfiguration() {
 function requireReads() {
   if (!notificationsConfiguration().readsAvailable) throw new WorkError('STORAGE_CONTRACT');
 }
-export async function notificationStateFromHost(actor: WorkActor) {
+export async function notificationStateFromHost(actor: WorkActor, options?: { cursor?: string }) {
   requireReads();
-  return runCommandTransaction(db, (tx) => readOwnNotificationState(tx, actor));
+  return runCommandTransaction(db, (tx) =>
+    options ? readOwnNotificationState(tx, actor, options) : readOwnNotificationState(tx, actor),
+  );
 }
 export async function markReadFromHost(actor: WorkActor, id: string) {
   requireReads();

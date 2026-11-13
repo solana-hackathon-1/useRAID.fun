@@ -73,10 +73,14 @@ export const NotificationViewSchema = z.strictObject({
   createdAt: z.iso.datetime(),
   read: z.boolean(),
 });
+/** Opaque keyset position: a URL-safe token, never an offset or a count. */
+export const NotificationCursorSchema = z.string().regex(/^[A-Za-z0-9_-]{1,120}$/);
 export const NotificationListSchema = z.strictObject({
   version: z.literal('v1'),
   items: z.array(NotificationViewSchema).max(50),
   unread: z.number().int().min(0),
+  /** Additive within v1: present only when older notifications exist; absent otherwise, as before. */
+  nextCursor: NotificationCursorSchema.optional(),
 });
 export const PreferencesSchema = z.strictObject({ promotional: z.boolean() });
 export type NotificationList = z.infer<typeof NotificationListSchema>;
