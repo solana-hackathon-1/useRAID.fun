@@ -30,5 +30,6 @@ export const metricsExclusionHandlers = createMetricsExclusionHandlers({
   // The shared administrator rule (environment allowlist, X sign-in), enforced on every request.
   authorize: () => authority(async () => (await requireUser(true)).id),
   rateLimit: (operator) => authority(() => rateLimit('metrics-exclusion:' + operator, 20, 60)),
-  set: (operator, input) => setMetricsExclusionFromHost(operator, input),
+  set: (operator, input, key, requestId) =>
+    setMetricsExclusionFromHost(operator, input, key, requestId),
 });

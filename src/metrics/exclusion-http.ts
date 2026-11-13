@@ -1,3 +1,4 @@
+import { CommandReceiptError } from '../command-receipts';
 import { InternalId } from '../contracts/ids';
 import { createErrorEnvelope, type ErrorCode } from '../contracts/protocol';
 import { readBoundedJson, JsonBodyFailure } from '../http-contracts/json';
@@ -19,9 +20,12 @@ export interface MetricsExclusionHttpHost {
   /** Resolves with the account id only for an authorized operator; otherwise rejects with `MetricsHttpError`. */
   authorize(request: Request): Promise<string>;
   rateLimit(operatorAccountId: string): Promise<void>;
+  /** Runs the idempotent command as `operatorAccountId`; `requestId` correlates its audit event. */
   set(
     operatorAccountId: string,
     input: ReturnType<typeof SetMetricsExclusionInputSchema.parse>,
+    idempotencyKey: string,
+    requestId: string,
   ): Promise<unknown>;
 }
 const headers = Object.freeze({ 'Cache-Control': 'private, no-store', Vary: 'Cookie' });
@@ -61,10 +65,12 @@ export function createMetricsExclusionHandlers(host: MetricsExclusionHttpHost) {
         if (!operator.success) throw new MetricsError('STORAGE_CONTRACT');
         await host.rateLimit(operator.data);
         // Authority comes first: a caller who is not an operator never has a body read.
+        const key = InternalId.safeParse(request.headers.get('idempotency-key'));
+        if (!key.success) return respond('INVALID_COMMAND', id);
         const input = SetMetricsExclusionInputSchema.safeParse(await readBoundedJson(request));
         if (!input.success) return respond('INVALID_COMMAND', id);
         const record = MetricsExclusionRecordSchema.safeParse(
-          await host.set(operator.data, input.data),
+          await host.set(operator.data, input.data, key.data, id),
         );
         return record.success
           ? Response.json(record.data, { status: 201, headers })
@@ -80,6 +86,8 @@ export function createMetricsExclusionHandlers(host: MetricsExclusionHttpHost) {
             id,
           );
         if (error instanceof JsonBodyFailure) return respond('INVALID_COMMAND', id, error.status);
+        if (error instanceof CommandReceiptError && error.code === 'IDEMPOTENCY_KEY_REUSED')
+          return respond('IDEMPOTENCY_KEY_REUSED', id);
         if (error instanceof MetricsError) {
           if (error.code === 'SUBJECT_NOT_FOUND') return respond('NOT_FOUND', id);
           if (error.code === 'CONFLICT') return respond('REVISION_CHANGED', id);

@@ -8,7 +8,11 @@ import { productMetricsAvailable } from './product-metrics-host';
 export function setMetricsExclusionFromHost(
   operatorAccountId: string,
   input: SetMetricsExclusionInput,
+  idempotencyKey: string,
+  requestId: string,
 ) {
   if (!productMetricsAvailable()) throw new MetricsError('STORAGE_CONTRACT');
-  return runCommandTransaction(db, (tx) => setMetricsExclusion(tx, { operatorAccountId, input }));
+  return runCommandTransaction(db, (tx) =>
+    setMetricsExclusion(tx, { operatorAccountId, input, idempotencyKey, requestId }),
+  );
 }

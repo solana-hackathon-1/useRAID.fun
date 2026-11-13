@@ -48,7 +48,7 @@ const body = {
 const post = () =>
   new Request('http://localhost/api/v1/admin/metrics/exclusions', {
     method: 'POST',
-    headers: { 'content-type': 'application/json' },
+    headers: { 'content-type': 'application/json', 'idempotency-key': 'key-1' },
     body: JSON.stringify(body),
   });
 
@@ -83,5 +83,10 @@ it('requires the shared administrator rule and a same-origin request, then sets 
   expect((await metricsExclusionHandlers.POST(post())).status).toBe(201);
   expect(port.require).toHaveBeenCalledWith(true);
   expect(port.limit).toHaveBeenCalledWith('metrics-exclusion:operator-1', 20, 60);
-  expect(port.set).toHaveBeenCalledWith(port.tx, { operatorAccountId: 'operator-1', input: body });
+  expect(port.set).toHaveBeenCalledWith(port.tx, {
+    operatorAccountId: 'operator-1',
+    input: body,
+    idempotencyKey: 'key-1',
+    requestId: expect.any(String),
+  });
 });

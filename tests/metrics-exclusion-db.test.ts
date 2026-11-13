@@ -18,10 +18,16 @@ type Input = SetMetricsExclusionInput;
 const guild = async (slug: string) =>
   (await syntheticGuild(slug, 'Guild ' + slug, 'Synthetic ' + slug)).guild.id as string;
 let operator: string;
-const mark = (input: Partial<Input> & Pick<Input, 'subjectType' | 'subjectId'>, actor = operator) =>
+const mark = (
+  input: Partial<Input> & Pick<Input, 'subjectType' | 'subjectId'>,
+  actor = operator,
+  idempotencyKey = 'key-' + randomUUID(),
+) =>
   runCommandTransaction(db, (tx) =>
     setMetricsExclusion(tx, {
       operatorAccountId: actor,
+      idempotencyKey,
+      requestId: 'request-' + randomUUID(),
       input: {
         reason: 'FIXTURE',
         evidenceRef: 'synthetic-evidence-1',
@@ -126,6 +132,51 @@ integration('DEC-2026-11-13-10 MetricsExclusion marker (T043)', { timeout: 12000
         ),
       ).rejects.toThrow(/administrator/i);
       expect(await db.$queryRawUnsafe(`SELECT 1 FROM "MetricsExclusion"`)).toHaveLength(0);
+    });
+
+    it('records one private audit event per marker with the operator as actor, and no outbox intent', async () => {
+      const { a } = await twoGuilds();
+      const marker = await mark({ subjectType: 'GUILD', subjectId: a });
+      const events = await db.$queryRawUnsafe<
+        { eventType: string; actorId: string; aggregateId: string; outbox: number }[]
+      >(
+        `SELECT a."eventType",a."actorId",a."aggregateId",
+           (SELECT count(*)::int FROM "OutboxEvent" o WHERE o."eventId"=a."id") AS outbox
+         FROM "AuditEvent" a WHERE a."eventType"='work.metrics_exclusion_recorded.v1'`,
+      );
+      expect(events).toEqual([
+        {
+          eventType: 'work.metrics_exclusion_recorded.v1',
+          actorId: operator,
+          aggregateId: marker.id,
+          outbox: 0,
+        },
+      ]);
+    });
+
+    it('a retry with the same key returns the same marker once; another payload under that key is refused', async () => {
+      const { a, b } = await twoGuilds();
+      const key = 'retry-' + randomUUID();
+      const first = await mark({ subjectType: 'GUILD', subjectId: a }, operator, key);
+      const again = await mark({ subjectType: 'GUILD', subjectId: a }, operator, key);
+      expect(again).toEqual(first);
+      expect(await db.$queryRawUnsafe(`SELECT 1 FROM "MetricsExclusion"`)).toHaveLength(1);
+      await expect(
+        mark({ subjectType: 'GUILD', subjectId: b }, operator, key),
+      ).rejects.toMatchObject({ code: 'IDEMPOTENCY_KEY_REUSED' });
+      expect(await db.$queryRawUnsafe(`SELECT 1 FROM "MetricsExclusion"`)).toHaveLength(1);
+    });
+
+    it('a refused command leaves no marker, audit event or receipt behind', async () => {
+      const { a } = await twoGuilds();
+      await mark({ subjectType: 'GUILD', subjectId: a });
+      const receipts = () =>
+        db.commandReceipt.count({ where: { commandKind: 'SetMetricsExclusion' } });
+      expect(await receipts()).toBe(1);
+      await expect(mark({ subjectType: 'GUILD', subjectId: a })).rejects.toMatchObject({
+        code: 'CONFLICT',
+      });
+      expect(await receipts()).toBe(1);
     });
 
     it('rejects an unknown subject type, reason, malformed subject id and blank evidence', async () => {

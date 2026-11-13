@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { CommandReceiptError } from '../src/command-receipts';
 import { MetricsError } from '../src/metrics/contracts';
 import { MetricsHttpError } from '../src/metrics/http';
 import {
@@ -42,7 +43,7 @@ function host(overrides: Partial<MetricsExclusionHttpHost> = {}) {
 const post = (payload: unknown = body, headers: Record<string, string> = {}) =>
   new Request('http://localhost/api/v1/admin/metrics/exclusions', {
     method: 'POST',
-    headers: { 'content-type': 'application/json', ...headers },
+    headers: { 'content-type': 'application/json', 'idempotency-key': 'key-1', ...headers },
     body: typeof payload === 'string' ? payload : JSON.stringify(payload),
   });
 const deny = (status: 401 | 403 | 429) => async () => {
@@ -105,6 +106,25 @@ describe('POST /api/v1/admin/metrics/exclusions', () => {
     }
   });
 
+  it('requires a valid Idempotency-Key and maps a reused key to 409', async () => {
+    for (const key of ['', 'has space', 'x'.repeat(201)]) {
+      const { value, set } = host();
+      const response = await createMetricsExclusionHandlers(value).POST(
+        post(body, { 'idempotency-key': key }),
+      );
+      expect(response.status).toBe(422);
+      expect(set).not.toHaveBeenCalled();
+    }
+    const { value } = host({
+      set: async () => {
+        throw new CommandReceiptError('IDEMPOTENCY_KEY_REUSED');
+      },
+    });
+    const response = await createMetricsExclusionHandlers(value).POST(post());
+    expect(response.status).toBe(409);
+    expect((await response.json()).error.code).toBe('IDEMPOTENCY_KEY_REUSED');
+  });
+
   it('rejects a body that is not declared as JSON', async () => {
     const { value, set } = host();
     const response = await createMetricsExclusionHandlers(value).POST(
@@ -120,7 +140,7 @@ describe('POST /api/v1/admin/metrics/exclusions', () => {
     expect(response.status).toBe(201);
     expect(response.headers.get('cache-control')).toBe('private, no-store');
     expect(await response.json()).toEqual(marker);
-    expect(set).toHaveBeenCalledWith('operator-1', body);
+    expect(set).toHaveBeenCalledWith('operator-1', body, 'key-1', 'request-1');
   });
 
   it('maps a missing subject to 404 and a chain conflict to 409, and forwards nothing outside the schema', async () => {

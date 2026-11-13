@@ -1,6 +1,9 @@
 import { z } from 'zod';
-import type { CommandReceiptTransaction as Tx } from '../command-receipts';
-import { UtcTimestamp } from '../contracts/ids';
+import {
+  executeIdempotentCommand,
+  type CommandReceiptTransaction as Tx,
+} from '../command-receipts';
+import { InternalId, UtcTimestamp } from '../contracts/ids';
 import { MetricsError } from './contracts';
 
 /**
@@ -78,13 +81,15 @@ interface Row {
 }
 
 /**
- * Appends one marker as `operatorAccountId`, which the host must already have authorized as an operator. A missing
- * subject is `SUBJECT_NOT_FOUND`; a first marker for a subject that has one, or a supersede of anything but the
- * current head of the same subject, is `CONFLICT` (also when two operators race: the database admits one).
+ * Appends one marker as `operatorAccountId`, which the host must already have authorized as an operator. The command
+ * is idempotent per (operator, `idempotencyKey`): a retry returns the same marker, another payload under the same key is
+ * `IDEMPOTENCY_KEY_REUSED`, and one private audit event records the operator, the marker and the request. A missing
+ * subject is `SUBJECT_NOT_FOUND`; a first marker for a subject that has one, or a supersede of anything but the current
+ * head of the same subject, is `CONFLICT` (also when two operators race: the database admits one).
  */
 export async function setMetricsExclusion(
   tx: Tx,
-  command: { operatorAccountId: string; input: unknown },
+  command: { operatorAccountId: string; input: unknown; idempotencyKey: string; requestId: string },
 ): Promise<MetricsExclusionRecord> {
   if (
     tx?.dialect !== 'POSTGRESQL' ||
@@ -93,36 +98,70 @@ export async function setMetricsExclusion(
   )
     throw new MetricsError('STORAGE_CONTRACT');
   const parsed = SetMetricsExclusionInputSchema.safeParse(command?.input);
-  const actor = z.string().min(1).max(200).safeParse(command?.operatorAccountId);
-  if (!parsed.success || !actor.success) throw new MetricsError('INVALID_INPUT');
+  const actor = InternalId.safeParse(command?.operatorAccountId);
+  const key = InternalId.safeParse(command?.idempotencyKey);
+  const request = InternalId.safeParse(command?.requestId);
+  if (!parsed.success || !actor.success || !key.success || !request.success)
+    throw new MetricsError('INVALID_INPUT');
   const input = parsed.data;
-  // The table name comes from a closed map, never from input.
-  const found = await tx.query<{ ok: number }>(
-    `SELECT 1 AS ok FROM "${SUBJECT_TABLE[input.subjectType]}" WHERE "id"::text=$1`,
-    [input.subjectId],
+  const result = await executeIdempotentCommand(
+    tx,
+    {
+      actorId: actor.data,
+      commandKind: 'SetMetricsExclusion',
+      idempotencyKey: key.data,
+      requestId: request.data,
+      request: input,
+    },
+    async () => {
+      // The table name comes from a closed map, never from input.
+      const found = await tx.query<{ ok: number }>(
+        `SELECT 1 AS ok FROM "${SUBJECT_TABLE[input.subjectType]}" WHERE "id"::text=$1`,
+        [input.subjectId],
+      );
+      if (!found.length) throw new MetricsError('SUBJECT_NOT_FOUND');
+      const inserted = await tx.query<{ id: string }>(
+        `INSERT INTO "MetricsExclusion"
+           ("subjectType","subjectId","reason","evidenceRef","effect","supersedesMarkerId","actorAccountId")
+         SELECT $1,$2,$3,$4,$5,$6::uuid,$7
+         WHERE $6::uuid IS NULL OR EXISTS (
+           SELECT 1 FROM "MetricsExclusion" head WHERE head."id"=$6::uuid AND head."subjectType"=$1 AND head."subjectId"=$2)
+         ON CONFLICT DO NOTHING
+         RETURNING "id"::text AS "id"`,
+        [
+          input.subjectType,
+          input.subjectId,
+          input.reason,
+          input.evidenceRef,
+          input.effect,
+          input.supersedesMarkerId,
+          actor.data,
+        ],
+      );
+      // No row: the predecessor is not this subject's marker, or a unique index refused a second root or a fork.
+      if (inserted.length !== 1) throw new MetricsError('CONFLICT');
+      const id = inserted[0].id;
+      return {
+        resultRef: id,
+        // Private audit only (no outbox): who set which marker. The marker row carries the reason and evidence.
+        events: [
+          {
+            type: 'work.metrics_exclusion_recorded.v1',
+            aggregateId: id,
+            aggregateVersion: 1,
+            publish: false,
+          },
+        ],
+      };
+    },
   );
-  if (!found.length) throw new MetricsError('SUBJECT_NOT_FOUND');
-  const inserted = await tx.query<Row>(
-    `INSERT INTO "MetricsExclusion"
-       ("subjectType","subjectId","reason","evidenceRef","effect","supersedesMarkerId","actorAccountId")
-     SELECT $1,$2,$3,$4,$5,$6::uuid,$7
-     WHERE $6::uuid IS NULL OR EXISTS (
-       SELECT 1 FROM "MetricsExclusion" head WHERE head."id"=$6::uuid AND head."subjectType"=$1 AND head."subjectId"=$2)
-     ON CONFLICT DO NOTHING
-     RETURNING "id","subjectType","subjectId","reason","evidenceRef","effect","supersedesMarkerId","actorAccountId","recordedAt"`,
-    [
-      input.subjectType,
-      input.subjectId,
-      input.reason,
-      input.evidenceRef,
-      input.effect,
-      input.supersedesMarkerId,
-      actor.data,
-    ],
+  const [row] = await tx.query<Row>(
+    `SELECT "id"::text AS "id","subjectType","subjectId","reason","evidenceRef","effect",
+       "supersedesMarkerId"::text AS "supersedesMarkerId","actorAccountId","recordedAt"
+     FROM "MetricsExclusion" WHERE "id"=$1::uuid`,
+    [result.resultRef],
   );
-  // No row: the predecessor is not this subject's marker, or a unique index refused a second root or a fork.
-  if (inserted.length !== 1) throw new MetricsError('CONFLICT');
-  const row = inserted[0];
+  if (!row) throw new MetricsError('STORAGE_CONTRACT');
   return MetricsExclusionRecordSchema.parse({
     ...row,
     recordedAt: new Date(row.recordedAt).toISOString(),
