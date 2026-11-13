@@ -34,9 +34,9 @@ type RawClient = {
 
 export async function truncateAll(db: RawClient) {
   const quote = (name: string) => `"${name.replaceAll('"', '""')}"`;
-  // ConfigFlagChange is an append-only audit that rejects TRUNCATE; only its own test empties it.
+  // ConfigFlagChange and MetricsExclusion are append-only and reject TRUNCATE; only their own tests empty them.
   const tables = (await db.$queryRawUnsafe(
-    `SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename NOT IN ('_prisma_migrations', 'ConfigFlagChange')`,
+    `SELECT tablename FROM pg_tables WHERE schemaname = 'public' AND tablename NOT IN ('_prisma_migrations', 'ConfigFlagChange', 'MetricsExclusion')`,
   )) as { tablename: string }[];
   if (!tables.length) return;
   const filled = (await db.$queryRawUnsafe(

@@ -553,6 +553,17 @@ model ConfigFlagChange {
   recordedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
   @@index([environment, processKind, flagName, id])
 }
+model MetricsExclusion {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  subjectType String
+  subjectId String
+  reason String
+  evidenceRef String
+  effect String
+  supersedesMarkerId String? @unique @db.Uuid
+  actorAccountId String
+  recordedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+}
 model Settings {
   id String @id @default("global")
   collectionEnabled Boolean @default(false)
