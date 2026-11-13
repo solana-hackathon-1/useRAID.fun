@@ -11,7 +11,13 @@ import {
 } from 'vitest';
 import { db } from '../src/lib/db';
 import { claimJob, enqueue, finishJob, JOB_MAX_ATTEMPTS } from '../src/lib/queue';
-import { renewJobLease, runUnderJobLease, assertJobLease } from '../src/lib/job-lease';
+import {
+  renewJobLease,
+  runUnderJobLease,
+  assertJobLease,
+  JOB_LEASE_MAX_RUN_MS,
+  JOB_LEASE_MINUTES,
+} from '../src/lib/job-lease';
 import { JobLeaseLostError } from '../src/lib/job-lease';
 import { runJob, schedule, sweepExhaustedJobs } from '../src/lib/worker-jobs';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
@@ -284,6 +290,189 @@ suite(
         await runJob(claimed); // 8th attempt fails ordinarily and dead-letters
         expect((await db.job.findUniqueOrThrow({ where: { id: job.id } })).failedAt).not.toBeNull();
         expect(alerts()).toHaveLength(1);
+      });
+    });
+
+    describe('failed-then-crashed submission repair (DEC-2026-11-13-07 b)', () => {
+      /** An ordinary eighth failure whose worker crashed before resolving its submission: job failed, submission QUEUED. */
+      const failedThenCrashed = async (key: string) => {
+        const { raid, sub } = await submissionFixture();
+        const job = await enqueue(
+          'submission',
+          key,
+          { raidId: raid.id, submissionId: sub.id, postId: '5' },
+          past(),
+        );
+        await db.job.update({
+          where: { id: job.id },
+          data: { attempts: JOB_MAX_ATTEMPTS, failedAt: new Date(), error: 'X lookup failed' },
+        });
+        return { raid, sub, job };
+      };
+      const repairs = () =>
+        errors.mock.calls
+          .map((c) => String(c[0]))
+          .filter((line) => line.includes('"alert":"job-dead-letter-repaired"'));
+      const submission = (id: string) => db.postSubmission.findUniqueOrThrow({ where: { id } });
+
+      it('excludes the QUEUED submission of a failed job, closes the raid error, never re-posts', async () => {
+        const { raid, sub, job } = await failedThenCrashed('sub:crashed');
+        await sweepExhaustedJobs();
+        expect(await submission(sub.id)).toMatchObject({
+          status: 'EXCLUDED',
+          reasonCode: 'LOOKUP_FAILED',
+        });
+        expect(
+          (await db.raid.findUniqueOrThrow({ where: { id: raid.id } })).collectionError,
+        ).toBeNull();
+        // The job stays failed (no auto retry) and nothing was scheduled.
+        expect(await db.job.findUniqueOrThrow({ where: { id: job.id } })).toMatchObject({
+          doneAt: null,
+          attempts: JOB_MAX_ATTEMPTS,
+        });
+        expect((await db.job.findUniqueOrThrow({ where: { id: job.id } })).failedAt).not.toBeNull();
+        expect(await db.job.count()).toBe(1);
+        expect(repairs()).toHaveLength(1);
+        expect(repairs()[0]).toContain(job.id);
+        expect(repairs()[0]).not.toContain('X lookup failed');
+      });
+
+      it('is idempotent: a second sweep repairs and alerts nothing', async () => {
+        await failedThenCrashed('sub:idem');
+        await sweepExhaustedJobs();
+        await sweepExhaustedJobs();
+        expect(repairs()).toHaveLength(1);
+      });
+
+      it('leaves a submission an administrator already decided', async () => {
+        const { sub } = await failedThenCrashed('sub:decided');
+        await db.postSubmission.update({ where: { id: sub.id }, data: { status: 'ACCEPTED' } });
+        await sweepExhaustedJobs();
+        expect((await submission(sub.id)).status).toBe('ACCEPTED');
+        expect(repairs()).toHaveLength(0);
+      });
+
+      it('an administrator retry revives the repaired submission and the job', async () => {
+        const { sub, job } = await failedThenCrashed('sub:retry');
+        await sweepExhaustedJobs();
+        // What the admin retry does (src/app/api/admin/[action]/route.ts): reset the job, requeue the excluded submission.
+        await db.job.update({
+          where: { id: job.id },
+          data: { attempts: 0, error: null, failedAt: null, runAt: past() },
+        });
+        await db.postSubmission.updateMany({
+          where: { id: sub.id, status: 'EXCLUDED', reasonCode: 'LOOKUP_FAILED' },
+          data: { status: 'QUEUED', reasonCode: null },
+        });
+        await sweepExhaustedJobs();
+        expect((await submission(sub.id)).status).toBe('QUEUED');
+        expect((await claimJob())?.id).toBe(job.id);
+      });
+
+      it('concurrency: a sweep never excludes the submission of a job a live worker is running', async () => {
+        const { sub, job } = await failedThenCrashed('sub:live');
+        // Administrator retry revived the job and a worker claimed it: live, unfinished, submission QUEUED.
+        await db.job.update({
+          where: { id: job.id },
+          data: { attempts: 0, error: null, failedAt: null, runAt: past() },
+        });
+        const claimed = (await claimJob())!;
+        expect(claimed.id).toBe(job.id);
+        await runUnderJobLease(claimed, async () => {
+          await Promise.all([sweepExhaustedJobs(), sweepExhaustedJobs()]);
+          expect((await submission(sub.id)).status).toBe('QUEUED');
+          await assertJobLease(); // the worker still owns the job
+        });
+        expect(repairs()).toHaveLength(0);
+      });
+
+      it('concurrency: a sweep racing an administrator retry never excludes the revived submission', async () => {
+        const { sub, job } = await failedThenCrashed('sub:retryrace');
+        let sweep!: Promise<unknown>;
+        await db.$transaction(async (tx) => {
+          // The retry holds the job row (reset to live) while the sweep, which saw it failed, tries to repair.
+          await tx.job.update({
+            where: { id: job.id },
+            data: { attempts: 0, error: null, failedAt: null, runAt: past() },
+          });
+          sweep = sweepExhaustedJobs();
+          await sleep(300);
+        });
+        await sweep;
+        expect((await submission(sub.id)).status).toBe('QUEUED');
+        expect(repairs()).toHaveLength(0);
+      });
+
+      it('concurrent sweeps repair and alert exactly once', async () => {
+        const { sub } = await failedThenCrashed('sub:two');
+        await Promise.all([sweepExhaustedJobs(), sweepExhaustedJobs(), sweepExhaustedJobs()]);
+        expect((await submission(sub.id)).status).toBe('EXCLUDED');
+        expect(repairs()).toHaveLength(1);
+      });
+    });
+
+    describe('total-run cap on lease renewal (DEC-2026-11-13-07 a)', () => {
+      it('caps one attempt at 60 minutes of renewal', () => {
+        expect(JOB_LEASE_MAX_RUN_MS).toBe(60 * 60000);
+      });
+
+      it('stops renewing at the cap: the lease is no longer extended and the next check refuses once it expires', async () => {
+        await enqueue('collect', 'capped', { raidId: 'cap' }, past());
+        const claimed = (await claimJob())!;
+        await runUnderJobLease(
+          claimed,
+          async () => {
+            await sleep(200); // past the 100 ms cap
+            await ageLock(claimed.id, 5); // inside the lease, so only a renewal could reset it
+            await sleep(150); // several more ticks, which would each have renewed without the cap
+            const age = await lockAgeSeconds(claimed.id);
+            expect(age).toBeGreaterThan(290); // 5 minutes, not renewed since the cap
+            await ageLock(claimed.id, 11); // the unrenewed lease runs out by the database clock
+            await expect(assertJobLease()).rejects.toBeInstanceOf(JobLeaseLostError);
+          },
+          { renewEveryMs: 20, maxRunMs: 100 },
+        );
+        const lines = errors.mock.calls.map((c) => String(c[0]));
+        expect(lines.filter((l) => l.includes('"code":"JOB_LEASE_CAP"'))).toHaveLength(1);
+      });
+
+      it('still renews before the cap', async () => {
+        await enqueue('collect', 'uncapped', { raidId: 'cap2' }, past());
+        const claimed = (await claimJob())!;
+        await ageLock(claimed.id, 9);
+        await runUnderJobLease(
+          claimed,
+          async () => {
+            await sleep(120);
+            expect(await lockAgeSeconds(claimed.id)).toBeLessThan(60);
+          },
+          { renewEveryMs: 20, maxRunMs: 10_000 },
+        );
+      });
+
+      it('applies the 60-minute cap by default: a handler that never settles stops renewing', async () => {
+        vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval', 'performance'] });
+        const renew = vi.spyOn(db, '$executeRaw').mockResolvedValue(1);
+        try {
+          let release!: () => void;
+          const run = runUnderJobLease(
+            { id: 'j', lease: 'l' },
+            () => new Promise<void>((resolve) => (release = resolve)),
+          );
+          await vi.advanceTimersByTimeAsync(59 * 60000);
+          const beforeCap = renew.mock.calls.length;
+          expect(beforeCap).toBeGreaterThan(10);
+          await vi.advanceTimersByTimeAsync(5 * 60000); // crosses 60 minutes
+          const atCap = renew.mock.calls.length;
+          await vi.advanceTimersByTimeAsync(30 * 60000);
+          expect(renew.mock.calls.length).toBe(atCap);
+          expect(atCap).toBeLessThanOrEqual(Math.floor(60 / (JOB_LEASE_MINUTES / 3)));
+          release();
+          await run;
+        } finally {
+          renew.mockRestore();
+          vi.useRealTimers();
+        }
       });
     });
 

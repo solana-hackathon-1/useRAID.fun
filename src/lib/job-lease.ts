@@ -1,6 +1,7 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { Prisma, type Job } from '@prisma/client';
 import { db } from './db';
+import { correlationFields } from './worker-diagnostics';
 /** How long a claimed job stays owned by its worker. claimJob() reclaims a job whose lock is older than this. */
 export const JOB_LEASE_MINUTES = 10;
 export class JobLeaseLostError extends Error {
@@ -11,6 +12,12 @@ export class JobLeaseLostError extends Error {
 }
 /** Renew at a third of the lease, so two consecutive failed renewals still leave a third of it. Derived, not tuned. */
 export const JOB_LEASE_RENEW_MS = (JOB_LEASE_MINUTES * 60000) / 3;
+/**
+ * Total-run cap on renewal (DEC-2026-11-13-07 a, provisional): one attempt renews its lease for at most this long.
+ * After it the lease runs out, the next assertJobLease() refuses further effects and the attempt counts as lost
+ * (retried or dead-lettered as usual), so a hung handler cannot hold a job forever.
+ */
+export const JOB_LEASE_MAX_RUN_MS = 60 * 60000;
 type Held = Pick<Job, 'id' | 'lease'>;
 /** `lost` is set by the renewal timer the moment the database says this worker no longer owns the job. */
 const held = new AsyncLocalStorage<Held & { lost: boolean }>();
@@ -33,17 +40,34 @@ export async function renewJobLease(job: Held) {
  * of being reclaimed mid-run; renewal stops when the handler settles. A failed renewal (database blip) is retried on
  * the next tick and never aborts the job: the next assertJobLease() still decides from the database. A renewal that
  * finds the lease gone marks the run lost, so the very next assertJobLease() refuses before any further effect.
- * Nothing caps total run time here: a handler that never settles keeps renewing, so provider calls must carry their own timeouts.
+ * Renewal stops for good once the attempt has run `maxRunMs` (JOB_LEASE_MAX_RUN_MS, 60 minutes): the lease then expires
+ * by the database clock and the next assertJobLease() refuses, without marking the run lost earlier than the database
+ * would. Provider calls should still carry their own timeouts.
  */
 export async function runUnderJobLease<T>(
   job: Held,
   fn: () => Promise<T>,
-  options: { renewEveryMs?: number } = {},
+  options: { renewEveryMs?: number; maxRunMs?: number } = {},
 ) {
   const store = { id: job.id, lease: job.lease, lost: false };
   let renewing = false;
-  const timer = job.lease
+  const startedAt = performance.now();
+  const maxRunMs = options.maxRunMs ?? JOB_LEASE_MAX_RUN_MS;
+  const timer: ReturnType<typeof setInterval> | null = job.lease
     ? setInterval(() => {
+        if (performance.now() - startedAt >= maxRunMs) {
+          // Cap reached: stop renewing; the lease expires and assertJobLease() refuses from then on.
+          clearInterval(timer!);
+          console.error(
+            JSON.stringify({
+              job: job.id,
+              code: 'JOB_LEASE_CAP',
+              note: 'lease renewal stopped at the total-run cap',
+              ...correlationFields(),
+            }),
+          );
+          return;
+        }
         if (renewing || store.lost) return;
         renewing = true;
         renewJobLease(store)
