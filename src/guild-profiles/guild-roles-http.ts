@@ -232,12 +232,14 @@ export function createGuildRolesHandlers(host: GuildRolesHttpHost) {
         );
         if (!value.success) throw contract();
         const { transfer } = value.data;
-        const party =
-          body.data.decision === 'WITHDRAW' ? transfer.fromAccountId : transfer.toAccountId;
+        const withdraw = body.data.decision === 'WITHDRAW';
         if (
           !same(transfer.id, target) ||
           !same(transfer.guildId, body.data.guildId) ||
-          party !== actor.accountId ||
+          // The proposer withdraws and sees their own id; the recipient decides and must not be told who proposed (#448).
+          (withdraw
+            ? transfer.fromAccountId !== actor.accountId
+            : transfer.toAccountId !== actor.accountId || transfer.fromAccountId !== null) ||
           // A decision is final, so a replay shows the same outcome as the fresh answer: the requested
           // decision, or the lapse that overtook it (which moves nothing).
           (transfer.state !== FINAL_STATE[body.data.decision] && transfer.state !== 'EXPIRED') ||

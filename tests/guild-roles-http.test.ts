@@ -68,7 +68,8 @@ function host(overrides: Partial<GuildRolesHttpHost> = {}) {
           decidedAt: '2026-10-29T07:00:00.000Z',
           applied: true,
           toAccountId: 'founder-1',
-          fromAccountId: 'old-founder',
+          // The recipient is never told who proposed.
+          fromAccountId: null,
         }),
       }
     ),
@@ -306,7 +307,7 @@ describe('Guild role and ownership management HTTP boundary', () => {
           // ACCEPT/DECLINE: the caller is the recipient; WITHDRAW: the caller is the proposer.
           ...(decision === 'WITHDRAW'
             ? { fromAccountId: party, toAccountId: 'heir-1' }
-            : { toAccountId: party, fromAccountId: 'old-founder' }),
+            : { toAccountId: party, fromAccountId: null }),
         });
         const { value } = host({
           actor: async () => ({ ...actor, accountId: caller }),
@@ -321,6 +322,31 @@ describe('Guild role and ownership management HTTP boundary', () => {
         );
       }
     }
+    // #448: a recipient's ACCEPT or DECLINE result that names the proposer is a leak, fresh or replayed.
+    for (const [decision, state] of [
+      ['ACCEPT', 'ACCEPTED'],
+      ['DECLINE', 'DECLINED'],
+    ] as const)
+      for (const status of ['EXECUTED', 'REPLAYED']) {
+        const { value } = host({
+          respond: async () => ({
+            status,
+            transfer: transferView({
+              state,
+              applied: state === 'ACCEPTED',
+              decidedAt: decided,
+              toAccountId: 'founder-1',
+              fromAccountId: 'old-founder',
+            }),
+          }),
+        });
+        const response = await createGuildRolesHandlers(value).RESPOND(
+          respondRequest({ guildId, decision }),
+          transferId,
+        );
+        expect(response.status, `${decision} ${status}`).toBe(503);
+        expect(JSON.stringify(await body(response))).not.toContain('old-founder');
+      }
     const wrongId = host({
       respond: async () => ({
         status: 'EXECUTED',
@@ -389,6 +415,7 @@ describe('Guild role and ownership management HTTP boundary', () => {
         status: 'EXECUTED',
         transfer: transferView({
           toAccountId: 'founder-1',
+          fromAccountId: null,
           state: 'ACCEPTED',
           applied: true,
           decidedAt: decided,

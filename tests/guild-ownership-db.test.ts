@@ -972,6 +972,39 @@ integration('T009 Guild ownership transfer', () => {
       expect(n).toBe(1);
     });
 
+    it('#448: a recipient who accepts or declines is never told who proposed; the proposer still is', async () => {
+      const a = await guild('synthetic-guild-a');
+      const b = await guild('synthetic-guild-b');
+      const c = await guild('synthetic-guild-c');
+      const next = await person();
+      const decline = (await propose(a.founder, a.guild.id, next.accountId, {}, 'da')).transfer;
+      const accept = (await propose(b.founder, b.guild.id, next.accountId, {}, 'db')).transfer;
+      const withdraw = (await propose(c.founder, c.guild.id, next.accountId, {}, 'dc')).transfer;
+      const declined = await respond(next, a.guild.id, decline.id, 'DECLINE', 'r-d');
+      expect(declined.transfer).toMatchObject({ state: 'DECLINED', fromAccountId: null });
+      const accepted = await respond(next, b.guild.id, accept.id, 'ACCEPT', 'r-a');
+      expect(accepted.transfer).toMatchObject({
+        state: 'ACCEPTED',
+        applied: true,
+        fromAccountId: null,
+      });
+      // The replay of either decision is redacted the same way.
+      expect((await respond(next, a.guild.id, decline.id, 'DECLINE', 'r-d')).transfer).toEqual(
+        declined.transfer,
+      );
+      expect((await respond(next, b.guild.id, accept.id, 'ACCEPT', 'r-a')).transfer).toEqual(
+        accepted.transfer,
+      );
+      // The proposing Founder withdrawing is the proposer, so their own id stays.
+      expect(
+        (await respond(c.founder, c.guild.id, withdraw.id, 'WITHDRAW', 'r-w')).transfer,
+      ).toMatchObject({ state: 'WITHDRAWN', fromAccountId: c.founder.accountId });
+      // Neither response leaks the proposer anywhere in its serialized form.
+      for (const view of [declined, accepted])
+        expect(JSON.stringify(view)).not.toContain(a.founder.accountId);
+      expect(JSON.stringify(accepted)).not.toContain(b.founder.accountId);
+    });
+
     it('flags a page cut short instead of silently dropping proposals, and refuses a bad page size', async () => {
       const a = await guild('synthetic-guild-a');
       const b = await guild('synthetic-guild-b');

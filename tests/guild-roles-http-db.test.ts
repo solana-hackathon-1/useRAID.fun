@@ -554,6 +554,7 @@ integration('Guild role and ownership management over HTTP against real storage'
       id,
     );
     expect(declined.status).toBe(200);
+    expect((await json(declined)).transfer.fromAccountId).toBeNull();
     expect((await json(await list(heir))).transfers).toEqual([]);
   });
 

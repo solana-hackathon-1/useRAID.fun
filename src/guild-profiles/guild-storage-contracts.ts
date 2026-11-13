@@ -110,7 +110,8 @@ export const OwnershipTransferViewSchema = z.strictObject({
   version: z.literal('v1'),
   id: z.uuid(),
   guildId: z.uuid(),
-  fromAccountId: z.string().min(1).max(200),
+  /** The proposing Founder's id goes only to the proposer: the recipient reads `null` (redacted, not unknown). */
+  fromAccountId: z.string().min(1).max(200).nullable(),
   toAccountId: z.string().min(1).max(200),
   state: z.enum(['PROPOSED', 'ACCEPTED', 'DECLINED', 'WITHDRAWN', 'EXPIRED']),
   expiresAt: z.iso.datetime(),
@@ -119,14 +120,12 @@ export const OwnershipTransferViewSchema = z.strictObject({
 });
 export type OwnershipTransferView = z.infer<typeof OwnershipTransferViewSchema>;
 /**
- * An open proposal as its parties read it. The proposing Founder sees their own id; the recipient gets `null`
- * (redacted, not unknown), as `ManagedGuild.founderAccountId` is for callers without profile authority, so a proposal
- * nobody asked for discloses no account. `truncated` means more open proposals exist than the page holds.
+ * An open proposal as its parties read it: the same view as every transfer result (a recipient's `fromAccountId` is
+ * `null`, as `ManagedGuild.founderAccountId` is for callers without profile authority, so a proposal nobody asked for
+ * discloses no account). In the list, `truncated` means more open proposals exist than the page holds.
  */
-export const PendingOwnershipTransferViewSchema = OwnershipTransferViewSchema.extend({
-  fromAccountId: z.string().min(1).max(200).nullable(),
-});
-export type PendingOwnershipTransferView = z.infer<typeof PendingOwnershipTransferViewSchema>;
+export const PendingOwnershipTransferViewSchema = OwnershipTransferViewSchema;
+export type PendingOwnershipTransferView = OwnershipTransferView;
 export const PENDING_OWNERSHIP_TRANSFER_PAGE_MAX = 50;
 export const PendingOwnershipTransferListSchema = z.strictObject({
   version: z.literal('v1'),

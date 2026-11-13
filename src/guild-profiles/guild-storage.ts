@@ -919,16 +919,19 @@ export async function revokeGuildRole(
     grant: kinds.includes('PROFILE') ? grant : { ...grant, grantedByAccountId: null },
   };
 }
+/** The transfer as `viewer` may read it: the proposer's id goes only to the proposer (#448), never to the recipient. */
 async function loadTransfer(
   tx: CommandReceiptTransaction,
   guildId: string,
   id: string,
+  viewer: GuildActor,
 ): Promise<OwnershipTransferView> {
   const rows = await query<Record<string, unknown>>(
     tx,
-    `SELECT "id"::text,"guildId"::text,"fromAccountId","toAccountId","state","expiresAt","decidedAt","appliedAt" IS NOT NULL AS applied
+    `SELECT "id"::text,"guildId"::text,CASE WHEN "fromAccountId"=$3 THEN "fromAccountId" END AS "fromAccountId",
+"toAccountId","state","expiresAt","decidedAt","appliedAt" IS NOT NULL AS applied
      FROM "GuildOwnershipTransfer" WHERE "id"=$1::uuid AND "guildId"=$2::uuid`,
-    [id, guildId],
+    [id, guildId, viewer.accountId],
   );
   if (rows.length !== 1) fail('STORAGE_CONTRACT');
   const iso = (v: unknown) => (v instanceof Date ? v.toISOString() : v);
@@ -1101,7 +1104,7 @@ export async function proposeOwnershipTransfer(
   );
   // A replay is for the proposing Founder, judged by identity.
   await authorize(tx, actor);
-  const transfer = await loadTransfer(tx, input.guildId, result.resultRef);
+  const transfer = await loadTransfer(tx, input.guildId, result.resultRef, actor);
   if (transfer.fromAccountId !== actor.accountId) fail('FORBIDDEN');
   return { status: result.status, transfer };
 }
@@ -1263,7 +1266,7 @@ export async function respondOwnershipTransfer(
   );
   // A replay is for the two parties of the transfer, judged by identity.
   await authorize(tx, actor);
-  const transfer = await loadTransfer(tx, input.guildId, result.resultRef);
+  const transfer = await loadTransfer(tx, input.guildId, result.resultRef, actor);
   if (transfer.fromAccountId !== actor.accountId && transfer.toAccountId !== actor.accountId)
     fail('FORBIDDEN');
   return { status: result.status, transfer };
