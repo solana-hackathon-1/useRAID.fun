@@ -8,7 +8,12 @@ import {
   workInvalid,
   workPrivateHeaders,
 } from '../work-http/workspace-http';
-import { NotificationStateSchema, PreferencesSchema, type NotificationState } from './contracts';
+import {
+  NotificationCursorSchema,
+  NotificationStateSchema,
+  PreferencesSchema,
+  type NotificationState,
+} from './contracts';
 
 export { NotificationStateSchema, type NotificationState };
 /** Transport-neutral host: it owns session, origin, rate limit, flags and SQL. Same authority contract as the work host. */
@@ -18,7 +23,8 @@ export interface NotificationsHttpHost {
   actor(): Promise<WorkActor>;
   checkOrigin(request: Request): void | Promise<void>;
   rateLimit(actor: WorkActor): void | Promise<void>;
-  state(actor: WorkActor): Promise<unknown>;
+  /** `options.cursor` is passed only when the request carried one; a host that ignores it serves the first page. */
+  state(actor: WorkActor, options?: { cursor?: string }): Promise<unknown>;
   markRead(actor: WorkActor, id: string): Promise<unknown>;
   setPreferences(actor: WorkActor, value: { promotional: boolean }): Promise<unknown>;
 }
@@ -45,7 +51,8 @@ export function createNotificationHandlers(host: NotificationsHttpHost) {
   async function run(
     request: Request,
     write: boolean,
-    work: (actor: WorkActor) => Promise<unknown>,
+    work: (actor: WorkActor, query: URLSearchParams) => Promise<unknown>,
+    allowCursor = false,
   ) {
     const id = correlation();
     try {
@@ -65,19 +72,31 @@ export function createNotificationHandlers(host: NotificationsHttpHost) {
           },
           { status: 405, headers: workPrivateHeaders },
         );
-      if (new URL(request.url).searchParams.size) workInvalid();
-      return Response.json(await work(a.data!), { headers: workPrivateHeaders });
+      const query = new URL(request.url).searchParams;
+      // Only the list accepts one optional `cursor`; every other query is refused as before.
+      if (query.size && !(allowCursor && query.size === 1 && query.getAll('cursor').length === 1))
+        workInvalid();
+      return Response.json(await work(a.data!, query), { headers: workPrivateHeaders });
     } catch (e) {
       return workFailure(e, id);
     }
   }
   return {
     STATE: (request: Request) =>
-      run(request, false, async (a) => {
-        const parsed = NotificationStateSchema.safeParse(await host.state(a));
-        if (!parsed.success) workContract();
-        return parsed.data;
-      }),
+      run(
+        request,
+        false,
+        async (a, query) => {
+          const cursor = query.get('cursor');
+          if (cursor !== null && !NotificationCursorSchema.safeParse(cursor).success) workInvalid();
+          const parsed = NotificationStateSchema.safeParse(
+            await (cursor === null ? host.state(a) : host.state(a, { cursor })),
+          );
+          if (!parsed.success) workContract();
+          return parsed.data;
+        },
+        true,
+      ),
     READ: (request: Request, notificationId: string | Promise<string>) =>
       run(request, true, async (a) => {
         const target = z.uuid().safeParse(await notificationId);
