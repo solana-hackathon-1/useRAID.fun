@@ -28,6 +28,10 @@ export const rewardAssets = () => {
 export function workCreationBrowserEnvironment(): Record<string, string> {
   return {
     DEMO_MODE: 'false',
+    // Declared non-production (DEC-2026-11-13-15): the production build otherwise restricts the catalog to Guild
+    // Founder/WORK authority, which this synthetic fixture (operator allowlist, no stored Guild) does not model.
+    // That restriction is proven against real Guild grants in tests/work-creation-catalog-db.test.ts.
+    RAID_ENVIRONMENT: 'alpha',
     ADMIN_X_IDS: '',
     X_ADMIN_USER_ID: '',
     USDC_NETWORK: 'devnet',
