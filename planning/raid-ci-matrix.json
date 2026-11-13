@@ -103,6 +103,7 @@
     "tests/launch-not-configured.test.ts",
     "tests/launch-route-boundary.test.ts",
     "tests/launch-route-meteora.test.ts",
+    "tests/launch-route-meteora-allowlist.test.ts",
     "tests/launch-route-binding.test.ts",
     "tests/local-db.test.ts",
     "tests/lock-observation.test.ts",
@@ -1050,6 +1051,7 @@
         "tests/launch-not-configured.test.ts",
         "tests/launch-route-boundary.test.ts",
         "tests/launch-route-meteora.test.ts",
+        "tests/launch-route-meteora-allowlist.test.ts",
         "tests/launch-route-binding.test.ts",
         "tests/pump-launch.test.ts",
         "tests/token-data.test.ts"
