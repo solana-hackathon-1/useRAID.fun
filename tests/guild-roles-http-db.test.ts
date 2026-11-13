@@ -5,6 +5,7 @@ import { saveGuildDraft } from '../src/guild-profiles/draft-storage';
 import {
   activateGuild,
   grantGuildRole,
+  listPendingOwnershipTransfers,
   proposeOwnershipTransfer,
   respondOwnershipTransfer,
   revokeGuildRole,
@@ -52,6 +53,10 @@ const handlersFor = (actor: GuildActor) =>
           authorizeOwnershipTransfer: async () => approve,
         }),
       ),
+    listTransfers: async (who) => ({
+      version: 'v1' as const,
+      ...(await run((tx) => listPendingOwnershipTransfers(tx, who))),
+    }),
   });
 async function activeGuild(slug = 'synthetic-guild') {
   const founder = await person();
@@ -507,6 +512,35 @@ integration('Guild role and ownership management over HTTP against real storage'
       // Either order: nothing the revoked delegate passed on is still live.
       expect(await liveGrants(guild.id)).toEqual([]);
     }
+  });
+
+  it('#294 NOTE: the recipient finds a pending proposal by reading, and nobody else does', async () => {
+    const { founder, guild } = await activeGuild();
+    const heir = await person();
+    const stranger = await person();
+    const list = async (actor: GuildActor) =>
+      handlersFor(actor).LIST(new Request('https://example.test/api/v1/guild-ownership-transfers'));
+    const offered = await handlersFor(founder).PROPOSE(
+      proposeReq({ guildId: guild.id, toAccountId: heir.accountId, expiresAt: soon() }),
+    );
+    const id = (await json(offered)).transfer.id;
+    const seen = await list(heir);
+    expect(seen.status).toBe(200);
+    expect(await json(seen)).toMatchObject({
+      version: 'v1',
+      transfers: [{ id, guildId: guild.id, toAccountId: heir.accountId, state: 'PROPOSED' }],
+    });
+    expect((await json(await list(founder))).transfers).toHaveLength(1);
+    const hidden = await list(stranger);
+    expect(hidden.status).toBe(200);
+    expect((await json(hidden)).transfers).toEqual([]);
+    // Once declined it is no longer pending for either party.
+    const declined = await handlersFor(heir).RESPOND(
+      respondReq(id, { guildId: guild.id, decision: 'DECLINE' }),
+      id,
+    );
+    expect(declined.status).toBe(200);
+    expect((await json(await list(heir))).transfers).toEqual([]);
   });
 
   it('never leaks internals: every failure is a fixed envelope', async () => {

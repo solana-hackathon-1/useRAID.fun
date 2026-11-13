@@ -52,6 +52,8 @@ import {
 } from './guild-storage-contracts';
 
 export * from './guild-storage-contracts';
+/** An account is a party to few open proposals (one per Guild); the cap only bounds a hostile fixture. */
+const PENDING_TRANSFER_LIST_MAX = 50;
 function fail(code: GuildStorageError['code']): never {
   throw new GuildStorageError(code);
 }
@@ -955,6 +957,41 @@ async function holdsSeparateAuthority(
     [guildId, accountId],
   );
   return rows.length > 0;
+}
+/**
+ * The open ownership proposals this caller is a party to: the recipient, who needs no id out of band, and the proposing
+ * Founder. Authority is the identity of the transfer's own two parties, judged against the live session; nobody else
+ * (another Guild member, a delegate, a stranger) sees that a proposal exists, so a caller learns nothing about proposals
+ * they are not in. A decided proposal, or one past its window even if nothing has recorded the lapse yet, is not
+ * pending. Nothing is written and the view carries only what both parties already know.
+ */
+export async function listPendingOwnershipTransfers(
+  tx: CommandReceiptTransaction,
+  actor: GuildActor,
+): Promise<{ transfers: OwnershipTransferView[] }> {
+  validateActor(actor);
+  await authorize(tx, actor);
+  const rows = await query<Record<string, unknown>>(
+    tx,
+    `SELECT "id"::text,"guildId"::text,"fromAccountId","toAccountId","state","expiresAt","decidedAt","appliedAt" IS NOT NULL AS applied
+     FROM "GuildOwnershipTransfer"
+     WHERE "state"='PROPOSED' AND "expiresAt">clock_timestamp() AND ("toAccountId"=$1 OR "fromAccountId"=$1)
+     ORDER BY "expiresAt","id" LIMIT ${PENDING_TRANSFER_LIST_MAX}`,
+    [actor.accountId],
+  );
+  const iso = (v: unknown) => (v instanceof Date ? v.toISOString() : v);
+  const transfers = rows.map((row) => {
+    const parsed = OwnershipTransferViewSchema.safeParse({
+      version: 'v1',
+      ...row,
+      expiresAt: iso(row.expiresAt),
+      decidedAt: iso(row.decidedAt),
+    });
+    if (!parsed.success) fail('STORAGE_CONTRACT');
+    return parsed.data;
+  });
+  await authorize(tx, actor);
+  return { transfers };
 }
 /**
  * The current Founder offers the Founder role to another account; nothing changes until that account accepts. The

@@ -28,8 +28,8 @@ export class GuildRolesHttpError extends GuildHttpAuthorityError {
 /**
  * Transport-neutral host: authority comes from the host's own session, never from the request body. The commands are
  * the host's wiring of `grantGuildRole`, `revokeGuildRole`, `proposeOwnershipTransfer` and `respondOwnershipTransfer`
- * (the last with the host's own `authorizeOwnershipTransfer` policy). There are no reads here, so only the command
- * throttle scope is used.
+ * (the last with the host's own `authorizeOwnershipTransfer` policy), plus `listTransfers`, the one read: the open
+ * proposals the caller is a party to (the read throttle scope; every other call uses the command scope).
  */
 export interface GuildRolesHttpHost {
   readonly version: 'v1';
@@ -41,6 +41,7 @@ export interface GuildRolesHttpHost {
   revoke(command: GuildCommand): Promise<unknown>;
   propose(command: GuildCommand): Promise<unknown>;
   respond(command: GuildCommand): Promise<unknown>;
+  listTransfers(actor: GuildActor): Promise<unknown>;
 }
 const GrantResultSchema = z.strictObject({
   status: z.enum(['EXECUTED', 'REPLAYED']),
@@ -49,6 +50,10 @@ const GrantResultSchema = z.strictObject({
 const TransferResultSchema = z.strictObject({
   status: z.enum(['EXECUTED', 'REPLAYED']),
   transfer: OwnershipTransferViewSchema,
+});
+const TransferListSchema = z.strictObject({
+  version: z.literal('v1'),
+  transfers: z.array(OwnershipTransferViewSchema).max(50),
 });
 const RevokeBodySchema = z.strictObject({ guildId: z.uuid() });
 const RespondBodySchema = z.strictObject({
@@ -76,6 +81,7 @@ export function createGuildRolesHandlers(host: GuildRolesHttpHost) {
     'revoke',
     'propose',
     'respond',
+    'listTransfers',
   ]);
   const correlation = () => guildCorrelation(host);
   /** Origin, then the session actor, then the command throttle; the body is read only after all three passed. */
@@ -93,6 +99,31 @@ export function createGuildRolesHandlers(host: GuildRolesHttpHost) {
     });
   const ok = (value: unknown) => Response.json(value, { headers: guildHttpHeaders });
   return {
+    /** The caller's own open proposals, from the session alone: no query, so nobody can ask about another account. */
+    async LIST(request: Request) {
+      const requestId = correlation();
+      try {
+        const actor = await host.actor();
+        await host.rateLimit(actor, 'READ');
+        if (new URL(request.url).searchParams.size !== 0) throw new JsonBodyFailure(422);
+        const value = TransferListSchema.safeParse(await host.listTransfers(actor));
+        if (
+          !value.success ||
+          value.data.transfers.some(
+            (t) =>
+              // Storage answers only for the two parties of an open proposal; anything else is a faulty host.
+              (t.toAccountId !== actor.accountId && t.fromAccountId !== actor.accountId) ||
+              t.state !== 'PROPOSED' ||
+              t.decidedAt !== null ||
+              t.applied,
+          )
+        )
+          throw contract();
+        return ok(value.data);
+      } catch (error) {
+        return guildHttpFailure(error, requestId, STORAGE_CODES);
+      }
+    },
     async GRANT(request: Request) {
       const requestId = correlation();
       try {

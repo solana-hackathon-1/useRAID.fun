@@ -8,6 +8,7 @@ import {
   editGuildProfile,
   grantGuildRole,
   hasGuildAuthority,
+  listPendingOwnershipTransfers,
   proposeOwnershipTransfer,
   readManagedGuild,
   respondOwnershipTransfer,
@@ -903,6 +904,81 @@ integration('T009 Guild ownership transfer', () => {
       code: 'FORBIDDEN',
     });
     expect(await founderOf(g.id)).toBe(lapsed.accountId);
+  });
+
+  describe('reading a pending transfer (#294 NOTE)', () => {
+    const pending = (actor: GuildActor) =>
+      run((tx) => listPendingOwnershipTransfers(tx, actor)).then((r) => r.transfers);
+
+    it('shows an open proposal to its recipient and its proposer, and to nobody else', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const stranger = await person();
+      const delegate = await person();
+      await grantRow(g.id, delegate);
+      const { transfer } = await propose(founder, g.id, next.accountId, {}, 'p-1');
+      expect(await pending(next)).toEqual([transfer]);
+      expect(await pending(founder)).toEqual([transfer]);
+      // Neither an unrelated account nor a profile delegate of the Guild learns that a proposal exists.
+      expect(await pending(stranger)).toEqual([]);
+      expect(await pending(delegate)).toEqual([]);
+    });
+
+    it('shows no decided or lapsed proposal, and never a recipient the proposal was not made to', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const other = await person();
+      const { transfer } = await propose(founder, g.id, next.accountId, {}, 'p-1');
+      await respond(next, g.id, transfer.id, 'DECLINE', 'd-1');
+      expect(await pending(next)).toEqual([]);
+      expect(await pending(founder)).toEqual([]);
+      const second = (await propose(founder, g.id, other.accountId, {}, 'p-2')).transfer;
+      expect(await pending(next)).toEqual([]);
+      expect(await pending(other)).toEqual([second]);
+      // A proposal past its window is lapsed, even before anything records it.
+      await db.$executeRawUnsafe(
+        `ALTER TABLE "GuildOwnershipTransfer" DISABLE TRIGGER guild_transfer_guard_v1`,
+      );
+      try {
+        await db.$executeRawUnsafe(
+          `UPDATE "GuildOwnershipTransfer" SET "proposedAt"=clock_timestamp()-interval '2 days',"expiresAt"=clock_timestamp()-interval '1 day' WHERE "id"=$1::uuid`,
+          second.id,
+        );
+      } finally {
+        await db.$executeRawUnsafe(
+          `ALTER TABLE "GuildOwnershipTransfer" ENABLE TRIGGER guild_transfer_guard_v1`,
+        );
+      }
+      expect(await pending(other)).toEqual([]);
+      expect(await pending(founder)).toEqual([]);
+    });
+
+    it('reads with a live session only: unknown, suspended or session-less callers are refused, and the read writes nothing', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      await propose(founder, g.id, next.accountId, {}, 'p-1');
+      const forged = { accountId: next.accountId, sessionHash: 'b'.repeat(64) };
+      await expect(pending(forged)).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
+      await expect(
+        pending({ accountId: next.accountId, sessionHash: 'nope' }),
+      ).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
+      await db.user.update({ where: { id: next.accountId }, data: { suspended: true } });
+      await expect(pending(next)).rejects.toMatchObject({ code: 'ACCOUNT_RESTRICTED' });
+      const [{ n }] = await db.$queryRawUnsafe<{ n: number }[]>(
+        `SELECT count(*)::int AS n FROM "GuildOwnershipTransfer" WHERE "state"='PROPOSED'`,
+      );
+      expect(n).toBe(1);
+    });
+
+    it('lets the recipient accept the proposal it found by reading, with no id passed out of band', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      await propose(founder, g.id, next.accountId, {}, 'p-1');
+      const [found] = await pending(next);
+      const accepted = await respond(next, found.guildId, found.id, 'ACCEPT', 'a-1');
+      expect(accepted.transfer).toMatchObject({ state: 'ACCEPTED', applied: true });
+      expect(await pending(next)).toEqual([]);
+    });
   });
 
   describe('an acceptance racing other Guild commands (the Guild row serializes them)', () => {

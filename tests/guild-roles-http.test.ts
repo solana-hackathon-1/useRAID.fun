@@ -72,6 +72,10 @@ function host(overrides: Partial<GuildRolesHttpHost> = {}) {
         }),
       }
     ),
+    listTransfers: async (who) => (
+      calls.push(['listTransfers', who]),
+      { version: 'v1', transfers: [transferView({ toAccountId: who.accountId })] }
+    ),
     ...overrides,
   };
   return { value, calls };
@@ -97,6 +101,7 @@ const proposeRequest = (payload: unknown = proposeBody) =>
   post('/api/v1/guild-ownership-transfers', payload);
 const respondRequest = (payload: unknown = { guildId, decision: 'ACCEPT' }) =>
   post(`/api/v1/guild-ownership-transfers/${transferId}`, payload);
+const get = (path: string) => new Request('https://example.test' + path, { method: 'GET' });
 const body = async (response: Response) => (await response.json()) as Record<string, any>;
 const commandCalls = (calls: unknown[]) =>
   calls.filter((c) => Array.isArray(c)) as [string, Record<string, any>][];
@@ -495,5 +500,65 @@ describe('Guild role and ownership management HTTP boundary', () => {
     const response = await createGuildRolesHandlers(value).GRANT(grantRequest());
     expect(response.status).toBe(403);
     expect((await body(response)).error.requestId).toMatch(/^[0-9a-f-]{36}$/);
+  });
+  describe('reading pending ownership transfers (#294 NOTE)', () => {
+    const listPath = '/api/v1/guild-ownership-transfers';
+
+    it('lists for the cookie-derived actor behind the read throttle, private and uncached, with no origin or key needed', async () => {
+      const { value, calls } = host();
+      const response = await createGuildRolesHandlers(value).LIST(get(listPath));
+      expect(response.status).toBe(200);
+      expect(response.headers.get('Cache-Control')).toBe('private, no-store');
+      expect(response.headers.get('Vary')).toBe('Cookie');
+      expect(await body(response)).toEqual({
+        version: 'v1',
+        transfers: [transferView({ toAccountId: actor.accountId })],
+      });
+      expect(calls).toEqual(['actor', 'rateLimit:READ', ['listTransfers', actor]]);
+    });
+
+    it('takes no query: a guild or account filter is refused before storage', async () => {
+      const { value, calls } = host();
+      for (const query of ['?guildId=' + guildId, '?accountId=heir-1', '?x=1'])
+        expect((await createGuildRolesHandlers(value).LIST(get(listPath + query))).status).toBe(
+          422,
+        );
+      expect(commandCalls(calls)).toEqual([]);
+    });
+
+    it('denies a missing session or a throttled caller before storage', async () => {
+      for (const [override, status] of [
+        [{ actor: async () => Promise.reject(new GuildRolesHttpError(401)) }, 401],
+        [{ rateLimit: async () => Promise.reject(new GuildRolesHttpError(429)) }, 429],
+      ] as const) {
+        const { value, calls } = host(override);
+        expect((await createGuildRolesHandlers(value).LIST(get(listPath))).status).toBe(status);
+        expect(commandCalls(calls)).toEqual([]);
+      }
+    });
+
+    it('never passes on a transfer the caller is not a party to, or one that is already decided', async () => {
+      for (const transfers of [
+        [transferView({ fromAccountId: 'founder-9', toAccountId: 'heir-9' })],
+        [transferView({ toAccountId: actor.accountId, state: 'ACCEPTED' })],
+        [transferView({ toAccountId: actor.accountId, decidedAt: '2026-10-29T07:00:00.000Z' })],
+        [transferView({ toAccountId: actor.accountId, applied: true })],
+        [transferView({ toAccountId: actor.accountId }), { extra: true }],
+      ]) {
+        const { value } = host({ listTransfers: async () => ({ version: 'v1', transfers }) });
+        const response = await createGuildRolesHandlers(value).LIST(get(listPath));
+        expect(response.status, JSON.stringify(transfers)).toBe(503);
+        expect(JSON.stringify(await body(response))).not.toContain('heir-9');
+      }
+    });
+
+    it('maps a storage refusal to its fixed envelope and requires the list function on the host', async () => {
+      const { value } = host({
+        listTransfers: async () => Promise.reject(new GuildStorageError('UNAUTHENTICATED')),
+      });
+      expect((await createGuildRolesHandlers(value).LIST(get(listPath))).status).toBe(401);
+      const { listTransfers: _omitted, ...partial } = host().value;
+      expect(() => createGuildRolesHandlers(partial as GuildRolesHttpHost)).toThrow();
+    });
   });
 });
