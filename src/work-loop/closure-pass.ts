@@ -121,7 +121,13 @@ export async function closeOverdueBatch(ports: ClosurePassPorts): Promise<Closur
     );
     return { actor, first: await selectCandidates(tx, handled, limit) };
   });
-  const result: ClosurePassResult = { considered: 0, closed: 0, skipped: [], failed: [], stuck: [] };
+  const result: ClosurePassResult = {
+    considered: 0,
+    closed: 0,
+    skipped: [],
+    failed: [],
+    stuck: [],
+  };
   const fail = async (engagementId: string, code: string) => {
     result.failed.push({ engagementId, code });
     const failures = await recordFailure(ports, engagementId, code);

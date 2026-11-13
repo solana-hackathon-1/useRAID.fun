@@ -532,7 +532,9 @@ integration('T024 root composition: worker closure and operator closure route', 
       );
     /** Makes every back-off due now, as if the delay had elapsed, without waiting for it. */
     const elapse = () =>
-      db.$executeRawUnsafe(`UPDATE "EngagementClosureBackoff" SET "nextAttemptAt"=clock_timestamp()`);
+      db.$executeRawUnsafe(
+        `UPDATE "EngagementClosureBackoff" SET "nextAttemptAt"=clock_timestamp()`,
+      );
     const denying = (failing: Set<string>) => {
       const attempts: string[] = [];
       return {
