@@ -123,7 +123,7 @@ it('refuses bodies carrying an actor, a role grant id or unknown fields with 422
 });
 
 it('lists pending transfers for the cookie-derived actor in the read bucket, with no command checks', async () => {
-  mocks.list.mockResolvedValue({ version: 'v1', transfers: [] });
+  mocks.list.mockResolvedValue({ version: 'v1', transfers: [], truncated: false });
   const response = await listRoute(routeRequest(origin + '/api/v1/guild-ownership-transfers'));
   expect(response.status).toBe(200);
   expect(mocks.list).toHaveBeenCalledWith({

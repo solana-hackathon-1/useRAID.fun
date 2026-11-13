@@ -14,6 +14,7 @@ import {
   GuildRoleGrantViewSchema,
   GuildStorageError,
   OwnershipTransferViewSchema,
+  PendingOwnershipTransferListSchema,
   ProposeOwnershipTransferInputSchema,
   type GuildActor,
   type GuildCommand,
@@ -50,10 +51,6 @@ const GrantResultSchema = z.strictObject({
 const TransferResultSchema = z.strictObject({
   status: z.enum(['EXECUTED', 'REPLAYED']),
   transfer: OwnershipTransferViewSchema,
-});
-const TransferListSchema = z.strictObject({
-  version: z.literal('v1'),
-  transfers: z.array(OwnershipTransferViewSchema).max(50),
 });
 const RevokeBodySchema = z.strictObject({ guildId: z.uuid() });
 const RespondBodySchema = z.strictObject({
@@ -106,13 +103,17 @@ export function createGuildRolesHandlers(host: GuildRolesHttpHost) {
         const actor = await host.actor();
         await host.rateLimit(actor, 'READ');
         if (new URL(request.url).searchParams.size !== 0) throw new JsonBodyFailure(422);
-        const value = TransferListSchema.safeParse(await host.listTransfers(actor));
+        const value = PendingOwnershipTransferListSchema.safeParse(await host.listTransfers(actor));
         if (
           !value.success ||
           value.data.transfers.some(
             (t) =>
-              // Storage answers only for the two parties of an open proposal; anything else is a faulty host.
-              (t.toAccountId !== actor.accountId && t.fromAccountId !== actor.accountId) ||
+              // Storage answers only for the two parties of an open proposal, and the proposer's id only to the
+              // proposer: a recipient's row carries `null`. Anything else is a faulty host (or a leak).
+              !(
+                t.fromAccountId === actor.accountId ||
+                (t.toAccountId === actor.accountId && t.fromAccountId === null)
+              ) ||
               t.state !== 'PROPOSED' ||
               t.decidedAt !== null ||
               t.applied,

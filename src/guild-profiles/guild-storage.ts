@@ -27,6 +27,8 @@ import {
   ManagedGuildUpdateSchema,
   OWNERSHIP_TRANSFER_MAX_DAYS,
   OwnershipTransferViewSchema,
+  PENDING_OWNERSHIP_TRANSFER_PAGE_MAX,
+  PendingOwnershipTransferViewSchema,
   ProposeOwnershipTransferInputSchema,
   RespondOwnershipTransferInputSchema,
   RevokeGuildRoleInputSchema,
@@ -41,6 +43,7 @@ import {
   type PublicGuildDirectoryPage,
   type PublicGuildUpdate,
   type OwnershipTransferView,
+  type PendingOwnershipTransferView,
   GuildStorageError,
   ManagedGuildSchema,
   type GuildActivationHost,
@@ -52,8 +55,6 @@ import {
 } from './guild-storage-contracts';
 
 export * from './guild-storage-contracts';
-/** An account is a party to few open proposals (one per Guild); the cap only bounds a hostile fixture. */
-const PENDING_TRANSFER_LIST_MAX = 50;
 function fail(code: GuildStorageError['code']): never {
   throw new GuildStorageError(code);
 }
@@ -962,26 +963,31 @@ async function holdsSeparateAuthority(
  * The open ownership proposals this caller is a party to: the recipient, who needs no id out of band, and the proposing
  * Founder. Authority is the identity of the transfer's own two parties, judged against the live session; nobody else
  * (another Guild member, a delegate, a stranger) sees that a proposal exists, so a caller learns nothing about proposals
- * they are not in. A decided proposal, or one past its window even if nothing has recorded the lapse yet, is not
- * pending. Nothing is written and the view carries only what both parties already know.
+ * they are not in. The proposer's account id goes only to the proposer: a recipient reads `fromAccountId: null`, as the
+ * Founder id is redacted for callers without profile authority. A decided proposal, or one past its window even if
+ * nothing has recorded the lapse yet, is not pending. At most `limit` (default and cap 50) come back, soonest expiry
+ * first, and `truncated` says more exist. Nothing is written.
  */
 export async function listPendingOwnershipTransfers(
   tx: CommandReceiptTransaction,
   actor: GuildActor,
-): Promise<{ transfers: OwnershipTransferView[] }> {
+  limit: number = PENDING_OWNERSHIP_TRANSFER_PAGE_MAX,
+): Promise<{ transfers: PendingOwnershipTransferView[]; truncated: boolean }> {
   validateActor(actor);
+  if (!Number.isInteger(limit) || limit < 1 || limit > PENDING_OWNERSHIP_TRANSFER_PAGE_MAX)
+    fail('INVALID_INPUT');
   await authorize(tx, actor);
   const rows = await query<Record<string, unknown>>(
     tx,
-    `SELECT "id"::text,"guildId"::text,"fromAccountId","toAccountId","state","expiresAt","decidedAt","appliedAt" IS NOT NULL AS applied
+    `SELECT "id"::text,"guildId"::text,CASE WHEN "fromAccountId"=$1 THEN "fromAccountId" END AS "fromAccountId","toAccountId","state","expiresAt","decidedAt","appliedAt" IS NOT NULL AS applied
      FROM "GuildOwnershipTransfer"
      WHERE "state"='PROPOSED' AND "expiresAt">clock_timestamp() AND ("toAccountId"=$1 OR "fromAccountId"=$1)
-     ORDER BY "expiresAt","id" LIMIT ${PENDING_TRANSFER_LIST_MAX}`,
+     ORDER BY "expiresAt","id" LIMIT ${limit + 1}`,
     [actor.accountId],
   );
   const iso = (v: unknown) => (v instanceof Date ? v.toISOString() : v);
-  const transfers = rows.map((row) => {
-    const parsed = OwnershipTransferViewSchema.safeParse({
+  const transfers = rows.slice(0, limit).map((row) => {
+    const parsed = PendingOwnershipTransferViewSchema.safeParse({
       version: 'v1',
       ...row,
       expiresAt: iso(row.expiresAt),
@@ -991,7 +997,7 @@ export async function listPendingOwnershipTransfers(
     return parsed.data;
   });
   await authorize(tx, actor);
-  return { transfers };
+  return { transfers, truncated: rows.length > limit };
 }
 /**
  * The current Founder offers the Founder role to another account; nothing changes until that account accepts. The

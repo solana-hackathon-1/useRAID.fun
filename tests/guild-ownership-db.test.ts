@@ -907,8 +907,9 @@ integration('T009 Guild ownership transfer', () => {
   });
 
   describe('reading a pending transfer (#294 NOTE)', () => {
-    const pending = (actor: GuildActor) =>
-      run((tx) => listPendingOwnershipTransfers(tx, actor)).then((r) => r.transfers);
+    const page = (actor: GuildActor, limit?: number) =>
+      run((tx) => listPendingOwnershipTransfers(tx, actor, limit));
+    const pending = (actor: GuildActor) => page(actor).then((r) => r.transfers);
 
     it('shows an open proposal to its recipient and its proposer, and to nobody else', async () => {
       const { founder, guild: g } = await guild();
@@ -917,7 +918,8 @@ integration('T009 Guild ownership transfer', () => {
       const delegate = await person();
       await grantRow(g.id, delegate);
       const { transfer } = await propose(founder, g.id, next.accountId, {}, 'p-1');
-      expect(await pending(next)).toEqual([transfer]);
+      // The proposer is not disclosed to an unsolicited recipient (the Founder id is redacted for non-authority callers).
+      expect(await pending(next)).toEqual([{ ...transfer, fromAccountId: null }]);
       expect(await pending(founder)).toEqual([transfer]);
       // Neither an unrelated account nor a profile delegate of the Guild learns that a proposal exists.
       expect(await pending(stranger)).toEqual([]);
@@ -934,7 +936,7 @@ integration('T009 Guild ownership transfer', () => {
       expect(await pending(founder)).toEqual([]);
       const second = (await propose(founder, g.id, other.accountId, {}, 'p-2')).transfer;
       expect(await pending(next)).toEqual([]);
-      expect(await pending(other)).toEqual([second]);
+      expect(await pending(other)).toEqual([{ ...second, fromAccountId: null }]);
       // A proposal past its window is lapsed, even before anything records it.
       await db.$executeRawUnsafe(
         `ALTER TABLE "GuildOwnershipTransfer" DISABLE TRIGGER guild_transfer_guard_v1`,
@@ -968,6 +970,23 @@ integration('T009 Guild ownership transfer', () => {
         `SELECT count(*)::int AS n FROM "GuildOwnershipTransfer" WHERE "state"='PROPOSED'`,
       );
       expect(n).toBe(1);
+    });
+
+    it('flags a page cut short instead of silently dropping proposals, and refuses a bad page size', async () => {
+      const a = await guild('synthetic-guild-a');
+      const b = await guild('synthetic-guild-b');
+      const next = await person();
+      await propose(a.founder, a.guild.id, next.accountId, {}, 'pa');
+      await propose(b.founder, b.guild.id, next.accountId, {}, 'pb');
+      const all = await page(next);
+      expect(all.transfers).toHaveLength(2);
+      expect(all.truncated).toBe(false);
+      const cut = await page(next, 1);
+      expect(cut.transfers).toHaveLength(1);
+      expect(cut.truncated).toBe(true);
+      expect((await page(next, 2)).truncated).toBe(false);
+      for (const bad of [0, 51, 1.5, -1])
+        await expect(page(next, bad)).rejects.toMatchObject({ code: 'INVALID_INPUT' });
     });
 
     it('lets the recipient accept the proposal it found by reading, with no id passed out of band', async () => {

@@ -74,7 +74,11 @@ function host(overrides: Partial<GuildRolesHttpHost> = {}) {
     ),
     listTransfers: async (who) => (
       calls.push(['listTransfers', who]),
-      { version: 'v1', transfers: [transferView({ toAccountId: who.accountId })] }
+      {
+        version: 'v1',
+        transfers: [transferView({ fromAccountId: null, toAccountId: who.accountId })],
+        truncated: false,
+      }
     ),
     ...overrides,
   };
@@ -512,7 +516,8 @@ describe('Guild role and ownership management HTTP boundary', () => {
       expect(response.headers.get('Vary')).toBe('Cookie');
       expect(await body(response)).toEqual({
         version: 'v1',
-        transfers: [transferView({ toAccountId: actor.accountId })],
+        transfers: [transferView({ fromAccountId: null, toAccountId: actor.accountId })],
+        truncated: false,
       });
       expect(calls).toEqual(['actor', 'rateLimit:READ', ['listTransfers', actor]]);
     });
@@ -538,18 +543,39 @@ describe('Guild role and ownership management HTTP boundary', () => {
     });
 
     it('never passes on a transfer the caller is not a party to, or one that is already decided', async () => {
+      const mine = { fromAccountId: null, toAccountId: actor.accountId };
       for (const transfers of [
         [transferView({ fromAccountId: 'founder-9', toAccountId: 'heir-9' })],
-        [transferView({ toAccountId: actor.accountId, state: 'ACCEPTED' })],
-        [transferView({ toAccountId: actor.accountId, decidedAt: '2026-10-29T07:00:00.000Z' })],
-        [transferView({ toAccountId: actor.accountId, applied: true })],
-        [transferView({ toAccountId: actor.accountId }), { extra: true }],
+        [transferView({ ...mine, state: 'ACCEPTED' })],
+        [transferView({ ...mine, decidedAt: '2026-10-29T07:00:00.000Z' })],
+        [transferView({ ...mine, applied: true })],
+        [transferView(mine), { extra: true }],
+        // A recipient is never told who proposed (the Founder id is redacted for non-authority callers).
+        [transferView({ fromAccountId: 'founder-9', toAccountId: actor.accountId })],
+        // Neither party: a null proposer that is not the caller's own recipient view.
+        [transferView({ fromAccountId: null, toAccountId: 'heir-9' })],
       ]) {
-        const { value } = host({ listTransfers: async () => ({ version: 'v1', transfers }) });
+        const { value } = host({
+          listTransfers: async () => ({ version: 'v1', transfers, truncated: false }),
+        });
         const response = await createGuildRolesHandlers(value).LIST(get(listPath));
         expect(response.status, JSON.stringify(transfers)).toBe(503);
         expect(JSON.stringify(await body(response))).not.toContain('heir-9');
       }
+    });
+
+    it('shows the proposing Founder their own proposal with the proposer, and passes the truncation flag on', async () => {
+      const own = transferView({ fromAccountId: actor.accountId, toAccountId: 'heir-1' });
+      const { value } = host({
+        listTransfers: async () => ({ version: 'v1', transfers: [own], truncated: true }),
+      });
+      const response = await createGuildRolesHandlers(value).LIST(get(listPath));
+      expect(response.status).toBe(200);
+      expect(await body(response)).toEqual({ version: 'v1', transfers: [own], truncated: true });
+      const { value: missing } = host({
+        listTransfers: async () => ({ version: 'v1', transfers: [own] }),
+      });
+      expect((await createGuildRolesHandlers(missing).LIST(get(listPath))).status).toBe(503);
     });
 
     it('maps a storage refusal to its fixed envelope and requires the list function on the host', async () => {

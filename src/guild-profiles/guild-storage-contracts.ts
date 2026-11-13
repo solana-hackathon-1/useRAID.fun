@@ -118,6 +118,21 @@ export const OwnershipTransferViewSchema = z.strictObject({
   applied: z.boolean(),
 });
 export type OwnershipTransferView = z.infer<typeof OwnershipTransferViewSchema>;
+/**
+ * An open proposal as its parties read it. The proposing Founder sees their own id; the recipient gets `null`
+ * (redacted, not unknown), as `ManagedGuild.founderAccountId` is for callers without profile authority, so a proposal
+ * nobody asked for discloses no account. `truncated` means more open proposals exist than the page holds.
+ */
+export const PendingOwnershipTransferViewSchema = OwnershipTransferViewSchema.extend({
+  fromAccountId: z.string().min(1).max(200).nullable(),
+});
+export type PendingOwnershipTransferView = z.infer<typeof PendingOwnershipTransferViewSchema>;
+export const PENDING_OWNERSHIP_TRANSFER_PAGE_MAX = 50;
+export const PendingOwnershipTransferListSchema = z.strictObject({
+  version: z.literal('v1'),
+  transfers: z.array(PendingOwnershipTransferViewSchema).max(PENDING_OWNERSHIP_TRANSFER_PAGE_MAX),
+  truncated: z.boolean(),
+});
 export const GUILD_DRAFT_UPDATE_LIMIT = 50;
 /** Per author and Guild: open drafts plus drafts withdrawn before ever being published (rows are never deleted). */
 export const GUILD_UNPUBLISHED_UPDATE_LIMIT = 100;

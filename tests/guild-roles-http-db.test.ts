@@ -526,11 +526,25 @@ integration('Guild role and ownership management over HTTP against real storage'
     const id = (await json(offered)).transfer.id;
     const seen = await list(heir);
     expect(seen.status).toBe(200);
-    expect(await json(seen)).toMatchObject({
+    const seenBody = await json(seen);
+    expect(seenBody.transfers[0].fromAccountId).toBeNull();
+    expect(seenBody).toMatchObject({
       version: 'v1',
-      transfers: [{ id, guildId: guild.id, toAccountId: heir.accountId, state: 'PROPOSED' }],
+      transfers: [
+        // The recipient is not told who proposed; the proposing Founder sees their own id.
+        {
+          id,
+          guildId: guild.id,
+          fromAccountId: null,
+          toAccountId: heir.accountId,
+          state: 'PROPOSED',
+        },
+      ],
+      truncated: false,
     });
-    expect((await json(await list(founder))).transfers).toHaveLength(1);
+    expect((await json(await list(founder))).transfers).toMatchObject([
+      { id, fromAccountId: founder.accountId },
+    ]);
     const hidden = await list(stranger);
     expect(hidden.status).toBe(200);
     expect((await json(hidden)).transfers).toEqual([]);
