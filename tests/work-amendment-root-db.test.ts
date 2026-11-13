@@ -1,7 +1,12 @@
 import { randomUUID } from 'node:crypto';
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
-import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
+import {
+  runCommandTransaction,
+  runSnapshotReadTransaction,
+} from '../src/lib/command-receipts-adapter';
+import { readAmendmentDeskEntries } from '../src/work-loop/amendment-storage';
+import { db as hostDb } from '../src/lib/db';
 import { commitEngagement } from '../src/work-loop/engagement-storage';
 import { submitWork } from '../src/work-loop/submission-storage';
 import { canonicalRequestDigest } from '../src/command-receipts';
@@ -100,8 +105,11 @@ const cmd = (actor: Actor, input: unknown) => ({
   idempotencyKey: randomUUID(),
   requestId: randomUUID(),
 });
-async function setup(override: Partial<typeof base> = {}) {
-  const founder = await seedWorkHuman(db, 'founder-' + randomUUID());
+async function setup(
+  override: Partial<typeof base> = {},
+  sameFounder?: Awaited<ReturnType<typeof seedWorkHuman>>,
+) {
+  const founder = sameFounder ?? (await seedWorkHuman(db, 'founder-' + randomUUID()));
   const worker = await seedWorkHuman(db);
   const reviewer = await seedWorkHuman(db, 'reviewer-' + randomUUID());
   const slot = await seedWorkSlot(db, founder.actor.accountId, {
@@ -531,6 +539,144 @@ integration(
         await row('SELECT 1 FROM "AuditEvent" WHERE "eventType"=\'work.amendment_accepted.v1\''),
       ).toHaveLength(1);
     });
+
+    // #361-5: the desk is ONE read-only snapshot. A consent committing mid-read must not show a history that predates
+    // it beside effective terms that include it (the review's NOTE 4), and the read takes no identity locks.
+    it.each(['MEMBER', 'FOUNDER'] as const)(
+      'reads the %s desk from one read-only repeatable-read snapshot while a consent commits mid-read',
+      async (role) => {
+        const { founder, worker, engagementId } = await setup();
+        await start(engagementId);
+        const { amendment } = await (await propose(founder.actor, engagementId, raise)).json();
+        const realTransaction = hostDb.$transaction.bind(hostDb) as (...args: unknown[]) => unknown;
+        const spy = vi.spyOn(hostDb, '$transaction');
+        const statements: string[] = [];
+        const modes: string[] = [];
+        let consentAnswer = 0;
+        let interjected = false;
+        let consenting = false;
+        spy.mockImplementation(((
+          work: (tx: unknown) => unknown,
+          options?: { isolationLevel?: string },
+        ) => {
+          if (!consenting) modes.push(String(options?.isolationLevel));
+          return realTransaction(
+            (tx: Record<string, unknown>) =>
+              work(
+                new Proxy(tx, {
+                  get(target, prop) {
+                    const value = Reflect.get(target, prop, target);
+                    if (prop !== '$queryRawUnsafe') return value;
+                    return async (sql: string, ...args: unknown[]) => {
+                      if (!consenting) statements.push(sql);
+                      const rows = await (value as (...a: unknown[]) => Promise<unknown>).call(
+                        target,
+                        sql,
+                        ...args,
+                      );
+                      if (!interjected && /a\."snapshot"|raid_effective_terms/.test(sql)) {
+                        interjected = true;
+                        consenting = true;
+                        // The member's consent commits on another connection after the first amendment read.
+                        consentAnswer = (await accept(worker.actor, amendment.id, amendment.digest))
+                          .status;
+                        consenting = false;
+                      }
+                      return rows;
+                    };
+                  },
+                }),
+              ),
+            options,
+          );
+        }) as never);
+        const caller = role === 'MEMBER' ? worker.actor : founder.actor;
+        let view;
+        try {
+          view = await (await desk(caller)).json();
+        } finally {
+          spy.mockRestore();
+        }
+        expect(interjected).toBe(true);
+        expect(consentAnswer).toBe(200);
+        expect((await amendments())[0].state).toBe('ACCEPTED');
+        // Consistent: the history and the effective terms describe the same instant (before the consent).
+        const [entry] = view.engagements;
+        expect(entry).toMatchObject({ role, engagementId });
+        expect(entry.amendments.map((a: { state: string }) => a.state)).toEqual(['PROPOSED']);
+        expect(entry.effectiveTerms.rewards[0].amount).toBe('1000000000');
+        // One transaction, repeatable read, and no identity advisory locks or row locks were requested.
+        expect(modes).toEqual(['RepeatableRead']);
+        expect(statements.some((sql) => /pg_advisory|FOR (UPDATE|SHARE)/i.test(sql))).toBe(false);
+        // A later desk shows the consent, again consistently.
+        const later = (await (await desk(caller)).json()).engagements[0];
+        expect(later.amendments.map((a: { state: string }) => a.state)).toEqual(['ACCEPTED']);
+        expect(later.effectiveTerms.rewards[0].amount).toBe('1500000000');
+      },
+    );
+
+    // #361-5 fix pass: desk reads hand `authorizeRead` a snapshot-safe port, not the READ COMMITTED command transaction.
+    // A host that tries a lock or a write through it loses ONLY that engagement; the desk and the snapshot survive.
+    type Snapshot = { query: (sql: string, bindings: string[]) => Promise<unknown[]> };
+    const ignore = async (work: Promise<unknown>) => {
+      try {
+        await work;
+      } catch {
+        // A host swallowing the refusal must still not keep the engagement.
+      }
+    };
+    it.each([
+      ['take an advisory lock', (s: Snapshot) => s.query('SELECT pg_advisory_xact_lock(1)', [])],
+      [
+        'lock an engagement row',
+        (s: Snapshot) => s.query('SELECT 1 FROM "Engagement" FOR UPDATE', []),
+      ],
+      [
+        'write a row',
+        (s: Snapshot) => s.query('UPDATE "Engagement" SET "revision"="revision"+1', []),
+      ],
+      [
+        'write through a CTE and swallow the database error',
+        (s: Snapshot) =>
+          ignore(
+            s.query(
+              'WITH w AS (UPDATE "Engagement" SET "revision"="revision"+1 RETURNING 1) SELECT 1 FROM w',
+              [],
+            ),
+          ),
+      ],
+      [
+        'take a lock and swallow the refusal',
+        (s: Snapshot) => ignore(s.query('SELECT pg_advisory_xact_lock(1)', [])),
+      ],
+    ])(
+      'omits only the engagement whose snapshot authorizer tries to %s',
+      async (_name, attempt) => {
+        const a = await setup();
+        const b = await setup({}, a.founder);
+        await start(a.engagementId);
+        await start(b.engagementId);
+        const revisions = () =>
+          row<{ revision: number }>(`SELECT "revision" FROM "Engagement" ORDER BY "id"`);
+        const before = await revisions();
+        const entries = await runSnapshotReadTransaction(hostDb, (tx) =>
+          readAmendmentDeskEntries(
+            tx,
+            a.founder.actor,
+            [a, b].map((x) => ({ engagementId: x.engagementId, role: 'FOUNDER' as const })),
+            {
+              authorizeRead: async (snapshot, _actor, target) => {
+                if (target.engagementId === a.engagementId) await attempt(snapshot as never);
+                return true;
+              },
+            },
+            20,
+          ),
+        );
+        expect(entries.map((e) => e.engagementId)).toEqual([b.engagementId]);
+        expect(await revisions()).toEqual(before);
+      },
+    );
 
     it('fails the desk closed for an unauthenticated session-less actor and never lists others', async () => {
       const { worker } = await setup();

@@ -606,6 +606,52 @@ integration('T009 Guild public updates', () => {
     expect((await run((tx) => listPublicGuildUpdates(tx, 'news-d', {}))).updates).toEqual([]);
   });
 
+  it('#296-4: each update is its own aggregate whose events carry a distinct, increasing aggregateVersion', async () => {
+    const { founder, guild: g } = await guild('news-ver');
+    const versions = (updateId: string) =>
+      db.$queryRawUnsafe<{ eventType: string; aggregateId: string; aggregateVersion: number }[]>(
+        `SELECT "eventType","aggregateId","aggregateVersion" FROM "AuditEvent" WHERE "payload"->>'guildUpdateId'=$1 ORDER BY "aggregateVersion"`,
+        updateId,
+      );
+    const a = (await draft(founder, g.id, 'A', 'first')).update.id;
+    const b = (await draft(founder, g.id, 'B', 'second')).update.id;
+    await publish(founder, g.id, a);
+    await withdraw(founder, g.id, a);
+    await withdraw(founder, g.id, b); // withdrawn straight from a draft
+    expect(await versions(a)).toEqual([
+      { eventType: 'guild.update_drafted.v1', aggregateId: a, aggregateVersion: 1 },
+      { eventType: 'guild.update_published.v1', aggregateId: a, aggregateVersion: 2 },
+      { eventType: 'guild.update_withdrawn.v1', aggregateId: a, aggregateVersion: 3 },
+    ]);
+    expect(await versions(b)).toEqual([
+      { eventType: 'guild.update_drafted.v1', aggregateId: b, aggregateVersion: 1 },
+      { eventType: 'guild.update_withdrawn.v1', aggregateId: b, aggregateVersion: 2 },
+    ]);
+    // Every update event in the Guild is unique by (aggregateId, aggregateVersion): consumers can order and dedupe.
+    const dupes = await db.$queryRawUnsafe<{ n: number }[]>(
+      `SELECT count(*)::int AS n FROM (SELECT 1 FROM "AuditEvent" WHERE "guildId"=$1 AND "eventType" LIKE 'guild.update_%' GROUP BY "aggregateId","aggregateVersion" HAVING count(*)>1) d`,
+      g.id,
+    );
+    expect(dupes[0].n).toBe(0);
+  });
+
+  it('#296-4: a publish racing a withdrawal of the same update serializes into versions 2 and 3', async () => {
+    const { founder, guild: g } = await guild('news-race');
+    const id = (await draft(founder, g.id)).update.id;
+    const settled = await Promise.allSettled([
+      publish(founder, g.id, id),
+      withdraw(founder, g.id, id),
+    ]);
+    // Either order may win (a publish after a withdrawal is refused); the events that committed have distinct, gapless versions.
+    expect(settled.some((r) => r.status === 'fulfilled')).toBe(true);
+    const rows = await db.$queryRawUnsafe<{ v: number }[]>(
+      `SELECT "aggregateVersion" AS v FROM "AuditEvent" WHERE "aggregateId"=$1 ORDER BY 1`,
+      id,
+    );
+    expect(rows.map((r) => r.v)).toEqual(rows.map((_, i) => i + 1));
+    expect(rows.length).toBeGreaterThanOrEqual(2);
+  });
+
   it('#296-5: publication time is the database clock whatever a direct writer supplies', async () => {
     const { founder, guild: g } = await guild('news-pin');
     const id = (await draft(founder, g.id)).update.id;

@@ -402,6 +402,228 @@ Recorded in the section 40.4 format. Date and owner for every record: 7 November
 - Required verification: none until those values are decided.
 - Supersedes / superseded by: none.
 
+### 02.22 Owner-delegated decisions — 13 November 2026
+
+On 13 November 2026 the project owner delegated the pending decisions below to the coding agent ("make the best optimal choices for all decisions and continue"). Each record uses the section 40.4 format. Date and owner for every record: 13 November 2026, decided by the agent (Claude) under that delegation. **Status `owner-delegated, agent-decided`** means accepted for implementation planning on the owner's delegated authority; the owner may revisit any record, and records marked **provisional, owner may revisit** were chosen as the conservative default because the question is irreversible, financial, legal or security-critical. Selection rule: fail closed, least privilege, auditability, reversibility and minimal scope. No record weakens R01–R16, I01–I13, a LOCKED requirement or a money/escrow/identity invariant; none authorizes real funds, mainnet actions, new secrets, repository-setting changes or production enablement. A decided policy is not delivered behavior: every implementation item stays NOT DELIVERED until its own test-first PR merges green, and risky-boundary items keep their once-per-task independent review (DEC-2026-10-26-01). Where an item was already decided by DEC-2026-11-07-01, the record below confirms it and decides only what that record left open.
+
+**DEC-2026-11-13-01 — configuration flag-change audit ([#79](https://github.com/solana-hackathon-1/useRAID.fun/issues/79), T037-W03)**
+
+- Related OPEN item: none; #79 "flag-change audit". Options: A, a database flag store edited at runtime; B, a startup snapshot diff.
+- Chosen policy/values: B. Flags stay environment configuration validated at start (DEC-2026-11-07-01 e–h). After validation passes, each web and worker process computes a normalized snapshot of the known flag set (the validator's known names plus every `*_ENABLED`/`*_APPROVED` name; flag values only, never keys, URLs or other secrets), compares it with the latest recorded snapshot for its environment and process kind, and inserts one append-only `ConfigFlagChange` row per changed flag (name, previous and new value, environment, process kind, database-clock time, deployment identifier when the image provides one) with actor `deployment, unattributed`. The table is additive; concurrent replicas record a change once (unique snapshot key or advisory lock). If `RAID_ENVIRONMENT=production` and the audit write fails, the process refuses to start; elsewhere it logs a code-plus-class alert and continues.
+- Status: owner-delegated, agent-decided.
+- Reason and tradeoffs: B adds no runtime write path to money or signing flags, keeps deploy-time validation as the only way to change behavior and is removable by dropping one table. It cannot name the person who changed a flag; attribution needs a signed deployment identity later.
+- Alternatives considered: A (rejected: a new privileged runtime write surface over real-money flags that bypasses start-time validation and enlarges the blast radius of a compromised operator session).
+- Affected requirements/contracts: I12, D12, AC41, AC72, T037-W03/A02; sections 29.1–29.2, 30.1; config validation in [module reuse](docs/raid-module-reuse.md).
+- Effect on existing accepted work: none. A flag change still cannot rewrite accepted terms or undo transfers (AC72).
+- Migration or rollout plan: one additive migration; first start records the baseline snapshot as "initial observation", not as changes.
+- Required verification: real-PostgreSQL tests for first snapshot, a changed flag, unchanged restart, concurrent replica starts and production refusal on audit failure; independent review (migration).
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-13-02 — Party consent event payload ([#372](https://github.com/solana-hackathon-1/useRAID.fun/issues/372))**
+
+- Related OPEN item: none; #372 NOTE.
+- Chosen policy/values: option 1. `work.party_member_consented.v1` keeps aggregate `PartyMemberConsent.id`, version 1 and payload `{raidSlotId, termsVersionId}`; consumers join `PartyMemberConsent` by id (documented in `docs/raid-parties.md`). When a real consumer needs the proposal, add optional `partyProposalId` additively (option 2) in that consumer's PR. Option 3 (proposal aggregate with per-member version) is rejected as racy.
+- Status: owner-delegated, agent-decided.
+- Reason and tradeoffs: no consumer needs it today; the shared envelope stays unchanged.
+- Alternatives considered: options 2 and 3 above.
+- Affected requirements/contracts: section 27.1; `EventEnvelopeSchema`.
+- Effect on existing accepted work, migration: none. Required verification: none now. Supersedes: none.
+
+**DEC-2026-11-13-03 — Guild authority reductions: former-Founder revoke and WITHDRAW/DECLINE under the kill switch ([#321](https://github.com/solana-hackathon-1/useRAID.fun/issues/321), [#355](https://github.com/solana-hackathon-1/useRAID.fun/issues/355))**
+
+- Related OPEN item: none; T009 follow-ups.
+- Chosen policy/values: (a) Issuer revoke power follows current authority. `revokeGuildRole` admits the current Founder (any grant), the grantee (surrender) and the issuer only while the issuer still holds the authority it issued under (still Founder, or a live delegating `PROFILE` grant covering the grant's fields). A former Founder loses revoke power over grants issued while Founder, including `TREASURY`/`DISPUTE`. Those grants stay in force (no silent removal of a third party's role) until the new Founder or the grantee revokes them; the cascade rule is unchanged. (b) `WITHDRAW` (proposing Founder) and `DECLINE` (recipient) of an ownership transfer are exempt from `GUILD_ROLE_MANAGEMENT_ENABLED` and `allowNewWrites`, like revocation; `PROPOSE` and `ACCEPT` stay gated.
+- Status: owner-delegated, agent-decided.
+- Reason and tradeoffs: a departed Founder should not be able to disrupt the new Founder's team; cancelling a pending transfer only reduces pending authority, so an incident switch must not block it.
+- Alternatives considered: keep former-Founder revoke; auto-revoke the former Founder's grants at transfer (rejected: irreversible loss for grantees).
+- Affected requirements/contracts: R04, I06; sections 06.2, 28; `docs/raid-guild-storage.md`.
+- Effect on existing accepted work: none; no grant changes state.
+- Migration or rollout plan: application change; no migration expected.
+- Required verification: real-PostgreSQL tests (former Founder refused, current Founder and grantee allowed, delegating issuer allowed only while covered; withdraw and decline succeed with the flag off and writes disabled, propose/accept still refused); independent review (access grants).
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-13-04 — Treasury and dispute role separation ([#320](https://github.com/solana-hackathon-1/useRAID.fun/issues/320), [#292](https://github.com/solana-hackathon-1/useRAID.fun/issues/292))**
+
+- Related OPEN item: section 06.2 tension; O05/O06 for real funds.
+- Chosen policy/values: (a) While funds are simulated, the Founder may issue `TREASURY` and `DISPUTE` grants without a second approver. (b) A database invariant (not only application code) forbids a live `TREASURY` or `DISPUTE` grant naming the Guild's current Founder, checked on grant insert and on Founder change. (c) One account cannot hold live `TREASURY` and `DISPUTE` in the same Guild at once. (d) `grantGuildRole` refuses `TREASURY`/`DISPUTE` to the recipient of an open ownership proposal (`FORBIDDEN`), instead of only at acceptance. (e) Before any real-funds flag can be enabled for a Guild, issuing `TREASURY`/`DISPUTE` needs a second approval by a separate operator; its process is defined with O05/O06. **(e) is provisional, owner may revisit.**
+- Status: owner-delegated, agent-decided.
+- Reason and tradeoffs: enforces the 06.2 separation where a direct writer cannot bypass it and separates payer from adjudicator, without adding an approval workflow before real money exists.
+- Alternatives considered: operator co-approval now; app-only separation (current).
+- Affected requirements/contracts: section 06.2, 17.4 recusal, 28; `docs/raid-guild-storage.md`.
+- Effect on existing accepted work: none expected; the migration must report (not silently revoke) any existing row that violates (b) or (c).
+- Migration or rollout plan: one migration adding the guard; violations found at migration time fail the migration for operator resolution.
+- Required verification: real-PostgreSQL tests for each invariant including a direct writer; independent review (access grants, migration).
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-13-05 — Guild updates: throttle order, replay authority and author cap ([#300](https://github.com/solana-hackathon-1/useRAID.fun/issues/300) items 2 and 7, [#296](https://github.com/solana-hackathon-1/useRAID.fun/issues/296) items 6 and 7)**
+
+- Chosen policy/values: (a) Keep charging the throttle before validating the Guild id, key and body, as the draft and work boundaries do; malformed requests spend budget. (b) A replay of publish or withdraw re-checks live authority, as the draft replay does: a caller who lost Founder or `PROFILE` authority gets `FORBIDDEN` and no data; the committed effect stands. (c) The per-author unpublished cap stays 100, applies to the Founder too and counts only rows created in the trailing 30 days, so an author is not blocked forever; the managed-list cursor (#296 items 2/8) lands first or with it so churn cannot hide rows.
+- Status: owner-delegated, agent-decided; the 30-day window in (c) is **provisional, owner may revisit**.
+- Reason and tradeoffs: validation-first would let malformed requests probe and consume server work without spending budget; live-authority replays are the least-privilege rule; a rolling window bounds churn without a permanent lockout.
+- Alternatives considered: validate first; identity-only replays; exempt the Founder.
+- Affected requirements/contracts: I06; section 28; `docs/raid-guild-storage.md`.
+- Effect on existing accepted work, migration: none; no schema change.
+- Required verification: route and real-PostgreSQL tests for each item; independent review (access).
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-13-06 — Work closure durable back-off and service principal ([#352](https://github.com/solana-hackathon-1/useRAID.fun/issues/352) items 2 and 5)**
+
+- Chosen policy/values: (a) Durable back-off: a per-engagement closure-attempt record (consecutive failures, last failure code, next attempt time by the database clock); the candidate query skips engagements whose next attempt is in the future; the delay doubles from 1 minute to a 1-hour cap; the record is removed on a successful close or when the engagement is no longer active; after 10 consecutive failures the worker raises one `work-closure-stuck` alert (code and class only) and keeps retrying at the cap. A failure never closes work by another path and never releases capacity without the closure. (b) Service principal: worker closures act as a non-human service principal (`work-closure`) with no credential, session or sign-in, authorized only for timeout closure of overdue engagements under the existing closure flag. A worker closure records that principal, not a borrowed human account, so audit separates worker from manual closes; `WORK_CLOSURE_WORKER_ACCOUNT_ID` is retired.
+- Status: owner-delegated, agent-decided; the 1-minute/1-hour/10-failure values are **provisional, owner may revisit**.
+- Reason and tradeoffs: bounded retries without starvation, and an honest audit actor; costs one migration each.
+- Alternatives considered: in-memory `maxFailures` only (current); keep the borrowed operator account.
+- Affected requirements/contracts: I01–I02, I06, AC17/AC20/AC21; sections 12.5, 13.5, 17.5, 27; `docs/raid-work-closure.md`.
+- Effect on existing accepted work: none; past closures keep their recorded actor.
+- Migration or rollout plan: two additive migrations, (a) and (b) in separate PRs.
+- Required verification: real-PostgreSQL tests (back-off skip, reset on success, alert once, no capacity release on failure; service-principal close recorded, principal cannot authenticate or act outside closure); independent review (capacity, identity, migration).
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-13-07 — Worker lease cap, dead-letter completion and alert destination ([#80](https://github.com/solana-hackathon-1/useRAID.fun/issues/80), PR #428 open items)**
+
+- Related decision: confirms DEC-2026-11-07-01 (a) dead-letter plus alert, including the lease-lost 8th attempt, and (b) lease renewal, both delivered in #428.
+- Chosen policy/values: (a) Total-run cap: lease renewal stops after 60 minutes of one attempt; the lease then expires, the next `assertJobLease()` refuses further effects and the attempt counts as lost (retry or dead-letter as usual). (b) A submission job that failed ordinarily and crashed before its `PostSubmission` update is repaired by the same sweep: a QUEUED `PostSubmission` whose job is failed or dead-lettered becomes `EXCLUDED`/`LOOKUP_FAILED` in the same transaction; it is never re-posted automatically, and an administrator retry revives it. (c) Alert destination: the operator log stream (code and safe class only) plus worker health `jobs-dead-letter`; no third-party pager, webhook or new secret is added now. An external pager destination is chosen with O18/T040 runbooks.
+- Status: owner-delegated, agent-decided; the 60-minute cap and (c) are **provisional, owner may revisit**.
+- Reason and tradeoffs: a hung handler can no longer hold a lease forever; no submission stays QUEUED; no new integration or secret.
+- Alternatives considered: uncapped renewal (current); automatic re-post (rejected: duplicate external effects).
+- Affected requirements/contracts: I09, I12; sections 27, 30.1; job lease and dead-letter in [module reuse](docs/raid-module-reuse.md).
+- Effect on existing accepted work, migration: none; no schema change expected.
+- Required verification: real-PostgreSQL tests for the cap and the failed-then-crashed repair; independent review (concurrency).
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-13-08 — Configuration and outbound confirmations (DEC-2026-11-07-01 c–k, PR #424 open confirmations)**
+
+- Chosen policy/values: confirms, with no change, DEC-2026-11-07-01 (c) an X header timeout is a counted attempt and a persistent timeout stops spending until an admin retry; `deferred=true` with the reservation kept stays rejected (#161, delivered in #426); (d) operator logs code plus safe class, including `failure()` (#427); (e) production refuses devnet or demo settings; (f) a web process refused for bad configuration exits at start, never 500; (i) redirect refusal and size limits apply to Solana RPC (#423); (j) 30-day Guild stale notice; (k) neutral public "Payouts paused" (#422). Decides the #424 confirmations: (1) the test-database word list (`test`, `tests`, `testing`, `e2e`, `ci`, `fixture`, `fixtures`, `sample`, `tmp`, `scratch`) is confirmed and extended with `demo`, `dev`, `development`, `local` and `staging`, matched as whole words; (2) the sample-key pattern is confirmed and also refuses any value equal to the `.env.example` value; (3) every `WORK_*` switch counts as synthetic until a real-money work path exists; a future real-money work flag needs its own decision and a name outside `WORK_*`.
+- Status: owner-delegated, agent-decided.
+- Reason and tradeoffs: fail closed at deploy time; a refused name is visible and fixable by renaming the database.
+- Alternatives considered: the current list unchanged.
+- Affected requirements/contracts: AC41, I12, D12; sections 29.1–29.2; config validation.
+- Effect on existing accepted work: none. Migration or rollout plan: audit non-staging database names before rollout.
+- Required verification: unit tests for each new refused word (and a whole-word negative) and the `.env.example` value; CI plus self-check.
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-13-09 — Public work feed: funding, ordering and Sponsored separation (T097, [#167](https://github.com/solana-hackathon-1/useRAID.fun/issues/167))**
+
+- Chosen policy/values: (a) The public feed keeps listing only published Raids whose funding is verified (simulated reservations while funds are simulated, labeled as such); not-yet-funded Raids are not listed publicly, so no "funded" filter control is added and each card keeps its funding label. Funding is never Founder-asserted. (b) Default order is newest first within that funded, open window; explicit sorts are newest, deadline, and reward only within one selected asset. No cross-asset or price-converted ordering. (c) Sponsored cards never enter the organic result set or affect its order; they render in a separate, labeled "Sponsored" region, obey the same listing, audience and confidentiality rules, and stay off until T060 delivers fixed inventory.
+- Status: owner-delegated, agent-decided.
+- Reason and tradeoffs: matches 18.1–18.3 and I03 with no invented valuation; unfunded discovery is deferred.
+- Alternatives considered: list unfunded Raids with a filter; interleaved sponsored cards.
+- Affected requirements/contracts: R08, R10, I03; sections 18.1–18.3; `docs/raid-work-feed.md`.
+- Effect on existing accepted work, migration: none.
+- Required verification: none until T060; feed tests already cover the funded window.
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-13-10 — Metrics exclusion markers, launch conversion and valuation (T043, [#85](https://github.com/solana-hackathon-1/useRAID.fun/issues/85))**
+
+- Chosen policy/values: (a) Exclusions use an append-only `MetricsExclusion` marker (subject type and id; reason `FIXTURE`, `INTERNAL_DEMO`, `SELF_DEALING`, `DUPLICATE` or `KNOWN_ABUSE`; evidence reference; operator actor; database time; optional superseding marker), set only by an allowlisted operator. A marker changes metrics only, never work, reward, reputation or account records; suspicion alone, `User.suspended` and `SkillEvidenceFingerprint` are never automatic markers. Demo and simulated-fund data is always excluded from public success claims. (b) Section 31.1 "launch conversion" means token-launch intents reaching verified launch state (`tokenLaunchConversion`); the current work-listing funnel is renamed `workListingFunnel`, with the old field kept one version as deprecated. (c) No fiat valuation: amounts stay per full asset identity and `NOT_VALUED`; canonical USDC is reported as USDC, never as dollars; any valuation needs a later decision naming source, timestamp and missing-price behavior.
+- Status: owner-delegated, agent-decided; (c) is **provisional, owner may revisit**.
+- Reason and tradeoffs: honest public claims (31.2) without inventing prices; markers are reversible records.
+- Alternatives considered: automatic exclusion by suspension or fingerprint (rejected: suspicion is not a finding, 09.7).
+- Affected requirements/contracts: R08, R10, I03, I06; sections 31.1–31.2; `docs/raid-metrics.md`.
+- Effect on existing accepted work: none. Migration or rollout plan: one additive migration for the marker.
+- Required verification: real-PostgreSQL tests (marked rows excluded and counted under `excluded`, records unchanged, non-operator refused); independent review (migration).
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-13-11 — Public Guild standing, stale notice, pause text and homepage path (T015, [#57](https://github.com/solana-hackathon-1/useRAID.fun/issues/57))**
+
+- Chosen policy/values: (a) "Track record" stays observable facts with denominators and the no-history or small-sample label (09.2); no `ESTABLISHED`, `REVIEW_NEEDED` or `RESTRICTED` standing is shown publicly until T041/T072 define a versioned, appealable rule (O09). (b) Confirms the 30-day stale threshold and that every fixed pause reason stays private behind the neutral "Payouts paused" (DEC-2026-11-07-01 j, k). (c) The homepage Raid entry links to the work feed `/raids` when `WORK_FEED_READS_ENABLED` is on and to the legacy feed otherwise. (d) The private-Raid teaser waits for T053; no public projection is added.
+- Status: owner-delegated, agent-decided.
+- Reason and tradeoffs: no label that implies a judgement without a rule.
+- Alternatives considered: show a standing now.
+- Affected requirements/contracts: R08, R10, I07; sections 09.2, 18.1, 23.6.
+- Effect on existing accepted work, migration: none.
+- Required verification: homepage link test and preview (browser-visible); CI plus self-check.
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-13-12 — Skill-assessment appeals ([#357](https://github.com/solana-hackathon-1/useRAID.fun/issues/357), T014, section 09.7)**
+
+- Chosen policy/values: (a) Adjudicator: an operator on a dedicated `SKILL_APPEAL_REVIEWER_ACCOUNT_IDS` allowlist behind a default-off flag, who is not the original reviewer and has no conflict (self, same Guild relationship, related Party or financial interest, 17.4). (b) Deadlines: an appeal may be filed within 14 days of the decision notice; adjudication targets 14 days from filing; an overdue appeal stays pending and raises an operator alert, never an automatic outcome. (c) Effects: an upheld appeal reopens the assessment for a fresh review by a reviewer other than the original; the result is a new assessment version with a correcting event (09.4); nothing grants a rank automatically. A denied appeal is final for that decision version. One appeal per decided assessment version. The appealed decision stays in effect while pending. (d) The closed category list in `ASSESSMENT_APPEAL_REASON_CATEGORIES` is accepted without `OTHER`. Practice rate limits stay DEFAULT under O09.
+- Status: owner-delegated, agent-decided; the 14-day values are **provisional, owner may revisit**.
+- Reason and tradeoffs: independent, bounded and auditable review with no automatic grant.
+- Alternatives considered: original reviewer decides (rejected: no independence); automatic rank on uphold.
+- Affected requirements/contracts: sections 08.6, 09.4, 09.7, 17.4; `docs/raid-skill-claim-storage.md`.
+- Effect on existing accepted work: none. Migration or rollout plan: additive appeal storage; flag stays off until the allowlist is set.
+- Required verification: real-PostgreSQL tests (self, original-reviewer and conflicted adjudicator refused; window enforced; one appeal per version; uphold reopens without granting); independent review (identity/access, migration).
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-13-13 — Founder applicant-evidence view ([#331](https://github.com/solana-hackathon-1/useRAID.fun/issues/331), T022, section 23.6)**
+
+- Chosen policy/values: a Founder reviewing an application may see, beyond the current summary, only what the applicant shares for that application: (1) their public profile; (2) skill records relevant to the Raid's requirements (skill, rank, assessment status and date, evidence type labels), but not private evidence content, files or links unless the applicant marks a specific evidence item shareable for that application; (3) public track-record facts with denominators (09.2); (4) prior Raid outcomes only where already public. Never shown: other Guilds' private outcomes, dispute details, holdings or balances, or linked accounts not opted in. Sharing is a consent snapshot recorded with the application; the applicant can withdraw it while the application is pending (the view drops it; content already seen cannot be recalled, and the screen says so). Access ends when the application closes, except what the resulting engagement needs. Default-off flag.
+- Status: owner-delegated, agent-decided.
+- Reason and tradeoffs: least privilege and explicit consent; Founders get better signal without a dossier.
+- Alternatives considered: show all evidence by default; keep the summary only.
+- Affected requirements/contracts: I07; sections 07, 10, 23.6, 28; O11 retention (DEC-2026-11-13-19).
+- Effect on existing accepted work: none. Migration or rollout plan: additive consent-snapshot storage.
+- Required verification: real-PostgreSQL and route tests (non-shared items absent from HTML/API, withdrawal effective, closed application revokes access, other-Founder refused); independent review (access, migration).
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-13-14 — Work commitment follow-ups ([#269](https://github.com/solana-hackathon-1/useRAID.fun/issues/269)-1, [#285](https://github.com/solana-hackathon-1/useRAID.fun/issues/285)-4, [#275](https://github.com/solana-hackathon-1/useRAID.fun/issues/275)-4, [#273](https://github.com/solana-hackathon-1/useRAID.fun/issues/273)-7 with #239-7, [#361](https://github.com/solana-hackathon-1/useRAID.fun/issues/361)-5)**
+
+- Chosen policy/values: (a) #269-1: an amendment proposal whose proposer no longer holds listing authority is lapsed. Consent stays refused, the member may still decline, and a new proposal by a currently authorized proposer records the orphan as lapsed (attributed to that proposer's receipt, as for ownership lapses) instead of answering `AMENDMENT_EXISTS`. No operator gains withdraw power; accepted terms never change. (b) #285-4: keep refusing a fresh-key consent retry after the offer expired or the deadline passed; the same-key replay remains the recovery path. (c) #275-4: a consent is usable only for its exact terms digest, only if unused and not withdrawn, and only until the slot's commitment deadline; the participant may withdraw an unused consent (append-only withdrawal row). No new numeric window. (d) #273-7 and #239-7: an applicant may always withdraw their own application, exempt from the apply flag and the write kill switch; a suspended account still cannot act. (e) #361-5: the amendment desk reads in one `READ ONLY`, `REPEATABLE READ` transaction that takes no identity advisory locks; items the caller has lost authority over are omitted rather than failing the whole desk. Writes keep the existing lock order.
+- Status: owner-delegated, agent-decided.
+- Reason and tradeoffs: removes blocked states and stale consent without granting anyone new authority over another's work.
+- Alternatives considered: operator withdraw of orphaned proposals; returning the existing consent on a fresh key; a time-boxed consent window.
+- Affected requirements/contracts: I01, I02, I04, I06, AC11–AC13, AC17, AC72; sections 12–14; `docs/raid-work-amendments.md`, `docs/raid-work-admission.md`.
+- Effect on existing accepted work: none; existing consents remain valid under (c) until used, withdrawn or past the deadline.
+- Migration or rollout plan: (c) needs one additive migration; the others none.
+- Required verification: real-PostgreSQL tests per item, including concurrent acceptance against withdrawal for (c); independent review for (a) and (c) (capacity/terms, migration); CI plus self-check for (b), (d) and (e).
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-13-15 — Founder wizard boundaries and notification follow-ups ([#253](https://github.com/solana-hackathon-1/useRAID.fun/issues/253), [#251](https://github.com/solana-hackathon-1/useRAID.fun/issues/251))**
+
+- Chosen policy/values: #253: (1) keep the server-authoritative coverage contract; any added host validates against server-owned coverage; (2) in production the Raid catalog is visible only to accounts with Founder or live `WORK` authority in that Guild, through the real Guild host; the synthetic catalog stays non-production; (3) no public-teaser surface until T053. #251: (1) the production application database role has no `TRUNCATE` privilege on append-only tables; privileged maintenance truncation runs only under a T040 runbook; the row trigger is not claimed to prevent it; (2) keep the current dispatch query and measure it in beta before adopting the documented queue table; (3) additive, versioned keyset pagination of the notification list is approved; (4) keep retaining rows for suspended recipients with reads restricted; deletion follows DEC-2026-11-13-19; (5) keep the generic "closed" wording.
+- Status: owner-delegated, agent-decided.
+- Reason and tradeoffs: least privilege on catalog reads and destructive maintenance; no change without measured need.
+- Alternatives considered: catalog visible to any signed-in account (current, non-production only).
+- Affected requirements/contracts: I06, I07; sections 11, 23.6, 28, 30; `docs/raid-notifications.md`.
+- Effect on existing accepted work, migration: none.
+- Required verification: catalog route tests with a stranger, a `WORK` grantee and the Founder (independent review, access); pagination contract tests (CI plus self-check).
+- Supersedes / superseded by: none.
+
+**DEC-2026-11-13-16 — Merge gate ruleset (`.github/rulesets/main-ci-gate.json`)**
+
+- Chosen policy/values: adopt the ruleset as written (pull request required, `ci-gate` required on the exact up-to-date head, no force-push or deletion, no bypass actor). Applying it is an owner action on repository settings; agents do not apply it. Until it is applied, the manual Checks rule of DEC-2026-10-26-02 governs merges.
+- Status: owner-delegated, agent-decided; **provisional, owner may revisit** (repository setting).
+- Reason and tradeoffs: makes the existing gate binding; every main advance needs a fresh dispatch on the PR head.
+- Alternatives considered: keep the gate advisory.
+- Affected requirements/contracts: I13; `docs/ci-checks.md`. Migration: none. Required verification: after the owner applies it, an undispatched PR is blocked. Supersedes: none.
+
+**DEC-2026-11-13-17 — Launch route, launch economics and fees (O01, O02, O08)**
+
+- Related OPEN items: O01, O02, O08.
+- Chosen policy/values: O01: the Meteora DBC to DAMM v2 route (DEC-2026-11-07-04) is the only first-release route; another route needs its own decision. O02: RAID invents no supply, decimals, curve or fee values; the Founder enters them within the bounds the route adapter validates, and RAID enforces guardrails: devnet only; fixed supply with no mint authority after launch; no freeze authority; immutable metadata only after the Meteora capability is verified; no RAID or platform allocation; any Founder or team allocation shown exactly on the review screen and in the launch record; USDC quote; migration threshold shown exactly as configured. O08: the first release charges nothing: no platform fee, no RAID launch fee (provider protocol fees are disclosed as the provider's), no sponsored sales and no AI charges; any fee needs a new decision with exact quotes.
+- Status: owner-delegated, agent-decided; O02 and O08 are **provisional, owner may revisit**. Mainnet launch stays blocked on G01 and an owner decision; monetized values stay OPEN.
+- Reason and tradeoffs: buyer-protective defaults with no invented economics; no revenue until priced deliberately.
+- Alternatives considered: platform-set default economics.
+- Affected requirements/contracts: R01, R02, R15; sections 05, 16.4, 18.3, 19.7, 22; `docs/raid-launch-route.md`.
+- Effect on existing accepted work: existing launch intents stay pinned to their protocol.
+- Migration or rollout plan: adapter validation only; no live funds.
+- Required verification: adapter tests refusing mint/freeze authority, platform allocation and undisclosed allocation; independent review (money).
+- Supersedes / superseded by: none; extends DEC-2026-11-07-04.
+
+**DEC-2026-11-13-18 — Escrow design for the build and asset extension (O05, O07)**
+
+- Related OPEN items: O05, O06, O07.
+- Chosen policy/values: O05: the DEC-2026-11-07-05 DIRECTION (custom per-agreement PDA escrow per 16.6–16.7, no generic admin withdrawal, separate fee, launch, settlement and upgrade authorities, 2-of-3 Squads upgrade multisig with timelock, never called trustless) becomes the selected design for devnet build and T030 proof. Mainnet custody stays blocked on O06, an external human security audit and an explicit owner decision. O07: confirms DEC-2026-11-07-03; each additional asset needs its own decision record, T069 end-to-end validation and G04 evidence for that asset; Token-2022 stays excluded until reviewed extension by extension.
+- Status: owner-delegated, agent-decided; **provisional, owner may revisit** (security- and money-critical).
+- Reason and tradeoffs: lets T030 proceed on one design; nothing reaches real funds.
+- Alternatives considered: an escrow provider.
+- Affected requirements/contracts: P05, I12; sections 16.2–16.7; escrow adapter family.
+- Effect on existing accepted work, migration: none.
+- Required verification: T030 devnet capability evidence; G02/G04 stay NOT VERIFIED.
+- Supersedes / superseded by: none; extends DEC-2026-11-07-03 and -05.
+
+**DEC-2026-11-13-19 — Identity, privacy values and operating terms (O11, O12)**
+
+- Related OPEN items: O11, O12.
+- Chosen policy/values: O11: (1) a wallet signature is required for every account; X OAuth is optional and required only by features that need a verified X identity; no government ID. (2) Retention: authentication, session and security logs 30 days; operator logs 30 days (code and safe class only); applicant-shared evidence until the application closes (DEC-2026-11-13-13). (3) Account deletion removes or irreversibly pseudonymizes profile, handles and contact data within 30 days, while financial, contractual, audit and reputation records are retained under a pseudonymous id, so obligations and history are never erased (T092). O12: until counsel decides, RAID runs simulation and devnet only, with terms stating that nothing has monetary value; no real-value payout to any person or jurisdiction; KYC, sanctions screening and the supported-jurisdiction list remain OPEN and block real payouts.
+- Status: owner-delegated, agent-decided; **provisional, owner may revisit** (legal). O11 values are decided for simulation and devnet; O12 stays OPEN for real money.
+- Reason and tradeoffs: minimal data with obligations preserved; no legal position is assumed.
+- Alternatives considered: X and wallet both required; longer retention.
+- Affected requirements/contracts: section 07, 23.6, 28; T090, T092.
+- Effect on existing accepted work: none. Migration or rollout plan: T092 implements deletion and retention.
+- Required verification: T092 real-PostgreSQL tests (deletion pseudonymizes without breaking obligations, retention jobs bounded); independent review (identity, migration).
+- Supersedes / superseded by: extends DEC-2026-11-07-06.
+
 ---
 
 ## 03. Vocabulary
@@ -2708,27 +2930,27 @@ The runner stops further spend, records the artifacts and usage, and follows the
 
 The following decisions are unresolved in the available product discussion. They do not prevent completing this blueprint or building independent foundations. They block only the feature that depends on them.
 
-| ID  | Decision needed                                                                           | Proposed working position                                                                                                                                                 | Dependency/owner                                                  |
-| --- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| O01 | Exact launch mechanism and protocol/provider.                                             | Typed adapter; choose one supported route first. **Route resolved: DEC-2026-11-07-04** (Meteora DBC to DAMM v2, USDC quote, devnet only).                                 | M3; product and Solana lead.                                      |
-| O02 | Launch supply, decimals, distribution, authorities, liquidity/curve and migration policy. | No invented economics; expose only selected route's supported parameters.                                                                                                 | Real launch; Founder/product authority.                           |
-| O03 | Real RAID token plan and utility activation.                                              | Separate milestone; no presumed supply/price/allocations.                                                                                                                 | Token launch/utility; project owner.                              |
-| O04 | Any flat RAID access license after removal of rank-linked stakes.                         | Off by default; preserve optional policy interface.                                                                                                                       | License feature; project owner.                                   |
-| O05 | Escrow provider/custom program and custody/upgrade authority.                             | Mediated candidate design with constrained authority, pending review. **DIRECTION only: DEC-2026-11-07-05.** Still OPEN; mainnet blocked on O06 and external audit.       | Real rewards; product/Solana/security/operations.                 |
-| O06 | Dispute mediator, quorum, notice/appeal/finality and abandoned-case recovery.             | Bounded operations and protected claims; commercial finality must be selected.                                                                                            | Live settlements/awards; product/operations.                      |
-| O07 | Initial supported assets and extension/freeze policy.                                     | Small reviewed allowlist; full-identity asset model. **Resolved for first release: DEC-2026-11-07-03** (canonical USDC only); G04 still required.                         | Each enabled payment asset; treasury/security.                    |
-| O08 | Platform fees, launch fees, promotion prices and AI charging/refunds.                     | Exact quotes and net rewards; examples not binding.                                                                                                                       | Monetized features; product/finance.                              |
-| O09 | Numeric skill/score thresholds and calibration.                                           | Qualitative skill rubric, evidence metrics and confidence first.                                                                                                          | Automated scoring/promotion; trust lead.                          |
-| O10 | Selection/prize rights, stipend rules, no-qualifier/tie and appeal policy.                | Paid bounded selection first; separate prize mode.                                                                                                                        | Challenge launch; product/legal-template owner.                   |
-| O11 | Formal privacy, retention, account deletion and identity-attestation policy.              | Minimal necessary data; no automatic mandatory KYC assumption. **DIRECTION only: DEC-2026-11-07-06.** Still OPEN; retention, deletion and X-plus-wallet values undecided. | Public operations; product/security.                              |
-| O12 | Supported jurisdictions/users and contract/service terms.                                 | Resolve for the actual launch/work/payment model.                                                                                                                         | Public paid operations; project owner with appropriate expertise. |
-| O13 | GitHub organization/provider plans and supported grant mechanism.                         | Verify actual capability; scoped resource and effective-access reconciliation.                                                                                            | Confidential work; access/integration lead.                       |
-| O14 | Model providers, data retention/training permissions, tool providers, price cards.        | Provider-agnostic policy; explicit per-task permission.                                                                                                                   | Managed AI; execution/product lead.                               |
-| O15 | Organization AI-operator registration/concurrency policy.                                 | Individual-operator pilot cap as specified; no silent scale-up.                                                                                                           | Broader agent marketplace; product/trust.                         |
-| O16 | Social channels and allowed APIs/automation/metrics.                                      | Manual evidence before approved automated publishing.                                                                                                                     | Influencer automation; integration/product.                       |
-| O17 | Sponsored auction mechanism and reserve/charge/refund rules.                              | Fixed slots first; first-price candidate remains disabled.                                                                                                                | Bidding; product/treasury.                                        |
-| O18 | Hosting, selected package/runtime versions, provider SLOs and budgets.                    | Simple web/worker/PostgreSQL topology; verify against deployment environment.                                                                                             | Production release; engineering/operations.                       |
-| O19 | Ongoing Role contracts/cadence and operator support hours.                                | One active duty period; no concurrency loophole.                                                                                                                          | Roles and live service; product/operations.                       |
+| ID  | Decision needed                                                                           | Proposed working position                                                                                                                                                                                                                                                           | Dependency/owner                                                  |
+| --- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| O01 | Exact launch mechanism and protocol/provider.                                             | Typed adapter; choose one supported route first. **Route resolved: DEC-2026-11-07-04** (Meteora DBC to DAMM v2, USDC quote, devnet only); the only first-release route (DEC-2026-11-13-17).                                                                                         | M3; product and Solana lead.                                      |
+| O02 | Launch supply, decimals, distribution, authorities, liquidity/curve and migration policy. | No invented economics; expose only selected route's supported parameters. **Guardrails decided, provisional: DEC-2026-11-13-17** (Founder inputs within adapter bounds; no mint/freeze authority, no platform allocation, devnet only). Mainnet economics OPEN.                     | Real launch; Founder/product authority.                           |
+| O03 | Real RAID token plan and utility activation.                                              | Separate milestone; no presumed supply/price/allocations.                                                                                                                                                                                                                           | Token launch/utility; project owner.                              |
+| O04 | Any flat RAID access license after removal of rank-linked stakes.                         | Off by default; preserve optional policy interface.                                                                                                                                                                                                                                 | License feature; project owner.                                   |
+| O05 | Escrow provider/custom program and custody/upgrade authority.                             | Mediated candidate design with constrained authority, pending review. **DIRECTION only: DEC-2026-11-07-05.** **Selected for devnet build, provisional: DEC-2026-11-13-18.** Mainnet custody still OPEN; blocked on O06, external audit and owner decision.                          | Real rewards; product/Solana/security/operations.                 |
+| O06 | Dispute mediator, quorum, notice/appeal/finality and abandoned-case recovery.             | Bounded operations and protected claims; commercial finality must be selected.                                                                                                                                                                                                      | Live settlements/awards; product/operations.                      |
+| O07 | Initial supported assets and extension/freeze policy.                                     | Small reviewed allowlist; full-identity asset model. **Resolved for first release: DEC-2026-11-07-03** (canonical USDC only); extension rule DEC-2026-11-13-18; G04 still required.                                                                                                 | Each enabled payment asset; treasury/security.                    |
+| O08 | Platform fees, launch fees, promotion prices and AI charging/refunds.                     | Exact quotes and net rewards; examples not binding. **Interim, provisional: DEC-2026-11-13-17** (first release charges no fees). Monetized values OPEN.                                                                                                                             | Monetized features; product/finance.                              |
+| O09 | Numeric skill/score thresholds and calibration.                                           | Qualitative skill rubric, evidence metrics and confidence first.                                                                                                                                                                                                                    | Automated scoring/promotion; trust lead.                          |
+| O10 | Selection/prize rights, stipend rules, no-qualifier/tie and appeal policy.                | Paid bounded selection first; separate prize mode.                                                                                                                                                                                                                                  | Challenge launch; product/legal-template owner.                   |
+| O11 | Formal privacy, retention, account deletion and identity-attestation policy.              | Minimal necessary data; no automatic mandatory KYC assumption. **DIRECTION only: DEC-2026-11-07-06.** **Simulation/devnet values decided, provisional: DEC-2026-11-13-19** (wallet required, X optional, 30-day logs, pseudonymizing deletion). Final policy for real payouts OPEN. | Public operations; product/security.                              |
+| O12 | Supported jurisdictions/users and contract/service terms.                                 | Resolve for the actual launch/work/payment model. **Interim, provisional: DEC-2026-11-13-19** (simulation/devnet only, no real-value payouts). Still OPEN for real money.                                                                                                           | Public paid operations; project owner with appropriate expertise. |
+| O13 | GitHub organization/provider plans and supported grant mechanism.                         | Verify actual capability; scoped resource and effective-access reconciliation.                                                                                                                                                                                                      | Confidential work; access/integration lead.                       |
+| O14 | Model providers, data retention/training permissions, tool providers, price cards.        | Provider-agnostic policy; explicit per-task permission.                                                                                                                                                                                                                             | Managed AI; execution/product lead.                               |
+| O15 | Organization AI-operator registration/concurrency policy.                                 | Individual-operator pilot cap as specified; no silent scale-up.                                                                                                                                                                                                                     | Broader agent marketplace; product/trust.                         |
+| O16 | Social channels and allowed APIs/automation/metrics.                                      | Manual evidence before approved automated publishing.                                                                                                                                                                                                                               | Influencer automation; integration/product.                       |
+| O17 | Sponsored auction mechanism and reserve/charge/refund rules.                              | Fixed slots first; first-price candidate remains disabled.                                                                                                                                                                                                                          | Bidding; product/treasury.                                        |
+| O18 | Hosting, selected package/runtime versions, provider SLOs and budgets.                    | Simple web/worker/PostgreSQL topology; verify against deployment environment.                                                                                                                                                                                                       | Production release; engineering/operations.                       |
+| O19 | Ongoing Role contracts/cadence and operator support hours.                                | One active duty period; no concurrency loophole.                                                                                                                                                                                                                                    | Roles and live service; product/operations.                       |
 
 When resolving one item, create a decision record with exact chosen values, rationale, alternatives rejected, owner, date, affected requirements, migration effect, and tests. Update this table to point to that decision. Do not delete the fact that older examples differed.
 
@@ -2843,7 +3065,7 @@ Date and owner:
 Related OPEN item:
 Question:
 Chosen policy/values:
-Status: proposed | accepted | superseded
+Status: proposed | accepted | owner-delegated, agent-decided (02.22) | superseded
 Reason and tradeoffs:
 Alternatives considered:
 Affected requirements/contracts:

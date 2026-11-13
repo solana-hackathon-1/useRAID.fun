@@ -31,7 +31,7 @@ export function validate(tx: Tx, actor: WorkActor) {
     fail('UNAUTHENTICATED');
 }
 /** Cheap preliminary check only. Final authority is rechecked after all identity lock waits. */
-export async function session(tx: Tx, actor: WorkActor) {
+export async function session(tx: Pick<Tx, 'query'>, actor: WorkActor) {
   const rows = await tx.query<{ suspended: boolean }>(
     `SELECT u."suspended" FROM "User" u JOIN "Session" s ON s."userId"=u."id" WHERE u."id"=$1 AND s."tokenHash"=$2 AND s."via" IN ('wallet','x') AND s."expiresAt">(clock_timestamp() AT TIME ZONE 'UTC')`,
     [actor.accountId, actor.sessionHash],

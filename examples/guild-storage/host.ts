@@ -17,6 +17,7 @@ import {
   editGuildProfile,
   grantGuildRole,
   listManagedGuildUpdates,
+  listPendingOwnershipTransfers,
   listManagedGuilds,
   listPublicGuilds,
   listPublicGuildUpdates,
@@ -377,6 +378,10 @@ try {
           authorizeOwnershipTransfer: async () => true,
         }),
       ),
+    listTransfers: async (who) => ({
+      version: 'v1' as const,
+      ...(await transaction((tx) => listPendingOwnershipTransfers(tx, who))),
+    }),
   });
   const deputy = await account('deputy');
   const grantBody = {
@@ -413,6 +418,21 @@ try {
   );
   assert.equal(offered.status, 200);
   const offeredId = ((await offered.json()) as { transfer: { id: string } }).transfer.id;
+  signedIn = deputy;
+  // The recipient discovers the proposal by reading; a stranger sees nothing.
+  const found = await rolesHttp.LIST(
+    new Request('https://example.test/api/v1/guild-ownership-transfers'),
+  );
+  assert.equal(found.status, 200);
+  assert.deepEqual(
+    ((await found.json()) as { transfers: { id: string }[] }).transfers.map((t) => t.id),
+    [offeredId],
+  );
+  signedIn = await account('read-stranger');
+  const hidden = await rolesHttp.LIST(
+    new Request('https://example.test/api/v1/guild-ownership-transfers'),
+  );
+  assert.deepEqual(((await hidden.json()) as { transfers: unknown[] }).transfers, []);
   signedIn = deputy;
   const declinedByHttp = await rolesHttp.RESPOND(
     send(

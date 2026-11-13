@@ -4,6 +4,7 @@ import { config } from './lib/config';
 import { claimJob } from './lib/queue';
 import { assertSchemaCurrent, runJob, schedule } from './lib/worker-jobs';
 import { checkRuntimeConfig } from './lib/config-validation-host';
+import { auditConfigFlags } from './lib/config-flag-audit';
 import { operatorErrorFields, operatorLogLine } from './lib/operator-log';
 let stopping = false;
 process.on('SIGTERM', () => {
@@ -17,6 +18,7 @@ async function main() {
   if (config.demo)
     throw Object.assign(new Error('Worker cannot run in demo mode.'), { code: 'DEMO_MODE' });
   await assertSchemaCurrent();
+  await auditConfigFlags('worker');
   let scheduled = 0;
   while (!stopping) {
     try {
