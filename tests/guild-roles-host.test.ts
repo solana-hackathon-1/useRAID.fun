@@ -5,6 +5,7 @@ const mocks = vi.hoisted(() => ({
   revoke: vi.fn(),
   propose: vi.fn(),
   respond: vi.fn(),
+  list: vi.fn(),
 }));
 vi.mock('../src/lib/command-receipts-adapter', () => ({ runCommandTransaction: mocks.run }));
 vi.mock('../src/guild-profiles/guild-storage', () => ({
@@ -12,10 +13,12 @@ vi.mock('../src/guild-profiles/guild-storage', () => ({
   revokeGuildRole: mocks.revoke,
   proposeOwnershipTransfer: mocks.propose,
   respondOwnershipTransfer: mocks.respond,
+  listPendingOwnershipTransfers: mocks.list,
 }));
 import {
   grantRole,
   guildRolesWriteConfiguration,
+  listTransfers,
   proposeTransfer,
   respondTransfer,
   revokeRole,
@@ -72,4 +75,16 @@ it('answers the ownership policy hook closed: no project-control re-verification
       { guildId: 'g', fromAccountId: 'a', toAccountId: 'b' },
     ),
   ).resolves.toBe(false);
+});
+
+it('reads pending transfers whatever the write switch says: a recipient can always see what is asked of them', async () => {
+  mocks.list.mockResolvedValue({ transfers: [], truncated: false });
+  for (const flag of [undefined, '', 'false', 'true']) {
+    vi.stubEnv('GUILD_ROLE_MANAGEMENT_ENABLED', flag as string);
+    expect(await listTransfers(actor)).toEqual({ version: 'v1', transfers: [], truncated: false });
+  }
+  config.demo = true;
+  expect(await listTransfers(actor)).toEqual({ version: 'v1', transfers: [], truncated: false });
+  // The read takes only the session actor, with no write policy at all.
+  expect(mocks.list).toHaveBeenLastCalledWith({}, actor);
 });

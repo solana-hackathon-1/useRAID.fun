@@ -8,6 +8,7 @@ import {
   editGuildProfile,
   grantGuildRole,
   hasGuildAuthority,
+  listPendingOwnershipTransfers,
   proposeOwnershipTransfer,
   readManagedGuild,
   respondOwnershipTransfer,
@@ -958,6 +959,133 @@ integration('T009 Guild ownership transfer', () => {
       code: 'FORBIDDEN',
     });
     expect(await founderOf(g.id)).toBe(lapsed.accountId);
+  });
+
+  describe('reading a pending transfer (#294 NOTE)', () => {
+    const page = (actor: GuildActor, limit?: number) =>
+      run((tx) => listPendingOwnershipTransfers(tx, actor, limit));
+    const pending = (actor: GuildActor) => page(actor).then((r) => r.transfers);
+
+    it('shows an open proposal to its recipient and its proposer, and to nobody else', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const stranger = await person();
+      const delegate = await person();
+      await grantRow(g.id, delegate);
+      const { transfer } = await propose(founder, g.id, next.accountId, {}, 'p-1');
+      // The proposer is not disclosed to an unsolicited recipient (the Founder id is redacted for non-authority callers).
+      expect(await pending(next)).toEqual([{ ...transfer, fromAccountId: null }]);
+      expect(await pending(founder)).toEqual([transfer]);
+      // Neither an unrelated account nor a profile delegate of the Guild learns that a proposal exists.
+      expect(await pending(stranger)).toEqual([]);
+      expect(await pending(delegate)).toEqual([]);
+    });
+
+    it('shows no decided or lapsed proposal, and never a recipient the proposal was not made to', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const other = await person();
+      const { transfer } = await propose(founder, g.id, next.accountId, {}, 'p-1');
+      await respond(next, g.id, transfer.id, 'DECLINE', 'd-1');
+      expect(await pending(next)).toEqual([]);
+      expect(await pending(founder)).toEqual([]);
+      const second = (await propose(founder, g.id, other.accountId, {}, 'p-2')).transfer;
+      expect(await pending(next)).toEqual([]);
+      expect(await pending(other)).toEqual([{ ...second, fromAccountId: null }]);
+      // A proposal past its window is lapsed, even before anything records it.
+      await db.$executeRawUnsafe(
+        `ALTER TABLE "GuildOwnershipTransfer" DISABLE TRIGGER guild_transfer_guard_v1`,
+      );
+      try {
+        await db.$executeRawUnsafe(
+          `UPDATE "GuildOwnershipTransfer" SET "proposedAt"=clock_timestamp()-interval '2 days',"expiresAt"=clock_timestamp()-interval '1 day' WHERE "id"=$1::uuid`,
+          second.id,
+        );
+      } finally {
+        await db.$executeRawUnsafe(
+          `ALTER TABLE "GuildOwnershipTransfer" ENABLE TRIGGER guild_transfer_guard_v1`,
+        );
+      }
+      expect(await pending(other)).toEqual([]);
+      expect(await pending(founder)).toEqual([]);
+    });
+
+    it('reads with a live session only: unknown, suspended or session-less callers are refused, and the read writes nothing', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      await propose(founder, g.id, next.accountId, {}, 'p-1');
+      const forged = { accountId: next.accountId, sessionHash: 'b'.repeat(64) };
+      await expect(pending(forged)).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
+      await expect(
+        pending({ accountId: next.accountId, sessionHash: 'nope' }),
+      ).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
+      await db.user.update({ where: { id: next.accountId }, data: { suspended: true } });
+      await expect(pending(next)).rejects.toMatchObject({ code: 'ACCOUNT_RESTRICTED' });
+      const [{ n }] = await db.$queryRawUnsafe<{ n: number }[]>(
+        `SELECT count(*)::int AS n FROM "GuildOwnershipTransfer" WHERE "state"='PROPOSED'`,
+      );
+      expect(n).toBe(1);
+    });
+
+    it('#448: a recipient who accepts or declines is never told who proposed; the proposer still is', async () => {
+      const a = await guild('synthetic-guild-a');
+      const b = await guild('synthetic-guild-b');
+      const c = await guild('synthetic-guild-c');
+      const next = await person();
+      const decline = (await propose(a.founder, a.guild.id, next.accountId, {}, 'da')).transfer;
+      const accept = (await propose(b.founder, b.guild.id, next.accountId, {}, 'db')).transfer;
+      const withdraw = (await propose(c.founder, c.guild.id, next.accountId, {}, 'dc')).transfer;
+      const declined = await respond(next, a.guild.id, decline.id, 'DECLINE', 'r-d');
+      expect(declined.transfer).toMatchObject({ state: 'DECLINED', fromAccountId: null });
+      const accepted = await respond(next, b.guild.id, accept.id, 'ACCEPT', 'r-a');
+      expect(accepted.transfer).toMatchObject({
+        state: 'ACCEPTED',
+        applied: true,
+        fromAccountId: null,
+      });
+      // The replay of either decision is redacted the same way.
+      expect((await respond(next, a.guild.id, decline.id, 'DECLINE', 'r-d')).transfer).toEqual(
+        declined.transfer,
+      );
+      expect((await respond(next, b.guild.id, accept.id, 'ACCEPT', 'r-a')).transfer).toEqual(
+        accepted.transfer,
+      );
+      // The proposing Founder withdrawing is the proposer, so their own id stays.
+      expect(
+        (await respond(c.founder, c.guild.id, withdraw.id, 'WITHDRAW', 'r-w')).transfer,
+      ).toMatchObject({ state: 'WITHDRAWN', fromAccountId: c.founder.accountId });
+      // Neither response leaks the proposer anywhere in its serialized form.
+      for (const view of [declined, accepted])
+        expect(JSON.stringify(view)).not.toContain(a.founder.accountId);
+      expect(JSON.stringify(accepted)).not.toContain(b.founder.accountId);
+    });
+
+    it('flags a page cut short instead of silently dropping proposals, and refuses a bad page size', async () => {
+      const a = await guild('synthetic-guild-a');
+      const b = await guild('synthetic-guild-b');
+      const next = await person();
+      await propose(a.founder, a.guild.id, next.accountId, {}, 'pa');
+      await propose(b.founder, b.guild.id, next.accountId, {}, 'pb');
+      const all = await page(next);
+      expect(all.transfers).toHaveLength(2);
+      expect(all.truncated).toBe(false);
+      const cut = await page(next, 1);
+      expect(cut.transfers).toHaveLength(1);
+      expect(cut.truncated).toBe(true);
+      expect((await page(next, 2)).truncated).toBe(false);
+      for (const bad of [0, 51, 1.5, -1])
+        await expect(page(next, bad)).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    });
+
+    it('lets the recipient accept the proposal it found by reading, with no id passed out of band', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      await propose(founder, g.id, next.accountId, {}, 'p-1');
+      const [found] = await pending(next);
+      const accepted = await respond(next, found.guildId, found.id, 'ACCEPT', 'a-1');
+      expect(accepted.transfer).toMatchObject({ state: 'ACCEPTED', applied: true });
+      expect(await pending(next)).toEqual([]);
+    });
   });
 
   describe('an acceptance racing other Guild commands (the Guild row serializes them)', () => {

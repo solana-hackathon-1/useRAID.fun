@@ -1,6 +1,7 @@
-import type { GuildCommand } from '../guild-profiles/guild-storage-contracts';
+import type { GuildActor, GuildCommand } from '../guild-profiles/guild-storage-contracts';
 import {
   grantGuildRole,
+  listPendingOwnershipTransfers,
   proposeOwnershipTransfer,
   respondOwnershipTransfer,
   revokeGuildRole,
@@ -36,3 +37,8 @@ export const respondTransfer = (command: GuildCommand) =>
       authorizeOwnershipTransfer: async () => false,
     }),
   );
+/** Reads stay available whatever the write switch says: a recipient must always be able to see what is asked of them. */
+export const listTransfers = async (actor: GuildActor) => ({
+  version: 'v1' as const,
+  ...(await runCommandTransaction(db, (tx) => listPendingOwnershipTransfers(tx, actor))),
+});
