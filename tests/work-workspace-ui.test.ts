@@ -267,6 +267,26 @@ describe('T022 My Raid workspace markup', () => {
     expect(html).toContain('Withdraw application');
     expect(html).not.toContain('Accept offer');
   });
+  it('keeps withdrawing a pending application available when new applications are closed (#273-7)', () => {
+    const pending = mine(
+      [],
+      [
+        {
+          applicationId: id(3),
+          slotId: id(4),
+          termsVersionId: id(5),
+          title: 'T',
+          state: 'SUBMITTED',
+          offer: null,
+        },
+      ],
+    );
+    for (const applicationsAvailable of [true, false]) {
+      const html = workspace(pending, { applicationsAvailable });
+      expect(html).toContain('Withdraw application');
+      expect(html).not.toContain('Withdrawing is currently unavailable');
+    }
+  });
   it('labels expired and revoked offers truthfully', () => {
     const base = {
       applicationId: id(3),

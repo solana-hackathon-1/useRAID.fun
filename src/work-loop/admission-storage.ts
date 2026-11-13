@@ -174,7 +174,9 @@ export async function withdrawApplication(tx: Tx, command: WorkCommand, host: Ad
       request: value,
     },
     async () => {
-      if (!host.allowNewWrites) fail('WRITES_DISABLED');
+      // #273-7 (DEC-2026-11-13-14 d): an applicant may always withdraw their own application, so `allowNewWrites`
+      // (the apply flag / write switch) is deliberately NOT consulted. A suspended or signed-out account still
+      // cannot act (`session`/`currentHuman`), and only the applicant's own participant may withdraw.
       const ref = await application(tx, value.applicationId),
         s = await source(tx, ref.slotId);
       auth = await currentHuman(tx, actor);
