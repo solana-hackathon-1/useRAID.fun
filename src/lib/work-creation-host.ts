@@ -56,16 +56,19 @@ function workHost(allowNewWrites: boolean): WorkHost {
 function requireReads() {
   if (!workCreationConfiguration().readsAvailable) throw new WorkError('STORAGE_CONTRACT');
 }
-const NON_PRODUCTION_LABELS = ['staging', 'pilot', 'alpha', 'demo', 'local'];
+/** Labels that keep the synthetic catalog open on a hosted (NODE_ENV=production) deployment. */
+const HOSTED_NON_PRODUCTION_LABELS = ['staging', 'pilot', 'alpha'];
 /**
- * DEC-2026-11-13-15 (2): only a deployment that declares one recognised non-production label keeps the synthetic
- * catalog open to any signed-in account. Everything else fails closed, including `production` (even beside a demo
- * flag), an undeclared environment under NODE_ENV=production, and a mistyped label such as `prod`.
+ * DEC-2026-11-13-15 (2): fail closed. `RAID_ENVIRONMENT=production` always restricts, even beside a demo flag. Under
+ * NODE_ENV=production (every hosted deployment) only an affirmatively declared staging, pilot or alpha label keeps
+ * the synthetic catalog open; `demo`, `local`, a mistyped label such as `prod` and a missing label all restrict, so a
+ * hosted non-production deployment must declare RAID_ENVIRONMENT. Outside NODE_ENV=production (development, tests)
+ * the synthetic catalog stays open.
  */
 function catalogRestricted(env: Record<string, string | undefined> = process.env) {
   const label = (env.RAID_ENVIRONMENT ?? '').trim().toLowerCase();
   if (label === 'production') return true;
-  return env.NODE_ENV === 'production' && !NON_PRODUCTION_LABELS.includes(label);
+  return env.NODE_ENV === 'production' && !HOSTED_NON_PRODUCTION_LABELS.includes(label);
 }
 export async function creationStateFromHost(actor: WorkActor) {
   requireReads();

@@ -1,4 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest';
+import { createCreationHandlers } from '../src/work-http/creation-http';
 import { exampleRubric } from '../examples/raid-terms/recommendation-fixture';
 import { rewardAssets } from './helpers/work-creation-fixture';
 import { raidTerms } from './helpers/raid-terms-fixture';
@@ -215,8 +216,8 @@ it('does not let an operator allowlist, a demo flag or a draft stand in for Guil
   port.authority.mockResolvedValue(false);
   await expect(creationStateFromHost(actor)).rejects.toMatchObject({ code: 'NOT_FOUND' });
 });
-it('treats an undeclared or unrecognised environment under NODE_ENV=production as production', async () => {
-  for (const label of [undefined, '', 'prod', 'live']) {
+it('treats an undeclared, unrecognised, demo or local environment under NODE_ENV=production as production', async () => {
+  for (const label of [undefined, '', 'prod', 'live', 'demo', 'local', ' Demo ']) {
     catalogHost({
       NODE_ENV: 'production',
       ...(label === undefined ? {} : { RAID_ENVIRONMENT: label }),
@@ -228,14 +229,50 @@ it('treats an undeclared or unrecognised environment under NODE_ENV=production a
     vi.unstubAllEnvs();
   }
 });
-it('keeps the synthetic catalog for any signed-in account in declared non-production environments', async () => {
-  for (const label of ['staging', 'pilot', 'alpha', 'demo', 'local']) {
+it('keeps the synthetic catalog for any signed-in account only where non-production is affirmatively declared', async () => {
+  // Hosted deployments run with NODE_ENV=production, so only staging, pilot and alpha may stay open there.
+  for (const label of ['staging', 'pilot', 'alpha', ' Staging ']) {
     catalogHost({ NODE_ENV: 'production', RAID_ENVIRONMENT: label });
     const state = await creationStateFromHost(actor);
     expect(state.assets).toHaveLength(2);
     vi.unstubAllEnvs();
   }
+  // Outside NODE_ENV=production (local development, tests) demo and local labels, or none, stay open.
+  for (const label of ['demo', 'local', undefined]) {
+    catalogHost({ NODE_ENV: 'development', ...(label ? { RAID_ENVIRONMENT: label } : {}) });
+    expect((await creationStateFromHost(actor)).assets).toHaveLength(2);
+    vi.unstubAllEnvs();
+  }
   catalogHost({});
   expect((await creationStateFromHost(actor)).assets).toHaveLength(2);
   expect(port.authority).not.toHaveBeenCalled();
+});
+it('answers a denied production caller with the shaped 404 and an authority error with a bare 503', async () => {
+  catalogHost({ RAID_ENVIRONMENT: 'production' });
+  const handlers = createCreationHandlers({
+    version: 'v1',
+    requestId: () => 'request-1',
+    actor: async () => actor,
+    checkOrigin: () => {},
+    rateLimit: () => {},
+    state: creationStateFromHost,
+    saveDraft: async () => ({}),
+    publishDraft: async () => ({}),
+    recommend: async () => ({}),
+  });
+  const get = () => handlers.STATE(new Request('http://localhost/api/v1/work/creation'));
+  port.authority.mockResolvedValue(false);
+  const denied = await get();
+  const deniedText = await denied.text();
+  expect(denied.status).toBe(404);
+  expect(JSON.parse(deniedText)).toEqual({
+    error: { code: 'NOT_FOUND', message: 'Not found.', retryable: false, requestId: 'request-1' },
+  });
+  expect(deniedText).not.toMatch(/Synthetic|asset|funded|drafts/i);
+  port.authority.mockRejectedValue(new Error('secret connection detail'));
+  const failed = await get();
+  const failedText = await failed.text();
+  expect(failed.status).toBe(503);
+  expect(JSON.parse(failedText).error.code).toBe('SERVICE_UNAVAILABLE');
+  expect(failedText).not.toMatch(/secret|connection|Synthetic|NOT_FOUND/);
 });
