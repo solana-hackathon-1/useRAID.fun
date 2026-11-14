@@ -70,6 +70,7 @@ model Participant {
   activeCommitment ActiveCommitment?
   skillAssessments SkillAssessment[]
   acceptanceConsents WorkAcceptanceConsent[]
+  consentWithdrawals WorkAcceptanceConsentWithdrawal[]
   ledParties Party[]
   partyProposalMembers PartyProposalMember[]
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -1498,11 +1499,23 @@ model WorkAcceptanceConsent {
   slotId String @db.Uuid
   termsVersionId String @db.Uuid
   termsDigest String
+  generation Int @default(1)
   consentedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
   participant Participant @relation(fields: [participantId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   slot RaidSlot @relation(fields: [slotId, termsVersionId], references: [id, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "WorkAcceptanceConsent_slot_fkey")
-  @@unique([participantId, slotId, termsVersionId], map: "WorkAcceptanceConsent_subject_key")
+  withdrawal WorkAcceptanceConsentWithdrawal?
+  @@unique([participantId, slotId, termsVersionId, generation], map: "WorkAcceptanceConsent_subject_generation_key")
   @@index([slotId])
+}
+// Append-only withdrawal of an unused consent (DEC-2026-11-14-07); guards live in migration 202611140002.
+model WorkAcceptanceConsentWithdrawal {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  consentId String @unique(map: "WorkAcceptanceConsentWithdrawal_consentId_key") @db.Uuid
+  participantId String @db.Uuid
+  withdrawnAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  consent WorkAcceptanceConsent @relation(fields: [consentId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  @@index([participantId])
 }
 model Party {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid

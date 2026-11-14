@@ -51,6 +51,7 @@ const STATE_TEXT: Record<AmendmentView['state'], string> = {
   ACCEPTED: 'Agreed',
   DECLINED: 'Declined',
   WITHDRAWN: 'Withdrawn by the Founder',
+  LAPSED: 'Replaced after its proposer lost authority',
 };
 interface Notice {
   intent: string;

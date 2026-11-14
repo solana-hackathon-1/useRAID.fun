@@ -69,13 +69,35 @@ describe('Root acceptance host failures', () => {
       dialect: 'POSTGRESQL',
       isolation: 'READ_COMMITTED',
       query: async (sql: string) =>
-        sql.includes('WorkAcceptanceConsent')
-          ? [{ id: 'consent-1' }]
-          : Promise.reject(new Error('connection lost')),
+        sql.includes('WorkAcceptanceConsentWithdrawal')
+          ? []
+          : sql.includes('WorkAcceptanceConsent')
+            ? [{ id: 'consent-1' }]
+            : Promise.reject(new Error('connection lost')),
     };
     await expect(host.assess(tx as never, context as never)).rejects.toMatchObject({
       code: 'STORAGE_UNAVAILABLE',
     });
+  });
+  it('holds the consent row FOR SHARE and treats a withdrawn consent as no consent (DEC-2026-11-14-07)', async () => {
+    const seen: string[] = [];
+    const tx = {
+      dialect: 'POSTGRESQL',
+      isolation: 'READ_COMMITTED',
+      query: async (sql: string) => (
+        seen.push(sql),
+        sql.includes('WorkAcceptanceConsentWithdrawal')
+          ? [{ '?column?': 1 }]
+          : [{ id: 'consent-1' }]
+      ),
+    };
+    await expect(host.assess(tx as never, context as never)).rejects.toMatchObject({
+      code: 'CONSENT_REQUIRED',
+    });
+    // The lock is taken by the consent read; the withdrawal is read by its own later statement.
+    expect(seen).toHaveLength(2);
+    expect(seen[0]).toMatch(/FOR SHARE OF c/);
+    expect(seen[1]).toMatch(/WorkAcceptanceConsentWithdrawal/);
   });
   it('asks a person without consent to record it first, without reading anything else', async () => {
     const seen: string[] = [];
@@ -112,6 +134,7 @@ describe('Root acceptance host error boundaries', () => {
     query: async (sql: string) => {
       const error = fail(sql);
       if (error) throw error;
+      if (sql.includes('WorkAcceptanceConsentWithdrawal')) return [];
       if (sql.includes('WorkAcceptanceConsent')) return [{ id: 'consent-1' }];
       if (sql.includes('clock_timestamp')) return [{ now: new Date('2026-10-29T00:00:00Z') }];
       return [];

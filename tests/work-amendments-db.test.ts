@@ -550,6 +550,101 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
     });
     expect(declined.amendment.state).toBe('DECLINED');
   });
+  /**
+   * The listing creator is immutable, so the proposer and the next proposer are the same account. The orphan arises when
+   * the host no longer vouches for the authority the earlier proposal was made under (the account-scoped answer) while the
+   * account holds current authority for the new command.
+   */
+  const orphaningHost: AmendmentHost = { ...host, authorizeProposer: async () => false };
+  it('DEC-2026-11-14-13: lapses an orphaned proposal when a currently authorized Founder proposes, instead of AMENDMENT_EXISTS', async () => {
+    const { founder, worker, engagementId } = await setup();
+    await start(engagementId);
+    const orphan = await propose(
+      founder.actor,
+      change(engagementId, { acceptanceCriteria: ['Criterion the earlier grant wanted.'] }),
+    );
+    await expect(
+      respond(
+        worker.actor,
+        { amendmentId: orphan.amendment.id, decision: 'ACCEPT' },
+        orphaningHost,
+      ),
+    ).rejects.toMatchObject({ code: 'AMENDMENT_UNAVAILABLE' });
+    const fresh = await propose(
+      founder.actor,
+      change(engagementId, { acceptanceCriteria: ['Criterion the current Founder wants.'] }),
+      orphaningHost,
+    );
+    expect(fresh.status).toBe('EXECUTED');
+    expect(fresh.amendment.state).toBe('PROPOSED');
+    expect(fresh.amendment.sequence).toBe(2);
+    // The orphan is recorded as lapsed, attributed to the new proposer's command, and never became effective.
+    expect(
+      await row(
+        'SELECT "state","decidedByAccountId","consentRef","decidedAt" IS NOT NULL AS decided FROM "EngagementAmendment" WHERE "id"=$1::uuid',
+        orphan.amendment.id,
+      ),
+    ).toEqual([
+      {
+        state: 'LAPSED',
+        decidedByAccountId: founder.actor.accountId,
+        consentRef: null,
+        decided: true,
+      },
+    ]);
+    expect(
+      (
+        await row<{ n: number }>(
+          `SELECT count(*)::int AS n FROM "AuditEvent" WHERE "eventType"='work.amendment_lapsed.v1'`,
+        )
+      )[0].n,
+    ).toBe(1);
+    expect(await row(`SELECT 1 FROM "EngagementAmendment" WHERE "state"='ACCEPTED'`)).toEqual([]);
+    // A lapsed proposal is final: it can be neither accepted nor declined, and the new one is the only open proposal.
+    for (const decision of ['ACCEPT', 'DECLINE'] as const)
+      await expect(
+        respond(worker.actor, { amendmentId: orphan.amendment.id, decision }),
+      ).rejects.toMatchObject({ code: 'AMENDMENT_UNAVAILABLE' });
+    expect(
+      (
+        await row<{ n: number }>(
+          `SELECT count(*)::int AS n FROM "EngagementAmendment" WHERE "state"='PROPOSED'`,
+        )
+      )[0].n,
+    ).toBe(1);
+  });
+  it('DEC-2026-11-14-13: keeps AMENDMENT_EXISTS for a proposer who still holds authority, or when the host cannot judge', async () => {
+    const { founder, engagementId } = await setup();
+    await start(engagementId);
+    await propose(founder.actor, change(engagementId, { acceptanceCriteria: ['First.'] }));
+    await expect(
+      propose(founder.actor, change(engagementId, { acceptanceCriteria: ['Second.'] })),
+    ).rejects.toMatchObject({ code: 'AMENDMENT_EXISTS' });
+    // A host without the proposer-authority port cannot tell an orphan from a live proposal: nothing lapses.
+    const { authorizeProposer: _omitted, ...legacy } = host;
+    await expect(
+      propose(founder.actor, change(engagementId, { acceptanceCriteria: ['Third.'] }), legacy),
+    ).rejects.toMatchObject({ code: 'AMENDMENT_EXISTS' });
+    expect(await row(`SELECT "state" FROM "EngagementAmendment" ORDER BY "sequence"`)).toEqual([
+      { state: 'PROPOSED' },
+    ]);
+  });
+  it('DEC-2026-11-14-13: a new proposal that fails validation leaves the orphan untouched', async () => {
+    const { founder, engagementId } = await setup();
+    await start(engagementId);
+    await propose(founder.actor, change(engagementId, { acceptanceCriteria: ['First.'] }));
+    // A proposal that is already expired is refused, so the lapse must not be committed on its own.
+    await expect(
+      propose(
+        founder.actor,
+        change(engagementId, { acceptanceCriteria: ['Second.'] }, at(-1000)),
+        orphaningHost,
+      ),
+    ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    expect(await row(`SELECT "state" FROM "EngagementAmendment" ORDER BY "sequence"`)).toEqual([
+      { state: 'PROPOSED' },
+    ]);
+  });
   it('needs the proposer-authority port only to accept: a host without it can still propose, decline and withdraw', async () => {
     const { founder, worker, engagementId } = await setup();
     await start(engagementId);

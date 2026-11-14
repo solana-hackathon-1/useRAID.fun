@@ -26,3 +26,15 @@ export const ConsentResultSchema = z.strictObject({
   consent: ConsentSchema,
 });
 export type ConsentResult = z.infer<typeof ConsentResultSchema>;
+/** Withdrawing an unused consent (DEC-2026-11-14-07). It only reduces commitment, so no feature flag or write switch gates it. */
+export const WithdrawConsentInput = z.strictObject({ consentId: z.uuid() });
+export const ConsentWithdrawalSchema = z.strictObject({
+  id: z.uuid(),
+  consentId: z.uuid(),
+  withdrawnAt: UtcTimestamp,
+});
+export const ConsentWithdrawalResultSchema = z.strictObject({
+  status: z.enum(['EXECUTED', 'REPLAYED']),
+  withdrawal: ConsentWithdrawalSchema,
+});
+export type ConsentWithdrawalResult = z.infer<typeof ConsentWithdrawalResultSchema>;

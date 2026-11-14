@@ -11,6 +11,7 @@ const port = vi.hoisted(() => ({
   withdraw: vi.fn(),
   apply: vi.fn(),
   consent: vi.fn(),
+  withdrawConsent: vi.fn(),
   commit: vi.fn(),
   start: vi.fn(),
 }));
@@ -27,7 +28,10 @@ vi.mock('../src/work-loop/submission-storage', () => ({
   submitWork: port.submit,
   decideReview: port.decide,
 }));
-vi.mock('../src/work-loop/consent-storage', () => ({ recordAcceptanceConsent: port.consent }));
+vi.mock('../src/work-loop/consent-storage', () => ({
+  recordAcceptanceConsent: port.consent,
+  withdrawAcceptanceConsent: port.withdrawConsent,
+}));
 vi.mock('../src/work-loop/engagement-storage', () => ({ commitEngagement: port.commit }));
 vi.mock('../src/work-loop/start-storage', () => ({ startEngagement: port.start }));
 vi.mock('../src/work-loop/admission-storage', () => ({
@@ -46,6 +50,7 @@ import {
   withdrawApplicationFromHost,
   submitApplicationFromHost,
   recordConsentFromHost,
+  withdrawConsentFromHost,
   commitEngagementFromHost,
   startEngagementFromHost,
 } from '../src/lib/work-workspace-host';
@@ -162,6 +167,19 @@ it('never gates withdrawing an application on the applications flag (#273-7)', a
   vi.stubEnv('WORK_APPLICATIONS_ENABLED', 'true');
   await withdrawApplicationFromHost(command);
   expect(port.withdraw.mock.calls.at(-1)![2]).toMatchObject({ allowNewWrites: true });
+});
+it('never gates withdrawing an unused consent on the acceptance flag, the taxonomy or the write switch (DEC-2026-11-14-07)', async () => {
+  port.withdrawConsent.mockResolvedValue('withdrawn');
+  // Workspace reads are the only prerequisite; with them off nothing is reachable at all.
+  await expect(withdrawConsentFromHost(command)).rejects.toMatchObject({
+    code: 'STORAGE_CONTRACT',
+  });
+  expect(port.withdrawConsent).not.toHaveBeenCalled();
+  vi.stubEnv('WORK_WORKSPACE_READS_ENABLED', 'true');
+  expect(workWorkspaceConfiguration().acceptanceAvailable).toBe(false);
+  await expect(withdrawConsentFromHost(command)).resolves.toBe('withdrawn');
+  // The storage command takes no host at all, so it cannot consult a flag.
+  expect(port.withdrawConsent.mock.calls.at(-1)).toEqual([port.tx, command]);
 });
 it('opens acceptance only with the flag and a configured taxonomy, and hands the commit a real Root host', async () => {
   vi.stubEnv('WORK_WORKSPACE_READS_ENABLED', 'true');

@@ -9,7 +9,11 @@ import {
   OfferResultSchema,
   SubmitApplicationInput,
 } from '../work-loop/admission-contracts';
-import { ConsentResultSchema, RecordConsentInput } from '../work-loop/consent-contracts';
+import {
+  ConsentResultSchema,
+  ConsentWithdrawalResultSchema,
+  RecordConsentInput,
+} from '../work-loop/consent-contracts';
 import {
   CommitEngagementInput,
   CommittedEngagementSchema,
@@ -50,6 +54,7 @@ export interface WorkHttpHost {
   withdrawApplication(command: WorkCommand): Promise<unknown>;
   submitApplication(command: WorkCommand): Promise<unknown>;
   recordConsent(command: WorkCommand): Promise<unknown>;
+  withdrawConsent(command: WorkCommand): Promise<unknown>;
   commitEngagement(command: WorkCommand): Promise<unknown>;
   startEngagement(command: WorkCommand): Promise<unknown>;
 }
@@ -71,6 +76,8 @@ const CODES: Readonly<Record<string, ErrorCode>> = {
   NOT_FOUND: 'NOT_FOUND',
   ELIGIBILITY_REJECTED: 'ELIGIBILITY_NOT_MET',
   CONSENT_REQUIRED: 'CONSENT_REQUIRED',
+  CONSENT_USED: 'CONSENT_USED',
+  CONSENT_WITHDRAWN: 'CONSENT_WITHDRAWN',
   // A closed feature is a settled answer, not an outage worth retrying.
   WRITES_DISABLED: 'NOT_AVAILABLE',
   CAPACITY_CONFLICT: 'CAPACITY_CONFLICT',
@@ -170,6 +177,7 @@ export function createWorkHandlers(host: WorkHttpHost) {
       'withdrawApplication',
       'submitApplication',
       'recordConsent',
+      'withdrawConsent',
       'commitEngagement',
       'startEngagement',
     ].some((k) => typeof host[k as keyof WorkHttpHost] !== 'function')
@@ -297,6 +305,17 @@ export function createWorkHandlers(host: WorkHttpHost) {
         const c = await command(request, RecordConsentInput, a, requestId);
         return echoed(ConsentResultSchema, await host.recordConsent(c), (r) =>
           resultMatchesRequest(r.consent, c.input, ['slotId', 'termsVersionId', 'termsDigest']),
+        );
+      });
+    },
+    WITHDRAW_CONSENT(request: Request, consentId: string | Promise<string>) {
+      return run(request, true, async (a, requestId) => {
+        const target = await uuid(consentId);
+        const c = await command(request, NoBody, a, requestId, { consentId: target });
+        return echoed(
+          ConsentWithdrawalResultSchema,
+          await host.withdrawConsent(c),
+          (r) => r.withdrawal.consentId === target,
         );
       });
     },
