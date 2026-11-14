@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { cpSync, mkdtempSync, rmSync } from 'node:fs';
-import { spawnSync } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
@@ -347,6 +347,111 @@ integration('DEC-2026-11-13-04 TREASURY and DISPUTE separation', () => {
     expect(await grant).toBe('granted');
   });
 
+  it('serializes a grant against a Founder change that commits: the waiting grant to the new Founder is refused', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const proposed = await propose(founder, g.id, next.accountId);
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => (release = resolve));
+    let locked!: () => void;
+    const held = new Promise<void>((resolve) => (locked = resolve));
+    // The real acceptance command, held open after it has moved the Founder, so its commit-time guards are met.
+    const change = run(async (tx) => {
+      const result = await respondOwnershipTransfer(
+        tx,
+        cmd(next, { guildId: g.id, transferId: proposed.transfer.id, decision: 'ACCEPT' }),
+        host(),
+      );
+      locked();
+      await gate;
+      return result;
+    });
+    const settled = change.then(
+      () => 'committed',
+      (error: Error) => error.message,
+    );
+    await held;
+    // Direct writer: the incoming Founder is not Founder yet, so only the lock decides what this grant sees.
+    const grant = db.$executeRawUnsafe(INSERT, g.id, next.accountId, 'TREASURY').then(
+      () => 'granted',
+      (error: Error) => error.message,
+    );
+    try {
+      await untilBlocked();
+    } finally {
+      release();
+    }
+    expect(await settled).toBe('committed');
+    expect(await grant).toMatch(FOUNDER_REJECTED);
+    expect(await liveHolders(g.id)).toEqual([]);
+  });
+
+  it('serializes a Founder change against a grant that commits: the waiting change is refused', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const proposed = await propose(founder, g.id, next.accountId);
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => (release = resolve));
+    let inserted!: () => void;
+    const held = new Promise<void>((resolve) => (inserted = resolve));
+    // The direct writer gives the incoming Founder the grant and holds the Guild lock its trigger took.
+    const direct = db.$transaction(
+      async (tx) => {
+        await tx.$executeRawUnsafe(INSERT, g.id, next.accountId, 'DISPUTE');
+        inserted();
+        await gate;
+      },
+      { timeout: 30000 },
+    );
+    const written = direct.then(() => 'committed');
+    await held;
+    const change = db
+      .$transaction(
+        async (tx) => {
+          await tx.$executeRawUnsafe(ACCEPT, proposed.transfer.id);
+          await tx.$executeRawUnsafe(SET_FOUNDER, g.id, next.accountId);
+        },
+        { timeout: 30000 },
+      )
+      .then(
+        () => 'changed',
+        (error: Error) => error.message,
+      );
+    try {
+      await untilBlocked();
+    } finally {
+      release();
+    }
+    expect(await written).toBe('committed');
+    expect(await change).toMatch(FOUNDER_REJECTED);
+    const [row] = await db.$queryRawUnsafe<{ founder: string }[]>(
+      `SELECT "founderAccountId" AS founder FROM "Guild" WHERE "id"=$1::uuid`,
+      g.id,
+    );
+    expect(row.founder).toBe(founder.accountId);
+    expect(await liveHolders(g.id)).toEqual([
+      { granteeAccountId: next.accountId, kind: 'DISPUTE' },
+    ]);
+  });
+
+  it.each([
+    [
+      'one multi-row INSERT',
+      `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","grantedByAccountId") SELECT $1::uuid,$2,k,ARRAY[]::text[],$3 FROM unnest(ARRAY['TREASURY','DISPUTE']) AS k`,
+    ],
+    [
+      'a data-modifying CTE',
+      `WITH first AS (INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","grantedByAccountId") VALUES ($1::uuid,$2,'TREASURY',ARRAY[]::text[],$3) RETURNING 1) INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","grantedByAccountId") SELECT $1::uuid,$2,'DISPUTE',ARRAY[]::text[],$3 FROM first`,
+    ],
+  ])('(c) %s cannot give one account both kinds', async (_name, sql) => {
+    const { founder, guild: g } = await guild();
+    const holder = await person();
+    await expect(
+      db.$executeRawUnsafe(sql, g.id, holder.accountId, founder.accountId),
+    ).rejects.toThrow(BOTH_REJECTED);
+    expect(await liveHolders(g.id)).toEqual([]);
+  });
+
   it('(app race) a TREASURY and a DISPUTE grant to one account issued together: exactly one succeeds', async () => {
     for (let i = 0; i < 3; i++) {
       await truncateAll(db);
@@ -465,5 +570,117 @@ integration('DEC-2026-11-13-04 migration on existing history', () => {
       }
     },
     120000,
+  );
+});
+
+integration('DEC-2026-11-13-04 follow-up migration: preflight under a table lock', () => {
+  const followUp = '202611130008_guild_role_separation_recheck';
+  const REPORT =
+    /Guild role separation: \d+ conflicting grant\(s\) found by the locked recheck; resolve them first/;
+  it.each([
+    ['clean', 'passes'],
+    ['an already-committed violation', 'fails'],
+    ['a violation committed while the recheck waits for the lock', 'fails'],
+  ] as const)(
+    'with %s the recheck %s and alters no row',
+    async (scenario, expected) => {
+      assertTestDatabase();
+      const name = 'useraid_test_sep_' + randomUUID().replaceAll('-', '');
+      const directory = mkdtempSync(join(tmpdir(), 'raid-guild-separation-recheck-'));
+      const url = new URL(process.env.DATABASE_URL!);
+      url.pathname = '/' + name;
+      const database = new PrismaClient({ datasources: { db: { url: url.toString() } } });
+      const deploy = () =>
+        new Promise<{ status: number | null; output: string }>((resolve) => {
+          const child = spawn(
+            'node_modules/.bin/prisma',
+            ['migrate', 'deploy', '--schema', join(directory, 'prisma/schema.prisma')],
+            { env: { ...process.env, DATABASE_URL: url.toString() } },
+          );
+          let output = '';
+          child.stdout.on('data', (chunk) => (output += chunk));
+          child.stderr.on('data', (chunk) => (output += chunk));
+          child.on('close', (status) => resolve({ status, output }));
+        });
+      try {
+        await db.$executeRawUnsafe('CREATE DATABASE "' + name + '"');
+        cpSync('prisma', join(directory, 'prisma'), {
+          recursive: true,
+          filter: (path) => !path.includes(followUp),
+        });
+        const before = await deploy();
+        expect(before.status, before.output).toBe(0);
+        const g = await guild('recheck-' + randomUUID().slice(0, 8), database);
+        const issuer = g.founder.accountId;
+        // The Founder holding TREASURY is the violation. After 007 only a row that slipped in between 007's unlocked
+        // preflight and its CREATE TRIGGER can look like this, so the trigger is switched off to reproduce it.
+        const violate = (client: Client) =>
+          client.$executeRawUnsafe(
+            `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","grantedByAccountId") VALUES ($1::uuid,$2,'TREASURY',ARRAY[]::text[],$2)`,
+            g.guild.id,
+            issuer,
+          );
+        if (scenario !== 'clean')
+          await database.$executeRawUnsafe(
+            'ALTER TABLE "GuildRoleGrant" DISABLE TRIGGER guild_grant_separation_v1',
+          );
+        if (scenario === 'an already-committed violation') await violate(database);
+        const rows = () =>
+          database.$queryRawUnsafe<unknown[]>('SELECT * FROM "GuildRoleGrant" ORDER BY "id"');
+        const grantsBefore = await rows();
+        cpSync(
+          join('prisma/migrations', followUp),
+          join(directory, 'prisma/migrations', followUp),
+          { recursive: true },
+        );
+        let result: { status: number | null; output: string };
+        if (scenario === 'a violation committed while the recheck waits for the lock') {
+          let release!: () => void;
+          const gate = new Promise<void>((resolve) => (release = resolve));
+          let inserted!: () => void;
+          const held = new Promise<void>((resolve) => (inserted = resolve));
+          const writer = database.$transaction(
+            async (tx) => {
+              await violate(tx as unknown as Client);
+              inserted();
+              await gate;
+            },
+            { timeout: 60000 },
+          );
+          await held;
+          const migrating = deploy();
+          // The recheck must be waiting on the table lock behind the uncommitted row: a lock-free check would read only
+          // committed rows, report nothing and pass.
+          let waited = false;
+          for (let i = 0; i < 150 && !waited; i++) {
+            const waiting = await db.$queryRawUnsafe<{ n: number }[]>(
+              `SELECT count(*)::int AS n FROM pg_stat_activity WHERE datname=$1 AND wait_event_type='Lock'`,
+              name,
+            );
+            waited = waiting[0].n > 0;
+            if (!waited) await pause(100);
+          }
+          release();
+          await writer;
+          result = await migrating;
+          expect(waited, 'the recheck never waited on the table lock').toBe(true);
+        } else {
+          result = await deploy();
+        }
+        if (expected === 'passes') expect(result.status, result.output).toBe(0);
+        else {
+          expect(result.status).not.toBe(0);
+          expect(result.output).toMatch(REPORT);
+        }
+        // The recheck reports and never edits: the rows are what they were (plus the racing writer's own row).
+        const grantsAfter = await rows();
+        expect(grantsAfter).toEqual(expect.arrayContaining(grantsBefore));
+      } finally {
+        await database.$disconnect();
+        await db.$executeRawUnsafe('DROP DATABASE IF EXISTS "' + name + '" WITH (FORCE)');
+        rmSync(directory, { recursive: true, force: true });
+      }
+    },
+    180000,
   );
 });
