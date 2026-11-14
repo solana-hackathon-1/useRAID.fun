@@ -236,10 +236,13 @@ export function validateRuntimeConfig(env: ConfigEnv, role: ConfigRole): ConfigV
   if (environment === 'production') {
     if (env.USDC_NETWORK === 'devnet')
       add('REFUSE', 'DEVNET_OR_DEMO_IN_PRODUCTION', 'USDC_NETWORK');
-    if ((env.SOLANA_RPC_URL ?? '').toLowerCase().includes('devnet'))
+    if (/devnet|testnet/.test((env.SOLANA_RPC_URL ?? '').toLowerCase()))
       add('REFUSE', 'DEVNET_OR_DEMO_IN_PRODUCTION', 'SOLANA_RPC_URL');
     for (const name of ['DEMO_MODE', 'STUDIO_SANDBOX'])
       if (isTrue(env, name)) add('REFUSE', 'DEVNET_OR_DEMO_IN_PRODUCTION', name);
+    // The production label alone decides (a host may omit NODE_ENV=production): a remote test database is a test mode.
+    if (isTrue(env, 'ALLOW_REMOTE_TEST_DB'))
+      add('REFUSE', 'TEST_MODE_IN_PRODUCTION', 'ALLOW_REMOTE_TEST_DB');
     const database = databaseName(env.DATABASE_URL);
     if (database === null) add('REFUSE', 'DATABASE_URL_UNPARSEABLE', 'DATABASE_URL');
     else if (
