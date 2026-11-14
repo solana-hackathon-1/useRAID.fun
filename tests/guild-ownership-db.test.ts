@@ -1314,4 +1314,99 @@ integration('T009 Guild ownership transfer', () => {
       }
     });
   });
+
+  describe('DEC-2026-11-14-03: acceptance re-checks that the proposing Founder is not suspended', () => {
+    const suspend = (who: GuildActor, suspended = true) =>
+      db.user.update({ where: { id: who.accountId }, data: { suspended } });
+    const stateOf = async (id: string) =>
+      (
+        await db.$queryRawUnsafe<{ state: string }[]>(
+          `SELECT "state" FROM "GuildOwnershipTransfer" WHERE "id"=$1::uuid`,
+          id,
+        )
+      )[0].state;
+
+    it('refuses acceptance while the proposer is suspended, leaves the proposal PROPOSED and accepts once the suspension is lifted', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+      await suspend(founder);
+      await expect(respond(next, g.id, id, 'ACCEPT', 'acc-1')).rejects.toMatchObject({
+        code: 'FORBIDDEN',
+      });
+      expect(await stateOf(id)).toBe('PROPOSED');
+      expect(await founderOf(g.id)).toBe(founder.accountId);
+      await suspend(founder, false);
+      const accepted = await respond(next, g.id, id, 'ACCEPT', 'acc-2');
+      expect(accepted.transfer).toMatchObject({ state: 'ACCEPTED', applied: true });
+      expect(await founderOf(g.id)).toBe(next.accountId);
+    });
+
+    it('lets the recipient decline while the proposer is suspended, and gives the suspended Founder no power to withdraw', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+      await suspend(founder);
+      await expect(respond(founder, g.id, id, 'WITHDRAW', 'wd-1')).rejects.toMatchObject({
+        code: 'ACCOUNT_RESTRICTED',
+      });
+      expect(await stateOf(id)).toBe('PROPOSED');
+      const declined = await respond(next, g.id, id, 'DECLINE', 'dec-1');
+      expect(declined.transfer.state).toBe('DECLINED');
+      expect(await founderOf(g.id)).toBe(founder.accountId);
+    });
+
+    it('an unsuspended proposer does not affect acceptance (regression)', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+      expect((await respond(next, g.id, id, 'ACCEPT')).transfer.applied).toBe(true);
+    });
+
+    it('serializes a suspension in another transaction with the acceptance: the later sees the earlier', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+      let accepting: Promise<unknown> | undefined;
+      let settled = false;
+      // The suspension is written but not yet committed when the acceptance starts: the acceptance must wait for it
+      // (the proposer's row is read FOR SHARE) and then see the suspension.
+      await db.$transaction(async (t) => {
+        await t.$executeRawUnsafe(
+          `UPDATE "User" SET "suspended"=true WHERE "id"=$1`,
+          founder.accountId,
+        );
+        accepting = respond(next, g.id, id, 'ACCEPT', 'acc-race').then(
+          (v) => ((settled = true), v),
+          (e) => {
+            settled = true;
+            throw e;
+          },
+        );
+        accepting.catch(() => undefined);
+        await new Promise((r) => setTimeout(r, 800));
+        expect(settled).toBe(false);
+      });
+      await expect(accepting).rejects.toMatchObject({ code: 'FORBIDDEN' });
+      expect(await stateOf(id)).toBe('PROPOSED');
+      expect(await founderOf(g.id)).toBe(founder.accountId);
+    });
+
+    it('an acceptance that commits first leaves a later suspension untouched and the Founder already changed', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+      const results = await Promise.allSettled([
+        respond(next, g.id, id, 'ACCEPT', 'acc-first'),
+        suspend(founder),
+      ]);
+      // Either order is valid, but the outcome must match: an acceptance that committed saw no suspension.
+      if (results[0].status === 'fulfilled') expect(await founderOf(g.id)).toBe(next.accountId);
+      else {
+        expect((results[0].reason as { code?: string }).code).toBe('FORBIDDEN');
+        expect(await founderOf(g.id)).toBe(founder.accountId);
+      }
+      expect(results[1].status).toBe('fulfilled');
+    });
+  });
 });

@@ -18,6 +18,7 @@ import { evaluateGuildProfilePermission, projectPublicGuildProfile } from './ind
 import {
   ActivateGuildInputSchema,
   DELEGATED_GRANT_LIMIT,
+  DELEGATED_GRANT_MAX_DAYS,
   EditGuildProfileInputSchema,
   GUILD_AUTHORITY_KINDS,
   GUILD_GRANT_LIMIT,
@@ -696,11 +697,22 @@ export async function grantGuildRole(
         // Fail closed: every requested field must still show delegating cover here.
         const covered = new Set(bounds.map((b) => b.field));
         if (input.fields.some((f) => !covered.has(f))) fail('FORBIDDEN');
+        // DEC-2026-11-14-01: second-hand authority always lapses by itself. A delegate-issued grant needs an explicit
+        // expiry no later than 90 days after issuance on the database clock; a missing or later one is INVALID_INPUT.
+        // Judged only after the delegate's standing and cover, so it tells a non-delegate nothing. Founder-issued
+        // grants are unchanged and existing passed-on grants are never edited or revoked.
+        if (input.expiresAt === null) fail('INVALID_INPUT');
+        const capped = await query<{ ok: boolean }>(
+          tx,
+          `SELECT $1::timestamptz<=clock_timestamp()+make_interval(days=>${DELEGATED_GRANT_MAX_DAYS}) AS ok`,
+          [input.expiresAt],
+        );
+        if (capped[0]?.ok !== true) fail('INVALID_INPUT');
         // The latest expiry among the covering grants, per field; the earliest of those bounds the new grant.
         const finite = bounds.filter((b) => !b.unbounded && b.bound);
         if (finite.length) {
           const earliest = Math.min(...finite.map((b) => b.bound!.getTime()));
-          if (input.expiresAt === null || Date.parse(input.expiresAt) > earliest) fail('FORBIDDEN');
+          if (Date.parse(input.expiresAt) > earliest) fail('FORBIDDEN');
         }
         const passed = await query<{ n: number }>(
           tx,
@@ -1244,6 +1256,22 @@ export async function respondOwnershipTransfer(
         await decide('EXPIRED');
         type = expired;
       } else if (input.decision === 'ACCEPT') {
+        // DEC-2026-11-14-03 (a): under the Guild and transfer row locks the proposer must still be the Founder and
+        // not suspended. Their User row is read FOR SHARE (a suspension is a non-key UPDATE, which conflicts with it),
+        // so a concurrent suspension serializes with this acceptance and the later of the two sees the earlier.
+        // Refusing rolls the transaction back, so the proposal stays PROPOSED and can still be accepted if the
+        // suspension is lifted inside the window. Decline and withdraw are not judged here.
+        const proposers = await query<{ suspended: boolean }>(
+          tx,
+          'SELECT "suspended" FROM "User" WHERE "id"=$1 FOR SHARE',
+          [transfer.fromAccountId],
+        );
+        if (
+          proposers.length !== 1 ||
+          proposers[0].suspended !== false ||
+          guilds[0].founderAccountId !== transfer.fromAccountId
+        )
+          fail('FORBIDDEN');
         if (await holdsSeparateAuthority(tx, input.guildId, transfer.toAccountId))
           fail('FORBIDDEN');
         if (
@@ -1485,8 +1513,12 @@ async function moveUpdate(
       };
     },
   );
-  // A replay is for the account that took the step, judged by identity.
+  // A replay is for the account that took the step, judged by identity, and (DEC-2026-11-14-05 b) only while that
+  // account still holds the live authority the step needs: Founder status to publish, Founder status or a live
+  // `PROFILE` grant to withdraw. Nothing is returned to an account that has since lost it.
   await authorize(tx, actor);
+  const live = await authorityKinds(tx, actor.accountId, input.guildId);
+  if (step === 'PUBLISH' ? !live.founder : !live.kinds.includes('PROFILE')) fail('FORBIDDEN');
   const by = await query<{ by: string | null }>(
     tx,
     step === 'PUBLISH'

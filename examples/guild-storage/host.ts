@@ -418,10 +418,27 @@ try {
   assert.equal(leadGranted.status, 200);
   const leadRoleId = ((await leadGranted.json()) as { grant: { id: string } }).grant.id;
   signedIn = lead;
+  // A delegate-issued grant needs an explicit expiry within 90 days (DEC-2026-11-14-01); the Founder's does not.
   assert.equal(
     (
       await rolesHttp.GRANT(
-        send('/api/v1/guild-grants', { ...grantBody, granteeAccountId: helper.accountId }, 'r-7'),
+        send('/api/v1/guild-grants', { ...grantBody, granteeAccountId: helper.accountId }, 'r-7a'),
+      )
+    ).status,
+    422,
+  );
+  assert.equal(
+    (
+      await rolesHttp.GRANT(
+        send(
+          '/api/v1/guild-grants',
+          {
+            ...grantBody,
+            granteeAccountId: helper.accountId,
+            expiresAt: new Date(Date.now() + 86400000).toISOString(),
+          },
+          'r-7',
+        ),
       )
     ).status,
     200,

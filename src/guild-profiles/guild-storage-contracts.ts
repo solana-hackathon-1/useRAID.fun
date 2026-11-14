@@ -48,6 +48,8 @@ const profileDescription = z.string().trim().pipe(PublicGuildSchema.shape.descri
 /** Live grants per Guild, and live grants one delegate may have passed on (bounds the cascade audit on revocation). */
 export const GUILD_GRANT_LIMIT = 200;
 export const DELEGATED_GRANT_LIMIT = 10;
+/** A delegate-issued grant expires within this many days of issuance (DEC-2026-11-14-01, provisional). */
+export const DELEGATED_GRANT_MAX_DAYS = 90;
 const profileFields = z.enum(['name', 'description']);
 /**
  * Id inputs are canonicalized to lowercase: they are stored verbatim in receipts (`resultRef`, request digest) and
