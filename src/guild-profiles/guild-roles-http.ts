@@ -57,9 +57,10 @@ const RespondBodySchema = z.strictObject({
   guildId: z.uuid(),
   decision: z.enum(['ACCEPT', 'DECLINE', 'WITHDRAW']),
 });
-// A revoked grant, a changed transfer and a repeated revocation all mean "the record is no longer as it was".
+// A repeated revocation has its own code (#292-4): nothing was revised, and the grant is already as the caller wanted,
+// so a client that re-reads and retries on REVISION_CHANGED cannot loop on it. A changed transfer stays REVISION_CHANGED.
 const STORAGE_CODES = guildStorageCodes({
-  GRANT_REVOKED: 'REVISION_CHANGED',
+  GRANT_REVOKED: 'GUILD_GRANT_ALREADY_REVOKED',
   GRANT_LIMIT: 'GUILD_GRANT_LIMIT_REACHED',
   TRANSFER_PENDING: 'GUILD_TRANSFER_PENDING',
 });

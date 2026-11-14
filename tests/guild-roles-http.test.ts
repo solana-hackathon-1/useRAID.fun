@@ -471,7 +471,7 @@ describe('Guild role and ownership management HTTP boundary', () => {
       [new GuildStorageError('FORBIDDEN'), 403, 'FORBIDDEN'],
       [new GuildStorageError('NOT_FOUND'), 404, 'NOT_FOUND'],
       [new GuildStorageError('REVISION_CONFLICT'), 409, 'REVISION_CHANGED'],
-      [new GuildStorageError('GRANT_REVOKED'), 409, 'REVISION_CHANGED'],
+      [new GuildStorageError('GRANT_REVOKED'), 409, 'GUILD_GRANT_ALREADY_REVOKED'],
       [new GuildStorageError('GRANT_LIMIT'), 409, 'GUILD_GRANT_LIMIT_REACHED'],
       [new GuildStorageError('TRANSFER_PENDING'), 409, 'GUILD_TRANSFER_PENDING'],
       [new GuildStorageError('WRITES_DISABLED'), 503, 'NOT_AVAILABLE'],

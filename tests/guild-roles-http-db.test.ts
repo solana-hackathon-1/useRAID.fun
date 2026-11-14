@@ -170,7 +170,7 @@ integration('Guild role and ownership management over HTTP against real storage'
     expect(surrendered.grant.revokedAt).not.toBeNull();
     expect(surrendered.grant.grantedByAccountId).toBeNull();
     expect(JSON.stringify(surrendered)).not.toContain(founder.accountId);
-    // The same key still succeeds after the state moved on; a fresh key says the record changed.
+    // The same key still succeeds after the state moved on; a fresh key says the grant is already revoked.
     const again = await handlersFor(treasurer).REVOKE(
       revokeReq(granted.grant.id, { guildId: guild.id }, 'revoke-1'),
       granted.grant.id,
@@ -181,8 +181,9 @@ integration('Guild role and ownership management over HTTP against real storage'
       revokeReq(granted.grant.id, { guildId: guild.id }, 'revoke-2'),
       granted.grant.id,
     );
+    // #292-4: its own code, so a client that re-reads and retries on REVISION_CHANGED cannot loop on a finished revoke.
     expect(repeat.status).toBe(409);
-    expect((await json(repeat)).error.code).toBe('REVISION_CHANGED');
+    expect((await json(repeat)).error.code).toBe('GUILD_GRANT_ALREADY_REVOKED');
     // The issuer replays its own grant even after revocation.
     expect((await asFounder.GRANT(grantReq(payload, 'grant-1'))).status).toBe(200);
   });

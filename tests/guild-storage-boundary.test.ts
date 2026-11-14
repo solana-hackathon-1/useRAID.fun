@@ -21,7 +21,15 @@ it('documents the authority model and keeps the module free of application depen
     expect(source, file).not.toMatch(/process\.env|@prisma|from ['"]next|from ['"]\.\.\/lib\//);
   }
   const example = await readFile('examples/guild-storage/host.ts', 'utf8');
-  for (const call of ['activateGuild', 'editGuildProfile', 'readPublicGuild', 'hasGuildAuthority'])
+  for (const call of [
+    'activateGuild',
+    'editGuildProfile',
+    'readPublicGuild',
+    'hasGuildAuthority',
+    'revokeGuildRole',
+    // #292-7: the consuming example revokes, cascades to what a delegate passed on and repeats a revocation.
+    'GUILD_GRANT_ALREADY_REVOKED',
+  ])
     expect(example).toContain(call);
   expect(example).not.toMatch(/process\.env|from ['"].*lib\//);
   expect((await readdir('examples/guild-storage')).sort()).toEqual(

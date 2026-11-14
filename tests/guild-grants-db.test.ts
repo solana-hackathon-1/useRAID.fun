@@ -11,6 +11,7 @@ import {
   proposeOwnershipTransfer,
   respondOwnershipTransfer,
   revokeGuildRole,
+  DELEGATED_GRANT_LIMIT,
   GUILD_GRANT_LIMIT,
   type GuildActor,
 } from '../src/guild-profiles/guild-storage';
@@ -1147,6 +1148,108 @@ integration('T009 Guild role grants and revocation', () => {
       code: 'FORBIDDEN',
     });
   });
+  it('#292-6: two concurrent sub-grants at the per-delegate cap issue exactly one', async () => {
+    for (const round of [1, 2, 3]) {
+      const { founder, guild: g } = await guild('cap-delegate-' + round);
+      const lead = await person();
+      const helpers = [await person(), await person()];
+      await delegating(founder, g.id, lead);
+      await db.$executeRawUnsafe(
+        `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","validFrom","grantedByAccountId")
+         SELECT $1::uuid,$2,'PROFILE',ARRAY['name']::text[],clock_timestamp()-interval '1 minute',$3 FROM generate_series(1,$4::int)`,
+        g.id,
+        (await person()).accountId,
+        lead.accountId,
+        String(DELEGATED_GRANT_LIMIT - 1),
+      );
+      const settled = await Promise.all(
+        helpers.map((who, i) =>
+          outcome(
+            giveRole(
+              lead,
+              g.id,
+              { granteeAccountId: who.accountId, kind: 'PROFILE', fields: ['name'] },
+              `delegate-cap-${round}-${i}`,
+            ),
+          ),
+        ),
+      );
+      expect([...settled].sort()).toEqual(['GRANT_LIMIT', 'OK']);
+      const [{ n }] = await db.$queryRawUnsafe<{ n: number }[]>(
+        `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "grantedByAccountId"=$2 AND "revokedAt" IS NULL`,
+        g.id,
+        lead.accountId,
+      );
+      expect(n).toBe(DELEGATED_GRANT_LIMIT);
+    }
+  });
+
+  it('#292-6: a grant racing a revocation at the Guild cap never exceeds it and matches the order that won', async () => {
+    for (const round of [1, 2, 3, 4]) {
+      const { founder, guild: g } = await guild('cap-revoke-' + round);
+      const holder = await person();
+      const newcomer = await person();
+      await db.$executeRawUnsafe(
+        `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","validFrom","grantedByAccountId")
+         SELECT $1::uuid,$2,'WORK',ARRAY[]::text[],clock_timestamp()-interval '1 minute',$3 FROM generate_series(1,$4::int)`,
+        g.id,
+        (await person()).accountId,
+        founder.accountId,
+        String(GUILD_GRANT_LIMIT - 1),
+      );
+      const full = (
+        await giveRole(founder, g.id, { granteeAccountId: holder.accountId, kind: 'WORK' })
+      ).grant.id;
+      const [revoking, granting] = await Promise.all([
+        outcome(takeRole(holder, g.id, full, 'cap-surrender-' + round)),
+        outcome(
+          giveRole(
+            founder,
+            g.id,
+            { granteeAccountId: newcomer.accountId, kind: 'WORK' },
+            'cap-new-' + round,
+          ),
+        ),
+      ]);
+      expect(revoking).toBe('OK');
+      // The revocation either committed first (room for one) or the grant found the Guild full.
+      expect(['OK', 'GRANT_LIMIT']).toContain(granting);
+      const [{ n }] = await db.$queryRawUnsafe<{ n: number }[]>(
+        `SELECT count(*)::int AS n FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "revokedAt" IS NULL`,
+        g.id,
+      );
+      expect(n).toBe(granting === 'OK' ? GUILD_GRANT_LIMIT : GUILD_GRANT_LIMIT - 1);
+      expect(await can(newcomer, g.id, 'WORK')).toBe(granting === 'OK');
+    }
+  });
+
+  it('#292-6: revoking both delegating grants of a grantee at once leaves nothing passed on live, each recorded once', async () => {
+    for (const round of [1, 2, 3, 4]) {
+      const { founder, guild: g } = await guild('race-two-cover-' + round);
+      const lead = await person();
+      const helper = await person();
+      const first = await delegating(founder, g.id, lead);
+      const second = await delegating(founder, g.id, lead);
+      const sub = (
+        await giveRole(lead, g.id, {
+          granteeAccountId: helper.accountId,
+          kind: 'PROFILE',
+          fields: ['name'],
+        })
+      ).grant.id;
+      // Either alone leaves the other as cover; together they must not leave the sub-grant orphaned and live.
+      const settled = await Promise.all([
+        outcome(takeRole(founder, g.id, first, 'two-a-' + round)),
+        outcome(takeRole(lead, g.id, second, 'two-b-' + round)),
+      ]);
+      expect(settled).toEqual(['OK', 'OK']);
+      expect(await can(lead, g.id, 'PROFILE')).toBe(false);
+      expect(await can(helper, g.id, 'PROFILE')).toBe(false);
+      const events = await revokedEvents(g.id);
+      expect([...events].sort()).toEqual([first, second, sub].sort());
+    }
+  });
+
   it('DEC-2026-11-13-03 a: a delegating issuer revokes only while their delegating cover still covers the grant', async () => {
     const { founder, guild: g } = await guild('issuer-cover');
     const lead = await person();

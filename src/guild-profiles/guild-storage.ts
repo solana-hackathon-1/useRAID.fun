@@ -611,7 +611,8 @@ async function loadGrant(
 /**
  * Delegates a role. The Founder may grant any kind to another account (never to themselves, and never treasury or
  * dispute authority to themselves). A grantee with a live delegating profile grant may pass on only profile fields
- * they hold, without delegation rights, and not beyond their own expiry.
+ * they hold, without delegation rights, and not beyond their own expiry: an explicit expiry no later than the earliest of
+ * the covering bounds when any is bounded, and none only when every covering grant is unbounded.
  */
 export async function grantGuildRole(
   tx: CommandReceiptTransaction,

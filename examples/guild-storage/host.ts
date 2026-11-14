@@ -404,6 +404,43 @@ try {
   );
   assert.equal(surrender.status, 200);
   assert.equal(await can(deputy, 'PROFILE'), false);
+  // Revocation also takes back what a delegate passed on, and a repeat is "already revoked", not a revision conflict.
+  const lead = await account('lead');
+  const helper = await account('helper');
+  signedIn = founder;
+  const leadGranted = await rolesHttp.GRANT(
+    send(
+      '/api/v1/guild-grants',
+      { ...grantBody, granteeAccountId: lead.accountId, canDelegate: true },
+      'r-6',
+    ),
+  );
+  assert.equal(leadGranted.status, 200);
+  const leadRoleId = ((await leadGranted.json()) as { grant: { id: string } }).grant.id;
+  signedIn = lead;
+  assert.equal(
+    (
+      await rolesHttp.GRANT(
+        send('/api/v1/guild-grants', { ...grantBody, granteeAccountId: helper.accountId }, 'r-7'),
+      )
+    ).status,
+    200,
+  );
+  assert.equal(await can(helper, 'PROFILE'), true);
+  signedIn = founder;
+  const revokeLead = (key: string) =>
+    rolesHttp.REVOKE(
+      send(`/api/v1/guild-grants/${leadRoleId}/revoke`, { guildId: active.guild.id }, key),
+      leadRoleId,
+    );
+  assert.equal((await revokeLead('r-8')).status, 200);
+  assert.deepEqual([await can(lead, 'PROFILE'), await can(helper, 'PROFILE')], [false, false]);
+  const repeated = await revokeLead('r-9');
+  assert.equal(repeated.status, 409);
+  assert.equal(
+    ((await repeated.json()) as { error: { code: string } }).error.code,
+    'GUILD_GRANT_ALREADY_REVOKED',
+  );
   signedIn = founder;
   const offered = await rolesHttp.PROPOSE(
     send(
