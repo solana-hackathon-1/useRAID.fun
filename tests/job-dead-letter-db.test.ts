@@ -726,6 +726,42 @@ suite(
         expect(+lockedAfter.lockedAt!).toBe(+lockedBefore.lockedAt!); // no renewals after the handler returned
       });
 
+      it('drains an in-flight renewal before returning: nothing renews the lease after the handler ends (#483)', async () => {
+        vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] });
+        const renew = vi.spyOn(db, '$executeRaw').mockResolvedValue(1);
+        let openCap!: () => void;
+        const capGate = new Promise<void>((resolve) => (openCap = resolve));
+        const capQuery = vi
+          .spyOn(db, '$queryRaw')
+          .mockImplementation((() => capGate.then(() => [{ capped: false }])) as never);
+        try {
+          let finishHandler!: () => void;
+          let resolved = false;
+          const run = runUnderJobLease(
+            { id: 'j', lease: 'l', lockedAt: new Date() },
+            () => new Promise<void>((resolve) => (finishHandler = resolve)),
+            { renewEveryMs: 50 },
+          ).then(() => {
+            resolved = true;
+          });
+          await vi.advanceTimersByTimeAsync(60); // one renewal starts and waits on the cap query
+          expect(capQuery).toHaveBeenCalledTimes(1);
+          finishHandler();
+          await Promise.resolve();
+          await Promise.resolve();
+          openCap(); // the in-flight renewal resumes after the handler has ended
+          await run;
+          expect(resolved).toBe(true);
+          await vi.advanceTimersByTimeAsync(200);
+          await new Promise((r) => setTimeout(r, 20));
+          expect(renew).not.toHaveBeenCalled();
+        } finally {
+          renew.mockRestore();
+          capQuery.mockRestore();
+          vi.useRealTimers();
+        }
+      });
+
       it('a job that would have run past the lease is not reclaimed by another worker while it renews', async () => {
         await enqueue('collect', 'long2', { raidId: 'm' }, past());
         const claimed = (await claimJob())!;
