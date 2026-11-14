@@ -15,7 +15,7 @@ Requirement mapping: T021 (Root acceptance part), T014/T013 dependencies read as
 
 ## Host contract
 
-`WORK_ACCEPTANCE_ENABLED` (exact `true`, default off, plus workspace reads) and `WORK_ACCEPTANCE_TAXONOMY_ID` (the one published taxonomy the terms' skill ids belong to) must both be set; otherwise consent and acceptance are `WRITES_DISABLED`. Migration `202610270006_work_acceptance_consent` adds the table, an insert guard (available slot, open listing, current terms, stored digest) and an immutability trigger; destructive down migration is unsupported once used.
+`WORK_ACCEPTANCE_ENABLED` (exact `true`, default off, plus workspace reads) and `WORK_ACCEPTANCE_TAXONOMY_ID` (the one published taxonomy the terms' skill ids belong to) must both be set; otherwise consent and acceptance are `WRITES_DISABLED`. Migration `202610270006_work_acceptance_consent` adds the table, an insert guard (available slot, open listing, current terms, stored digest) and an immutability trigger; destructive down migration is unsupported once used. Decided, not yet implemented ([DEC-2026-11-13-14](../RAID_AGENT_BLUEPRINT.md#0222-owner-delegated-decisions--13-november-2026) c, [DEC-2026-11-14-07](../RAID_AGENT_BLUEPRINT.md#0223-owner-delegated-defaults--14-november-2026)): a consent is usable only for its exact digest, unused, not withdrawn and before the slot's commitment deadline; the participant may withdraw an unused consent (append-only, exempt from `WORK_ACCEPTANCE_ENABLED` and the write kill switch, not for a suspended account), and withdrawal and acceptance serialize on the consent row.
 
 ## Verification
 
