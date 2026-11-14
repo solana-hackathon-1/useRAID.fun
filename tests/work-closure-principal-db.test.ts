@@ -139,7 +139,7 @@ integration('DEC-2026-11-14-08 work-closure service principal', () => {
     ]);
   }, 40000);
 
-  it('lets the principal close only overdue work, under the switch and the host, never early or as a manual command', async () => {
+  it('lets the principal close only overdue work, under the switch and the host, never early, and refuses any other principal name', async () => {
     const a = await setup();
     const input = {
       engagementId: a.engagementId,
@@ -179,6 +179,31 @@ integration('DEC-2026-11-14-08 work-closure service principal', () => {
       closeOverdueEngagementAsPrincipal(tx, principalCommand(input, replayKey), root),
     );
     expect(again).toMatchObject({ status: 'REPLAYED', closure: first.closure });
+  }, 40000);
+
+  it('refuses a non-operator human at the Root host, even when the presented actor also carries a principal key', async () => {
+    const a = await setup();
+    const stranger = await seedWorkHuman(db, 'stranger-' + randomUUID());
+    const ops = await seedWorkHuman(db, 'ops-' + randomUUID());
+    await untilPast(a.due);
+    const input = {
+      engagementId: a.engagementId,
+      expectedRevision: await revision(a.engagementId),
+    };
+    const root = createRootClosureHost(true, (id) => id === ops.actor.accountId);
+    const manual = (actor: object) =>
+      run((tx) => closeOverdueEngagement(tx, humanCommand(actor as never, input), root));
+    await expect(manual(stranger.actor)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    // A real session spoofed with the principal key is still just that human: not an operator, so refused.
+    await expect(
+      manual({ ...stranger.actor, principal: WORK_CLOSURE_PRINCIPAL }),
+    ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    expect(await closers(a.engagementId)).toEqual([]);
+    // An operator carrying the extra key is still recorded as the account, never as the principal.
+    await manual({ ...ops.actor, principal: WORK_CLOSURE_PRINCIPAL });
+    expect(await closers(a.engagementId)).toEqual([
+      { account: ops.actor.accountId, principal: null, reason: 'ACCESS_TIMEOUT' },
+    ]);
   }, 40000);
 
   it('refuses at the database both-or-neither closers, an unknown principal and a principal acceptance', async () => {

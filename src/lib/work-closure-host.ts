@@ -19,12 +19,14 @@ export function createRootClosureHost(
 ): ClosureHost {
   return {
     allowNewWrites,
-    // The service principal is recognized by its field, never by an account id, and is authorized for the worker's
-    // timeout closure only (the storage command refuses it anything else); it is not on the operator allowlist.
+    // A human is recognized by `accountId` first (storage passes humans only `{accountId, sessionHash}`), so an actor
+    // that also carries a `principal` key is still checked against the operator allowlist. The service principal has
+    // no account, is authorized for the worker's timeout closure only (the storage command refuses it anything else)
+    // and is not on the operator allowlist.
     authorize: async (_tx, actor) =>
-      'principal' in actor
-        ? actor.principal === WORK_CLOSURE_PRINCIPAL
-        : isOperator(actor.accountId),
+      'accountId' in actor
+        ? isOperator(actor.accountId)
+        : actor.principal === WORK_CLOSURE_PRINCIPAL,
   };
 }
 /** HTTP entry. `WORK_CLOSURE_ENABLED` is the only write switch; a replay of an earlier closure is still answered. */

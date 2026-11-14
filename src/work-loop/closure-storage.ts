@@ -81,7 +81,10 @@ async function readClosure(tx: Tx, engagementId: string) {
 /** Operations closure once the accepted operational deadline has passed. Silence decides no money and no fault. */
 export function closeOverdueEngagement(tx: Tx, command: WorkCommand, host: ClosureHost) {
   validate(tx, command?.actor);
-  return closeOverdue(tx, { ...command, caller: command.actor }, host);
+  // The host and the body see only a plain account actor: any extra key on the presented object (such as `principal`)
+  // is dropped here, so a caller cannot be mistaken for the service principal.
+  const { accountId, sessionHash } = command.actor;
+  return closeOverdue(tx, { ...command, caller: { accountId, sessionHash } }, host);
 }
 /**
  * The scheduled variant: the `work-closure` service principal (DEC-2026-11-14-08) closes an overdue engagement. It has

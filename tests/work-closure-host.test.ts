@@ -73,6 +73,15 @@ it('authorizes the service principal for the Root host without the operator allo
   );
   expect(await host.authorize({} as never, { principal: 'other' as never }, target)).toBe(false);
 });
+it('checks an actor with an account against the operator allowlist even if it also carries a principal key', async () => {
+  vi.stubEnv('RAID_WORK_OPERATOR_ACCOUNT_IDS', 'operator-1');
+  const host = createRootClosureHost(true);
+  const target = { engagementId: 'e', guildId: 'g' };
+  const spoof = (accountId: string) =>
+    ({ accountId, sessionHash: 'a'.repeat(64), principal: WORK_CLOSURE_PRINCIPAL }) as never;
+  expect(await host.authorize({} as never, spoof('stranger'), target)).toBe(false);
+  expect(await host.authorize({} as never, spoof('operator-1'), target)).toBe(true);
+});
 it('runs no worker pass unless the flag is on, and needs no worker account (retired)', async () => {
   vi.stubEnv('WORK_CLOSURE_ENABLED', '');
   expect(await runWorkClosureWorker()).toBeNull();
