@@ -384,3 +384,54 @@ describe('unparseable DATABASE_URL in production', () => {
     expect(validateRuntimeConfig({ RAID_ENVIRONMENT: 'production' }, 'web').ok).toBe(true);
   });
 });
+
+// Blueprint 30.1 / I12: a mainnet action must never be enabled because a devnet variable was omitted.
+// `usdcSettings()` treats anything but exactly `devnet` as mainnet, so a funding address without an explicit
+// network would quietly point deposits at the mainnet mint.
+describe('USDC funding address requires an explicit network', () => {
+  const FUNDING = { USDC_FUNDING_ADDRESS: '9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin' };
+
+  it.each([
+    ['production label', PRODUCTION],
+    ['NODE_ENV=production without a label', { NODE_ENV: 'production' }],
+  ])('refuses an omitted or invalid USDC_NETWORK under the %s', (_name, base) => {
+    for (const network of [undefined, '', 'Devnet', 'testnet', ' devnet']) {
+      const env = {
+        ...base,
+        ...FUNDING,
+        ...(network === undefined ? {} : { USDC_NETWORK: network }),
+      };
+      const result = validateRuntimeConfig(env, 'web');
+      expect(codes(result.violations), String(network)).toEqual([
+        'REFUSE:NETWORK_NOT_EXPLICIT:USDC_NETWORK',
+      ]);
+    }
+  });
+
+  it('accepts exactly devnet or mainnet, and is not judged without a funding address', () => {
+    for (const network of ['devnet', 'mainnet'])
+      expect(
+        validateRuntimeConfig({ ...LIVE_STAGING, ...FUNDING, USDC_NETWORK: network }, 'web').ok,
+      ).toBe(true);
+    expect(validateRuntimeConfig({ NODE_ENV: 'production' }, 'web')).toEqual({
+      ok: true,
+      violations: [],
+    });
+    expect(
+      validateRuntimeConfig({ NODE_ENV: 'production', USDC_FUNDING_ADDRESS: '  ' }, 'web').ok,
+    ).toBe(true);
+  });
+
+  it('only warns outside production, and not at all in demo or studio sandbox', () => {
+    const local = validateRuntimeConfig({ RAID_ENVIRONMENT: 'local', ...FUNDING }, 'web');
+    expect(local.ok).toBe(true);
+    expect(codes(local.violations)).toEqual(['WARN:NETWORK_NOT_EXPLICIT:USDC_NETWORK']);
+    for (const mode of ['DEMO_MODE', 'STUDIO_SANDBOX'])
+      expect(validateRuntimeConfig({ [mode]: 'true', ...FUNDING }, 'web').violations).toEqual([]);
+  });
+
+  it('names the variable only, never the funding address', () => {
+    const result = validateRuntimeConfig({ ...PRODUCTION, ...FUNDING }, 'web');
+    expect(JSON.stringify(result)).not.toContain(FUNDING.USDC_FUNDING_ADDRESS);
+  });
+});
