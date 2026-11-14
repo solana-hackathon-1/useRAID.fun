@@ -58,3 +58,9 @@ it('keeps the module free of host imports so a replacement host can consume it',
     expect(source).not.toMatch(/process\.env/);
   }
 });
+it('reads the filing window and the filing instant from one clock value', async () => {
+  const storage = await readFile('src/skill-appeals/storage.ts', 'utf8');
+  const select = storage.match(/`WITH "c" AS[^`]*"withinWindow"[^`]*`/)?.[0] ?? '';
+  expect(select).not.toBe('');
+  expect(select.match(/clock_timestamp\(\)/g)).toHaveLength(1);
+});

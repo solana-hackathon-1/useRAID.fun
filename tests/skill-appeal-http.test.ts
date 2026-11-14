@@ -85,22 +85,18 @@ describe('skill-assessment appeal transport', () => {
     expect(res.status).toBe(401);
     expect(h.file).not.toHaveBeenCalled();
   });
-  it('maps storage refusals without leaking which conflict applied', async () => {
-    for (const code of [
-      'SELF_ADJUDICATION',
-      'ORIGINAL_REVIEWER',
-      'GUILD_RELATIONSHIP',
-      'FORBIDDEN',
-    ]) {
-      const h = host({
-        adjudicate: async () => {
-          throw new SkillAppealError(code as never);
-        },
-      });
-      const res = await createSkillAppealHandlers(h).ADJUDICATE(post(decisionBody), appealId);
-      expect(res.status).toBe(403);
-      expect(JSON.stringify(await res.json())).not.toMatch(/SELF|ORIGINAL|GUILD/);
-    }
+  it('maps the single opaque adjudication refusal and throttles each action in its own scope', async () => {
+    const h = host({
+      adjudicate: async () => {
+        throw new SkillAppealError('FORBIDDEN');
+      },
+    });
+    const res = await createSkillAppealHandlers(h).ADJUDICATE(post(decisionBody), appealId);
+    expect(res.status).toBe(403);
+    expect(h.rateLimit).toHaveBeenCalledWith(actor, 'ADJUDICATE');
+    const filer = host();
+    await createSkillAppealHandlers(filer).FILE(post(fileBody));
+    expect(filer.rateLimit).toHaveBeenCalledWith(actor, 'FILE');
     for (const [code, status] of [
       ['WINDOW_CLOSED', 409],
       ['APPEAL_EXISTS', 409],

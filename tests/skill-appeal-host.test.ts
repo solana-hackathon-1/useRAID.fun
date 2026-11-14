@@ -122,6 +122,7 @@ it('derives the actor only from the own server cookie and denies missing session
   expect(mocks.file).not.toHaveBeenCalled();
   mocks.user.mockResolvedValue({ id: 'synthetic-adjudicator' });
   await fileRoute(send());
+  expect(mocks.rate).toHaveBeenLastCalledWith('skill-appeal-file:synthetic-adjudicator', 20, 60);
   expect(mocks.file.mock.calls.at(-1)![1]).toMatchObject({
     actor: { accountId: 'synthetic-adjudicator', sessionHash: hash('synthetic-cookie') },
     idempotencyKey: 'k-1',
@@ -138,6 +139,7 @@ it('routes a decision with the path appeal id', async () => {
     }),
     { params: Promise.resolve({ appealId: id }) },
   );
+  expect(mocks.rate).toHaveBeenLastCalledWith('skill-appeal-decide:synthetic-adjudicator', 20, 60);
   expect(res.status).toBe(503); // the mocked storage result is not a valid appeal view
   expect(mocks.adjudicate.mock.calls[0][1].input).toEqual({
     version: 'v1',

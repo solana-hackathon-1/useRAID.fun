@@ -14,7 +14,7 @@ async function authority<T>(work: () => Promise<T> | T): Promise<T> {
     throw error;
   }
 }
-/** Actor only from the signed-in session cookie; origin is checked for these commands; filing and deciding throttle separately. */
+/** Actor only from the signed-in session cookie; origin is checked for these commands; filing and deciding use separate per-account throttle buckets. */
 export const skillAppealHandlers = createSkillAppealHandlers({
   version: 'v1',
   requestId: randomUUID,
@@ -26,7 +26,10 @@ export const skillAppealHandlers = createSkillAppealHandlers({
       return { accountId: user.id, sessionHash: hash(cookie) };
     }),
   checkOrigin: (request) => authority(() => checkOrigin(request)),
-  rateLimit: (actor) => authority(() => rateLimit(`skill-appeal:${actor.accountId}`, 20, 60)),
+  rateLimit: (actor, scope) =>
+    authority(() =>
+      rateLimit(`skill-appeal-${scope === 'FILE' ? 'file' : 'decide'}:${actor.accountId}`, 20, 60),
+    ),
   file: fileSkillAppealFromHost,
   adjudicate: adjudicateSkillAppealFromHost,
 });

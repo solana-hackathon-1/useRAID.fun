@@ -33,20 +33,18 @@ export interface SkillAppealHttpHost {
   requestId(): string;
   actor(): Promise<SkillAppealActor>;
   checkOrigin(request: Request): Promise<void> | void;
-  rateLimit(actor: SkillAppealActor): Promise<void> | void;
+  /** Filing and deciding are separate throttle scopes so one can never starve the other. */
+  rateLimit(actor: SkillAppealActor, scope: 'FILE' | 'ADJUDICATE'): Promise<void> | void;
   file(command: SkillAppealCommand): Promise<unknown>;
   adjudicate(command: SkillAppealCommand): Promise<unknown>;
 }
-// Every refusal an adjudicator can get for independence or authority is the same opaque FORBIDDEN: the transport does
-// not say which conflict applied.
+// Every refusal an adjudicator can get for independence or authority is the single opaque FORBIDDEN: neither storage
+// nor the transport says which conflict applied.
 const STORAGE_CODES: Readonly<Record<SkillAppealError['code'], ErrorCode>> = {
   INVALID_INPUT: 'INVALID_COMMAND',
   AUTHENTICATION_REQUIRED: 'AUTHENTICATION_REQUIRED',
   ACCOUNT_RESTRICTED: 'ACCOUNT_RESTRICTED',
   FORBIDDEN: 'FORBIDDEN',
-  SELF_ADJUDICATION: 'FORBIDDEN',
-  ORIGINAL_REVIEWER: 'FORBIDDEN',
-  GUILD_RELATIONSHIP: 'FORBIDDEN',
   NOT_FOUND: 'NOT_FOUND',
   REVISION_CHANGED: 'REVISION_CHANGED',
   WINDOW_CLOSED: 'APPEAL_WINDOW_CLOSED',
@@ -121,7 +119,7 @@ export function createSkillAppealHandlers(host: SkillAppealHttpHost) {
       try {
         await host.checkOrigin(request);
         const actor = await host.actor();
-        await host.rateLimit(actor);
+        await host.rateLimit(actor, 'FILE');
         const { key, json } = await commandBody(request);
         const input = FileSkillAssessmentAppealInputSchema.safeParse(json);
         if (!input.success) throw new JsonBodyFailure(422);
@@ -145,7 +143,7 @@ export function createSkillAppealHandlers(host: SkillAppealHttpHost) {
       try {
         await host.checkOrigin(request);
         const actor = await host.actor();
-        await host.rateLimit(actor);
+        await host.rateLimit(actor, 'ADJUDICATE');
         const target = z.uuid().safeParse(await appealId);
         if (!target.success) throw new JsonBodyFailure(422);
         const { key, json } = await commandBody(request);

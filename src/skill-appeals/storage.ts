@@ -124,6 +124,10 @@ async function loadView(
   if (!parsed.success) fail('STORAGE_CONTRACT');
   return parsed.data;
 }
+/** The case (submission) lock, class 12020: the same literal and order every review, ownership and decision uses. */
+async function lockCase(tx: CommandReceiptTransaction, submissionId: string) {
+  await query(tx, 'SELECT pg_advisory_xact_lock(hashtextextended($1,12020))::text', [submissionId]);
+}
 async function lockAssessment(
   tx: CommandReceiptTransaction,
   participantId: string,
@@ -134,7 +138,7 @@ async function lockAssessment(
 
 /**
  * The participant files one appeal against the current decided version of their own assessment (blueprint 09.7,
- * DEC-2026-11-13-12 / -14-11). Receipt -> User/Session/Participant -> per-person/skill assessment lock -> projection.
+ * DEC-2026-11-13-12 / -14-11). Receipt -> User/Session/Participant -> per-person/skill assessment lock (12022) -> projection.
  * The appeal records the filing and the adjudication target only: the appealed decision stays in effect, no rank,
  * capacity, permission or money is created or changed, and the statement stays private to the case.
  */
@@ -190,7 +194,7 @@ export async function fileSkillAssessmentAppeal(
         filedAt: unknown;
       }>(
         tx,
-        `SELECT v."id"::text AS "versionId",v."revision",(v."issuedAt"+make_interval(secs=>$3::int)>=date_trunc('milliseconds',clock_timestamp())) AS "withinWindow",v."issuedAt" AS "decisionNoticeAt",date_trunc('milliseconds',clock_timestamp()) AS "filedAt" FROM "SkillAssessment" a JOIN "SkillAssessmentVersion" v ON v."id"=a."currentVersionId" WHERE a."id"=$1::uuid AND a."participantId"=$2::uuid`,
+        `WITH "c" AS (SELECT date_trunc('milliseconds',clock_timestamp()) AS "now") SELECT v."id"::text AS "versionId",v."revision",(v."issuedAt"+make_interval(secs=>$3::int)>="c"."now") AS "withinWindow",v."issuedAt" AS "decisionNoticeAt","c"."now" AS "filedAt" FROM "SkillAssessment" a JOIN "SkillAssessmentVersion" v ON v."id"=a."currentVersionId" CROSS JOIN "c" WHERE a."id"=$1::uuid AND a."participantId"=$2::uuid`,
         [ref.recordId, participant.id, String(options.filingWindowSeconds)],
       );
       if (current.length !== 1) fail('STORAGE_CONTRACT');
@@ -297,26 +301,40 @@ export async function adjudicateSkillAssessmentAppeal(
       const located = await query<{
         participantId: string;
         skillId: string;
+        assessmentId: string;
       }>(
         tx,
-        'SELECT a."participantId"::text AS "participantId",v."skillId" FROM "SkillAssessmentAppeal" a JOIN "SkillAssessmentVersion" v ON v."id"=a."assessmentVersionId" WHERE a."id"=$1::uuid',
+        'SELECT a."participantId"::text AS "participantId",v."skillId",v."assessmentId"::text AS "assessmentId" FROM "SkillAssessmentAppeal" a JOIN "SkillAssessmentVersion" v ON v."id"=a."assessmentVersionId" WHERE a."id"=$1::uuid',
         [body.appealId],
       );
       if (located.length !== 1) fail('NOT_FOUND');
+      // Lock order matches decisions and their triggers: case (submission, 12020) before person/skill (12022). The
+      // case locks make an in-flight review/ownership/decision commit before the original reviewers are read.
+      const familySubmissions = async () =>
+        (
+          await query<{ submissionId: string }>(
+            tx,
+            'SELECT DISTINCT v."submissionId"::text AS "submissionId" FROM "SkillAssessmentVersion" v WHERE v."assessmentId"=$1::uuid ORDER BY 1',
+            [located[0].assessmentId],
+          )
+        ).map((r) => r.submissionId);
+      const locked = await familySubmissions();
+      for (const submissionId of locked) await lockCase(tx, submissionId);
       await lockAssessment(tx, located[0].participantId, located[0].skillId);
       await authority();
       if (!allowlisted()) fail('FORBIDDEN');
+      // A version for another submission appeared while waiting: its case lock was not taken in order, so retry whole.
+      if ((await familySubmissions()).some((id) => !locked.includes(id)))
+        throw new CommandReceiptError('RETRY_TRANSACTION');
       const state = await query<{
         appellantAccountId: string;
-        assessmentId: string;
         decided: boolean;
       }>(
         tx,
-        'SELECT a."appellantAccountId",v."assessmentId"::text AS "assessmentId",EXISTS(SELECT 1 FROM "SkillAssessmentAppealDecision" d WHERE d."appealId"=a."id") AS "decided" FROM "SkillAssessmentAppeal" a JOIN "SkillAssessmentVersion" v ON v."id"=a."assessmentVersionId" WHERE a."id"=$1::uuid FOR UPDATE OF a',
+        'SELECT a."appellantAccountId",EXISTS(SELECT 1 FROM "SkillAssessmentAppealDecision" d WHERE d."appealId"=a."id") AS "decided" FROM "SkillAssessmentAppeal" a WHERE a."id"=$1::uuid FOR UPDATE OF a',
         [body.appealId],
       );
       if (state.length !== 1) fail('STORAGE_CONTRACT');
-      if (state[0].decided) fail('ALREADY_DECIDED');
       const reviewers = await query<{ accountId: string }>(
         tx,
         `SELECT DISTINCT x."accountId" FROM (
@@ -325,7 +343,7 @@ export async function adjudicateSkillAssessmentAppeal(
            UNION SELECT g."evaluatorAccountId" FROM "PracticeTrialReviewAssignment" g WHERE g."submissionId" IN (SELECT v."submissionId" FROM "SkillAssessmentVersion" v WHERE v."assessmentId"=$1::uuid)
            UNION SELECT r."evaluatorAccountId" FROM "PracticeAssessmentReviewVersion" r WHERE r."submissionId" IN (SELECT v."submissionId" FROM "SkillAssessmentVersion" v WHERE v."assessmentId"=$1::uuid)
          ) x ORDER BY 1`,
-        [state[0].assessmentId],
+        [located[0].assessmentId],
       );
       const guilds = await query<{ guildId: string }>(
         tx,
@@ -343,16 +361,10 @@ export async function adjudicateSkillAssessmentAppeal(
         sharedGuildIds: guilds.map((g) => g.guildId),
         onAllowlist: true,
       });
-      if (!verdict.allowed)
-        fail(
-          verdict.reason === 'SELF_ADJUDICATION'
-            ? 'SELF_ADJUDICATION'
-            : verdict.reason === 'ORIGINAL_REVIEWER'
-              ? 'ORIGINAL_REVIEWER'
-              : verdict.reason === 'GUILD_RELATIONSHIP'
-                ? 'GUILD_RELATIONSHIP'
-                : 'FORBIDDEN',
-        );
+      // Independence is answered before the appeal's state, with one opaque refusal whichever conflict applied, so a
+      // conflicted adjudicator learns neither the conflict kind nor whether the appeal is already decided.
+      if (!verdict.allowed) fail('FORBIDDEN');
+      if (state[0].decided) fail('ALREADY_DECIDED');
       const excluded = body.outcome === 'UPHELD' ? reviewers.map((r) => r.accountId) : [];
       if (body.outcome === 'UPHELD' && excluded.length === 0) fail('STORAGE_CONTRACT');
       const inserted = await query<{ id: string }>(

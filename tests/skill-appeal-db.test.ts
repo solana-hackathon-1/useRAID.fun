@@ -12,6 +12,7 @@ import {
 } from '../src/skill-appeals/storage';
 import { seedOwnAssessmentFixture } from './helpers/own-assessment-fixture';
 import { assertTestDatabase } from './helpers/db-guard';
+import { waitForAdvisoryWaiter } from './helpers/advisory-wait';
 
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
 type Actor = { accountId: string; sessionHash: string };
@@ -80,6 +81,38 @@ const adjudicate = (
       { allowNewWrites: true, isAdjudicator: (id) => allowlist.has(id), ...options },
     ),
   );
+/** Holds a transaction-level advisory lock open until released, like an in-flight writer. */
+async function holdLock(key: string, classId: number) {
+  let release!: () => void;
+  let acquired!: () => void;
+  const gate = new Promise<void>((r) => (release = r));
+  const got = new Promise<void>((r) => (acquired = r));
+  const done = db.$transaction(
+    async (tx) => {
+      await tx.$queryRawUnsafe(
+        'SELECT pg_advisory_xact_lock(hashtextextended($1,$2::bigint))::text',
+        key,
+        classId,
+      );
+      acquired();
+      await gate;
+    },
+    { timeout: 60000 },
+  );
+  await got;
+  return async () => {
+    release();
+    await done;
+  };
+}
+const waiters = async (key: string, classId: number) =>
+  (
+    await db.$queryRawUnsafe<{ n: number }[]>(
+      `SELECT count(*)::int AS n FROM pg_locks WHERE locktype='advisory' AND objsubid=1 AND NOT granted AND ((classid::bigint << 32) | objid::bigint) = hashtextextended($1,$2::bigint)`,
+      key,
+      classId,
+    )
+  )[0].n;
 const assessmentRows = () =>
   db.$queryRawUnsafe<{ n: number; current: string }[]>(
     `SELECT (SELECT count(*)::int FROM "SkillAssessmentVersion") AS n, (SELECT "currentVersionId"::text FROM "SkillAssessment" LIMIT 1) AS current`,
@@ -191,6 +224,71 @@ integration('T014 skill-assessment appeals: intake and independent adjudication 
     expect(await run((tx) => listOverdueSkillAssessmentAppeals(tx, { limit: 10 }))).toEqual([]);
   });
 
+  it('lets exactly one of two simultaneous filings win and the other see APPEAL_EXISTS', async () => {
+    const settled = await Promise.allSettled([file(), file()]);
+    expect(settled.filter((x) => x.status === 'fulfilled')).toHaveLength(1);
+    const lost = settled.find((x) => x.status === 'rejected') as PromiseRejectedResult;
+    expect(lost.reason).toMatchObject({ code: 'APPEAL_EXISTS' });
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "SkillAssessmentAppeal"')).toHaveLength(1);
+  });
+  it('replays one result for two simultaneous filings sharing a key', async () => {
+    const key = randomUUID();
+    const both = await Promise.all([
+      file({}, fileBody(), appellant, key),
+      file({}, fileBody(), appellant, key),
+    ]);
+    expect(both.map((x) => x.status).sort()).toEqual(['EXECUTED', 'REPLAYED']);
+    expect(both[0].appeal.id).toBe(both[1].appeal.id);
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "SkillAssessmentAppeal"')).toHaveLength(1);
+  });
+  it('serializes a filing against a new assessment decision (no appeal on a version that was not current)', async () => {
+    const key = seed.participantId + ':frontend';
+    const release = await holdLock(key, 12022);
+    const decision = seed.decide('REQUIRE_REASSESSMENT');
+    const decided = decision.then(
+      () => 'done',
+      (e) => e,
+    );
+    expect(await waitForAdvisoryWaiter(db, key, 12022)).toBe(true);
+    const filing = file().then(
+      (value) => ({ value }),
+      (error) => ({ error }),
+    );
+    for (let i = 0; i < 100 && (await waiters(key, 12022)) < 2; i++)
+      await new Promise((r) => setTimeout(r, 50));
+    expect(await waiters(key, 12022)).toBe(2);
+    await release();
+    expect(await decided).toBe('done');
+    const out = await filing;
+    const appeals = await db.$queryRawUnsafe<{ revision: number }[]>(
+      'SELECT v."revision" FROM "SkillAssessmentAppeal" a JOIN "SkillAssessmentVersion" v ON v."id"=a."assessmentVersionId"',
+    );
+    if ('error' in out) {
+      expect(out.error).toMatchObject({ code: 'REVISION_CHANGED' });
+      expect(appeals).toHaveLength(0);
+    } else {
+      // The filing committed first: it names the version that was current when it was filed.
+      expect(appeals).toEqual([{ revision: 1 }]);
+    }
+    const [{ n }] = await db.$queryRawUnsafe<{ n: number }[]>(
+      'SELECT count(*)::int AS n FROM "SkillAssessmentVersion"',
+    );
+    expect(n).toBe(2);
+  });
+  it('the database refuses an appeal on a version that is not the current decided one, by message', async () => {
+    await seed.decide('REQUIRE_REASSESSMENT');
+    const insert = (revision: number, notice = 'v."issuedAt"') =>
+      db.$executeRawUnsafe(
+        `INSERT INTO "SkillAssessmentAppeal"("assessmentVersionId","participantId","appellantAccountId","reasonCategory","statement","decisionNoticeAt","filingDeadlineAt","filedAt","adjudicationDueAt","receiptId","requestId") SELECT v."id",v."participantId",p."accountId",'FACTUAL_ERROR','s',${notice},v."issuedAt"+interval '14 days',clock_timestamp(),clock_timestamp()+interval '14 days',(SELECT "id" FROM "CommandReceipt" LIMIT 1),'r' FROM "SkillAssessmentVersion" v JOIN "Participant" p ON p."id"=v."participantId" WHERE v."revision"=$1::int`,
+        String(revision),
+      );
+    await expect(insert(1)).rejects.toThrow(/own current decided version/);
+    await expect(insert(2, `v."issuedAt"-interval '1 second'`)).rejects.toThrow(
+      /own current decided version/,
+    );
+    expect(await insert(2)).toBe(1);
+  });
+
   describe('adjudication', () => {
     let appealId: string;
     beforeEach(async () => {
@@ -233,7 +331,7 @@ integration('T014 skill-assessment appeals: intake and independent adjudication 
     it('refuses the appellant even when allowlisted (no self-adjudication)', async () => {
       allowlist.add(appellant.accountId);
       await expect(adjudicate(appealId, appellant)).rejects.toMatchObject({
-        code: 'SELF_ADJUDICATION',
+        code: 'FORBIDDEN',
       });
     });
     it('refuses the original reviewer even when allowlisted', async () => {
@@ -248,7 +346,7 @@ integration('T014 skill-assessment appeals: intake and independent adjudication 
       });
       await expect(
         adjudicate(appealId, { accountId: originalReviewer, sessionHash: reviewer.tokenHash }),
-      ).rejects.toMatchObject({ code: 'ORIGINAL_REVIEWER' });
+      ).rejects.toMatchObject({ code: 'FORBIDDEN' });
     });
     it('refuses an adjudicator who is not on the allowlist or whose session is gone', async () => {
       const outsider = await person(false);
@@ -308,7 +406,7 @@ integration('T014 skill-assessment appeals: intake and independent adjudication 
         ),
       );
       await expect(adjudicate(appealId, adjudicator)).rejects.toMatchObject({
-        code: 'GUILD_RELATIONSHIP',
+        code: 'FORBIDDEN',
       });
       // The Guild Founder (the appellant here) is just as related to a Founder-side adjudicator.
       expect(await adjudicate(appealId, await person())).toMatchObject({ status: 'EXECUTED' });
@@ -347,19 +445,86 @@ integration('T014 skill-assessment appeals: intake and independent adjudication 
         await db.$queryRawUnsafe('SELECT 1 FROM "SkillAssessmentAppealDecision"'),
       ).toHaveLength(1);
     });
-    it('is enforced by the database too: no self, original-reviewer or edited rows', async () => {
-      const insert = (adjudicator: string) =>
+    it('is enforced by the database too, with the trigger reason, and rows are immutable', async () => {
+      const insert = (
+        adjudicator: string,
+        outcome = 'DENIED',
+        excluded = 'ARRAY[]::text[]',
+        decidedAt = "date_trunc('milliseconds',clock_timestamp())",
+      ) =>
         db.$executeRawUnsafe(
-          `INSERT INTO "SkillAssessmentAppealDecision"("appealId","outcome","adjudicatorAccountId","reason","freshReviewExcludedAccountIds","receiptId","requestId") SELECT $1::uuid,'DENIED',$2,'x',ARRAY[]::text[],(SELECT "id" FROM "CommandReceipt" LIMIT 1),'r'`,
+          `INSERT INTO "SkillAssessmentAppealDecision"("appealId","outcome","adjudicatorAccountId","reason","freshReviewExcludedAccountIds","decidedAt","receiptId","requestId") SELECT $1::uuid,$2,$3,'x',${excluded},${decidedAt},(SELECT "id" FROM "CommandReceipt" LIMIT 1),'r'`,
           appealId,
+          outcome,
           adjudicator,
         );
-      await expect(insert(appellant.accountId)).rejects.toThrow();
-      await expect(insert(originalReviewer)).rejects.toThrow();
+      const independent = /must be independent of the appellant and the original reviewers/;
+      await expect(insert(appellant.accountId)).rejects.toThrow(independent);
+      await expect(insert(originalReviewer)).rejects.toThrow(independent);
+      const fresh = (await person()).accountId;
+      await expect(insert(fresh, 'UPHELD', `ARRAY['synthetic-other']::text[]`)).rejects.toThrow(
+        /must exclude every original reviewer/,
+      );
+      await expect(insert(fresh, 'UPHELD')).rejects.toThrow(/must exclude every original reviewer/);
+      await expect(insert(fresh, 'DENIED', `ARRAY['x']::text[]`)).rejects.toThrow(
+        /violates check constraint/,
+      );
+      await expect(
+        insert(
+          fresh,
+          'DENIED',
+          'ARRAY[]::text[]',
+          `(SELECT "filedAt"-interval '1 second' FROM "SkillAssessmentAppeal")`,
+        ),
+      ).rejects.toThrow(/cannot precede the filing/);
       await expect(
         db.$executeRawUnsafe(`UPDATE "SkillAssessmentAppeal" SET "statement"='edited'`),
-      ).rejects.toThrow();
-      await expect(db.$executeRawUnsafe(`DELETE FROM "SkillAssessmentAppeal"`)).rejects.toThrow();
+      ).rejects.toThrow(/appeal history is immutable/);
+      await expect(db.$executeRawUnsafe(`DELETE FROM "SkillAssessmentAppeal"`)).rejects.toThrow(
+        /appeal history is immutable/,
+      );
+      // Positive control: the same statement shape is accepted for an independent adjudicator.
+      expect(await insert(fresh, 'UPHELD', `ARRAY['${originalReviewer}']::text[]`)).toBe(1);
+      await expect(
+        db.$executeRawUnsafe(`UPDATE "SkillAssessmentAppealDecision" SET "reason"='edited'`),
+      ).rejects.toThrow(/decisions are immutable/);
+      await expect(
+        db.$executeRawUnsafe(`DELETE FROM "SkillAssessmentAppealDecision"`),
+      ).rejects.toThrow(/decisions are immutable/);
+    });
+    it('answers a conflicted adjudicator with the same refusal whether the appeal is pending or decided', async () => {
+      allowlist.add(appellant.accountId);
+      allowlist.add(originalReviewer);
+      const reviewerSession = hash(randomUUID());
+      await db.session.create({
+        data: {
+          userId: originalReviewer,
+          tokenHash: reviewerSession,
+          via: 'wallet',
+          expiresAt: new Date(Date.now() + 3600000),
+        },
+      });
+      const reviewer = { accountId: originalReviewer, sessionHash: reviewerSession };
+      for (const who of [appellant, reviewer])
+        await expect(adjudicate(appealId, who)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+      await adjudicate(appealId, await person(), 'DENIED');
+      for (const who of [appellant, reviewer])
+        await expect(adjudicate(appealId, who)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+      await expect(adjudicate(appealId, await person())).rejects.toMatchObject({
+        code: 'ALREADY_DECIDED',
+      });
+    });
+    it('waits for an in-flight case commit before reading the original reviewers', async () => {
+      const release = await holdLock(seed.submissionId, 12020);
+      let finished = false;
+      const pending = adjudicate(appealId, await person(), 'UPHELD').finally(() => {
+        finished = true;
+      });
+      expect(await waitForAdvisoryWaiter(db, seed.submissionId, 12020)).toBe(true);
+      await new Promise((r) => setTimeout(r, 200));
+      expect(finished).toBe(false);
+      await release();
+      expect((await pending).appeal.state).toBe('UPHELD');
     });
   });
 });
