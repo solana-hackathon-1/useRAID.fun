@@ -704,8 +704,10 @@ export async function grantGuildRole(
         if (input.expiresAt === null) fail('INVALID_INPUT');
         const capped = await query<{ ok: boolean }>(
           tx,
-          `SELECT $1::timestamptz<=clock_timestamp()+make_interval(days=>${DELEGATED_GRANT_MAX_DAYS}) AS ok`,
-          [input.expiresAt],
+          // Hours, not days: a days interval follows the session time zone (daylight saving), the cap is exactly 90 x 24h.
+          // Bound to the instant the policy judged, not a second clock read.
+          `SELECT $1::timestamptz<=$2::timestamptz+make_interval(hours=>${DELEGATED_GRANT_MAX_DAYS * 24}) AS ok`,
+          [input.expiresAt, guild.now.toISOString()],
         );
         if (capped[0]?.ok !== true) fail('INVALID_INPUT');
         // The latest expiry among the covering grants, per field; the earliest of those bounds the new grant.
@@ -1178,6 +1180,21 @@ export async function respondOwnershipTransfer(
             : early.to !== actor.accountId
       )
         fail('FORBIDDEN');
+      // DEC-2026-11-14-03 (a): the proposing Founder's User row is locked FOR SHARE before the Guild row, the order
+      // every other command uses (authorize(): User, then Guild), as `activateGuild` does for the draft owner. A
+      // suspension is a non-key UPDATE, which conflicts with FOR SHARE, so it serializes with this acceptance: the later
+      // of the two sees the earlier. Locking it after the Guild row would deadlock with a Founder command that holds its
+      // own User row and waits for the Guild. The proposer's id is immutable on the transfer, so reading it unlocked
+      // is safe; it is confirmed against the locked transfer row below.
+      let proposerSuspended: boolean | null = null;
+      if (input.decision === 'ACCEPT' && early.from !== null) {
+        const proposers = await query<{ suspended: boolean }>(
+          tx,
+          'SELECT "suspended" FROM "User" WHERE "id"=$1 FOR SHARE',
+          [early.from],
+        );
+        proposerSuspended = proposers.length === 1 ? proposers[0].suspended : null;
+      }
       const guilds = await query<{ founderAccountId: string; revision: number }>(
         tx,
         'SELECT "founderAccountId","revision" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
@@ -1256,19 +1273,13 @@ export async function respondOwnershipTransfer(
         await decide('EXPIRED');
         type = expired;
       } else if (input.decision === 'ACCEPT') {
-        // DEC-2026-11-14-03 (a): under the Guild and transfer row locks the proposer must still be the Founder and
-        // not suspended. Their User row is read FOR SHARE (a suspension is a non-key UPDATE, which conflicts with it),
-        // so a concurrent suspension serializes with this acceptance and the later of the two sees the earlier.
-        // Refusing rolls the transaction back, so the proposal stays PROPOSED and can still be accepted if the
-        // suspension is lifted inside the window. Decline and withdraw are not judged here.
-        const proposers = await query<{ suspended: boolean }>(
-          tx,
-          'SELECT "suspended" FROM "User" WHERE "id"=$1 FOR SHARE',
-          [transfer.fromAccountId],
-        );
+        // DEC-2026-11-14-03 (a): under the Guild and transfer row locks (the proposer's User row is already held
+        // FOR SHARE, above) the proposer must still be the Founder and not suspended. Refusing rolls the transaction
+        // back, so the proposal stays PROPOSED and can still be accepted if the suspension is lifted inside the
+        // window. Decline and withdraw are not judged here.
         if (
-          proposers.length !== 1 ||
-          proposers[0].suspended !== false ||
+          early.from !== transfer.fromAccountId ||
+          proposerSuspended !== false ||
           guilds[0].founderAccountId !== transfer.fromAccountId
         )
           fail('FORBIDDEN');
