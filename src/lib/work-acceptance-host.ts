@@ -146,7 +146,7 @@ export function createRootAcceptanceHost(config: RootAcceptanceConfig): Acceptan
         tx,
         `SELECT c."id"::text FROM "WorkAcceptanceConsent" c JOIN "TermsVersion" t ON t."id"=c."termsVersionId"
          WHERE c."participantId"=$1::uuid AND c."slotId"=$2::uuid AND c."termsVersionId"=$3::uuid AND c."termsDigest"=t."digest"
-         FOR SHARE OF c`,
+         ORDER BY c."generation" DESC LIMIT 1 FOR SHARE OF c`,
         [ctx.participantId, ctx.slotId, ctx.termsVersionId],
       );
       // Tell the person what to do next; it is about their own consent only and reveals nothing about others.

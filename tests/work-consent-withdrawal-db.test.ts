@@ -122,10 +122,77 @@ integration(
       expect(await count('WorkAcceptanceConsent')).toBe(1);
       await expect(accept(person, slot)).rejects.toMatchObject({ code: 'CONSENT_REQUIRED' });
       expect(await count('Engagement')).toBe(0);
-      // A withdrawn consent is not silently revived by recording it again.
-      await expect(consent(person, slot, digest)).rejects.toMatchObject({
+    });
+
+    it('lets the person consent again after withdrawing: a new consent, never the withdrawn one, and at most one live', async () => {
+      const { slot, digest } = await setup();
+      const first = await consent(person, slot, digest);
+      await withdraw(person, first.consent.id);
+      const second = await consent(person, slot, digest);
+      expect(second.status).toBe('EXECUTED');
+      expect(second.consent.id).not.toBe(first.consent.id);
+      // Recording again while the new one is live returns it; the withdrawn one stays withdrawn and unusable.
+      expect((await consent(person, slot, digest)).consent.id).toBe(second.consent.id);
+      await expect(withdraw(person, first.consent.id)).rejects.toMatchObject({
         code: 'CONSENT_WITHDRAWN',
       });
+      expect(await count('WorkAcceptanceConsent')).toBe(2);
+      // Withdraw and consent once more, then accept on the latest consent.
+      await withdraw(person, second.consent.id);
+      const third = await consent(person, slot, digest);
+      expect(third.consent.id).not.toBe(second.consent.id);
+      const accepted = await accept(person, slot);
+      expect(accepted.engagement.acceptedTerms.roster[0].consentRef).toBe(third.consent.id);
+      await expect(withdraw(person, third.consent.id)).rejects.toMatchObject({
+        code: 'CONSENT_USED',
+      });
+    });
+
+    it('creates exactly one new consent when the person re-consents twice at once', async () => {
+      const { slot, digest } = await setup();
+      const first = await consent(person, slot, digest);
+      await withdraw(person, first.consent.id);
+      const [a, b] = await Promise.all([
+        consent(person, slot, digest),
+        consent(person, slot, digest),
+      ]);
+      expect(a.consent.id).toBe(b.consent.id);
+      expect(a.consent.id).not.toBe(first.consent.id);
+      expect(await count('WorkAcceptanceConsent')).toBe(2);
+      expect((await accept(person, slot)).engagement.acceptedTerms.roster[0].consentRef).toBe(
+        a.consent.id,
+      );
+    });
+
+    it('enforces one live consent per person, slot and terms version in the database', async () => {
+      const { slot, digest } = await setup();
+      const first = await consent(person, slot, digest);
+      const [owner] = await rows<{ id: string }>(
+        'SELECT "id"::text FROM "Participant" WHERE "accountId"=$1',
+        person.accountId,
+      );
+      const insert = (generation: number) =>
+        db
+          .$executeRawUnsafe(
+            'INSERT INTO "WorkAcceptanceConsent" ("participantId","slotId","termsVersionId","termsDigest","generation") VALUES ($1::uuid,$2::uuid,$3::uuid,$4,$5::int)',
+            owner.id,
+            slot.slotId,
+            slot.termsVersionId,
+            digest,
+            String(generation),
+          )
+          .then(
+            () => 'inserted',
+            (error) => sqlState(error),
+          );
+      // A second generation while the first is live, a repeated generation, and (below) a skipped one. Concurrent
+      // inserts of the same next generation are held apart by the unique key.
+      expect(await insert(2)).toBe('23514');
+      expect(await insert(1)).toBe('23514');
+      await withdraw(person, first.consent.id);
+      expect(await insert(3)).toBe('23514');
+      expect(await insert(2)).toBe('inserted');
+      expect(await count('WorkAcceptanceConsent')).toBe(2);
     });
 
     it('refuses to withdraw a consent an engagement already used, and writes nothing', async () => {
@@ -208,7 +275,7 @@ integration(
       expect(await count('WorkAcceptanceConsentWithdrawal')).toBe(1);
     });
 
-    it('serializes on the consent row: an acceptance that holds it wins, and the waiting withdrawal sees CONSENT_USED', async () => {
+    it('queues a same-person withdrawal behind an in-flight acceptance and then reports CONSENT_USED', async () => {
       const { slot, digest } = await setup();
       const saved = await consent(person, slot, digest);
       const holding = deferred<number>(),
@@ -240,6 +307,50 @@ integration(
       await expect(withdrawing).rejects.toMatchObject({ code: 'CONSENT_USED' });
       expect(await count('WorkAcceptanceConsentWithdrawal')).toBe(0);
       expect(await count('Engagement')).toBe(1);
+    });
+
+    it('serializes on the consent row itself: a withdrawal insert behind an acceptance holding it FOR SHARE waits, then is refused as used', async () => {
+      const { slot, digest } = await setup();
+      const saved = await consent(person, slot, digest);
+      const [owner] = await rows<{ id: string }>(
+        'SELECT "id"::text FROM "Participant" WHERE "accountId"=$1',
+        person.accountId,
+      );
+      const holding = deferred<number>(),
+        release = deferred();
+      const real = host();
+      const gated: AcceptanceHost = {
+        ...real,
+        assess: async (tx, ctx) => {
+          const approval = await real.assess(tx, ctx);
+          const [pid] = await tx.query<{ pid: number }>('SELECT pg_backend_pid() AS pid', []);
+          holding.resolve(pid.pid);
+          await release.promise;
+          return approval;
+        },
+      };
+      const accepting = accept(person, slot, gated);
+      accepting.catch(() => undefined);
+      const blocker = await holding.promise;
+      // A writer outside the command takes no identity locks, so the only thing it can wait on is the consent row.
+      const withdrawing = db
+        .$executeRawUnsafe(
+          'INSERT INTO "WorkAcceptanceConsentWithdrawal" ("consentId","participantId") VALUES ($1::uuid,$2::uuid)',
+          saved.consent.id,
+          owner.id,
+        )
+        .then(
+          () => 'inserted',
+          (error) => sqlState(error),
+        );
+      try {
+        await waitFor(blocker, /INSERT INTO "WorkAcceptanceConsentWithdrawal"/);
+      } finally {
+        release.resolve();
+      }
+      expect((await accepting).engagement.state).toBe('ACCESS_PENDING');
+      expect(await withdrawing).toBe('23514');
+      expect(await count('WorkAcceptanceConsentWithdrawal')).toBe(0);
     });
 
     it('serializes on the consent row: a withdrawal that holds it wins, and the waiting acceptance never uses the consent', async () => {

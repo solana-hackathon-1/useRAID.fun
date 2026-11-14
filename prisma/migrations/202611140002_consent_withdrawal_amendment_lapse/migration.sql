@@ -57,6 +57,49 @@ BEGIN
 END $$;
 CREATE TRIGGER "Engagement_consent_guard" BEFORE INSERT ON "Engagement" FOR EACH ROW EXECUTE FUNCTION raid_engagement_consent_guard();
 
+-- 1b. A person who withdrew may consent again. Consents stay immutable, so a re-consent is a NEW row with the next
+--     generation; the unique key now includes the generation, and the insert guard allows generation N+1 only when
+--     generation N exists and is withdrawn (generation 1 only when none exists), so there is at most one live consent per
+--     participant, slot and terms version. Existing rows are generation 1.
+ALTER TABLE "WorkAcceptanceConsent" ADD COLUMN "generation" integer NOT NULL DEFAULT 1 CHECK ("generation">=1);
+ALTER TABLE "WorkAcceptanceConsent" DROP CONSTRAINT "WorkAcceptanceConsent_subject_key";
+ALTER TABLE "WorkAcceptanceConsent" ADD CONSTRAINT "WorkAcceptanceConsent_subject_generation_key" UNIQUE ("participantId","slotId","termsVersionId","generation");
+CREATE OR REPLACE FUNCTION raid_acceptance_consent_guard() RETURNS trigger LANGUAGE plpgsql AS $$
+DECLARE source record; listing uuid; latest record; expected integer;
+BEGIN
+ SELECT "listingId" INTO listing FROM "RaidSlot" WHERE "id"=NEW."slotId" AND "termsVersionId"=NEW."termsVersionId";
+ IF NOT FOUND THEN
+  RAISE EXCEPTION 'Consent must name an existing slot on the exact terms version' USING ERRCODE='23503', CONSTRAINT='WorkAcceptanceConsent_slot_fkey';
+ END IF;
+ PERFORM 1 FROM "WorkListing" WHERE "id"=listing FOR SHARE;
+ PERFORM 1 FROM "RaidSlot" WHERE "id"=NEW."slotId" FOR SHARE;
+ SELECT s."state",l."state" AS "listingState",l."currentTermsVersionId",t."digest" INTO source
+  FROM "RaidSlot" s JOIN "WorkListing" l ON l."id"=s."listingId" JOIN "TermsVersion" t ON t."id"=s."termsVersionId"
+  WHERE s."id"=NEW."slotId" AND s."termsVersionId"=NEW."termsVersionId";
+ IF NOT FOUND THEN
+  RAISE EXCEPTION 'Consent must name an existing slot on the exact terms version' USING ERRCODE='23503', CONSTRAINT='WorkAcceptanceConsent_slot_fkey';
+ END IF;
+ IF source."state"<>'AVAILABLE' OR source."listingState"<>'OPEN' OR source."currentTermsVersionId"<>NEW."termsVersionId" THEN
+  RAISE EXCEPTION 'Consent requires an available slot on the current terms' USING ERRCODE='23514';
+ END IF;
+ IF source."digest" IS DISTINCT FROM NEW."termsDigest" THEN
+  RAISE EXCEPTION 'Consent must name the exact stored terms digest' USING ERRCODE='23514';
+ END IF;
+ SELECT c."id",c."generation" INTO latest FROM "WorkAcceptanceConsent" c
+  WHERE c."participantId"=NEW."participantId" AND c."slotId"=NEW."slotId" AND c."termsVersionId"=NEW."termsVersionId"
+  ORDER BY c."generation" DESC LIMIT 1;
+ IF FOUND THEN
+  IF NOT EXISTS (SELECT 1 FROM "WorkAcceptanceConsentWithdrawal" WHERE "consentId"=latest."id") THEN
+   RAISE EXCEPTION 'A live consent already exists; withdraw it before consenting again' USING ERRCODE='23514';
+  END IF;
+  expected:=latest."generation"+1;
+ ELSE expected:=1; END IF;
+ IF NEW."generation" IS DISTINCT FROM expected THEN
+  RAISE EXCEPTION 'A consent must be the next generation after the withdrawn one' USING ERRCODE='23514';
+ END IF;
+ RETURN NEW;
+END $$;
+
 -- 2. A proposal whose proposer lost Founder authority is recorded as LAPSED by the next valid proposal. LAPSED is a
 --    final decided state like DECLINED/WITHDRAWN: decided by an account, no consent reference, never effective.
 ALTER TABLE "EngagementAmendment" DROP CONSTRAINT "EngagementAmendment_state_check";

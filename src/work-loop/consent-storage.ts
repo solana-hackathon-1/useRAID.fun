@@ -86,27 +86,32 @@ export async function recordAcceptanceConsent(
         if (!offer) fail('ADMISSION_REQUIRED');
         assertOffer(offer, value, auth.participantId, now);
       }
-      const inserted = await tx.query<{ id: string }>(
-        'INSERT INTO "WorkAcceptanceConsent" ("participantId","slotId","termsVersionId","termsDigest") VALUES ($1::uuid,$2::uuid,$3::uuid,$4) ON CONFLICT ("participantId","slotId","termsVersionId") DO NOTHING RETURNING "id"::text',
-        [auth.participantId, value.slotId, value.termsVersionId, value.termsDigest],
-      );
-      // A person who already consented to these exact terms keeps that one consent.
-      const id =
-        inserted[0]?.id ??
-        (
-          await tx.query<{ id: string }>(
-            'SELECT "id"::text FROM "WorkAcceptanceConsent" WHERE "participantId"=$1::uuid AND "slotId"=$2::uuid AND "termsVersionId"=$3::uuid',
-            [auth.participantId, value.slotId, value.termsVersionId],
-          )
-        )[0]?.id;
-      if (!id) fail('STORAGE_CONTRACT');
-      // A withdrawal is final for this exact consent: it is never revived, so a returning "consent" must not succeed.
-      if (!inserted[0]) {
-        const withdrawn = await tx.query(
-          'SELECT 1 FROM "WorkAcceptanceConsentWithdrawal" WHERE "consentId"=$1::uuid',
-          [id],
+      // The latest consent for these exact terms is the only one that can be live. A person who already holds a live
+      // one keeps it; after a withdrawal a new consent is the next generation (the database allows no other).
+      const latest = () =>
+        tx.query<{ id: string; generation: number; withdrawn: boolean }>(
+          `SELECT c."id"::text,c."generation",EXISTS (SELECT 1 FROM "WorkAcceptanceConsentWithdrawal" w WHERE w."consentId"=c."id") AS withdrawn
+           FROM "WorkAcceptanceConsent" c WHERE c."participantId"=$1::uuid AND c."slotId"=$2::uuid AND c."termsVersionId"=$3::uuid
+           ORDER BY c."generation" DESC LIMIT 1`,
+          [auth!.participantId, value.slotId, value.termsVersionId],
         );
-        if (withdrawn.length) fail('CONSENT_WITHDRAWN');
+      const [current] = await latest();
+      let id = current && !current.withdrawn ? current.id : undefined;
+      if (!id) {
+        const inserted = await tx.query<{ id: string }>(
+          'INSERT INTO "WorkAcceptanceConsent" ("participantId","slotId","termsVersionId","termsDigest","generation") VALUES ($1::uuid,$2::uuid,$3::uuid,$4,$5::int) ON CONFLICT ("participantId","slotId","termsVersionId","generation") DO NOTHING RETURNING "id"::text',
+          [
+            auth.participantId,
+            value.slotId,
+            value.termsVersionId,
+            value.termsDigest,
+            String((current?.generation ?? 0) + 1),
+          ],
+        );
+        // Two requests re-consenting at once insert the same generation: one wins and both report that one consent.
+        const settled = inserted[0]?.id ?? (await latest()).find((row) => !row.withdrawn)?.id;
+        if (!settled) fail('STORAGE_CONTRACT');
+        id = settled;
       }
       await currentHuman(tx, actor, auth.locks);
       return {
