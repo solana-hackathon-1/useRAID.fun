@@ -312,9 +312,9 @@ try {
     actor: async () => signedIn,
     checkOrigin: () => undefined,
     rateLimit: async () => undefined,
-    list: async (who, guildId) => ({
+    list: async (who, guildId, options) => ({
       version: 'v1',
-      updates: (await transaction((tx) => listManagedGuildUpdates(tx, who, guildId))).updates,
+      ...(await transaction((tx) => listManagedGuildUpdates(tx, who, guildId, options))),
       writesAvailable: true,
       unavailableReason: null,
     }),
@@ -361,6 +361,49 @@ try {
     (await transaction((tx) => listPublicGuildUpdates(tx, slug, {}))).updates.map((u) => u.id),
     [news.update.id],
   );
+  // The managed view pages by keyset cursor: one page's `nextCursor` is the next page's `before`. A cursor the caller
+  // cannot see (here an unknown id) is the same 422 as a malformed one, so it cannot probe other authors' drafts.
+  const second = await transaction((tx) =>
+    draftGuildUpdate(
+      tx,
+      cmd(founder, { guildId: active.guild.id, title: 'Second', body: 'More news.' }, 'm-5'),
+      host,
+    ),
+  );
+  const pageOne = await transaction((tx) =>
+    listManagedGuildUpdates(tx, founder, active.guild.id, { limit: 1 }),
+  );
+  assert.deepEqual(
+    pageOne.updates.map((u) => u.id),
+    [second.update.id],
+  );
+  assert.equal(pageOne.nextCursor, second.update.id);
+  const viaHttp = await updatesHttp.LIST(
+    new Request(
+      `https://host.example/api/v1/guild-updates?guildId=${active.guild.id}&before=${pageOne.nextCursor}`,
+    ),
+  );
+  assert.equal(viaHttp.status, 200);
+  const pageTwo = (await viaHttp.json()) as {
+    updates: { id: string }[];
+    nextCursor: string | null;
+  };
+  assert.deepEqual(
+    pageTwo.updates.map((u) => u.id),
+    [news.update.id],
+  );
+  assert.equal(pageTwo.nextCursor, null);
+  for (const before of [randomUUID(), 'not-a-cursor'])
+    assert.equal(
+      (
+        await updatesHttp.LIST(
+          new Request(
+            `https://host.example/api/v1/guild-updates?guildId=${active.guild.id}&before=${before}`,
+          ),
+        )
+      ).status,
+      422,
+    );
   // Roles and ownership over HTTP: same host session, host-supplied ownership policy, nothing from the body.
   const rolesHttp = createGuildRolesHandlers({
     version: 'v1',

@@ -26,6 +26,7 @@ const managed = (overrides: Record<string, unknown> = {}) => ({
 const state = (updates = [managed()]) => ({
   version: 'v1',
   updates,
+  nextCursor: null as string | null,
   writesAvailable: true,
   unavailableReason: null,
 });
@@ -207,6 +208,62 @@ describe('Guild updates management HTTP boundary', () => {
       new Request(`https://example.test/api/v1/guild-updates?guildId=${guildId}`),
     );
     expect(leaked.status).toBe(503);
+  });
+
+  it('DEC-2026-11-14-04: before is an optional single uuid passed to the host; the page carries nextCursor bound to its last update', async () => {
+    const cursor = '33333333-3333-4333-8333-333333333333';
+    const { value, calls } = host({
+      list: async (who, id, options) => (
+        calls.push(['list', who, id, options]),
+        { ...state([managed({ id: cursor })]), nextCursor: cursor }
+      ),
+    });
+    const handlers = createGuildUpdatesHandlers(value);
+    const page = await handlers.LIST(
+      new Request(`https://example.test/api/v1/guild-updates?guildId=${guildId}&before=${cursor}`),
+    );
+    expect(page.status).toBe(200);
+    expect((await body(page)).nextCursor).toBe(cursor);
+    expect(calls).toContainEqual(['list', actor, guildId, { before: cursor }]);
+    for (const query of [
+      `?guildId=${guildId}&before=nope`,
+      `?guildId=${guildId}&before=`,
+      `?guildId=${guildId}&before=${cursor}&before=${cursor}`,
+      `?before=${cursor}`,
+    ]) {
+      const refused = await handlers.LIST(
+        new Request('https://example.test/api/v1/guild-updates' + query),
+      );
+      expect(refused.status, query).toBe(422);
+    }
+    // A cursor that is not the last update of the page is a host contract failure, never forwarded.
+    const wrong = host({ list: async () => ({ ...state(), nextCursor: cursor }) });
+    const leaked = await createGuildUpdatesHandlers(wrong.value).LIST(
+      new Request(`https://example.test/api/v1/guild-updates?guildId=${guildId}`),
+    );
+    expect(leaked.status).toBe(503);
+  });
+
+  it('DEC-2026-11-14-04: a storage INVALID_INPUT for a cursor is the same envelope as a malformed one', async () => {
+    const refusing = host({
+      list: async () => {
+        throw new GuildStorageError('INVALID_INPUT');
+      },
+    });
+    const query = `?guildId=${guildId}&before=${updateId}`;
+    const stored = await createGuildUpdatesHandlers(refusing.value).LIST(
+      new Request('https://example.test/api/v1/guild-updates' + query),
+    );
+    const malformed = await createGuildUpdatesHandlers(host().value).LIST(
+      new Request(`https://example.test/api/v1/guild-updates?guildId=${guildId}&before=nope`),
+    );
+    expect(stored.status).toBe(malformed.status);
+    const [a, b] = [await body(stored), await body(malformed)];
+    expect({ ...a, requestId: undefined, error: { ...a.error, requestId: undefined } }).toEqual({
+      ...b,
+      requestId: undefined,
+      error: { ...b.error, requestId: undefined },
+    });
   });
 
   it('review fix: an idempotent replay succeeds after the update has moved on, but a fresh result must match exactly', async () => {
