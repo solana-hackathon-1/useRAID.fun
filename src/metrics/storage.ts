@@ -17,14 +17,11 @@ const NOT_MEASURED = [
   'privateAccessReliability',
   'tokenLaunchConversion',
   'challengeOutcomes',
-  'fixtureExclusion',
-  'knownAbuseExclusion',
-  'duplicateExclusion',
   'reviewDelayExcludingPauses',
   'opportunityConcentration',
 ];
 const NO_MARKERS =
-  'Test fixtures, internal demonstrations and known abuse are not marked in the data, so are not excluded.';
+  'Records an operator marked excluded (MetricsExclusion) are left out. Unmarked fixtures, demonstrations, duplicates and abuse are not detected, so are not excluded.';
 const VERIFIED =
   'Work under a Guild id with no persisted (operator-activated) Guild is excluded and counted under `excluded`.';
 
@@ -83,6 +80,20 @@ function perAsset(rows: AssetRow[]) {
   return [...byKey.values()].sort((a, b) => a.key.localeCompare(b.key));
 }
 /**
+ * Records an operator has marked excluded (DEC-2026-11-13-10): each fragment is the table without its effectively
+ * excluded rows, used wherever the report reads that table. A marker is effective while it is an EXCLUDE that no later
+ * marker supersedes; a RELEASE (or any superseding marker) ends the earlier one. An excluded Guild leaves every figure;
+ * an excluded listing leaves the funnel, funding and its engagements; an excluded engagement leaves outcomes,
+ * settlement, disputes and review delay; an excluded participant leaves participant measures only. Raw tables are
+ * kept only where a record must still count as "without a verified Guild" (those counts are not marker exclusions).
+ */
+const EXCLUDED = (type: string, idExpression: string) =>
+  `EXISTS (SELECT 1 FROM "MetricsExclusion" mx WHERE mx."subjectType"='${type}' AND mx."subjectId"=${idExpression} AND mx."effect"='EXCLUDE' AND NOT EXISTS (SELECT 1 FROM "MetricsExclusion" nx WHERE nx."supersedesMarkerId"=mx."id"))`;
+const G = `(SELECT gx.* FROM "Guild" gx WHERE NOT ${EXCLUDED('GUILD', 'gx."id"::text')})`;
+const L = `(SELECT lx.* FROM "WorkListing" lx WHERE NOT ${EXCLUDED('WORK_LISTING', 'lx."id"::text')})`;
+const P = `(SELECT px.* FROM "Participant" px WHERE NOT ${EXCLUDED('PARTICIPANT', 'px."id"::text')})`;
+const E = `(SELECT ex.* FROM "Engagement" ex WHERE NOT ${EXCLUDED('ENGAGEMENT', 'ex."id"::text')} AND NOT EXISTS (SELECT 1 FROM "RaidSlot" sx WHERE sx."id"=ex."slotId" AND ${EXCLUDED('WORK_LISTING', 'sx."listingId"::text')}))`;
+/**
  * Verified work: a listing or engagement whose Guild id is a persisted Guild. "Work accepted" is an engagement closed
  * with reason ACCEPTED; accepting work is not payment and nothing here measures money.
  */
@@ -98,25 +109,28 @@ export async function readProductMetrics(tx: Tx): Promise<ProductMetrics> {
   const [n] = await tx.query<Record<string, number>>(
     `WITH funded AS (
        SELECT DISTINCT g."id"::text AS guild_id FROM "RaidSlot" s
-       JOIN "WorkListing" l ON l."id"=s."listingId" JOIN "Guild" g ON g."id"::text=l."guildId"
+       JOIN ${L} l ON l."id"=s."listingId" JOIN ${G} g ON g."id"::text=l."guildId"
        WHERE s."fundingRef" IS NOT NULL),
      guild_outcomes AS (
        SELECT g."id"::text AS guild_id,count(*) AS outcomes FROM "EngagementClosure" c
-       JOIN "Engagement" e ON e."id"=c."engagementId" JOIN "Guild" g ON g."id"::text=e."guildId"
+       JOIN ${E} e ON e."id"=c."engagementId" JOIN ${G} g ON g."id"::text=e."guildId"
        WHERE c."reason"='ACCEPTED' GROUP BY 1),
      engaged AS (
        SELECT m."participantId"::text AS participant_id,count(*) AS engagements FROM "EngagementMember" m
-       JOIN "Engagement" e ON e."id"=m."engagementId" JOIN "Guild" g ON g."id"::text=e."guildId" GROUP BY 1),
+       JOIN ${P} p ON p."id"::text=m."participantId"::text
+       JOIN ${E} e ON e."id"=m."engagementId" JOIN ${G} g ON g."id"::text=e."guildId" GROUP BY 1),
      applied AS (
        SELECT a."participantId"::text AS participant_id FROM "RaidApplication" a
-       JOIN "RaidSlot" s ON s."id"=a."slotId" JOIN "WorkListing" l ON l."id"=s."listingId"
-       JOIN "Guild" g ON g."id"::text=l."guildId"),
+       JOIN ${P} p ON p."id"::text=a."participantId"::text
+       JOIN "RaidSlot" s ON s."id"=a."slotId" JOIN ${L} l ON l."id"=s."listingId"
+       JOIN ${G} g ON g."id"::text=l."guildId"),
      participant_outcomes AS (
        SELECT m."participantId"::text AS participant_id,count(*) AS outcomes FROM "EngagementMember" m
+       JOIN ${P} p ON p."id"::text=m."participantId"::text
        JOIN "EngagementClosure" c ON c."engagementId"=m."engagementId" AND c."reason"='ACCEPTED'
-       JOIN "Engagement" e ON e."id"=m."engagementId" JOIN "Guild" g ON g."id"::text=e."guildId" GROUP BY 1)
+       JOIN ${E} e ON e."id"=m."engagementId" JOIN ${G} g ON g."id"::text=e."guildId" GROUP BY 1)
      SELECT
-      (SELECT count(*) FROM "Guild")::int AS guilds,
+      (SELECT count(*) FROM ${G} g)::int AS guilds,
       (SELECT count(*) FROM funded)::int AS guilds_funded,
       (SELECT count(*) FROM guild_outcomes)::int AS guilds_with_outcome,
       (SELECT count(*) FROM guild_outcomes WHERE outcomes>=2)::int AS guilds_repeat,
@@ -124,21 +138,21 @@ export async function readProductMetrics(tx: Tx): Promise<ProductMetrics> {
       (SELECT count(*) FROM engaged)::int AS raiders_engaged,
       (SELECT count(*) FROM participant_outcomes)::int AS raiders_with_outcome,
       (SELECT count(*) FROM participant_outcomes WHERE outcomes>=2)::int AS raiders_repeat,
-      (SELECT count(*) FROM "WorkListing" l WHERE NOT EXISTS (SELECT 1 FROM "Guild" g WHERE g."id"::text=l."guildId"))::int AS listings_unverified,
-      (SELECT count(*) FROM "Engagement" e WHERE NOT EXISTS (SELECT 1 FROM "Guild" g WHERE g."id"::text=e."guildId"))::int AS engagements_unverified`,
+      (SELECT count(*) FROM ${L} l WHERE NOT EXISTS (SELECT 1 FROM "Guild" g WHERE g."id"::text=l."guildId"))::int AS listings_unverified,
+      (SELECT count(*) FROM ${E} e WHERE NOT EXISTS (SELECT 1 FROM "Guild" g WHERE g."id"::text=e."guildId"))::int AS engagements_unverified`,
     [],
   );
   const [funnel] = await tx.query<Record<string, number>>(
     `WITH verified AS (
-       SELECT l."id" FROM "WorkListing" l JOIN "Guild" g ON g."id"::text=l."guildId"),
+       SELECT l."id" FROM ${L} l JOIN ${G} g ON g."id"::text=l."guildId"),
      funded AS (
        SELECT DISTINCT s."listingId" AS id FROM "RaidSlot" s JOIN verified v ON v."id"=s."listingId"
        WHERE s."fundingRef" IS NOT NULL),
      accepted AS (
-       SELECT DISTINCT s."listingId" AS id FROM "Engagement" e JOIN "RaidSlot" s ON s."id"=e."slotId"
+       SELECT DISTINCT s."listingId" AS id FROM ${E} e JOIN "RaidSlot" s ON s."id"=e."slotId"
        JOIN funded f ON f.id=s."listingId" WHERE s."fundingRef" IS NOT NULL),
      work_accepted AS (
-       SELECT DISTINCT s."listingId" AS id FROM "Engagement" e JOIN "RaidSlot" s ON s."id"=e."slotId"
+       SELECT DISTINCT s."listingId" AS id FROM ${E} e JOIN "RaidSlot" s ON s."id"=e."slotId"
        JOIN accepted a ON a.id=s."listingId"
        JOIN "EngagementClosure" c ON c."engagementId"=e."id" AND c."reason"='ACCEPTED')
      SELECT (SELECT count(*) FROM verified)::int AS drafted,(SELECT count(*) FROM funded)::int AS funded,
@@ -152,8 +166,8 @@ export async function readProductMetrics(tx: Tx): Promise<ProductMetrics> {
       (count(DISTINCT d.id) FILTER (WHERE d.resolved))::int AS subset_engagements,
       COALESCE(sum((r->>'amount')::numeric) FILTER (WHERE d.resolved),0)::text AS subset_amount
      FROM (
-      SELECT e."id",c."financialResolution"<>'OPEN' AS resolved,raid_effective_terms(e."id") AS terms FROM "Engagement" e
-       JOIN "Guild" g ON g."id"::text=e."guildId"
+      SELECT e."id",c."financialResolution"<>'OPEN' AS resolved,raid_effective_terms(e."id") AS terms FROM ${E} e
+       JOIN ${G} g ON g."id"::text=e."guildId"
        JOIN "EngagementClosure" c ON c."engagementId"=e."id" AND c."reason"='ACCEPTED') d,
       jsonb_array_elements(d.terms->'rewards') r GROUP BY 1`,
     [],
@@ -165,28 +179,28 @@ export async function readProductMetrics(tx: Tx): Promise<ProductMetrics> {
       (count(DISTINCT d.id) FILTER (WHERE d.is_open))::int AS subset_engagements,
       COALESCE(sum((r->>'amount')::numeric) FILTER (WHERE d.is_open),0)::text AS subset_amount
      FROM (
-      SELECT e."id",e."state"='SUBMITTED' AS is_open,raid_effective_terms(e."id") AS terms FROM "Engagement" e
-       JOIN "Guild" g ON g."id"::text=e."guildId"
+      SELECT e."id",e."state"='SUBMITTED' AS is_open,raid_effective_terms(e."id") AS terms FROM ${E} e
+       JOIN ${G} g ON g."id"::text=e."guildId"
        WHERE EXISTS (SELECT 1 FROM "WorkReview" w WHERE w."engagementId"=e."id" AND w."decision"='DISPUTE')) d,
       jsonb_array_elements(d.terms->'rewards') r GROUP BY 1`,
     [],
   );
   const [disputeCounts] = await tx.query<{ raised: number; open: number }>(
-    `SELECT count(*)::int AS raised,(count(*) FILTER (WHERE e."state"='SUBMITTED'))::int AS open FROM "Engagement" e
-      JOIN "Guild" g ON g."id"::text=e."guildId"
+    `SELECT count(*)::int AS raised,(count(*) FILTER (WHERE e."state"='SUBMITTED'))::int AS open FROM ${E} e
+      JOIN ${G} g ON g."id"::text=e."guildId"
       WHERE EXISTS (SELECT 1 FROM "WorkReview" w WHERE w."engagementId"=e."id" AND w."decision"='DISPUTE')`,
     [],
   );
   const [delay] = await tx.query<Record<string, number>>(
     `SELECT count(*)::int AS submissions,count(r."submissionId")::int AS decided,
-      (SELECT count(*) FROM "WorkSubmission" x JOIN "Engagement" e ON e."id"=x."engagementId"
+      (SELECT count(*) FROM "WorkSubmission" x JOIN ${E} e ON e."id"=x."engagementId"
         WHERE NOT EXISTS (SELECT 1 FROM "Guild" g WHERE g."id"::text=e."guildId"))::int AS unverified,
       (count(*) FILTER (WHERE extract(epoch FROM r."createdAt"-w."createdAt")<=3600))::int AS le_1h,
       (count(*) FILTER (WHERE extract(epoch FROM r."createdAt"-w."createdAt")>3600 AND extract(epoch FROM r."createdAt"-w."createdAt")<=14400))::int AS le_4h,
       (count(*) FILTER (WHERE extract(epoch FROM r."createdAt"-w."createdAt")>14400 AND extract(epoch FROM r."createdAt"-w."createdAt")<=86400))::int AS le_1d,
       (count(*) FILTER (WHERE extract(epoch FROM r."createdAt"-w."createdAt")>86400 AND extract(epoch FROM r."createdAt"-w."createdAt")<=259200))::int AS le_3d,
       (count(*) FILTER (WHERE extract(epoch FROM r."createdAt"-w."createdAt")>259200))::int AS gt_3d
-     FROM "WorkSubmission" w JOIN "Engagement" e ON e."id"=w."engagementId" JOIN "Guild" g ON g."id"::text=e."guildId"
+     FROM "WorkSubmission" w JOIN ${E} e ON e."id"=w."engagementId" JOIN ${G} g ON g."id"::text=e."guildId"
      LEFT JOIN "WorkReview" r ON r."submissionId"=w."id"`,
     [],
   );
@@ -326,7 +340,7 @@ export async function readProductMetrics(tx: Tx): Promise<ProductMetrics> {
       timing: await timing(
         tx,
         `SELECT extract(epoch FROM r."createdAt"-w."createdAt") AS seconds FROM "WorkSubmission" w
-         JOIN "Engagement" e ON e."id"=w."engagementId" JOIN "Guild" g ON g."id"::text=e."guildId"
+         JOIN ${E} e ON e."id"=w."engagementId" JOIN ${G} g ON g."id"::text=e."guildId"
          JOIN "WorkReview" r ON r."submissionId"=w."id"`,
       ),
       distribution: DELAY_BUCKETS.map((bucket) => ({
@@ -337,24 +351,24 @@ export async function readProductMetrics(tx: Tx): Promise<ProductMetrics> {
     timings: {
       guildToFirstFundedOffering: await timing(
         tx,
-        `SELECT extract(epoch FROM f.first_at-g."createdAt") AS seconds FROM "Guild" g JOIN (
+        `SELECT extract(epoch FROM f.first_at-g."createdAt") AS seconds FROM ${G} g JOIN (
            SELECT l."guildId" AS guild_id,min(s."createdAt") AS first_at FROM "RaidSlot" s
-           JOIN "WorkListing" l ON l."id"=s."listingId" WHERE s."fundingRef" IS NOT NULL GROUP BY 1) f
+           JOIN ${L} l ON l."id"=s."listingId" WHERE s."fundingRef" IS NOT NULL GROUP BY 1) f
          ON f.guild_id=g."id"::text`,
       ),
       guildToFirstOutcome: await timing(
         tx,
-        `SELECT extract(epoch FROM a.first_at-g."createdAt") AS seconds FROM "Guild" g JOIN (
+        `SELECT extract(epoch FROM a.first_at-g."createdAt") AS seconds FROM ${G} g JOIN (
            SELECT e."guildId" AS guild_id,min(c."closedAt") AS first_at FROM "EngagementClosure" c
-           JOIN "Engagement" e ON e."id"=c."engagementId" WHERE c."reason"='ACCEPTED' GROUP BY 1) a
+           JOIN ${E} e ON e."id"=c."engagementId" WHERE c."reason"='ACCEPTED' GROUP BY 1) a
          ON a.guild_id=g."id"::text`,
       ),
       raiderToFirstOutcome: await timing(
         tx,
-        `SELECT extract(epoch FROM a.first_at-p."createdAt") AS seconds FROM "Participant" p JOIN (
+        `SELECT extract(epoch FROM a.first_at-p."createdAt") AS seconds FROM ${P} p JOIN (
            SELECT m."participantId" AS participant_id,min(c."closedAt") AS first_at FROM "EngagementMember" m
            JOIN "EngagementClosure" c ON c."engagementId"=m."engagementId" AND c."reason"='ACCEPTED'
-           JOIN "Engagement" e ON e."id"=m."engagementId" JOIN "Guild" g ON g."id"::text=e."guildId" GROUP BY 1) a
+           JOIN ${E} e ON e."id"=m."engagementId" JOIN ${G} g ON g."id"::text=e."guildId" GROUP BY 1) a
          ON a.participant_id=p."id"`,
       ),
     },

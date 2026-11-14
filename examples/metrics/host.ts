@@ -38,6 +38,7 @@ CREATE TABLE "EngagementMember" ("engagementId" uuid NOT NULL, "participantId" u
 CREATE TABLE "RaidApplication" ("participantId" uuid NOT NULL, "slotId" uuid NOT NULL);
 CREATE TABLE "WorkSubmission" ("id" uuid PRIMARY KEY, "engagementId" uuid NOT NULL, "createdAt" timestamptz NOT NULL DEFAULT clock_timestamp());
 CREATE TABLE "WorkReview" ("submissionId" uuid PRIMARY KEY, "engagementId" uuid NOT NULL, "decision" text NOT NULL, "createdAt" timestamptz NOT NULL DEFAULT clock_timestamp());
+CREATE TABLE "MetricsExclusion" ("id" uuid PRIMARY KEY DEFAULT gen_random_uuid(), "subjectType" text NOT NULL, "subjectId" text NOT NULL, "effect" text NOT NULL, "supersedesMarkerId" uuid);
 -- The host's own rule for an engagement's current terms (here its stored terms; the application applies amendments).
 CREATE FUNCTION raid_effective_terms(target uuid) RETURNS jsonb LANGUAGE sql STABLE AS $$ SELECT "terms" FROM "Engagement" WHERE "id"=target $$;`;
 const SOL = { chain: 'SOLANA', networkIdentity: 'example', kind: 'NATIVE_SOL' };
@@ -180,6 +181,27 @@ try {
       } as Parameters<typeof readProductMetrics>[0]),
     );
   const metrics = ProductMetricsSchema.parse(await read());
+  // The host's own marker rows (its writer is the application's): an effective EXCLUDE removes the Guild, a later
+  // RELEASE of the same chain restores it.
+  const guildCount = async () =>
+    ProductMetricsSchema.parse(await read()).guildActivation.denominator;
+  const marked = randomUUID();
+  await transaction(async (client) => {
+    await insert(
+      client,
+      'INSERT INTO "MetricsExclusion" ("id","subjectType","subjectId","effect") SELECT $1,\'GUILD\',"id"::text,\'EXCLUDE\' FROM "Guild" ORDER BY "id" LIMIT 1',
+      marked,
+    );
+  });
+  const guildsWhileMarked = await guildCount();
+  await transaction(async (client) => {
+    await insert(
+      client,
+      'INSERT INTO "MetricsExclusion" ("subjectType","subjectId","effect","supersedesMarkerId") SELECT "subjectType","subjectId",\'RELEASE\',"id" FROM "MetricsExclusion" WHERE "id"=$1',
+      marked,
+    );
+  });
+  const guildsAfterRelease = await guildCount();
 
   // The host owns the flag and operator authority; the module owns the contract and the refusals.
   let enabled = false;
@@ -249,6 +271,9 @@ try {
           metrics.reviewDelay.decided.denominator === 2 &&
           metrics.reviewDelay.distribution.find((b) => b.bucket === 'LE_3D')?.count === 0 &&
           metrics.reviewDelay.distribution.find((b) => b.bucket === 'LE_4H')?.count === 2,
+        exclusionMarkerRemovesAndReleaseRestoresAGuild:
+          guildsWhileMarked === metrics.guildActivation.denominator - 1 &&
+          guildsAfterRelease === metrics.guildActivation.denominator,
         noPriceDollarTotalFieldOrAccount: !moneyField(body) && !text.includes(operator),
       },
       null,

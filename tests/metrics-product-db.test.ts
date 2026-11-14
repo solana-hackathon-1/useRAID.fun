@@ -175,13 +175,7 @@ integration('T043 product activation and repeat metrics', { timeout: 120000 }, (
     expect(fieldNames(page).filter((name) => MONEY_FIELD.test(name))).toEqual([]);
     expect(text).not.toContain('honest-worker');
     expect(page.notMeasured).toEqual(
-      expect.arrayContaining([
-        'dollarValue',
-        'fixtureExclusion',
-        'knownAbuseExclusion',
-        'paidVolume',
-        'timeToSettlement',
-      ]),
+      expect.arrayContaining(['dollarValue', 'paidVolume', 'timeToSettlement']),
     );
   });
 
@@ -373,18 +367,17 @@ integration('T043 product activation and repeat metrics', { timeout: 120000 }, (
     expect(page.notMeasured).toContain('reviewDelayExcludingPauses');
   });
 
-  it('names the missing fixture, duplicate and known-abuse markers instead of inventing a policy', async () => {
+  it('no longer lists the implemented exclusion markers as missing, and still names what is not measured', async () => {
     const page = ProductMetricsSchema.parse(await metrics());
     expect(page.notMeasured).toEqual(
       expect.arrayContaining([
-        'fixtureExclusion',
-        'knownAbuseExclusion',
-        'duplicateExclusion',
         'challengeOutcomes',
         'disputeCategoryAndFinding',
         'tokenLaunchConversion',
       ]),
     );
+    for (const name of ['fixtureExclusion', 'knownAbuseExclusion', 'duplicateExclusion'])
+      expect(page.notMeasured).not.toContain(name);
     expect(page.notMeasured).not.toContain('workListingFunnel');
     expect(page.notMeasured).not.toContain('launchConversion');
     expect(page.notMeasured).not.toContain('settlementCompletion');
