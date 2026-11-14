@@ -24,7 +24,8 @@ export type ViolationCode =
   | 'SAMPLE_OPERATOR_KEY_IN_PRODUCTION'
   | 'SYNTHETIC_WITH_REAL_MONEY'
   | 'ENVIRONMENT_NOT_DECLARED'
-  | 'DATABASE_URL_UNPARSEABLE';
+  | 'DATABASE_URL_UNPARSEABLE'
+  | 'NETWORK_NOT_EXPLICIT';
 export interface ConfigViolation {
   readonly severity: ViolationSeverity;
   readonly code: ViolationCode;
@@ -211,6 +212,23 @@ export function validateRuntimeConfig(env: ConfigEnv, role: ConfigRole): ConfigV
     if (!present(env, 'USDC_FUNDING_ADDRESS')) missing('USDC_FUNDING_ADDRESS');
     needRpc();
   }
+
+  // Blueprint 30.1 / I12: `usdcSettings()` treats anything but exactly `devnet` as mainnet, so a funding address
+  // with the network omitted (or misspelled) would quietly point deposits at the mainnet mint. Demo and the studio
+  // sandbox never reach that mint. Refused where the process could be a deployed one (production label or
+  // NODE_ENV=production); a warning elsewhere, so a local checkout is not stopped.
+  if (
+    present(env, 'USDC_FUNDING_ADDRESS') &&
+    env.USDC_NETWORK !== 'devnet' &&
+    env.USDC_NETWORK !== 'mainnet' &&
+    !isTrue(env, 'DEMO_MODE') &&
+    !isTrue(env, 'STUDIO_SANDBOX')
+  )
+    add(
+      environment === 'production' || env.NODE_ENV === 'production' ? 'REFUSE' : 'WARN',
+      'NETWORK_NOT_EXPLICIT',
+      'USDC_NETWORK',
+    );
 
   for (const name of realOperations)
     if (isTrue(env, 'DEMO_MODE')) add('REFUSE', 'REAL_OPERATION_IN_DEMO', name);

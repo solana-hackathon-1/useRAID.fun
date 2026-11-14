@@ -52,7 +52,8 @@ describe('T037 configuration validator reuse contract (R15, R16)', () => {
         .filter(([name]) => !switches.has(name) && name !== 'RAID_ENVIRONMENT')
         .map(([name]) => [name, 'x']),
     );
-    expect(validateRuntimeConfig(env, 'web').violations).toEqual([]);
+    // Every value is a placeholder, so the network (a closed devnet/mainnet value, not free text) is set properly.
+    expect(validateRuntimeConfig({ ...env, USDC_NETWORK: 'devnet' }, 'web').violations).toEqual([]);
   });
 
   it('every switch the source reads is catalogued', () => {
