@@ -1442,7 +1442,7 @@ model RaidApplication {
   slot RaidSlot @relation(fields: [slotId, termsVersionId], references: [id, termsVersionId], onDelete: Restrict, onUpdate: Restrict)
   participant Participant @relation(fields: [participantId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   offers RaidOffer[]
-  evidenceSnapshot ApplicantEvidenceSnapshot?
+  evidenceSnapshots ApplicantEvidenceSnapshot[]
   @@unique([id, slotId, participantId, termsVersionId])
   @@index([participantId, state])
 }
@@ -1457,7 +1457,7 @@ model ApplicantEvidenceSnapshot {
   takenAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
   application RaidApplication @relation(fields: [applicationId, slotId, participantId, termsVersionId], references: [id, slotId, participantId, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "ApplicantEvidenceSnapshot_application_fkey")
   participant Participant @relation(fields: [participantId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "ApplicantEvidenceSnapshot_participant_fkey")
-  withdrawal ApplicantEvidenceSnapshotWithdrawal?
+  withdrawals ApplicantEvidenceSnapshotWithdrawal[]
   @@unique([id, participantId], map: "ApplicantEvidenceSnapshot_owner_key")
   @@index([participantId])
 }
