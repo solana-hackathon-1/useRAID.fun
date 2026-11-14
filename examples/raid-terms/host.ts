@@ -29,6 +29,12 @@ import type { LockTransaction } from './identity-locks';
 import { commitEngagement } from './work-loop/engagement-storage';
 import type { AcceptanceHost } from './work-loop/engagement-contracts';
 import { submitApplication, issueOffer } from './work-loop/admission-storage';
+import {
+  recordEvidenceSnapshot,
+  withdrawEvidenceSnapshot,
+  readEvidenceSnapshot,
+} from './work-loop/evidence-snapshot-storage';
+import type { EvidenceSnapshotHost } from './work-loop/evidence-snapshot-contracts';
 import type { AdmissionHost } from './work-loop/admission-contracts';
 import { submitWork, decideReview } from './work-loop/submission-storage';
 import type { SubmissionHost } from './work-loop/submission-contracts';
@@ -113,7 +119,7 @@ const command = (input: unknown, key: string = randomUUID()) => ({
 try {
   // This host owns its own authority/session and reservation records. No RAID auth/Prisma/Next import.
   await pool.query(
-    'CREATE TABLE "User" ("id" text PRIMARY KEY, "suspended" boolean NOT NULL DEFAULT false); CREATE TABLE "HostSession" ("hash" text PRIMARY KEY,"accountId" text NOT NULL REFERENCES "User", "expiresAt" timestamptz NOT NULL); CREATE TABLE "HostGuildAuthority" ("guildId" text PRIMARY KEY,"accountId" text NOT NULL REFERENCES "User"); CREATE TABLE "HostReservation" ("slotId" uuid PRIMARY KEY,"termsVersionId" uuid NOT NULL,"digest" text NOT NULL); CREATE TABLE "HostAmendmentReservation" ("amendmentId" uuid PRIMARY KEY,"digest" text NOT NULL); CREATE TABLE "HostAmendmentConsent" ("amendmentId" uuid NOT NULL,"participantId" uuid NOT NULL,"digest" text NOT NULL,PRIMARY KEY ("amendmentId","participantId"))',
+    'CREATE TABLE "User" ("id" text PRIMARY KEY, "suspended" boolean NOT NULL DEFAULT false); CREATE TABLE "HostSession" ("hash" text PRIMARY KEY,"accountId" text NOT NULL REFERENCES "User", "expiresAt" timestamptz NOT NULL); CREATE TABLE "HostGuildAuthority" ("guildId" text PRIMARY KEY,"accountId" text NOT NULL REFERENCES "User"); CREATE TABLE "HostReservation" ("slotId" uuid PRIMARY KEY,"termsVersionId" uuid NOT NULL,"digest" text NOT NULL); CREATE TABLE "HostAmendmentReservation" ("amendmentId" uuid PRIMARY KEY,"digest" text NOT NULL); CREATE TABLE "HostAmendmentConsent" ("amendmentId" uuid NOT NULL,"participantId" uuid NOT NULL,"digest" text NOT NULL,PRIMARY KEY ("amendmentId","participantId")); CREATE TABLE "HostSkillRecord" ("participantId" uuid NOT NULL,"skillId" text NOT NULL,"rank" text NOT NULL,"status" text NOT NULL,"assessedAt" timestamptz NOT NULL,PRIMARY KEY ("participantId","skillId"))',
   );
   await pool.query(`
     CREATE TABLE "Session" ("tokenHash" text PRIMARY KEY,"userId" text NOT NULL REFERENCES "User","via" text NOT NULL,"expiresAt" timestamp(3) NOT NULL);
@@ -142,6 +148,7 @@ try {
     'migrations/closure-hardening.sql',
     'migrations/acceptance-consent.sql',
     'migrations/json-shape-js-rules.sql',
+    'migrations/applicant-evidence-snapshot.sql',
   ])
     await pool.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   assert.equal(
@@ -390,6 +397,86 @@ try {
       }),
       admissions,
     ),
+  );
+  // Applicant-consented evidence snapshot (#331): the host owns the skill records; the applicant picks what to share.
+  const evidenceHost: EvidenceSnapshotHost = {
+    allowNewWrites: true,
+    authorize: (tx, a, g) => host.authorize(tx, a, g, 'MANAGE_LISTING'),
+    async readSkillRecords(tx, subject, skillIds) {
+      const rows = await tx.query<{
+        skillId: string;
+        rank: 'C';
+        status: 'VERIFIED';
+        assessedAt: string;
+      }>(
+        `SELECT "skillId","rank","status",to_char("assessedAt" AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') AS "assessedAt" FROM "HostSkillRecord" WHERE "participantId"=$1::uuid AND "skillId"=ANY(string_to_array($2,','))`,
+        [subject.participantId, skillIds.join(',')],
+      );
+      return rows;
+    },
+  };
+  await pool.query('INSERT INTO "HostSkillRecord" VALUES ($1::uuid,$2,$3,$4,$5::timestamptz)', [
+    participant.id,
+    'writing',
+    'C',
+    'VERIFIED',
+    '2026-10-01T00:00:00.000Z',
+  ]);
+  const shareCommand = {
+    ...applicantCommand({
+      applicationId: application.application.id,
+      sharedSkillIds: ['writing'],
+      consent: true,
+    }),
+  };
+  assert.equal(
+    (
+      await transaction((tx) =>
+        readEvidenceSnapshot(tx, actor, application.application.id, evidenceHost),
+      )
+    ).availability,
+    'NOT_SHARED',
+    'Applying shares nothing by itself.',
+  );
+  await transaction((tx) => recordEvidenceSnapshot(tx, shareCommand, evidenceHost));
+  const founderSees = await transaction((tx) =>
+    readEvidenceSnapshot(tx, actor, application.application.id, evidenceHost),
+  );
+  assert.deepEqual(founderSees.snapshot?.skills, [
+    { skillId: 'writing', rank: 'C', status: 'VERIFIED', assessedAt: '2026-10-01T00:00:00.000Z' },
+  ]);
+  await pool.query('UPDATE "HostSkillRecord" SET "rank"=\'A\'');
+  assert.equal(
+    (
+      await transaction((tx) =>
+        readEvidenceSnapshot(tx, actor, application.application.id, evidenceHost),
+      )
+    ).snapshot?.skills[0].rank,
+    'C',
+    'The snapshot is frozen when taken.',
+  );
+  const stranger = { accountId: 'synthetic-stranger', sessionHash: 'e'.repeat(64) };
+  await pool.query('INSERT INTO "User" ("id") VALUES ($1)', [stranger.accountId]);
+  await pool.query(
+    "INSERT INTO \"Session\" VALUES ($1,$2,'wallet',(clock_timestamp() AT TIME ZONE 'UTC')+interval '1 hour')",
+    [stranger.sessionHash, stranger.accountId],
+  );
+  await assert.rejects(
+    transaction((tx) =>
+      readEvidenceSnapshot(tx, stranger, application.application.id, evidenceHost),
+    ),
+    (e: unknown) => (e as { code: string }).code === 'FORBIDDEN',
+  );
+  await transaction((tx) =>
+    withdrawEvidenceSnapshot(tx, applicantCommand({ applicationId: application.application.id })),
+  );
+  assert.equal(
+    (
+      await transaction((tx) =>
+        readEvidenceSnapshot(tx, actor, application.application.id, evidenceHost),
+      )
+    ).availability,
+    'WITHDRAWN',
   );
   await pool.query('INSERT INTO "HostAcceptance" VALUES ($1::uuid,$2::uuid,$3::uuid,$4,$5,$6)', [
     appSlot.slotId,
