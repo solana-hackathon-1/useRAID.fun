@@ -63,6 +63,8 @@ export class WorkError extends Error {
       | 'CONSENT_USED'
       | 'CONSENT_WITHDRAWN'
       | 'REPLACEMENT_EXISTS'
+      | 'EVIDENCE_SNAPSHOT_EXISTS'
+      | 'EVIDENCE_SNAPSHOT_UNAVAILABLE'
       | 'STORAGE_CONTRACT',
     readonly currentEngagementId?: string,
   ) {

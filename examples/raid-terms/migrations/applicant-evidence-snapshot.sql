@@ -1,0 +1,1 @@
+../../../prisma/migrations/202611140005_applicant_evidence_snapshot/migration.sql

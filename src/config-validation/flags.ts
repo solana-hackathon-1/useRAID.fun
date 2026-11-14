@@ -74,6 +74,7 @@ export const FLAG_CATALOG: readonly FlagDefinition[] = Object.freeze([
   routine('WORK_ADMISSION_MANAGEMENT_ENABLED'),
   routine('WORK_CLOSURE_ENABLED'),
   routine('WORK_AMENDMENTS_ENABLED'),
+  routine('WORK_EVIDENCE_SNAPSHOT_ENABLED'),
   routine('WORK_CREATION_READS_ENABLED'),
   routine('WORK_CREATION_SAVE_ENABLED'),
   routine('WORK_CREATION_PUBLISH_ENABLED'),

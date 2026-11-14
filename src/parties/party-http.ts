@@ -93,6 +93,9 @@ const STORAGE_CODES: Readonly<Record<WorkError['code'], ErrorCode>> = {
   CONSENT_USED: 'SERVICE_UNAVAILABLE',
   CONSENT_WITHDRAWN: 'SERVICE_UNAVAILABLE',
   REPLACEMENT_EXISTS: 'SERVICE_UNAVAILABLE',
+  // Not reachable from these routes; mapped as the shared work boundary does (workspace-http) so the two cannot drift.
+  EVIDENCE_SNAPSHOT_EXISTS: 'REVISION_CHANGED',
+  EVIDENCE_SNAPSHOT_UNAVAILABLE: 'NO_LONGER_OPEN',
   STORAGE_CONTRACT: 'SERVICE_UNAVAILABLE',
 };
 function failure(error: unknown, requestId: string) {

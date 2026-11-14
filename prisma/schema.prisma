@@ -71,6 +71,8 @@ model Participant {
   skillAssessments SkillAssessment[]
   acceptanceConsents WorkAcceptanceConsent[]
   consentWithdrawals WorkAcceptanceConsentWithdrawal[]
+  evidenceSnapshots ApplicantEvidenceSnapshot[]
+  evidenceSnapshotWithdrawals ApplicantEvidenceSnapshotWithdrawal[]
   ledParties Party[]
   partyProposalMembers PartyProposalMember[]
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -1440,8 +1442,33 @@ model RaidApplication {
   slot RaidSlot @relation(fields: [slotId, termsVersionId], references: [id, termsVersionId], onDelete: Restrict, onUpdate: Restrict)
   participant Participant @relation(fields: [participantId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   offers RaidOffer[]
+  evidenceSnapshots ApplicantEvidenceSnapshot[]
   @@unique([id, slotId, participantId, termsVersionId])
   @@index([participantId, state])
+}
+// Applicant-consented, immutable per-application evidence snapshot and its append-only withdrawal (DEC-2026-11-14-12, #331); guards live in migration 202611140005.
+model ApplicantEvidenceSnapshot {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  applicationId String @unique(map: "ApplicantEvidenceSnapshot_application_key") @db.Uuid
+  slotId String @db.Uuid
+  termsVersionId String @db.Uuid
+  participantId String @db.Uuid
+  skills Json @db.JsonB
+  takenAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  application RaidApplication @relation(fields: [applicationId, slotId, participantId, termsVersionId], references: [id, slotId, participantId, termsVersionId], onDelete: Restrict, onUpdate: Restrict, map: "ApplicantEvidenceSnapshot_application_fkey")
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "ApplicantEvidenceSnapshot_participant_fkey")
+  withdrawals ApplicantEvidenceSnapshotWithdrawal[]
+  @@unique([id, participantId], map: "ApplicantEvidenceSnapshot_owner_key")
+  @@index([participantId])
+}
+model ApplicantEvidenceSnapshotWithdrawal {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  snapshotId String @unique(map: "ApplicantEvidenceSnapshotWithdrawal_snapshot_key") @db.Uuid
+  participantId String @db.Uuid
+  withdrawnAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
+  snapshot ApplicantEvidenceSnapshot @relation(fields: [snapshotId, participantId], references: [id, participantId], onDelete: Restrict, onUpdate: Restrict, map: "ApplicantEvidenceSnapshotWithdrawal_owner_fkey")
+  participant Participant @relation(fields: [participantId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "ApplicantEvidenceSnapshotWithdrawal_participant_fkey")
+  @@index([participantId])
 }
 model RaidOffer {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
