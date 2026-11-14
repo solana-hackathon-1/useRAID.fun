@@ -83,6 +83,8 @@ export const ERROR_CONTRACT = {
   APPLICATION_EXISTS: [409, 'An application already exists.', false],
   NO_LONGER_OPEN: [409, 'This is no longer open.', false],
   CONSENT_REQUIRED: [409, 'Consent to the current terms is required first.', false],
+  CONSENT_USED: [409, 'This consent was already used to accept the Raid.', false],
+  CONSENT_WITHDRAWN: [409, 'This consent was withdrawn and cannot be used again.', false],
   ELIGIBILITY_NOT_MET: [403, 'The requirements for this Raid are not met.', false],
   SETUP_NOT_READY: [409, 'Setup is not finished yet.', false],
   NOT_AVAILABLE: [503, 'This is not available yet.', false],

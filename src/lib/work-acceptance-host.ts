@@ -145,11 +145,20 @@ export function createRootAcceptanceHost(config: RootAcceptanceConfig): Acceptan
       const consent = await read<{ id: string }>(
         tx,
         `SELECT c."id"::text FROM "WorkAcceptanceConsent" c JOIN "TermsVersion" t ON t."id"=c."termsVersionId"
-         WHERE c."participantId"=$1::uuid AND c."slotId"=$2::uuid AND c."termsVersionId"=$3::uuid AND c."termsDigest"=t."digest"`,
+         WHERE c."participantId"=$1::uuid AND c."slotId"=$2::uuid AND c."termsVersionId"=$3::uuid AND c."termsDigest"=t."digest"
+         FOR SHARE OF c`,
         [ctx.participantId, ctx.slotId, ctx.termsVersionId],
       );
       // Tell the person what to do next; it is about their own consent only and reveals nothing about others.
       if (consent.length !== 1) throw new WorkError('CONSENT_REQUIRED');
+      // DEC-2026-11-14-07: the consent row is held FOR SHARE to our commit, so a withdrawal (FOR UPDATE on it) either
+      // committed before this separate statement, which sees it, or waits for the engagement and is then CONSENT_USED.
+      const withdrawn = await read(
+        tx,
+        'SELECT 1 FROM "WorkAcceptanceConsentWithdrawal" WHERE "consentId"=$1::uuid',
+        [consent[0].id],
+      );
+      if (withdrawn.length) throw new WorkError('CONSENT_REQUIRED');
       let taxonomy;
       // Deliberately not wrapped by available(): the reader owns its errors, and its outage errors surface untyped as the same 503.
       try {

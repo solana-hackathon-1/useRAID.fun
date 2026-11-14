@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { ConsentResultSchema } from '../work-loop/consent-contracts';
+import { ConsentResultSchema, ConsentWithdrawalResultSchema } from '../work-loop/consent-contracts';
 import { CommittedEngagementSchema } from '../work-loop/engagement-contracts';
 import { StartResultSchema } from '../work-loop/start-contracts';
 import { ApplicationResultSchema, OfferResultSchema } from '../work-loop/admission-contracts';
@@ -110,6 +110,13 @@ export function createWorkClient(transport: WorkTransport = fetchTransport) {
       input: { slotId: string; termsVersionId: string; termsDigest: string },
       key: string,
     ) => call(ConsentResultSchema, 'POST', '/api/v1/work/consents', write(input, key)),
+    withdrawConsent: (consentId: string, key: string) =>
+      call(
+        ConsentWithdrawalResultSchema,
+        'POST',
+        `/api/v1/work/consents/${encodeURIComponent(consentId)}/withdrawal`,
+        write({}, key),
+      ),
     acceptRaid: (
       input: { slotId: string; termsVersionId: string; offerId?: string },
       key: string,
@@ -164,6 +171,16 @@ export function describeWorkFailure(error: unknown): { kind: FailureKind; messag
         return {
           kind: 'NONE',
           message: 'Confirm that you have read the current terms, then try again.',
+        };
+      case 'CONSENT_USED':
+        return {
+          kind: 'NONE',
+          message: 'This consent was already used to accept the Raid, so it cannot be withdrawn.',
+        };
+      case 'CONSENT_WITHDRAWN':
+        return {
+          kind: 'NONE',
+          message: 'You withdrew your consent to these terms, so it cannot be used again.',
         };
       case 'ELIGIBILITY_NOT_MET':
         return {

@@ -68,6 +68,9 @@ function host(overrides: Partial<WorkHttpHost> = {}): WorkHttpHost {
     recordConsent: async () => {
       throw new Error('unused');
     },
+    withdrawConsent: async () => {
+      throw new Error('unused');
+    },
     commitEngagement: async () => {
       throw new Error('unused');
     },
@@ -242,6 +245,8 @@ describe('T022 work workspace HTTP boundary', () => {
     ['PUBLICATION_BLOCKED', 409, 'NO_LONGER_OPEN'],
     ['ELIGIBILITY_REJECTED', 403, 'ELIGIBILITY_NOT_MET'],
     ['CONSENT_REQUIRED', 409, 'CONSENT_REQUIRED'],
+    ['CONSENT_USED', 409, 'CONSENT_USED'],
+    ['CONSENT_WITHDRAWN', 409, 'CONSENT_WITHDRAWN'],
     ['RESOURCES_NOT_READY', 409, 'SETUP_NOT_READY'],
     ['STORAGE_CONTRACT', 503, 'SERVICE_UNAVAILABLE'],
   ] as const)('maps domain error %s to a stable safe envelope', async (code, status, mapped) => {
@@ -336,6 +341,35 @@ describe('T022 work workspace HTTP boundary', () => {
       }),
     );
     expect((await drift.CONSENT(post('/api/v1/work/consents', request))).status).toBe(503);
+  });
+  it('withdraws a consent by id with an empty body and a key, and the result must name that consent', async () => {
+    const consentId = '66666666-6666-4666-8666-666666666666';
+    const withdrawal = {
+      id: '99999999-9999-4999-8999-999999999999',
+      consentId,
+      withdrawnAt: '2026-10-27T00:00:00.000Z',
+    };
+    const withdrawConsent = vi.fn(async () => ({ status: 'EXECUTED', withdrawal }));
+    const handlers = createWorkHandlers(host({ withdrawConsent }));
+    expect((await handlers.WITHDRAW_CONSENT(post('/x', {}), 'not-a-uuid')).status).toBe(422);
+    expect((await handlers.WITHDRAW_CONSENT(post('/x', { extra: 1 }), consentId)).status).toBe(422);
+    expect((await handlers.WITHDRAW_CONSENT(post('/x', {}), consentId)).status).toBe(200);
+    expect(withdrawConsent).toHaveBeenCalledOnce();
+    expect(withdrawConsent).toHaveBeenCalledWith({
+      actor,
+      input: { consentId },
+      idempotencyKey: 'key-1',
+      requestId: 'request-1',
+    });
+    const drift = createWorkHandlers(
+      host({
+        withdrawConsent: async () => ({
+          status: 'EXECUTED',
+          withdrawal: { ...withdrawal, consentId: '77777777-7777-4777-8777-777777777777' },
+        }),
+      }),
+    );
+    expect((await drift.WITHDRAW_CONSENT(post('/x', {}), consentId)).status).toBe(503);
   });
   const committed = () => {
     const terms = raidTerms();

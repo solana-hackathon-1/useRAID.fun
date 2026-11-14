@@ -60,6 +60,8 @@ export class WorkError extends Error {
       | 'AMENDMENT_EXISTS'
       | 'AMENDMENT_UNAVAILABLE'
       | 'CONSENT_REQUIRED'
+      | 'CONSENT_USED'
+      | 'CONSENT_WITHDRAWN'
       | 'REPLACEMENT_EXISTS'
       | 'STORAGE_CONTRACT',
     readonly currentEngagementId?: string,

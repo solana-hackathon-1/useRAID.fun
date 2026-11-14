@@ -51,6 +51,7 @@ describe('T022 work workspace browser client', () => {
     const applicationId = '77777777-7777-4777-8777-777777777777';
     await client.revokeOffer(offerId, 'k').catch(() => {});
     await client.withdrawApplication(applicationId, 'k').catch(() => {});
+    await client.withdrawConsent(applicationId, 'k').catch(() => {});
     await client.startEngagement(applicationId, 'k').catch(() => {});
     await client
       .submitApplication({ slotId: applicationId, termsVersionId: offerId, evidenceRefs: [] }, 'k')
@@ -70,6 +71,7 @@ describe('T022 work workspace browser client', () => {
     expect(t.request.mock.calls.map((c) => c[1])).toEqual([
       `/api/v1/work/offers/${offerId}/revocation`,
       `/api/v1/work/applications/${applicationId}/withdrawal`,
+      `/api/v1/work/consents/${applicationId}/withdrawal`,
       `/api/v1/work/engagements/${applicationId}/start`,
       '/api/v1/work/applications',
       '/api/v1/work/consents',
@@ -90,6 +92,8 @@ describe('T022 work workspace browser client', () => {
     [409, 'APPLICATION_EXISTS', 'NONE'],
     [409, 'NO_LONGER_OPEN', 'NONE'],
     [409, 'CONSENT_REQUIRED', 'NONE'],
+    [409, 'CONSENT_USED', 'NONE'],
+    [409, 'CONSENT_WITHDRAWN', 'NONE'],
     [403, 'ELIGIBILITY_NOT_MET', 'NONE'],
     [409, 'SETUP_NOT_READY', 'NONE'],
     [503, 'NOT_AVAILABLE', 'NONE'],

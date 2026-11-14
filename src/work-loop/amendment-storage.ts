@@ -137,25 +137,42 @@ async function founderTarget(tx: Tx, engagementId: string, actor: WorkActor, hos
   if (guildId === null) fail('FORBIDDEN');
   return guildId;
 }
-/** A proposal is acceptable only while its proposer still holds the Founder authority it was made under. */
-async function proposerStillAuthorized(tx: Tx, amendment: Row, host: AmendmentHost) {
-  // Fail closed: only acceptance needs this port, so a host without it can still propose, decline and withdraw.
-  if (typeof host.authorizeProposer !== 'function') fail('STORAGE_CONTRACT');
-  // The proposer has no session in the member's request: the host judges the account's current scoped authority.
+/** Whether the proposer still binds the engagement as Founder and the host still vouches for them as an account. */
+async function proposerHoldsAuthority(
+  tx: Tx,
+  amendment: Pick<Row, 'engagementId' | 'proposedByAccountId'>,
+  host: AmendmentHost,
+) {
+  // The proposer has no session in the caller's request: the host judges the account's current scoped authority.
   const account = amendment.proposedByAccountId;
   const guildId = await founderBinding(tx, amendment.engagementId, account);
-  if (
-    guildId === null ||
-    (await host.authorizeProposer(
+  return (
+    guildId !== null &&
+    (await host.authorizeProposer!(
       tx,
       { accountId: account },
       {
         engagementId: amendment.engagementId,
         guildId,
       },
-    )) !== true
-  )
-    fail('AMENDMENT_UNAVAILABLE');
+    )) === true
+  );
+}
+/** A proposal is acceptable only while its proposer still holds the Founder authority it was made under. */
+async function proposerStillAuthorized(tx: Tx, amendment: Row, host: AmendmentHost) {
+  // Fail closed: only acceptance needs this port, so a host without it can still propose, decline and withdraw.
+  if (typeof host.authorizeProposer !== 'function') fail('STORAGE_CONTRACT');
+  if (!(await proposerHoldsAuthority(tx, amendment, host))) fail('AMENDMENT_UNAVAILABLE');
+}
+/**
+ * DEC-2026-11-14-13 (#269-1): an open proposal whose proposer lost Founder authority is orphaned. A host without the
+ * proposer-authority port cannot tell an orphan from a live proposal, so nothing is ever treated as orphaned for it.
+ */
+async function isOrphaned(tx: Tx, amendment: Row, host: AmendmentHost) {
+  return (
+    typeof host.authorizeProposer === 'function' &&
+    !(await proposerHoldsAuthority(tx, amendment, host))
+  );
 }
 const lapsed = (terms: TermsSnapshot, at: Date) =>
   Date.parse(terms.deadlines.submission) <= at.getTime() ||
@@ -213,11 +230,14 @@ export async function proposeAmendment(tx: Tx, command: WorkCommand, host: Amend
       await founderTarget(tx, value.engagementId, actor, host);
       const engagement = await lockEngagement(tx, value.engagementId);
       if (!AMENDABLE.has(engagement.state)) fail('ENGAGEMENT_STATE');
-      const open = await tx.query(
-        'SELECT 1 FROM "EngagementAmendment" WHERE "engagementId"=$1::uuid AND "state"=\'PROPOSED\'',
+      // The engagement lock above serializes proposals, so the open one cannot change under this read.
+      const open = await tx.query<Row>(
+        `SELECT ${COLUMNS} FROM "EngagementAmendment" a WHERE a."engagementId"=$1::uuid AND a."state"='PROPOSED' FOR UPDATE`,
         [value.engagementId],
       );
-      if (open.length) fail('AMENDMENT_EXISTS');
+      // An orphaned proposal is lapsed by this proposal (below, once it is known to be valid); a live one still blocks.
+      const orphan = open.length ? open[0] : null;
+      if (orphan && !(await isOrphaned(tx, orphan, host))) fail('AMENDMENT_EXISTS');
       const before = await effective(tx, value.engagementId);
       const next = apply(before, value.changes);
       const digest = canonicalRequestDigest(next);
@@ -254,6 +274,11 @@ export async function proposeAmendment(tx: Tx, command: WorkCommand, host: Amend
         if (reused.length) fail('FUNDING_REQUIRED');
         fundingRef = reserved;
       }
+      if (orphan)
+        await tx.query(
+          'UPDATE "EngagementAmendment" SET "state"=\'LAPSED\',"decidedByAccountId"=$2,"decidedAt"=clock_timestamp() WHERE "id"=$1::uuid AND "state"=\'PROPOSED\' RETURNING "id"',
+          [orphan.id, actor.accountId],
+        );
       await tx.query(
         'INSERT INTO "EngagementAmendment" ("id","engagementId","sequence","snapshot","digest","proposedByAccountId","additionalFundingRef","expiresAt") VALUES ($1::uuid,$2::uuid,$3::int,$4::jsonb,$5,$6,$7,$8::timestamptz) RETURNING "id"',
         [
@@ -273,6 +298,17 @@ export async function proposeAmendment(tx: Tx, command: WorkCommand, host: Amend
       return {
         resultRef: ids.id,
         events: [
+          ...(orphan
+            ? [
+                {
+                  type: 'work.amendment_lapsed.v1',
+                  aggregateId: value.engagementId,
+                  aggregateVersion: orphan.sequence,
+                  guildId: engagement.guildId,
+                  payload: { amendmentId: orphan.id, engagementId: value.engagementId },
+                },
+              ]
+            : []),
           {
             type: 'work.amendment_proposed.v1',
             aggregateId: value.engagementId,

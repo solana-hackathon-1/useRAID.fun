@@ -14,6 +14,7 @@ import {
   withdrawApplicationFromHost,
   submitApplicationFromHost,
   recordConsentFromHost,
+  withdrawConsentFromHost,
   commitEngagementFromHost,
   startEngagementFromHost,
 } from './work-workspace-host';
@@ -51,6 +52,7 @@ export const workHandlers = createWorkHandlers({
   withdrawApplication: withdrawApplicationFromHost,
   submitApplication: submitApplicationFromHost,
   recordConsent: recordConsentFromHost,
+  withdrawConsent: withdrawConsentFromHost,
   commitEngagement: commitEngagementFromHost,
   startEngagement: startEngagementFromHost,
 });

@@ -124,7 +124,7 @@ export const AmendmentSchema = z.strictObject({
   id: z.uuid(),
   engagementId: z.uuid(),
   sequence: z.number().int().min(1),
-  state: z.enum(['PROPOSED', 'ACCEPTED', 'DECLINED', 'WITHDRAWN']),
+  state: z.enum(['PROPOSED', 'ACCEPTED', 'DECLINED', 'WITHDRAWN', 'LAPSED']),
   digest: z.string().regex(/^[0-9a-f]{64}$/),
   /** The complete terms that become effective only if the affected member consents. */
   terms: TermsSnapshotSchema,

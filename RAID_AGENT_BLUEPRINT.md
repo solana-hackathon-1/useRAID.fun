@@ -695,7 +695,7 @@ On 14 November 2026 the project owner told the coding agent to "use your recomme
 
 - Related decision: confirms DEC-2026-11-13-14 (c) unchanged: no new numeric window; a consent is usable only for its exact terms digest, only if unused and not withdrawn, and only until the slot's commitment deadline; the participant may withdraw an unused consent through an append-only withdrawal row.
 - Chosen policy/values (left open by that record): (1) withdrawing an unused consent is exempt from `WORK_ACCEPTANCE_ENABLED` and the write kill switch, because it only reduces commitment (as application withdrawal, DEC-2026-11-13-14 d); a suspended or signed-out account still cannot act. (2) Withdrawal and acceptance serialize on the consent row: whichever commits first wins; an acceptance never uses a withdrawn consent, and a used consent cannot be withdrawn (`CONSENT_USED`). (3) Withdrawal changes no accepted engagement and releases no capacity on its own.
-- Status: owner-delegated, agent-decided. Not delivered (needs one additive migration).
+- Status: owner-delegated, agent-decided. Delivered in migration `202611140001_consent_withdrawal_amendment_lapse` (`docs/raid-work-acceptance.md`); independent review of the capacity/terms and migration boundary is still required.
 - Affected requirements/contracts: I01, I02, I04, R12, AC11–AC13, AC17; sections 10.2, 12–13; `docs/raid-work-acceptance.md`.
 - Required verification: real-PostgreSQL tests (withdraw then accept refused; accept then withdraw refused; the two racing in separate transactions; withdrawal with the flag off and writes disabled; suspended account refused); independent review (capacity/terms, migration).
 - Supersedes / superseded by: none; extends DEC-2026-11-13-14 (c).
@@ -728,7 +728,7 @@ On 14 November 2026 the project owner told the coding agent to "use your recomme
 
 **DEC-2026-11-14-13 — Orphaned work amendment proposals ([#269](https://github.com/solana-hackathon-1/useRAID.fun/issues/269) item 1)**
 
-- Chosen policy/values: confirms DEC-2026-11-13-14 (a) unchanged (a proposal whose proposer lost listing authority is lapsed; consent refused, decline still allowed; a new proposal by a currently authorized proposer records it as lapsed instead of `AMENDMENT_EXISTS`; no operator withdraw power; accepted terms never change). Not delivered. The #269 MINOR test/host-typing points are engineering follow-ups, not decisions. Status: owner-delegated, agent-decided. Supersedes: none.
+- Chosen policy/values: confirms DEC-2026-11-13-14 (a) unchanged (a proposal whose proposer lost listing authority is lapsed; consent refused, decline still allowed; a new proposal by a currently authorized proposer records it as lapsed instead of `AMENDMENT_EXISTS`; no operator withdraw power; accepted terms never change). Delivered in migration `202611140001_consent_withdrawal_amendment_lapse` (new `LAPSED` amendment state; `docs/raid-work-amendments.md`). The #269 MINOR test/host-typing points are engineering follow-ups, not decisions. Status: owner-delegated, agent-decided. Supersedes: none.
 
 **DEC-2026-11-14-14 — Non-money parts of O05 and O11**
 

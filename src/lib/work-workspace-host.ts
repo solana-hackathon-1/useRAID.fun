@@ -13,7 +13,7 @@ import {
   readReviewQueue,
   readApplicantQueue,
 } from '../work-loop/workspace-storage';
-import { recordAcceptanceConsent } from '../work-loop/consent-storage';
+import { recordAcceptanceConsent, withdrawAcceptanceConsent } from '../work-loop/consent-storage';
 import { commitEngagement } from '../work-loop/engagement-storage';
 import { createRootAcceptanceHost } from './work-acceptance-host';
 import { startEngagement } from '../work-loop/start-storage';
@@ -121,6 +121,14 @@ export async function recordConsentFromHost(command: WorkCommand) {
   return runCommandTransaction(db, (tx) =>
     recordAcceptanceConsent(tx, command, { allowNewWrites }),
   );
+}
+/**
+ * DEC-2026-11-14-07: withdrawing an unused consent only reduces commitment, so neither `WORK_ACCEPTANCE_ENABLED`, its
+ * taxonomy nor any write switch gates it (as application withdrawal). Workspace reads are still required.
+ */
+export async function withdrawConsentFromHost(command: WorkCommand) {
+  requireReads();
+  return runCommandTransaction(db, (tx) => withdrawAcceptanceConsent(tx, command));
 }
 export async function commitEngagementFromHost(command: WorkCommand) {
   requireReads();
