@@ -3,13 +3,16 @@ import {
   type CommandReceiptTransaction as Tx,
 } from '../command-receipts';
 import { TermsSnapshotSchema } from '../contracts/entities';
-import type { WorkCommand } from './contracts';
+import type { WorkActor, WorkCommand } from './contracts';
 import {
+  WORK_CLOSURE_PRINCIPAL,
   CloseOverdueInput,
   CloseResultSchema,
   ClosureSchema,
   OwnClosureSchema,
+  type ClosureCaller,
   type ClosureHost,
+  type ServicePrincipalCommand,
 } from './closure-contracts';
 import { fail, validate, session, currentActor, currentHuman, clock } from './engagement-authority';
 
@@ -21,6 +24,8 @@ const TIMEOUT_REASON: Readonly<Record<string, ClosureReason>> = {
   SUBMITTED: 'REVIEW_TIMEOUT',
   REVISION_REQUESTED: 'REVISION_TIMEOUT',
 };
+/** Who closed: a human account, or the named service principal (never both, never neither: database CHECK). */
+export type Closer = { accountId: string } | { principal: typeof WORK_CLOSURE_PRINCIPAL };
 /**
  * Closes the work duty in the caller's transaction: closure record, terminal state and release of exactly this
  * engagement's own participant reservations. Never touches rewards, accepted terms or another engagement's capacity.
@@ -31,12 +36,18 @@ export async function closeEngagement(
   engagementId: string,
   participantIds: readonly string[],
   reason: ClosureReason,
-  closedByAccountId: string,
+  closer: Closer,
 ) {
   const finalState = reason === 'ACCEPTED' ? 'ACCEPTED' : 'TERMINATED';
   await tx.query(
-    'INSERT INTO "EngagementClosure" ("engagementId","reason","finalState","closedByAccountId") VALUES ($1::uuid,$2,$3,$4) RETURNING "engagementId"',
-    [engagementId, reason, finalState, closedByAccountId],
+    'INSERT INTO "EngagementClosure" ("engagementId","reason","finalState","closedByAccountId","closedByPrincipal") VALUES ($1::uuid,$2,$3,$4,$5) RETURNING "engagementId"',
+    [
+      engagementId,
+      reason,
+      finalState,
+      'accountId' in closer ? closer.accountId : null,
+      'principal' in closer ? closer.principal : null,
+    ],
   );
   await tx.query(
     'UPDATE "Engagement" SET "state"=$2,"revision"="revision"+1 WHERE "id"=$1::uuid RETURNING "id"',
@@ -68,30 +79,67 @@ async function readClosure(tx: Tx, engagementId: string) {
   return parsed.data;
 }
 /** Operations closure once the accepted operational deadline has passed. Silence decides no money and no fault. */
-export async function closeOverdueEngagement(tx: Tx, command: WorkCommand, host: ClosureHost) {
+export function closeOverdueEngagement(tx: Tx, command: WorkCommand, host: ClosureHost) {
   validate(tx, command?.actor);
+  // The host and the body see only a plain account actor: any extra key on the presented object (such as `principal`)
+  // is dropped here, so a caller cannot be mistaken for the service principal.
+  const { accountId, sessionHash } = command.actor;
+  return closeOverdue(tx, { ...command, caller: { accountId, sessionHash } }, host);
+}
+/**
+ * The scheduled variant: the `work-closure` service principal (DEC-2026-11-14-08) closes an overdue engagement. It has
+ * no Session or account to prove, so the host authorizes it (timeout closure only) and the closure records the
+ * principal, not a borrowed human. Any other principal value is refused; the HTTP route never calls this.
+ */
+export function closeOverdueEngagementAsPrincipal(
+  tx: Tx,
+  command: ServicePrincipalCommand,
+  host: ClosureHost,
+) {
+  if (command?.principal !== WORK_CLOSURE_PRINCIPAL) fail('UNAUTHENTICATED');
+  return closeOverdue(
+    tx,
+    {
+      caller: { principal: command.principal },
+      input: command.input,
+      idempotencyKey: command.idempotencyKey,
+      requestId: command.requestId,
+    },
+    host,
+  );
+}
+async function closeOverdue(
+  tx: Tx,
+  command: { caller: ClosureCaller; input: unknown; idempotencyKey: string; requestId: string },
+  host: ClosureHost,
+) {
   if (typeof host?.allowNewWrites !== 'boolean' || typeof host.authorize !== 'function')
     fail('STORAGE_CONTRACT');
   const parsed = CloseOverdueInput.safeParse(command.input);
   if (!parsed.success) fail('INVALID_INPUT');
   const value = parsed.data,
-    actor = command.actor;
-  await session(tx, actor);
+    caller = command.caller;
+  // A human proves a current Session and identity locks; the principal has no identity to lock (it is not a User row).
+  const human: WorkActor | null = 'accountId' in caller ? caller : null;
+  const closer: Closer = human
+    ? { accountId: human.accountId }
+    : { principal: WORK_CLOSURE_PRINCIPAL };
+  if (human) await session(tx, human);
   /** Current operations authority over this engagement, asked of the host in this transaction. */
   const authorized = async (guildId: string, engagementId: string = value.engagementId) =>
-    (await host.authorize(tx, actor, { engagementId, guildId })) === true;
+    (await host.authorize(tx, caller, { engagementId, guildId })) === true;
   let locks: Awaited<ReturnType<typeof currentActor>> | undefined;
   const receipt = await executeIdempotentCommand(
     tx,
     {
-      actorId: actor.accountId,
+      actorId: human ? human.accountId : WORK_CLOSURE_PRINCIPAL,
       commandKind: 'CloseOverdueEngagement',
       idempotencyKey: command.idempotencyKey,
       requestId: command.requestId,
       request: value,
     },
     async () => {
-      locks = await currentActor(tx, actor);
+      if (human) locks = await currentActor(tx, human);
       // Missing and unauthorized engagements are one indistinguishable denial.
       const ref = await tx.query<{ guildId: string }>(
         'SELECT "guildId" FROM "Engagement" WHERE "id"=$1::uuid',
@@ -125,14 +173,14 @@ export async function closeOverdueEngagement(tx: Tx, command: WorkCommand, host:
         [value.engagementId],
       );
       // Authority is proven again after the engagement lock wait.
-      await currentActor(tx, actor, locks);
+      if (human) await currentActor(tx, human, locks);
       if (!(await authorized(e.guildId))) fail('FORBIDDEN');
       await closeEngagement(
         tx,
         value.engagementId,
         members.map((m) => m.participantId),
         reason,
-        actor.accountId,
+        closer,
       );
       return {
         resultRef: value.engagementId,
@@ -148,7 +196,7 @@ export async function closeOverdueEngagement(tx: Tx, command: WorkCommand, host:
       };
     },
   );
-  await currentActor(tx, actor, locks);
+  if (human) await currentActor(tx, human, locks);
   // A fresh closure already proved authority after the engagement lock, in this transaction. A replayed receipt ran no
   // command body, so it is read back only while the closer still holds the authority it was made under.
   if (receipt.status === 'REPLAYED') {
@@ -162,7 +210,7 @@ export async function closeOverdueEngagement(tx: Tx, command: WorkCommand, host:
     status: receipt.status,
     closure: await readClosure(tx, receipt.resultRef),
   });
-  await session(tx, actor);
+  if (human) await session(tx, human);
   return result;
 }
 /** The member's own view of a closed engagement: closure facts plus the preserved, still-unsettled claims. */

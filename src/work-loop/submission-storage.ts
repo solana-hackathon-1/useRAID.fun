@@ -261,7 +261,7 @@ export async function decideReview(tx: Tx, command: WorkCommand, host: Submissio
           e.id,
           members.map((m) => m.participantId),
           'ACCEPTED',
-          actor.accountId,
+          { accountId: actor.accountId },
         );
       } else if (value.decision === 'REQUEST_REVISION') {
         await tx.query(

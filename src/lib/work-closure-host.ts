@@ -1,5 +1,5 @@
-import { WorkError, type WorkCommand } from '../work-loop/contracts';
-import type { ClosureHost } from '../work-loop/closure-contracts';
+import type { WorkCommand } from '../work-loop/contracts';
+import { WORK_CLOSURE_PRINCIPAL, type ClosureHost } from '../work-loop/closure-contracts';
 import { closeOverdueEngagement } from '../work-loop/closure-storage';
 import { closeOverdueBatch } from '../work-loop/closure-pass';
 import { workClosureEnabled } from './config';
@@ -19,7 +19,14 @@ export function createRootClosureHost(
 ): ClosureHost {
   return {
     allowNewWrites,
-    authorize: async (_tx, actor) => isOperator(actor.accountId),
+    // A human is recognized by `accountId` first (storage passes humans only `{accountId, sessionHash}`), so an actor
+    // that also carries a `principal` key is still checked against the operator allowlist. The service principal has
+    // no account, is authorized for the worker's timeout closure only (the storage command refuses it anything else)
+    // and is not on the operator allowlist.
+    authorize: async (_tx, actor) =>
+      'accountId' in actor
+        ? isOperator(actor.accountId)
+        : actor.principal === WORK_CLOSURE_PRINCIPAL,
   };
 }
 /** HTTP entry. `WORK_CLOSURE_ENABLED` is the only write switch; a replay of an earlier closure is still answered. */
@@ -27,44 +34,20 @@ export async function closeEngagementFromHost(command: WorkCommand) {
   const host = createRootClosureHost(workClosureEnabled());
   return runCommandTransaction(db, (tx) => closeOverdueEngagement(tx, command, host));
 }
-/** A persistent missing-session outage is raised again after this long, so one lost log line cannot hide it. */
-export const WORK_CLOSURE_REALARM_MS = 15 * 60 * 1000;
-let sessionOutageReportedAt: number | null = null;
 /**
- * Worker entry: one bounded pass. Off unless `WORK_CLOSURE_ENABLED` is exactly true and `WORK_CLOSURE_WORKER_ACCOUNT_ID`
- * names an operator account; the pass presents that account's own current Session and fails closed without one.
- * Failures that need an operator are thrown after the pass so the worker logs them; a missing worker session is
- * thrown once per outage (the pass keeps failing closed), again every `WORK_CLOSURE_REALARM_MS` while it persists, and
- * again after it has recovered. The injectable clock is for tests.
+ * Worker entry: one bounded pass. Off unless `WORK_CLOSURE_ENABLED` is exactly true. The pass acts as the credential-less
+ * `work-closure` service principal (DEC-2026-11-14-08), so it needs no account, Session or allowlist entry, and the
+ * retired `WORK_CLOSURE_WORKER_ACCOUNT_ID` is ignored. Failures that need an operator are thrown after the pass so the
+ * worker logs them.
  */
-export async function runWorkClosureWorker(now: () => number = Date.now) {
-  const workerAccountId = (process.env.WORK_CLOSURE_WORKER_ACCOUNT_ID ?? '').trim();
-  if (!workClosureEnabled() || !workerAccountId) return null;
-  let result;
-  try {
-    result = await closeOverdueBatch({
-      run: (work) => runCommandTransaction(db, work),
-      host: createRootClosureHost(true),
-      workerAccountId,
-      // Value-free lines (ids, codes, counts) are written when they happen, not after the pass.
-      log: (line) => console.error(JSON.stringify({ ...line, ...correlationFields() })),
-    });
-  } catch (error) {
-    // No live session for the worker account: the pass fails closed on every tick. Raise it once per outage and then
-    // at a bounded interval, so the log stays readable but a lost line cannot hide a persistent outage; any other
-    // failure is always raised.
-    if (error instanceof WorkError && error.code === 'UNAUTHENTICATED') {
-      const at = now();
-      if (
-        sessionOutageReportedAt !== null &&
-        at - sessionOutageReportedAt < WORK_CLOSURE_REALARM_MS
-      )
-        return null;
-      sessionOutageReportedAt = at;
-    }
-    throw error;
-  }
-  sessionOutageReportedAt = null;
+export async function runWorkClosureWorker() {
+  if (!workClosureEnabled()) return null;
+  const result = await closeOverdueBatch({
+    run: (work) => runCommandTransaction(db, work),
+    host: createRootClosureHost(true),
+    // Value-free lines (ids, codes, counts) are written when they happen, not after the pass.
+    log: (line) => console.error(JSON.stringify({ ...line, ...correlationFields() })),
+  });
   // The stuck alert (one per engagement, at the 10th consecutive failure) was logged by the pass itself. Systemic
   // refusals are not backed off per engagement; the single summary below, codes only, is their one log line.
   if (result.failed.length)

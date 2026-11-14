@@ -100,7 +100,6 @@ const operatorId = 'ops-' + randomUUID();
 const ports = (over: Partial<ClosurePassPorts> = {}): ClosurePassPorts => ({
   run: (work) => runCommandTransaction(db, work),
   host: createRootClosureHost(true, (id) => id === operatorId),
-  workerAccountId: operatorId,
   limit: 25,
   ...over,
 });
@@ -123,7 +122,6 @@ integration('T024 root composition: worker closure and operator closure route', 
       review: at(60000),
       operationalClosure: at(61000),
     });
-    await seedWorkHuman(db, operatorId);
     expect(await closeOverdueBatch(ports())).toMatchObject({ considered: 0, closed: 0 });
     await untilPast(deadlines.operationalClosure);
     const first = await closeOverdueBatch(ports({ limit: 2 }));
@@ -152,7 +150,6 @@ integration('T024 root composition: worker closure and operator closure route', 
     const sub = await run((tx) =>
       submitWork(tx, cmd(worker.actor, work(engagementId)), { allowNewWrites: true }),
     );
-    await seedWorkHuman(db, operatorId);
     await untilPast(deadlines.operationalClosure);
     let reads = 0;
     const result = await closeOverdueBatch(
@@ -197,7 +194,6 @@ integration('T024 root composition: worker closure and operator closure route', 
       submitWork(tx, cmd(raced.worker.actor, work(raced.engagementId)), { allowNewWrites: true }),
     );
     const others = [await setup(deadlines), await setup(deadlines), await setup(deadlines)];
-    await seedWorkHuman(db, operatorId);
     await untilPast(deadlines.operationalClosure);
     const [review, ...passes] = await Promise.allSettled([
       run((tx) =>
@@ -258,7 +254,6 @@ integration('T024 root composition: worker closure and operator closure route', 
     const sub = await run((tx) =>
       submitWork(tx, cmd(worker.actor, work(engagementId)), { allowNewWrites: true }),
     );
-    await seedWorkHuman(db, operatorId);
     await untilPast(deadlines.operationalClosure);
     expect(await closeOverdueBatch(ports())).toMatchObject({ closed: 1, failed: [] });
     await expect(
@@ -276,7 +271,6 @@ integration('T024 root composition: worker closure and operator closure route', 
     const deadlines = soon();
     const racing = await setup(deadlines);
     await start(racing.engagementId);
-    await seedWorkHuman(db, operatorId);
     await untilPast(deadlines.operationalClosure);
     const [submitted, pass] = await Promise.allSettled([
       run((tx) =>
@@ -383,7 +377,6 @@ integration('T024 root composition: worker closure and operator closure route', 
     const stale2 = await setup({ ...base, operationalClosure: at(8900) });
     const fresh = await setup({ ...base, operationalClosure: at(9000) });
     const fresh2 = await setup({ ...base, operationalClosure: at(9100) });
-    await seedWorkHuman(db, operatorId);
     await untilPast(at(9100));
     const broken = new Set<string>([stale.engagementId, stale2.engagementId]);
     const host = {
@@ -412,7 +405,6 @@ integration('T024 root composition: worker closure and operator closure route', 
     const rows = [];
     for (const ms of [8800, 8850, 8900, 8950])
       rows.push(await setup({ ...base, operationalClosure: at(ms) }));
-    await seedWorkHuman(db, operatorId);
     await untilPast(at(8950));
     const host = { allowNewWrites: true, authorize: async () => false };
     // `limit` is larger than the failure budget, so only `maxFailures` can stop this pass at two of four rows.
@@ -436,7 +428,6 @@ integration('T024 root composition: worker closure and operator closure route', 
     const base = soon();
     const poison = await setup({ ...base, operationalClosure: at(8800) });
     const healthy = await setup({ ...base, operationalClosure: at(9000) });
-    await seedWorkHuman(db, operatorId);
     await db.$transaction(async (t) => {
       await t.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
       await t.$executeRawUnsafe(
@@ -452,16 +443,13 @@ integration('T024 root composition: worker closure and operator closure route', 
     expect((await engagement(poison.engagementId)).state).toBe('ACCESS_PENDING');
   }, 60000);
 
-  it('refuses a worker account without a live session or without operator authority', async () => {
+  it('needs no worker account, session or allowlist, and a denying host or a closed switch closes nothing', async () => {
     const deadlines = soon();
     const a = await setup(deadlines);
     await untilPast(deadlines.operationalClosure);
-    // No session for the configured account at all.
-    await expect(closeOverdueBatch(ports())).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
-    await seedWorkHuman(db, operatorId);
-    // A live session but no operator authority: each engagement is refused and nothing closes.
+    // The host refuses the principal: each engagement is refused and nothing closes.
     const denied = await closeOverdueBatch(
-      ports({ host: createRootClosureHost(true, () => false) }),
+      ports({ host: { allowNewWrites: true, authorize: async () => false } }),
     );
     expect(denied.closed).toBe(0);
     expect(denied.failed).toEqual([{ engagementId: a.engagementId, code: 'FORBIDDEN' }]);
@@ -552,7 +540,6 @@ integration('T024 root composition: worker closure and operator closure route', 
     };
     async function overdue() {
       const a = await setup(soon());
-      await seedWorkHuman(db, operatorId);
       await untilPast(soon().operationalClosure);
       return a;
     }
@@ -782,7 +769,6 @@ integration('T024 root composition: worker closure and operator closure route', 
 
     it('backs off an engagement whose terms cannot be read', async () => {
       const poison = await setup({ ...soon(), operationalClosure: at(8800) });
-      await seedWorkHuman(db, operatorId);
       await db.$transaction(async (t) => {
         await t.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
         await t.$executeRawUnsafe(

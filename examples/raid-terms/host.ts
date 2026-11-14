@@ -670,7 +670,7 @@ try {
   // Operations closure is deadline-gated: the first member's pending engagement is not yet overdue.
   const closures: ClosureHost = {
     allowNewWrites: true,
-    authorize: async (_tx, a) => a.accountId === reviewer.accountId,
+    authorize: async (_tx, a) => 'accountId' in a && a.accountId === reviewer.accountId,
   };
   const pendingEngagement = (
     await pool.query(

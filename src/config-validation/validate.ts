@@ -15,6 +15,7 @@ export type ViolationCode =
   | 'UNKNOWN_FLAG'
   | 'ENVIRONMENT_NOT_RECOGNISED'
   | 'FLAG_SETTING_MISSING'
+  | 'RETIRED_SETTING'
   | 'REAL_OPERATION_AUTHORITY_MISSING'
   | 'REAL_OPERATION_IN_DEMO'
   | 'SIGNER_SECRET_ON_WEB'
@@ -54,6 +55,13 @@ export const REAL_MONEY_FLAGS = Object.freeze([
   ...REAL_OPERATION_FLAGS,
   'LIVE_COLLECTION_APPROVED',
 ]);
+
+/**
+ * Settings that were removed and are now ignored. `WORK_CLOSURE_WORKER_ACCOUNT_ID` named a human operator account the
+ * closure worker borrowed; worker closes now act as the credential-less `work-closure` service principal
+ * (DEC-2026-11-14-08, #352).
+ */
+export const RETIRED_SETTINGS = Object.freeze(['WORK_CLOSURE_WORKER_ACCOUNT_ID']);
 
 /** Values of `RAID_ENVIRONMENT` the non-production label recognises (kept equal to `deploymentEnvironment` by a test). */
 export const RECOGNISED_ENVIRONMENTS = Object.freeze([
@@ -189,6 +197,9 @@ export function validateRuntimeConfig(env: ConfigEnv, role: ConfigRole): ConfigV
   for (const flag of FLAG_CATALOG)
     if (flag.requires && isTrue(env, flag.name) && !present(env, flag.requires))
       add('WARN', 'FLAG_SETTING_MISSING', `${flag.name}>${flag.requires}`);
+
+  // Retired settings that no longer do anything: named so an operator removes them; the value is never reported.
+  for (const name of RETIRED_SETTINGS) if (present(env, name)) add('WARN', 'RETIRED_SETTING', name);
 
   const realOperations = REAL_OPERATION_FLAGS.filter((name) => isTrue(env, name));
   const missing = (name: string) => add('REFUSE', 'REAL_OPERATION_AUTHORITY_MISSING', name);

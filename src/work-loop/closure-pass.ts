@@ -1,18 +1,17 @@
 import type { CommandReceiptTransaction as Tx } from '../command-receipts';
-import { WorkError, type WorkActor } from './contracts';
-import type { ClosureHost } from './closure-contracts';
-import { closeOverdueEngagement } from './closure-storage';
+import { WorkError } from './contracts';
+import { WORK_CLOSURE_PRINCIPAL, type ClosureHost } from './closure-contracts';
+import { closeOverdueEngagementAsPrincipal } from './closure-storage';
 
 /**
  * Explicit host dependencies of one scheduled closure pass. The host owns the transaction runner (each call must be an
- * independent whole transaction that retries itself on deadlock or serialization failure), the operations authority
- * and the single account the pass acts as. No ambient configuration is read here.
+ * independent whole transaction that retries itself on deadlock or serialization failure) and the authority for the
+ * `work-closure` service principal the pass acts as (DEC-2026-11-14-08): it has no account, Session or credential.
+ * No ambient configuration is read here.
  */
 export interface ClosurePassPorts {
   run<T>(work: (tx: Tx) => Promise<T>): Promise<T>;
   host: ClosureHost;
-  /** The operations account whose current canonical Session the pass presents; it must also pass `host.authorize`. */
-  workerAccountId: string;
   /** Engagements closed or settled per pass (1–100, default 25), oldest deadline first. */
   limit?: number;
   /**
@@ -117,28 +116,17 @@ export async function closeOverdueBatch(ports: ClosurePassPorts): Promise<Closur
     !Number.isInteger(maxFailures) ||
     maxFailures < 1 ||
     maxFailures > 100 ||
-    typeof ports.run !== 'function' ||
-    typeof ports.workerAccountId !== 'string' ||
-    !ports.workerAccountId
+    typeof ports.run !== 'function'
   )
     throw new WorkError('STORAGE_CONTRACT');
   const handled: string[] = [];
-  const { actor, first } = await ports.run(async (tx) => {
-    const sessions = await tx.query<{ tokenHash: string }>(
-      `SELECT "tokenHash" FROM "Session" WHERE "userId"=$1 AND "via" IN ('wallet','x') AND "expiresAt">(clock_timestamp() AT TIME ZONE 'UTC') ORDER BY "expiresAt" DESC LIMIT 1`,
-      [ports.workerAccountId],
-    );
-    if (sessions.length !== 1) throw new WorkError('UNAUTHENTICATED');
-    const actor: WorkActor = {
-      accountId: ports.workerAccountId,
-      sessionHash: sessions[0].tokenHash,
-    };
+  const first = await ports.run(async (tx) => {
     // A record for an engagement that is no longer active (closed, settled or moved on) has nothing left to retry.
     await tx.query(
       `DELETE FROM "EngagementClosureBackoff" k WHERE NOT EXISTS (SELECT 1 FROM "Engagement" e WHERE e."id"=k."engagementId" AND e."state" IN ${ACTIVE})`,
       [],
     );
-    return { actor, first: await selectCandidates(tx, handled, limit) };
+    return selectCandidates(tx, handled, limit);
   });
   const result: ClosurePassResult = {
     considered: 0,
@@ -172,10 +160,10 @@ export async function closeOverdueBatch(ports: ClosurePassPorts): Promise<Closur
       const key = `closure:${engagementId}:${revision}`;
       try {
         const closed = await ports.run(async (tx) => {
-          const outcome = await closeOverdueEngagement(
+          const outcome = await closeOverdueEngagementAsPrincipal(
             tx,
             {
-              actor,
+              principal: WORK_CLOSURE_PRINCIPAL,
               input: { engagementId, expectedRevision: revision },
               idempotencyKey: key,
               requestId: key,

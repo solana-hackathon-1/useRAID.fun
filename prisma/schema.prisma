@@ -1631,11 +1631,13 @@ model EngagementClosure {
   engagementId String @id @db.Uuid
   reason String
   finalState String
-  closedByAccountId String
+  // Exactly one of these is set (database CHECK): a human account, or the named service principal `work-closure`.
+  closedByAccountId String?
+  closedByPrincipal String?
   financialResolution String @default("OPEN")
   closedAt DateTime @default(dbgenerated("clock_timestamp()")) @db.Timestamptz(6)
   engagement Engagement @relation(fields: [engagementId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  closedBy User @relation(fields: [closedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  closedBy User? @relation(fields: [closedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)
 }
 // Scheduled closure back-off (DEC-2026-11-13-06 a): operational retry state only; absent means "attempt now".
 model EngagementClosureBackoff {
