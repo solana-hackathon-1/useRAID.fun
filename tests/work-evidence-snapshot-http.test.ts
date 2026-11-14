@@ -212,17 +212,17 @@ describe('#331 Root host flags', () => {
     expect(port.view).not.toHaveBeenCalled();
     expect(port.record).not.toHaveBeenCalled();
   });
-  it('needs the workspace read switch as well', async () => {
+  it('needs the workspace read switch as well to view or share', async () => {
     vi.stubEnv('WORK_EVIDENCE_SNAPSHOT_ENABLED', 'true');
     await expect(readEvidenceSnapshotFromHost(actor, applicationId)).rejects.toMatchObject({
       code: 'WRITES_DISABLED',
     });
-    await expect(withdrawEvidenceSnapshotFromHost(command)).rejects.toMatchObject({
+    await expect(recordEvidenceSnapshotFromHost(command)).rejects.toMatchObject({
       code: 'WRITES_DISABLED',
     });
   });
-  it('never lets the feature flag trap an applicant who wants to withdraw', async () => {
-    vi.stubEnv('WORK_WORKSPACE_READS_ENABLED', 'true');
+  it('never lets any switch trap an applicant who wants to withdraw', async () => {
+    // Neither the feature flag nor the workspace read switch is set.
     port.withdraw.mockResolvedValue('withdrawn');
     expect(await withdrawEvidenceSnapshotFromHost(command)).toBe('withdrawn');
     expect(port.withdraw).toHaveBeenCalledWith(port.tx, command);

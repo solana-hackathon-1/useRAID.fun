@@ -72,7 +72,7 @@ export const EvidenceSnapshotWithdrawalResultSchema = z.strictObject({
 });
 /**
  * What a caller may see. `snapshot` is present only while `availability` is SHARED, for both roles. The reviewer
- * never learns more than the snapshot; WITHDRAWN and CLOSED carry no content.
+ * never learns more than the snapshot and is only ever told SHARED or NOT_SHARED; WITHDRAWN and CLOSED are for the applicant.
  */
 export const EvidenceSnapshotViewSchema = z
   .strictObject({

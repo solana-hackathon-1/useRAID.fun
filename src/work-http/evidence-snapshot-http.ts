@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { InternalId } from '../contracts/ids';
-import type { ErrorCode } from '../contracts/protocol';
 import { readBoundedJson } from '../http-contracts/json';
 import type { WorkActor, WorkCommand } from '../work-loop/contracts';
 import {
@@ -27,11 +26,6 @@ const Actor = z.strictObject({
   sessionHash: z.string().regex(/^[a-f0-9]{64}$/),
 });
 const NoBody = z.strictObject({});
-/** A second snapshot means refresh the current record; a closed or withdrawn one cannot change, so it is "no longer open". */
-const SNAPSHOT_CODES: Readonly<Record<string, ErrorCode>> = {
-  EVIDENCE_SNAPSHOT_EXISTS: 'REVISION_CHANGED',
-  EVIDENCE_SNAPSHOT_UNAVAILABLE: 'NO_LONGER_OPEN',
-};
 const methodNotAllowed = (id: string) =>
   Response.json(
     {
@@ -75,7 +69,7 @@ export function createEvidenceSnapshotHandlers(host: EvidenceSnapshotHttpHost) {
       if (new URL(request.url).searchParams.size) return workInvalid();
       return Response.json(await work(a.data, id), { headers: workPrivateHeaders });
     } catch (e) {
-      return workFailure(e, id, SNAPSHOT_CODES);
+      return workFailure(e, id);
     }
   }
   const key = (request: Request) => {

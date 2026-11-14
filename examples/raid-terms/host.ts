@@ -455,6 +455,11 @@ try {
     'C',
     'The snapshot is frozen when taken.',
   );
+  await assert.rejects(
+    transaction((tx) => readEvidenceSnapshot(tx, actor, randomUUID(), evidenceHost)),
+    (e: unknown) => (e as { code: string }).code === 'FORBIDDEN',
+    'A missing application is indistinguishable from a forbidden one.',
+  );
   const stranger = { accountId: 'synthetic-stranger', sessionHash: 'e'.repeat(64) };
   await pool.query('INSERT INTO "User" ("id") VALUES ($1)', [stranger.accountId]);
   await pool.query(
@@ -476,7 +481,8 @@ try {
         readEvidenceSnapshot(tx, actor, application.application.id, evidenceHost),
       )
     ).availability,
-    'WITHDRAWN',
+    'NOT_SHARED',
+    'The reviewer is only told nothing is shared.',
   );
   await pool.query('INSERT INTO "HostAcceptance" VALUES ($1::uuid,$2::uuid,$3::uuid,$4,$5,$6)', [
     appSlot.slotId,

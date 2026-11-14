@@ -200,7 +200,15 @@ integration('#331 applicant-consented per-application evidence snapshot', () => 
     await expect(
       view(s.founder.actor, s.applicationId, snapshotHost({ authorize: async () => false })),
     ).rejects.toMatchObject({ code: 'FORBIDDEN' });
-    await expect(view(s.founder.actor, randomUUID())).rejects.toMatchObject({ code: 'NOT_FOUND' });
+    // A missing application is indistinguishable from one the caller may not touch: no existence oracle.
+    const missing = randomUUID();
+    for (const call of [
+      () => view(stranger.actor, missing),
+      () => share(stranger.actor, missing),
+      () => unshare(stranger.actor, missing),
+    ])
+      await expect(call()).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    await expect(view(s.founder.actor, missing)).rejects.toMatchObject({ code: 'FORBIDDEN' });
     await expect(
       view({ ...s.founder.actor, sessionHash: 'e'.repeat(64) }, s.applicationId),
     ).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
@@ -212,16 +220,22 @@ integration('#331 applicant-consented per-application evidence snapshot', () => 
     const own = await view(s.applicant.actor, s.applicationId);
     expect(own).toMatchObject({ role: 'APPLICANT', availability: 'SHARED' });
     expect((await unshare(s.applicant.actor, s.applicationId)).status).toBe('EXECUTED');
+    // The reviewer is only told nothing is shared; the applicant alone is told it was withdrawn.
     const seen = await view(s.founder.actor, s.applicationId);
-    expect(seen).toMatchObject({ availability: 'WITHDRAWN', snapshot: null });
+    expect(seen).toMatchObject({ role: 'REVIEWER', availability: 'NOT_SHARED', snapshot: null });
     expect(JSON.stringify(seen)).not.toContain('writing');
+    expect(await view(s.applicant.actor, s.applicationId)).toMatchObject({
+      role: 'APPLICANT',
+      availability: 'WITHDRAWN',
+      snapshot: null,
+    });
     await expect(unshare(s.applicant.actor, s.applicationId)).rejects.toMatchObject({
       code: 'EVIDENCE_SNAPSHOT_UNAVAILABLE',
     });
     await expect(share(s.applicant.actor, s.applicationId, ['design'])).rejects.toMatchObject({
       code: 'EVIDENCE_SNAPSHOT_EXISTS',
     });
-    expect((await view(s.founder.actor, s.applicationId)).availability).toBe('WITHDRAWN');
+    expect((await view(s.founder.actor, s.applicationId)).availability).toBe('NOT_SHARED');
   });
 
   it('ends reviewer access when the application closes', async () => {
@@ -235,6 +249,12 @@ integration('#331 applicant-consented per-application evidence snapshot', () => 
       ),
     );
     expect(await view(s.founder.actor, s.applicationId)).toMatchObject({
+      role: 'REVIEWER',
+      availability: 'NOT_SHARED',
+      snapshot: null,
+    });
+    expect(await view(s.applicant.actor, s.applicationId)).toMatchObject({
+      role: 'APPLICANT',
       availability: 'CLOSED',
       snapshot: null,
     });
@@ -264,6 +284,80 @@ integration('#331 applicant-consented per-application evidence snapshot', () => 
       ),
     );
     await expect(insert(s.applicant.participantId)).rejects.toThrow(/pending application/);
+    expect(await db.$queryRawUnsafe('SELECT 1 FROM "ApplicantEvidenceSnapshot"')).toHaveLength(0);
+  });
+
+  it('constrains the frozen element shape and withdrawal-after-close at the database', async () => {
+    const s = await setup();
+    const insert = (skills: string) =>
+      db.$executeRawUnsafe(
+        `INSERT INTO "ApplicantEvidenceSnapshot" ("applicationId","slotId","termsVersionId","participantId","skills") SELECT a."id",a."slotId",a."termsVersionId",a."participantId",$1::jsonb FROM "RaidApplication" a WHERE a."id"=$2::uuid`,
+        skills,
+        s.applicationId,
+      );
+    const element = {
+      skillId: 'writing',
+      rank: 'C',
+      status: 'VERIFIED',
+      assessedAt: '2026-10-01T00:00:00.000Z',
+    };
+    for (const bad of [
+      [{ ...element, evidenceUrl: 'https://private.example/x' }],
+      [{ skillId: 'writing', rank: 'C', status: 'VERIFIED' }],
+      [{ ...element, status: 'GRANTED' }],
+      [{ ...element, rank: 'Z' }],
+      [{ ...element, rank: null }],
+      [{ skillId: 'writing', rank: 'C', status: 'NOT_ASSESSED', assessedAt: null }],
+      [{ ...element, skillId: 'bad id!' }],
+      ['writing'],
+      [],
+    ])
+      await expect(insert(JSON.stringify(bad))).rejects.toThrow(/skills_check/);
+    await insert(JSON.stringify([element]));
+    await run((tx) =>
+      withdrawApplication(
+        tx,
+        cmd(s.applicant.actor, { applicationId: s.applicationId }),
+        admission,
+      ),
+    );
+    await expect(
+      db.$executeRawUnsafe(
+        `INSERT INTO "ApplicantEvidenceSnapshotWithdrawal" ("snapshotId","participantId") SELECT "id","participantId" FROM "ApplicantEvidenceSnapshot"`,
+      ),
+    ).rejects.toThrow(/pending application/);
+  });
+
+  it('serializes a share against a concurrent close of the application (two connections)', async () => {
+    const s = await setup();
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => (release = resolve));
+    let closing!: () => void;
+    const closed = new Promise<void>((resolve) => (closing = resolve));
+    // Connection 1 closes the application but has not committed yet.
+    const holder = db.$transaction(
+      async (t) => {
+        await t.$executeRawUnsafe(
+          `UPDATE "RaidApplication" SET "state"='CLOSED' WHERE "id"=$1::uuid`,
+          s.applicationId,
+        );
+        closing();
+        await gate;
+      },
+      { timeout: 30000 },
+    );
+    await closed;
+    // Connection 2 shares meanwhile: it must wait on the application row, not race past it.
+    let settled = false;
+    const sharing = share(s.applicant.actor, s.applicationId, ['writing']).then(
+      () => ((settled = true), 'shared'),
+      (e: { code: string }) => ((settled = true), e.code),
+    );
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    expect(settled).toBe(false);
+    release();
+    await holder;
+    expect(await sharing).toBe('APPLICATION_CLOSED');
     expect(await db.$queryRawUnsafe('SELECT 1 FROM "ApplicantEvidenceSnapshot"')).toHaveLength(0);
   });
 

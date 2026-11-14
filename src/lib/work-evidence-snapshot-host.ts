@@ -20,7 +20,8 @@ export interface RootEvidenceSnapshotConfig {
  * (`RAID_WORK_OPERATOR_ACCOUNT_IDS`) and the storage command additionally requires the listing's creator: this is NOT
  * Guild or production authority and the Guild id is deliberately ignored. The applicant's records are read from the
  * current version of their own skill assessments, for exactly the skills they chose: no evidence content, claim
- * references, files or links are ever selected.
+ * references, files or links are ever selected. An assessment state this contract does not know is left out, so the
+ * skill reads as NOT_ASSESSED instead of failing the share.
  */
 export function createRootEvidenceSnapshotHost(
   config: RootEvidenceSnapshotConfig,
@@ -35,7 +36,7 @@ export function createRootEvidenceSnapshotHost(
       return tx.query<SkillRecord>(
         `SELECT a."skillId",v."assessedRank" AS "rank",v."state" AS "status",to_char(v."issuedAt" AT TIME ZONE 'UTC','YYYY-MM-DD"T"HH24:MI:SS.MS"Z"') AS "assessedAt"
          FROM "SkillAssessment" a JOIN "SkillAssessmentVersion" v ON v."id"=a."currentVersionId"
-         WHERE a."participantId"=$1::uuid AND a."skillId" IN (${marks})`,
+         WHERE a."participantId"=$1::uuid AND v."state" IN ('VERIFIED','REASSESSMENT_REQUIRED','REVOKED') AND a."skillId" IN (${marks})`,
         [subject.participantId, ...skillIds],
       );
     },
@@ -43,7 +44,8 @@ export function createRootEvidenceSnapshotHost(
 }
 /**
  * `WORK_EVIDENCE_SNAPSHOT_ENABLED` (default off) and the workspace read switch gate taking and viewing a snapshot.
- * Withdrawing one only needs the workspace read switch: it reduces what is shown, so the feature flag never traps consent.
+ * Withdrawing one needs no switch at all (still a real session and the applicant's own application): it reduces what is
+ * shown, so no flag can trap consent.
  */
 function requireEnabled() {
   if (!workWorkspaceConfiguration().readsAvailable || !workEvidenceSnapshotEnabled())
@@ -62,6 +64,5 @@ export async function recordEvidenceSnapshotFromHost(command: WorkCommand) {
   return runCommandTransaction(db, (tx) => recordEvidenceSnapshot(tx, command, h));
 }
 export async function withdrawEvidenceSnapshotFromHost(command: WorkCommand) {
-  if (!workWorkspaceConfiguration().readsAvailable) throw new WorkError('WRITES_DISABLED');
   return runCommandTransaction(db, (tx) => withdrawEvidenceSnapshot(tx, command));
 }

@@ -54,6 +54,19 @@ describe('(e) production refuses devnet or demo settings', () => {
     expect(codes(remoteDb.violations)).toEqual([
       'REFUSE:TEST_MODE_IN_PRODUCTION:ALLOW_REMOTE_TEST_DB',
     ]);
+    const evidence = validateRuntimeConfig(
+      { ...PRODUCTION, WORK_EVIDENCE_SNAPSHOT_ENABLED: 'true' },
+      'web',
+    );
+    expect(codes(evidence.violations)).toEqual([
+      'REFUSE:TEST_MODE_IN_PRODUCTION:WORK_EVIDENCE_SNAPSHOT_ENABLED',
+    ]);
+    expect(
+      validateRuntimeConfig(
+        { ...PRODUCTION, RAID_ENVIRONMENT: 'staging', WORK_EVIDENCE_SNAPSHOT_ENABLED: 'true' },
+        'web',
+      ).ok,
+    ).toBe(true);
     expect(JSON.stringify([testnet, remoteDb])).not.toContain(SECRET);
     for (const environment of ['staging', 'local', 'pilot'])
       expect(

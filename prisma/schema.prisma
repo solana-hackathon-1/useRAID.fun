@@ -1446,7 +1446,7 @@ model RaidApplication {
   @@unique([id, slotId, participantId, termsVersionId])
   @@index([participantId, state])
 }
-// Applicant-consented, immutable per-application evidence snapshot and its append-only withdrawal (DEC-2026-11-14-12, #331); guards live in migration 202611140003.
+// Applicant-consented, immutable per-application evidence snapshot and its append-only withdrawal (DEC-2026-11-14-12, #331); guards live in migration 202611140005.
 model ApplicantEvidenceSnapshot {
   id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   applicationId String @unique(map: "ApplicantEvidenceSnapshot_application_key") @db.Uuid

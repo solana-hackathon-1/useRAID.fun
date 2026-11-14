@@ -36,7 +36,10 @@ function input<T>(schema: z.ZodType<T>, command: WorkCommand, tx: Tx): T {
   if (!parsed.success) fail('INVALID_INPUT');
   return parsed.data;
 }
-/** The binding of an application, read without its private evidence references. */
+/**
+ * The binding of an application, read without its private evidence references. A missing application is FORBIDDEN, the
+ * same answer as one the caller may not touch, so these commands are no existence oracle.
+ */
 async function application(tx: Tx, id: string, lock = false) {
   const rows = await tx.query<{
     id: string;
@@ -49,7 +52,7 @@ async function application(tx: Tx, id: string, lock = false) {
       (lock ? ' FOR UPDATE' : ''),
     [id],
   );
-  if (rows.length !== 1) fail('NOT_FOUND');
+  if (rows.length !== 1) fail('FORBIDDEN');
   return rows[0];
 }
 const event = (type: string, s: Awaited<ReturnType<typeof source>>, termsVersionId: string) => ({
@@ -235,7 +238,7 @@ export async function readEvidenceSnapshot(
      WHERE a."id"=$1::uuid`,
     [id.data],
   );
-  if (rows.length !== 1) fail('NOT_FOUND');
+  if (rows.length !== 1) fail('FORBIDDEN');
   const row = rows[0];
   let role: 'APPLICANT' | 'REVIEWER';
   if (row.applicantAccountId === actor.accountId) role = 'APPLICANT';
@@ -245,23 +248,26 @@ export async function readEvidenceSnapshot(
   )
     role = 'REVIEWER';
   else fail('FORBIDDEN');
-  const availability =
-    row.state !== 'SUBMITTED'
-      ? 'CLOSED'
-      : !row.snapshotId
-        ? 'NOT_SHARED'
-        : row.withdrawalId
-          ? 'WITHDRAWN'
-          : 'SHARED';
-  const snapshot =
-    availability === 'SHARED'
-      ? {
-          id: row.snapshotId,
-          applicationId: id.data,
-          takenAt: iso(row.takenAt),
-          skills: parse(z.array(SnapshotSkillSchema), row.skills),
-        }
-      : null;
+  // The applicant is told why nothing is shared; the reviewer is only ever told that nothing is, so a withdrawal or the
+  // application's end is not disclosed to them.
+  const shared = row.state === 'SUBMITTED' && row.snapshotId && !row.withdrawalId;
+  const availability = shared
+    ? 'SHARED'
+    : role === 'REVIEWER'
+      ? 'NOT_SHARED'
+      : row.state !== 'SUBMITTED'
+        ? 'CLOSED'
+        : !row.snapshotId
+          ? 'NOT_SHARED'
+          : 'WITHDRAWN';
+  const snapshot = shared
+    ? {
+        id: row.snapshotId,
+        applicationId: id.data,
+        takenAt: iso(row.takenAt),
+        skills: parse(z.array(SnapshotSkillSchema), row.skills),
+      }
+    : null;
   const result = parse(EvidenceSnapshotViewSchema, {
     version: 'v1',
     role,
