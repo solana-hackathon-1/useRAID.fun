@@ -253,8 +253,23 @@ integration('Guild role and ownership management over HTTP against real storage'
       { guildId: guild.id, granteeAccountId: helper.accountId, kind: 'TREASURY' },
     ])
       expect((await asDelegate.GRANT(grantReq(wider))).status).toBe(403);
+    // DEC-2026-11-14-01: a delegate-issued grant needs an explicit expiry within 90 days; the Founder's does not.
+    for (const bad of [
+      profileGrant(guild.id, helper, { fields: ['name'] }),
+      profileGrant(guild.id, helper, { fields: ['name'], expiresAt: null }),
+      profileGrant(guild.id, helper, {
+        fields: ['name'],
+        expiresAt: new Date(Date.now() + 120 * 86400000).toISOString(),
+      }),
+    ]) {
+      const refused = await asDelegate.GRANT(grantReq(bad));
+      expect(refused.status).toBe(422);
+      expect((await json(refused)).error.code).toBe('INVALID_COMMAND');
+    }
     const passed = await json(
-      await asDelegate.GRANT(grantReq(profileGrant(guild.id, helper, { fields: ['name'] }))),
+      await asDelegate.GRANT(
+        grantReq(profileGrant(guild.id, helper, { fields: ['name'], expiresAt: soon() })),
+      ),
     );
     expect(passed.grant.grantedByAccountId).toBe(delegate.accountId);
     expect((await liveGrants(guild.id)).map((g) => g.granteeAccountId).sort()).toEqual(
@@ -267,8 +282,11 @@ integration('Guild role and ownership management over HTTP against real storage'
     ).toBe(200);
     expect(await liveGrants(guild.id)).toEqual([]);
     expect(
-      (await asDelegate.GRANT(grantReq(profileGrant(guild.id, helper, { fields: ['name'] }))))
-        .status,
+      (
+        await asDelegate.GRANT(
+          grantReq(profileGrant(guild.id, helper, { fields: ['name'], expiresAt: soon() })),
+        )
+      ).status,
     ).toBe(403);
   });
 
@@ -505,7 +523,9 @@ integration('Guild role and ownership management over HTTP against real storage'
         ),
       );
       const [pass, revoke] = await Promise.all([
-        handlersFor(delegate).GRANT(grantReq(profileGrant(guild.id, helper))),
+        handlersFor(delegate).GRANT(
+          grantReq(profileGrant(guild.id, helper, { expiresAt: soon() })),
+        ),
         handlersFor(founder).REVOKE(revokeReq(root.grant.id, { guildId: guild.id }), root.grant.id),
       ]);
       expect(revoke.status).toBe(200);

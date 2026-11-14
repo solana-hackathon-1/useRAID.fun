@@ -272,14 +272,26 @@ integration('T009 Guild role grants and revocation', () => {
       { kind: 'PROFILE', fields: ['name', 'description'] },
       { kind: 'PROFILE', fields: ['name'], canDelegate: true },
       { kind: 'PROFILE', fields: ['name'], expiresAt: future(7200000) },
-      { kind: 'PROFILE', fields: ['name'], expiresAt: null },
       { kind: 'WORK' },
       { kind: 'TREASURY' },
     ])
       await expect(
-        giveRole(lead, g.id, { granteeAccountId: (await person()).accountId, ...over }),
+        giveRole(lead, g.id, {
+          granteeAccountId: (await person()).accountId,
+          expiresAt: future(1800000),
+          ...over,
+        }),
         JSON.stringify(over),
       ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    // DEC-2026-11-14-01: no expiry at all is a malformed delegate grant, not a missing right.
+    await expect(
+      giveRole(lead, g.id, {
+        granteeAccountId: (await person()).accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+        expiresAt: null,
+      }),
+    ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
     expect((await edit(helper, g.id, 1, { name: 'Helper edit' })).guild.revision).toBe(2);
     // The helper cannot delegate further.
     await expect(
@@ -287,6 +299,7 @@ integration('T009 Guild role grants and revocation', () => {
         granteeAccountId: (await person()).accountId,
         kind: 'PROFILE',
         fields: ['name'],
+        expiresAt: future(600000),
       }),
     ).rejects.toMatchObject({ code: 'FORBIDDEN' });
   });
@@ -381,6 +394,7 @@ integration('T009 Guild role grants and revocation', () => {
         granteeAccountId: helper.accountId,
         kind: 'PROFILE',
         fields: ['name'],
+        expiresAt: future(30 * 86400000),
       })
     ).grant.id;
     await takeRole(founder, g.id, leadGrant);
@@ -519,6 +533,7 @@ integration('T009 Guild role grants and revocation', () => {
         granteeAccountId: x.accountId,
         kind: 'PROFILE',
         fields: ['name'],
+        expiresAt: future(30 * 86400000),
       })
     ).grant.id;
     const yDescription = (
@@ -526,6 +541,7 @@ integration('T009 Guild role grants and revocation', () => {
         granteeAccountId: y.accountId,
         kind: 'PROFILE',
         fields: ['description'],
+        expiresAt: future(30 * 86400000),
       })
     ).grant.id;
     // Another delegating grant exists, but it does not cover `name`: X loses theirs, Y keeps theirs.
@@ -565,6 +581,7 @@ integration('T009 Guild role grants and revocation', () => {
         granteeAccountId: x.accountId,
         kind: 'PROFILE',
         fields: ['name'],
+        expiresAt: future(30 * 86400000),
       })
     ).grant.id;
     await takeRole(founder, g.id, unbounded);
@@ -618,7 +635,7 @@ integration('T009 Guild role grants and revocation', () => {
           granteeAccountId: helper.accountId,
           kind: 'PROFILE',
           fields: ['name'],
-          expiresAt: null,
+          expiresAt: future(3600000),
         }),
         host(),
       ),
@@ -635,7 +652,7 @@ integration('T009 Guild role grants and revocation', () => {
     expect(bounds.bindings.map(String)).toContain(now.toISOString());
   });
 
-  it('review follow-up: a delegate may pass on without an expiry only when their own cover has none', async () => {
+  it('review follow-up: a delegate must pass on with an explicit expiry, bounded by their own cover when it has one', async () => {
     const { founder, guild: g } = await guild();
     const lead = await person();
     const bounded = await person();
@@ -654,12 +671,13 @@ integration('T009 Guild role grants and revocation', () => {
         fields: ['name'],
         expiresAt,
       });
-    // Bounded cover: an explicit expiry no later than theirs is required.
-    await expect(pass(bounded, null)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+    // Bounded cover: an explicit expiry no later than theirs is required (DEC-2026-11-14-01: none at all is malformed).
+    await expect(pass(bounded, null)).rejects.toMatchObject({ code: 'INVALID_INPUT' });
     await expect(pass(bounded, future(7200000))).rejects.toMatchObject({ code: 'FORBIDDEN' });
     expect((await pass(bounded, future(1800000))).grant.expiresAt).not.toBeNull();
-    // Unbounded cover: nothing to be longer than, so no expiry is allowed (the cascade treats it as covering).
-    expect((await pass(lead, null)).grant.expiresAt).toBeNull();
+    // Unbounded cover: nothing bounds the expiry but the 90-day cap, and an expiry is required.
+    await expect(pass(lead, null)).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    expect((await pass(lead, future(30 * 86400000))).grant.expiresAt).not.toBeNull();
   });
 
   it('review follow-up: the kill switch stops new grants but never blocks taking authority away', async () => {
@@ -773,6 +791,7 @@ integration('T009 Guild role grants and revocation', () => {
         granteeAccountId: helper.accountId,
         kind: 'PROFILE',
         fields: ['name'],
+        expiresAt: future(30 * 86400000),
       })
     ).grant;
     expect(passedOn.grantedByAccountId).toBe(lead.accountId);
@@ -1033,7 +1052,12 @@ integration('T009 Guild role grants and revocation', () => {
             giveRole(
               lead,
               g.id,
-              { granteeAccountId: who.accountId, kind: 'PROFILE', fields: ['name'] },
+              {
+                granteeAccountId: who.accountId,
+                kind: 'PROFILE',
+                fields: ['name'],
+                expiresAt: future(30 * 86400000),
+              },
               `sub-${round}-${i}`,
             ),
           ),
@@ -1068,6 +1092,7 @@ integration('T009 Guild role grants and revocation', () => {
           granteeAccountId: helper.accountId,
           kind: 'PROFILE',
           fields: ['name'],
+          expiresAt: future(30 * 86400000),
         })
       ).grant.id;
       const [cascading, surrendering] = await Promise.all([
@@ -1111,6 +1136,7 @@ integration('T009 Guild role grants and revocation', () => {
         granteeAccountId: helper.accountId,
         kind: 'PROFILE',
         fields: ['name'],
+        expiresAt: future(30 * 86400000),
       })
     ).grant.id;
     // The Founder revokes a grant someone else issued, so Founder status is the only thing involving them.
@@ -1132,7 +1158,12 @@ integration('T009 Guild role grants and revocation', () => {
     const lead = await person();
     const helper = await person();
     const leadGrant = await delegating(founder, g.id, lead);
-    const body = { granteeAccountId: helper.accountId, kind: 'PROFILE', fields: ['name'] };
+    const body = {
+      granteeAccountId: helper.accountId,
+      kind: 'PROFILE',
+      fields: ['name'],
+      expiresAt: future(30 * 86400000),
+    };
     const made = await giveRole(lead, g.id, body, 'sub-1');
     expect(made.status).toBe('EXECUTED');
     expect((await giveRole(lead, g.id, body, 'sub-1')).status).toBe('REPLAYED');
@@ -1168,7 +1199,12 @@ integration('T009 Guild role grants and revocation', () => {
             giveRole(
               lead,
               g.id,
-              { granteeAccountId: who.accountId, kind: 'PROFILE', fields: ['name'] },
+              {
+                granteeAccountId: who.accountId,
+                kind: 'PROFILE',
+                fields: ['name'],
+                expiresAt: future(30 * 86400000),
+              },
               `delegate-cap-${round}-${i}`,
             ),
           ),
@@ -1235,6 +1271,7 @@ integration('T009 Guild role grants and revocation', () => {
           granteeAccountId: helper.accountId,
           kind: 'PROFILE',
           fields: ['name'],
+          expiresAt: future(30 * 86400000),
         })
       ).grant.id;
       // Either alone leaves the other as cover; together they must not leave the sub-grant orphaned and live.
@@ -1268,6 +1305,7 @@ integration('T009 Guild role grants and revocation', () => {
         granteeAccountId: helper.accountId,
         kind: 'PROFILE',
         fields: ['name'],
+        expiresAt: future(30 * 86400000),
       })
     ).grant.id;
     // Rows a direct writer places as the lead's own, which the lead's cover does not reach.
@@ -1316,5 +1354,141 @@ integration('T009 Guild role grants and revocation', () => {
     );
     await expect(takeRole(lead, g.id, id)).rejects.toMatchObject({ code: 'FORBIDDEN' });
     expect(await can(holder, g.id, 'PROFILE')).toBe(true);
+  });
+});
+
+integration('DEC-2026-11-14-01: delegate-issued grants carry an explicit, capped expiry', () => {
+  beforeEach(async () => {
+    assertTestDatabase();
+    await truncateAll(db);
+    operators.clear();
+  });
+  afterAll(() => db.$disconnect());
+  const day = 86400000;
+  let slugs = 0;
+  const delegateOf = async (cover: string | null) => {
+    const g = await guild('dec01-guild-' + ++slugs);
+    const lead = await person();
+    await giveRole(g.founder, g.guild.id, {
+      granteeAccountId: lead.accountId,
+      kind: 'PROFILE',
+      fields: ['name'],
+      canDelegate: true,
+      expiresAt: cover,
+    });
+    return { ...g, lead };
+  };
+  const passOn = (from: GuildActor, guildId: string, to: GuildActor, expiresAt?: string | null) =>
+    giveRole(from, guildId, {
+      granteeAccountId: to.accountId,
+      kind: 'PROFILE',
+      fields: ['name'],
+      ...(expiresAt === undefined ? {} : { expiresAt }),
+    });
+  const rowsFor = (guildId: string, grantee: GuildActor) =>
+    db.$queryRawUnsafe<{ expiresAt: Date | null }[]>(
+      `SELECT "expiresAt" FROM "GuildRoleGrant" WHERE "guildId"=$1::uuid AND "granteeAccountId"=$2`,
+      guildId,
+      grantee.accountId,
+    );
+
+  it('refuses a delegate-issued grant with no expiry, whether the delegate cover is unbounded or bounded', async () => {
+    for (const cover of [null, future(30 * day)]) {
+      const { lead, guild: g } = await delegateOf(cover);
+      const helper = await person();
+      await expect(passOn(lead, g.id, helper)).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+      await expect(passOn(lead, g.id, helper, null)).rejects.toMatchObject({
+        code: 'INVALID_INPUT',
+      });
+      expect(await rowsFor(g.id, helper)).toEqual([]);
+    }
+  });
+
+  it('refuses an expiry later than 90 days from issuance by the database clock, accepts one within it', async () => {
+    const { lead, guild: g } = await delegateOf(null);
+    const helper = await person();
+    await expect(passOn(lead, g.id, helper, future(91 * day))).rejects.toMatchObject({
+      code: 'INVALID_INPUT',
+    });
+    await expect(passOn(lead, g.id, helper, future(365 * day))).rejects.toMatchObject({
+      code: 'INVALID_INPUT',
+    });
+    expect(await rowsFor(g.id, helper)).toEqual([]);
+    const made = await passOn(lead, g.id, helper, future(89 * day));
+    expect(made.grant).toMatchObject({ grantedByAccountId: lead.accountId });
+    expect(made.grant.expiresAt).not.toBeNull();
+  });
+
+  it('still bounds the expiry by the delegate cover (forbidden, as before) and keeps both limits together', async () => {
+    const { lead, guild: g } = await delegateOf(future(10 * day));
+    const helper = await person();
+    await expect(passOn(lead, g.id, helper, future(20 * day))).rejects.toMatchObject({
+      code: 'FORBIDDEN',
+    });
+    await expect(passOn(lead, g.id, helper, future(120 * day))).rejects.toMatchObject({
+      code: 'INVALID_INPUT',
+    });
+    expect((await passOn(lead, g.id, helper, future(5 * day))).grant.expiresAt).not.toBeNull();
+  });
+
+  it('leaves Founder-issued grants unchanged: an expiry stays optional and uncapped', async () => {
+    const { founder, guild: g } = await guild();
+    const a = await person();
+    const b = await person();
+    expect((await passOn(founder, g.id, a)).grant.expiresAt).toBeNull();
+    expect((await passOn(founder, g.id, b, future(400 * day))).grant.expiresAt).not.toBeNull();
+  });
+
+  it('leaves an existing unbounded passed-on grant in force; renewal is a new grant, nothing is extended in place', async () => {
+    const { lead, guild: g, founder } = await delegateOf(null);
+    const old = await person();
+    const fresh = await person();
+    // A pre-rule row: issued by the delegate with no expiry.
+    await db.$executeRawUnsafe(
+      `INSERT INTO "GuildRoleGrant" ("guildId","granteeAccountId","kind","fields","grantedByAccountId") VALUES ($1::uuid,$2,'PROFILE',ARRAY['name'],$3)`,
+      g.id,
+      old.accountId,
+      lead.accountId,
+    );
+    await passOn(lead, g.id, fresh, future(30 * day));
+    expect(await can(old, g.id, 'PROFILE')).toBe(true);
+    expect((await rowsFor(g.id, old))[0].expiresAt).toBeNull();
+    // The old row is revoked only by the usual paths.
+    const [{ id }] = await db.$queryRawUnsafe<{ id: string }[]>(
+      `SELECT "id"::text FROM "GuildRoleGrant" WHERE "granteeAccountId"=$1`,
+      old.accountId,
+    );
+    await takeRole(founder, g.id, id);
+    expect(await can(old, g.id, 'PROFILE')).toBe(false);
+  });
+
+  it('replays an earlier valid delegate grant under the same key', async () => {
+    const { lead, guild: g } = await delegateOf(null);
+    const helper = await person();
+    const expiresAt = future(30 * day);
+    const first = await giveRole(
+      lead,
+      g.id,
+      {
+        granteeAccountId: helper.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+        expiresAt,
+      },
+      'dec01-replay',
+    );
+    const again = await giveRole(
+      lead,
+      g.id,
+      {
+        granteeAccountId: helper.accountId,
+        kind: 'PROFILE',
+        fields: ['name'],
+        expiresAt,
+      },
+      'dec01-replay',
+    );
+    expect([first.status, again.status]).toEqual(['EXECUTED', 'REPLAYED']);
+    expect(again.grant.id).toBe(first.grant.id);
   });
 });

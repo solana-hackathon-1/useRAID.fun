@@ -1314,4 +1314,196 @@ integration('T009 Guild ownership transfer', () => {
       }
     });
   });
+
+  describe('DEC-2026-11-14-03: acceptance re-checks that the proposing Founder is not suspended', () => {
+    const suspend = (who: GuildActor, suspended = true) =>
+      db.$executeRawUnsafe(
+        `UPDATE "User" SET "suspended"=$2::boolean WHERE "id"=$1`,
+        who.accountId,
+        suspended,
+      );
+    const stateOf = async (id: string) =>
+      (
+        await db.$queryRawUnsafe<{ state: string }[]>(
+          `SELECT "state" FROM "GuildOwnershipTransfer" WHERE "id"=$1::uuid`,
+          id,
+        )
+      )[0].state;
+
+    it('refuses acceptance while the proposer is suspended, leaves the proposal PROPOSED and accepts once the suspension is lifted', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+      await suspend(founder);
+      await expect(respond(next, g.id, id, 'ACCEPT', 'acc-1')).rejects.toMatchObject({
+        code: 'FORBIDDEN',
+      });
+      expect(await stateOf(id)).toBe('PROPOSED');
+      expect(await founderOf(g.id)).toBe(founder.accountId);
+      await suspend(founder, false);
+      const accepted = await respond(next, g.id, id, 'ACCEPT', 'acc-2');
+      expect(accepted.transfer).toMatchObject({ state: 'ACCEPTED', applied: true });
+      expect(await founderOf(g.id)).toBe(next.accountId);
+    });
+
+    it('lets the recipient decline while the proposer is suspended, and gives the suspended Founder no power to withdraw', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+      await suspend(founder);
+      await expect(respond(founder, g.id, id, 'WITHDRAW', 'wd-1')).rejects.toMatchObject({
+        code: 'ACCOUNT_RESTRICTED',
+      });
+      expect(await stateOf(id)).toBe('PROPOSED');
+      const declined = await respond(next, g.id, id, 'DECLINE', 'dec-1');
+      expect(declined.transfer.state).toBe('DECLINED');
+      expect(await founderOf(g.id)).toBe(founder.accountId);
+    });
+
+    it('an unsuspended proposer does not affect acceptance (regression)', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+      expect((await respond(next, g.id, id, 'ACCEPT')).transfer.applied).toBe(true);
+    });
+
+    /** Waits until some other backend is blocked on a lock while running a statement containing `fragment`. */
+    const waitForLockWaiter = async (fragment: string, timeoutMs = 10000) => {
+      const until = Date.now() + timeoutMs;
+      for (;;) {
+        const rows = await db.$queryRawUnsafe<{ n: number }[]>(
+          `SELECT count(*)::int AS n FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid() AND wait_event_type='Lock' AND position($1 in query)>0`,
+          fragment,
+        );
+        if (rows[0].n > 0) return;
+        if (Date.now() > until) throw new Error('no backend waited on a lock for: ' + fragment);
+        await new Promise((r) => setTimeout(r, 25));
+      }
+    };
+    const acceptWaiter = 'FROM "User" WHERE "id"=$1 FOR SHARE';
+
+    it('serializes a suspension in another transaction with the acceptance: the later sees the earlier', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+      let accepting: Promise<unknown> | undefined;
+      let settled = false;
+      // The suspension is written but not yet committed when the acceptance starts: the acceptance must wait for it
+      // (the proposer's row is read FOR SHARE) and then see the suspension.
+      await db.$transaction(async (t) => {
+        await t.$executeRawUnsafe(
+          `UPDATE "User" SET "suspended"=true WHERE "id"=$1`,
+          founder.accountId,
+        );
+        accepting = respond(next, g.id, id, 'ACCEPT', 'acc-race').then(
+          (v) => ((settled = true), v),
+          (e) => {
+            settled = true;
+            throw e;
+          },
+        );
+        accepting.catch(() => undefined);
+        await waitForLockWaiter(acceptWaiter);
+        expect(settled).toBe(false);
+      });
+      await expect(accepting).rejects.toMatchObject({ code: 'FORBIDDEN' });
+      expect(await stateOf(id)).toBe('PROPOSED');
+      expect(await founderOf(g.id)).toBe(founder.accountId);
+    });
+
+    it('an acceptance that holds its locks first makes a later suspension wait, then both complete: the Founder has changed', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+      let reached!: () => void;
+      let release!: () => void;
+      const atHook = new Promise<void>((r) => (reached = r));
+      const gate = new Promise<void>((r) => (release = r));
+      // The host hook runs after the proposer check, with every lock held: the acceptance is held open here.
+      const accepting = run((tx) =>
+        respondOwnershipTransfer(
+          tx,
+          cmd(next, { guildId: g.id, transferId: id, decision: 'ACCEPT' }, 'acc-held'),
+          {
+            allowNewWrites: true,
+            authorizeOwnershipTransfer: async () => {
+              reached();
+              await gate;
+              return true;
+            },
+          },
+        ),
+      );
+      accepting.catch(() => undefined);
+      await atHook;
+      let suspended = false;
+      const suspending = suspend(founder).then(() => (suspended = true));
+      await waitForLockWaiter('UPDATE "User"');
+      expect(suspended).toBe(false);
+      release();
+      expect((await accepting).transfer).toMatchObject({ state: 'ACCEPTED', applied: true });
+      await suspending;
+      expect(await founderOf(g.id)).toBe(next.accountId);
+      const [{ s }] = await db.$queryRawUnsafe<{ s: boolean }[]>(
+        `SELECT "suspended" AS s FROM "User" WHERE "id"=$1`,
+        founder.accountId,
+      );
+      expect(s).toBe(true);
+    });
+
+    it('never deadlocks with a Founder command: the proposer row is locked before the Guild row, as authorize() does', async () => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+      let accepting: Promise<unknown> | undefined;
+      let attempts = 0;
+      // A Founder command has taken its own User row (FOR NO KEY UPDATE, authorize()) and reaches for the Guild row
+      // next. The acceptance must therefore wait on that User row before it locks the Guild; if it locked the Guild
+      // first, the two would wait on each other and PostgreSQL would abort one with 40P01.
+      await db.$transaction(async (t) => {
+        await t.$queryRawUnsafe(
+          `SELECT "suspended" FROM "User" WHERE "id"=$1 FOR NO KEY UPDATE`,
+          founder.accountId,
+        );
+        // A deadlock victim is retried by runCommandTransaction, which would hide it: count the attempts.
+        accepting = run((tx) => {
+          attempts++;
+          return respondOwnershipTransfer(
+            tx,
+            cmd(next, { guildId: g.id, transferId: id, decision: 'ACCEPT' }, 'acc-deadlock'),
+            ownerHost(),
+          );
+        });
+        accepting.catch(() => undefined);
+        await waitForLockWaiter(acceptWaiter);
+        // Reaching the Guild row now must succeed (no 40P01 for either side).
+        await t.$queryRawUnsafe(`SELECT 1 FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE`, g.id);
+      });
+      expect((await accepting)!).toMatchObject({ status: 'EXECUTED' });
+      expect(attempts).toBe(1);
+      expect(await founderOf(g.id)).toBe(next.accountId);
+    });
+
+    it('a Founder command racing the acceptance completes with it, whichever order wins', async () => {
+      for (const round of [1, 2, 3]) {
+        const { founder, guild: g } = await guild('race-founder-' + round);
+        const next = await person();
+        const other = await person();
+        const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+        const [accepted, granted] = await Promise.allSettled([
+          respond(next, g.id, id, 'ACCEPT', 'acc-' + round),
+          grant(
+            founder,
+            { guildId: g.id, granteeAccountId: other.accountId, kind: 'WORK' },
+            'grant-' + round,
+          ),
+        ]);
+        expect(accepted.status).toBe('fulfilled');
+        // The grant ran under the old Founder or was refused as the former Founder; never an unmapped failure.
+        if (granted.status === 'rejected')
+          expect((granted.reason as { code?: string }).code).toBe('FORBIDDEN');
+        expect(await founderOf(g.id)).toBe(next.accountId);
+      }
+    });
+  });
 });

@@ -12,6 +12,8 @@ import {
   listManagedGuildUpdates,
   readPublicGuild,
   listPublicGuildUpdates,
+  proposeOwnershipTransfer,
+  respondOwnershipTransfer,
   publishGuildUpdate,
   withdrawGuildUpdate,
   GUILD_DRAFT_UPDATE_LIMIT,
@@ -684,5 +686,95 @@ integration('T009 Guild public updates', () => {
     // The real command is unaffected.
     const published = await publish(founder, g.id, id);
     expect(Math.abs(Date.parse(published.update.publishedAt!) - Date.now())).toBeLessThan(60_000);
+  });
+
+  describe('DEC-2026-11-14-05 (b): publish and withdraw replays re-check live authority', () => {
+    const handOver = async (founder: GuildActor, guildId: string, to: GuildActor) => {
+      const ownerHost = { allowNewWrites: true, authorizeOwnershipTransfer: async () => true };
+      const proposed = await run((tx) =>
+        proposeOwnershipTransfer(
+          tx,
+          cmd(founder, {
+            guildId,
+            toAccountId: to.accountId,
+            expiresAt: new Date(Date.now() + 86400000).toISOString(),
+          }),
+          ownerHost,
+        ),
+      );
+      await run((tx) =>
+        respondOwnershipTransfer(
+          tx,
+          cmd(to, { guildId, transferId: proposed.transfer.id, decision: 'ACCEPT' }),
+          ownerHost,
+        ),
+      );
+    };
+
+    it('refuses a publish replay by an account that is no longer the Founder, and still replays it for the Founder', async () => {
+      const { founder, guild: g } = await guild('dec05-publish');
+      const heir = await person();
+      const id = (await draft(founder, g.id, 'Hello', 'World')).update.id;
+      expect((await publish(founder, g.id, id, 'pub-1')).status).toBe('EXECUTED');
+      expect((await publish(founder, g.id, id, 'pub-1')).status).toBe('REPLAYED');
+      await handOver(founder, g.id, heir);
+      await expect(publish(founder, g.id, id, 'pub-1')).rejects.toMatchObject({
+        code: 'FORBIDDEN',
+      });
+    });
+
+    it('refuses a publish replay by a former Founder who still holds a profile grant (publish needs Founder status)', async () => {
+      const { founder, guild: g } = await guild('dec05-publish-grant');
+      const heir = await person();
+      const id = (await draft(founder, g.id, 'Hello', 'World')).update.id;
+      await publish(founder, g.id, id, 'pub-1');
+      await handOver(founder, g.id, heir);
+      await grantRow(g.id, founder);
+      await expect(publish(founder, g.id, id, 'pub-1')).rejects.toMatchObject({
+        code: 'FORBIDDEN',
+      });
+    });
+
+    it('refuses a withdraw replay by a delegate whose profile authority has since ended, and by a former Founder', async () => {
+      const { founder, guild: g } = await guild('dec05-withdraw');
+      const author = await person();
+      const heir = await person();
+      await grantRow(g.id, author);
+      const mine = (await draft(author, g.id, 'Mine', 'Body')).update.id;
+      expect((await withdraw(author, g.id, mine, 'wd-1')).status).toBe('EXECUTED');
+      expect((await withdraw(author, g.id, mine, 'wd-1')).status).toBe('REPLAYED');
+      await db.$executeRawUnsafe(
+        `UPDATE "GuildRoleGrant" SET "revokedAt"=clock_timestamp() WHERE "granteeAccountId"=$1`,
+        author.accountId,
+      );
+      await expect(withdraw(author, g.id, mine, 'wd-1')).rejects.toMatchObject({
+        code: 'FORBIDDEN',
+      });
+      // The Founder's own withdrawal stops replaying once they hand the Guild over.
+      const pub = (await draft(founder, g.id, 'Public', 'Body')).update.id;
+      await publish(founder, g.id, pub);
+      expect((await withdraw(founder, g.id, pub, 'wd-2')).status).toBe('EXECUTED');
+      expect((await withdraw(founder, g.id, pub, 'wd-2')).status).toBe('REPLAYED');
+      await handOver(founder, g.id, heir);
+      await expect(withdraw(founder, g.id, pub, 'wd-2')).rejects.toMatchObject({
+        code: 'FORBIDDEN',
+      });
+    });
+
+    it('keeps replaying for an author whose profile grant is still live, and a former Founder holding a new profile grant may replay a withdrawal', async () => {
+      const { founder, guild: g } = await guild('dec05-live');
+      const author = await person();
+      const heir = await person();
+      await grantRow(g.id, author);
+      const mine = (await draft(author, g.id, 'Mine', 'Body')).update.id;
+      await withdraw(author, g.id, mine, 'wd-live');
+      expect((await withdraw(author, g.id, mine, 'wd-live')).status).toBe('REPLAYED');
+      const pub = (await draft(founder, g.id, 'Public', 'Body')).update.id;
+      await publish(founder, g.id, pub);
+      await withdraw(founder, g.id, pub, 'wd-former');
+      await handOver(founder, g.id, heir);
+      await grantRow(g.id, founder);
+      expect((await withdraw(founder, g.id, pub, 'wd-former')).status).toBe('REPLAYED');
+    });
   });
 });
