@@ -625,7 +625,8 @@ integration('DEC-2026-11-13-04 follow-up migration: preflight under a table lock
             'ALTER TABLE "GuildRoleGrant" DISABLE TRIGGER guild_grant_separation_v1',
           );
         if (scenario === 'an already-committed violation') await violate(database);
-        const rows = () => database.$queryRawUnsafe('SELECT * FROM "GuildRoleGrant" ORDER BY "id"');
+        const rows = () =>
+          database.$queryRawUnsafe<unknown[]>('SELECT * FROM "GuildRoleGrant" ORDER BY "id"');
         const grantsBefore = await rows();
         cpSync(
           join('prisma/migrations', followUp),
