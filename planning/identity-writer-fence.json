@@ -12,7 +12,7 @@
     "BalanceEntry:user User @relation(fields: [userId], references: [id])",
     "EngagementAmendment:decidedBy User? @relation(\"EngagementAmendmentDecider\", fields: [decidedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "EngagementAmendment:proposedBy User @relation(\"EngagementAmendmentProposer\", fields: [proposedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
-    "EngagementClosure:closedBy User @relation(fields: [closedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
+    "EngagementClosure:closedBy User? @relation(fields: [closedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict)",
     "Guild:activatedBy User @relation(\"GuildActivator\", fields: [activatedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"Guild_activatedBy_fkey\")",
     "Guild:founder User @relation(\"GuildFounder\", fields: [founderAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"Guild_founder_fkey\")",
     "GuildDraft:owner User @relation(fields: [ownerAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"GuildDraft_owner_fkey\")",
@@ -118,7 +118,7 @@
     "EngagementClosure.closedByAccountId": {
       "writer": "src/work-loop/closure-storage.ts#closeEngagement",
       "effects": "Immutable closer attribution only; no User/Session/Participant mutation or identity transfer.",
-      "authority": "Current actual Session/canonical actor: the accepted terms' independent reviewer on acceptance, or a host-authorized operations actor after the accepted operational deadline, rechecked after the engagement lock. Root not enabled.",
+      "authority": "Current actual Session/canonical actor: the accepted terms' independent reviewer on acceptance, or a host-authorized operations actor after the accepted operational deadline, rechecked after the engagement lock. A scheduled timeout closure records the credential-less `work-closure` service principal in closedByPrincipal instead (null here, exactly one set by CHECK); it is not a User row. Root not enabled.",
       "fold": "Restrict preserves closure history and fails closed on account deletion; no rehome/fold enablement.",
       "review": "SELF-EVALUATED; independent task-end authority/migration/capacity review pending."
     },

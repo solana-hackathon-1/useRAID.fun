@@ -7,14 +7,14 @@ vi.mock('../src/lib/command-receipts-adapter', () => ({
 }));
 vi.mock('../src/work-loop/closure-storage', () => ({ closeOverdueEngagement: port.close }));
 vi.mock('../src/work-loop/closure-pass', () => ({ closeOverdueBatch: port.pass }));
-import { WorkError } from '../src/work-loop/contracts';
 import { workClosureEnabled } from '../src/lib/config';
 import {
   closeEngagementFromHost,
   createRootClosureHost,
   runWorkClosureWorker,
-  WORK_CLOSURE_REALARM_MS,
 } from '../src/lib/work-closure-host';
+
+import { WORK_CLOSURE_PRINCIPAL } from '../src/work-loop/closure-contracts';
 
 const actor = { accountId: 'operator-1', sessionHash: 'a'.repeat(64) };
 const command = { actor, input: {}, idempotencyKey: 'key-1', requestId: 'req-1' };
@@ -64,23 +64,32 @@ it('passes the flag to the closure command as the only write switch', async () =
     expect.objectContaining({ allowNewWrites: true }),
   );
 });
-it('runs no worker pass unless the flag is on and a worker account is configured', async () => {
+it('authorizes the service principal for the Root host without the operator allowlist, and no other principal', async () => {
+  vi.stubEnv('RAID_WORK_OPERATOR_ACCOUNT_IDS', '');
+  const host = createRootClosureHost(true);
+  const target = { engagementId: 'e', guildId: 'g' };
+  expect(await host.authorize({} as never, { principal: WORK_CLOSURE_PRINCIPAL }, target)).toBe(
+    true,
+  );
+  expect(await host.authorize({} as never, { principal: 'other' as never }, target)).toBe(false);
+});
+it('runs no worker pass unless the flag is on, and needs no worker account (retired)', async () => {
   vi.stubEnv('WORK_CLOSURE_ENABLED', '');
-  vi.stubEnv('WORK_CLOSURE_WORKER_ACCOUNT_ID', 'operator-1');
-  expect(await runWorkClosureWorker()).toBeNull();
-  vi.stubEnv('WORK_CLOSURE_ENABLED', 'true');
-  vi.stubEnv('WORK_CLOSURE_WORKER_ACCOUNT_ID', '');
   expect(await runWorkClosureWorker()).toBeNull();
   expect(port.pass).not.toHaveBeenCalled();
-  vi.stubEnv('WORK_CLOSURE_WORKER_ACCOUNT_ID', 'operator-1');
-  vi.stubEnv('RAID_WORK_OPERATOR_ACCOUNT_IDS', 'operator-1');
+  vi.stubEnv('WORK_CLOSURE_ENABLED', 'true');
   port.pass.mockResolvedValue({ considered: 0, closed: 0, skipped: [], failed: [] });
   await runWorkClosureWorker();
   expect(port.pass).toHaveBeenCalledTimes(1);
+  // The retired setting is ignored: it neither enables a pass nor names an account the pass acts as.
+  vi.stubEnv('WORK_CLOSURE_WORKER_ACCOUNT_ID', 'operator-1');
+  await runWorkClosureWorker();
+  const ports = port.pass.mock.calls[1][0] as Record<string, unknown>;
+  expect(ports).not.toHaveProperty('workerAccountId');
+  expect(JSON.stringify(ports)).not.toContain('operator-1');
 });
 it('fails visibly when a pass had failures', async () => {
   vi.stubEnv('WORK_CLOSURE_ENABLED', 'true');
-  vi.stubEnv('WORK_CLOSURE_WORKER_ACCOUNT_ID', 'operator-1');
   port.pass.mockResolvedValue({
     considered: 1,
     closed: 0,
@@ -89,54 +98,14 @@ it('fails visibly when a pass had failures', async () => {
   });
   await expect(runWorkClosureWorker()).rejects.toThrow(/FORBIDDEN/);
 });
-it('reports a missing worker session once per outage, not on every tick, and again after it recovers', async () => {
+it('surfaces a pass that throws on every tick, with no session outage state to hide it', async () => {
   vi.stubEnv('WORK_CLOSURE_ENABLED', 'true');
-  vi.stubEnv('WORK_CLOSURE_WORKER_ACCOUNT_ID', 'operator-1');
-  const ok = { considered: 0, closed: 0, skipped: [], failed: [] };
-  port.pass.mockRejectedValue(new WorkError('UNAUTHENTICATED'));
-  await expect(runWorkClosureWorker()).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
-  // The same condition on later ticks fails closed (nothing runs) without another alarm.
-  expect(await runWorkClosureWorker()).toBeNull();
-  expect(await runWorkClosureWorker()).toBeNull();
-  expect(port.pass).toHaveBeenCalledTimes(3);
-  port.pass.mockResolvedValue(ok);
-  expect(await runWorkClosureWorker()).toEqual(ok);
-  port.pass.mockRejectedValue(new WorkError('UNAUTHENTICATED'));
-  await expect(runWorkClosureWorker()).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
-  // Any other failure is always surfaced.
   port.pass.mockRejectedValue(new Error('storage down'));
   await expect(runWorkClosureWorker()).rejects.toThrow('storage down');
-  port.pass.mockResolvedValue(ok);
-  await runWorkClosureWorker();
-});
-it('re-raises a persistent missing worker session at a bounded interval so a lost log line cannot hide the outage', async () => {
-  vi.stubEnv('WORK_CLOSURE_ENABLED', 'true');
-  vi.stubEnv('WORK_CLOSURE_WORKER_ACCOUNT_ID', 'operator-1');
-  const ok = { considered: 0, closed: 0, skipped: [], failed: [] };
-  let now = 1_000_000;
-  const clock = () => now;
-  port.pass.mockResolvedValueOnce(ok);
-  await runWorkClosureWorker(clock);
-  port.pass.mockRejectedValue(new WorkError('UNAUTHENTICATED'));
-  await expect(runWorkClosureWorker(clock)).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
-  // Within the interval every tick stays quiet and fails closed.
-  now += WORK_CLOSURE_REALARM_MS - 1;
-  expect(await runWorkClosureWorker(clock)).toBeNull();
-  // At the interval the same outage is raised again, then quiet for another interval.
-  now += 1;
-  await expect(runWorkClosureWorker(clock)).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
-  now += WORK_CLOSURE_REALARM_MS - 1;
-  expect(await runWorkClosureWorker(clock)).toBeNull();
-  now += 1;
-  await expect(runWorkClosureWorker(clock)).rejects.toMatchObject({ code: 'UNAUTHENTICATED' });
-  // Every tick still ran the pass, which is what fails closed.
-  expect(port.pass).toHaveBeenCalledTimes(6);
-  port.pass.mockResolvedValue(ok);
-  expect(await runWorkClosureWorker(clock)).toEqual(ok);
+  await expect(runWorkClosureWorker()).rejects.toThrow('storage down');
 });
 it('passes the pass a value-free logger that adds correlation fields, and logs no stuck alert after the pass (#460)', async () => {
   vi.stubEnv('WORK_CLOSURE_ENABLED', 'true');
-  vi.stubEnv('WORK_CLOSURE_WORKER_ACCOUNT_ID', 'operator-1');
   const log = vi.spyOn(console, 'error').mockImplementation(() => {});
   port.pass.mockResolvedValue({
     considered: 1,

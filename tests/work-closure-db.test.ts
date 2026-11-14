@@ -22,7 +22,7 @@ const cmd = (actor: Actor, input: unknown, key: string = randomUUID()) => ({
 });
 const host: ClosureHost = {
   allowNewWrites: true,
-  authorize: async (_tx, a) => a.accountId.startsWith('ops-'),
+  authorize: async (_tx, a) => 'accountId' in a && a.accountId.startsWith('ops-'),
 };
 const at = (ms: number) => new Date(Date.now() + ms).toISOString();
 /** Waits on the database clock, which the closure guard uses, until the instant has passed. */

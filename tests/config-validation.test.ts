@@ -243,6 +243,20 @@ describe('validateRuntimeConfig', () => {
     ]);
   });
 
+  it('warns, without leaking the value, that the retired closure worker account setting is ignored (DEC-2026-11-14-08)', () => {
+    const set = validateRuntimeConfig(
+      { WORK_CLOSURE_WORKER_ACCOUNT_ID: 'acct-secret-1' },
+      'worker',
+    );
+    expect(set.ok).toBe(true);
+    expect(codes(set.violations)).toEqual(['WARN:RETIRED_SETTING:WORK_CLOSURE_WORKER_ACCOUNT_ID']);
+    expect(JSON.stringify(set.violations)).not.toContain('acct-secret-1');
+    for (const value of [undefined, '', '  '])
+      expect(
+        validateRuntimeConfig({ WORK_CLOSURE_WORKER_ACCOUNT_ID: value }, 'worker').violations,
+      ).toEqual([]);
+  });
+
   it('reports every violation without leaking any configured value', () => {
     const result = validateRuntimeConfig(
       {
