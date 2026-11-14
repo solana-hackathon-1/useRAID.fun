@@ -45,6 +45,7 @@
     "RaiderPreferences:account User @relation(fields: [accountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"RaiderPreferences_account_fkey\")",
     "RewardEnrollment:user User @relation(fields: [userId], references: [id])",
     "Session:user User @relation(fields: [userId], references: [id], onDelete: Cascade)",
+    "SkillAssessmentAppealDecision:adjudicator User @relation(fields: [adjudicatorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"SkillAssessmentAppealDecision_adjudicator_fkey\")",
     "SkillAssessmentVersion:evaluator User @relation(fields:[evaluatorAccountId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:\"SkillAssessmentVersion_evaluator_fkey\")",
     "SkillTaxonomyVersion:publisher User @relation(fields: [publishedByAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: \"SkillTaxonomyVersion_actor_fkey\")",
     "TokenLaunch:user User @relation(fields: [userId], references: [id])",

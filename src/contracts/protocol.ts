@@ -58,6 +58,7 @@ export const EventEnvelopeSchema = z
         practiceAssessmentReviewVersionId: InternalId.optional(),
         practiceAssessmentDecisionId: InternalId.optional(),
         skillAssessmentVersionId: InternalId.optional(),
+        skillAssessmentAppealId: InternalId.optional(),
       })
       .readonly(),
   })
@@ -132,6 +133,9 @@ export const ERROR_CONTRACT = {
   GUILD_GRANT_LIMIT_REACHED: [409, 'The limit for active role grants has been reached.', false],
   GUILD_GRANT_ALREADY_REVOKED: [409, 'This role grant is already revoked.', false],
   GUILD_TRANSFER_PENDING: [409, 'An ownership transfer is already pending.', false],
+  APPEAL_WINDOW_CLOSED: [409, 'The appeal filing window for this decision has closed.', false],
+  APPEAL_EXISTS: [409, 'An appeal was already filed for this decision.', false],
+  APPEAL_ALREADY_DECIDED: [409, 'This appeal was already decided.', false],
   RATE_LIMITED: [429, 'Too many requests. Try again later.', true],
   SERVICE_UNAVAILABLE: [503, 'Service unavailable. Please try again.', true],
 } as const;
