@@ -40,6 +40,35 @@ describe('(e) production refuses devnet or demo settings', () => {
     expect(codes(result.violations)).toContain(`REFUSE:DEVNET_OR_DEMO_IN_PRODUCTION:${subject}`);
   });
 
+  it('refuses a testnet RPC and the remote-test-database switch under RAID_ENVIRONMENT=production alone', () => {
+    // AC41: the production label, not NODE_ENV, decides; a host that declares production but runs without
+    // NODE_ENV=production must still refuse test settings.
+    const testnet = validateRuntimeConfig(
+      { ...PRODUCTION, SOLANA_RPC_URL: 'https://api.testnet.solana.com' },
+      'web',
+    );
+    expect(codes(testnet.violations)).toEqual([
+      'REFUSE:DEVNET_OR_DEMO_IN_PRODUCTION:SOLANA_RPC_URL',
+    ]);
+    const remoteDb = validateRuntimeConfig({ ...PRODUCTION, ALLOW_REMOTE_TEST_DB: 'true' }, 'web');
+    expect(codes(remoteDb.violations)).toEqual([
+      'REFUSE:TEST_MODE_IN_PRODUCTION:ALLOW_REMOTE_TEST_DB',
+    ]);
+    expect(JSON.stringify([testnet, remoteDb])).not.toContain(SECRET);
+    for (const environment of ['staging', 'local', 'pilot'])
+      expect(
+        validateRuntimeConfig(
+          {
+            RAID_ENVIRONMENT: environment,
+            SOLANA_RPC_URL: 'https://api.testnet.solana.com',
+            ALLOW_REMOTE_TEST_DB: 'true',
+          },
+          'web',
+        ).ok,
+        environment,
+      ).toBe(true);
+  });
+
   it('ignores case and space in the environment name, and does not apply to other environments', () => {
     const bad = { DATABASE_URL: PRODUCTION.DATABASE_URL, USDC_NETWORK: 'devnet' };
     expect(validateRuntimeConfig({ ...bad, RAID_ENVIRONMENT: ' Production ' }, 'web').ok).toBe(
