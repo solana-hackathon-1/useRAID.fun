@@ -24,6 +24,12 @@ export const partyRosterWritesEnabled = () =>
   !config.demo && process.env.PARTY_ROSTER_WRITES_ENABLED === 'true';
 /** T025 root composition: propose / consent / withdraw a change to accepted work terms. Off unless exactly 'true'; simulated funds only. */
 export const workAmendmentsEnabled = () => process.env.WORK_AMENDMENTS_ENABLED === 'true';
+/**
+ * #331 (DEC-2026-11-14-12): applicant-consented per-application evidence snapshot for the Founder reviewer. Exact 'true',
+ * default off. Taking and viewing need it; an applicant's withdrawal never does.
+ */
+export const workEvidenceSnapshotEnabled = () =>
+  process.env.WORK_EVIDENCE_SNAPSHOT_ENABLED === 'true';
 export const trackingEnabled = () => process.env.X_TRACKING_V2_ENABLED !== 'false';
 // Automatic folding of an activity-free duplicate account (X callback, wallet link) is off unless
 // exactly "true". Its lock order is unsafe under concurrency (deadlocks and stale merges were

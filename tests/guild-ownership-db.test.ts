@@ -1491,6 +1491,53 @@ integration('T009 Guild ownership transfer', () => {
       expect(await founderOf(g.id)).toBe(next.accountId);
     });
 
+    it('#487: two Founders who each proposed to the other accept at once without a deadlock, in either id order', async () => {
+      for (const round of [1, 2, 3]) {
+        const one = await guild('swap-one-' + round);
+        const two = await guild('swap-two-' + round);
+        const idOne = (await propose(one.founder, one.guild.id, two.founder.accountId)).transfer.id;
+        const idTwo = (await propose(two.founder, two.guild.id, one.founder.accountId)).transfer.id;
+        let attempts = 0;
+        const accept = (who: GuildActor, guildId: string, transferId: string, key: string) =>
+          run((tx) => {
+            attempts++;
+            return respondOwnershipTransfer(
+              tx,
+              cmd(who, { guildId, transferId, decision: 'ACCEPT' }, key),
+              ownerHost(),
+            );
+          });
+        let both: Promise<unknown[]> | undefined;
+        // Hold the transfer table so both acceptances park together before they reach the proposer's User row. Each
+        // accepting account holds its own User row (authorize(), FOR NO KEY UPDATE) by then and wants the other's
+        // (FOR SHARE): taken in whatever order each side finds, that is a cycle and PostgreSQL aborts one with 40P01
+        // (which runCommandTransaction retries and so hides: count the attempts). Taken in id order there is none.
+        await db.$transaction(async (t) => {
+          await t.$queryRawUnsafe(`LOCK TABLE "GuildOwnershipTransfer" IN ACCESS EXCLUSIVE MODE`);
+          both = Promise.all([
+            accept(two.founder, one.guild.id, idOne, 'swap-a-' + round),
+            accept(one.founder, two.guild.id, idTwo, 'swap-b-' + round),
+          ]);
+          both.catch(() => undefined);
+          const until = Date.now() + 10000;
+          for (;;) {
+            const [{ n }] = await db.$queryRawUnsafe<{ n: number }[]>(
+              `SELECT count(*)::int AS n FROM pg_stat_activity WHERE datname=current_database() AND pid<>pg_backend_pid() AND wait_event_type='Lock' AND position('GuildOwnershipTransfer' in query)>0`,
+            );
+            if (n >= 2) break;
+            if (Date.now() > until) throw new Error('both acceptances did not park on the lock');
+            await new Promise((r) => setTimeout(r, 25));
+          }
+        });
+        const [acceptedOne, acceptedTwo] = (await both!) as { transfer: unknown }[];
+        expect(acceptedOne.transfer).toMatchObject({ state: 'ACCEPTED', applied: true });
+        expect(acceptedTwo.transfer).toMatchObject({ state: 'ACCEPTED', applied: true });
+        expect(attempts).toBe(2);
+        expect(await founderOf(one.guild.id)).toBe(two.founder.accountId);
+        expect(await founderOf(two.guild.id)).toBe(one.founder.accountId);
+      }
+    });
+
     it('a Founder command racing the acceptance completes with it, whichever order wins', async () => {
       for (const round of [1, 2, 3]) {
         const { founder, guild: g } = await guild('race-founder-' + round);
