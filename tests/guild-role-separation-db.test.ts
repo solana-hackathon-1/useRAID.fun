@@ -47,7 +47,10 @@ const host = (allowNewWrites = true) => ({
   allowNewWrites,
   authorizeActivation: async (_tx: unknown, who: { accountId: string }) =>
     operators.has(who.accountId),
-  authorizeOwnershipTransfer: async () => true,
+  authorizeOwnershipTransfer: async () => ({
+    approved: true as const,
+    verificationRef: 'reverify:test.1',
+  }),
 });
 let keyCounter = 0;
 const cmd = (actor: GuildActor, input: unknown, key = 'key-' + ++keyCounter) => ({
@@ -146,7 +149,7 @@ async function untilBlocked() {
   }
   throw new Error('the second writer never waited on the Guild lock');
 }
-const ACCEPT = `UPDATE "GuildOwnershipTransfer" SET "state"='ACCEPTED',"decidedAt"=clock_timestamp(),"decidedByAccountId"="toAccountId","decideReceiptId"="proposeReceiptId" WHERE "id"=$1::uuid`;
+const ACCEPT = `UPDATE "GuildOwnershipTransfer" SET "state"='ACCEPTED',"decidedAt"=clock_timestamp(),"decidedByAccountId"="toAccountId","decideReceiptId"="proposeReceiptId","verificationRef"='direct:writer' WHERE "id"=$1::uuid`;
 const SET_FOUNDER = `UPDATE "Guild" SET "founderAccountId"=$2 WHERE "id"=$1::uuid`;
 
 integration('DEC-2026-11-13-04 TREASURY and DISPUTE separation', () => {

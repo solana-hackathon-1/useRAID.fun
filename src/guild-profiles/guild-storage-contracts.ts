@@ -29,12 +29,32 @@ export interface GuildActivationHost extends GuildHost {
     actor: { accountId: string },
   ): Promise<boolean>;
 }
+/**
+ * Version of the `authorizeOwnershipTransfer` hook contract (DEC-2026-11-14-02). v1 answered a boolean; v2 answers an
+ * `OwnershipTransferAuthorization`. A v1 host that still answers `true` is a refusal, never an approval: the module
+ * has no reference to store, so it fails closed.
+ */
+export const OWNERSHIP_HOOK_VERSION = 'v2';
+/**
+ * The opaque, non-secret reference the host keeps to its own re-verification record of project control (O11/G10,
+ * T010): 1-128 characters of `[A-Za-z0-9._:-]`, no personal data and no URL. The module stores it on the accepted
+ * transfer row only; it appears in no response, public read or audit event. The character class has no newline, and
+ * the database CHECK states the same pattern.
+ */
+export const OwnershipVerificationRefSchema = z.string().regex(/^[A-Za-z0-9._:-]{1,128}$/);
+/** The only shape that approves; every other answer, a legacy boolean included, is a refusal. */
+export const OwnershipTransferApprovalSchema = z.strictObject({
+  approved: z.literal(true),
+  verificationRef: OwnershipVerificationRefSchema,
+});
+export type OwnershipTransferAuthorization =
+  { approved: false } | { approved: true; verificationRef: string };
 /** The host's say over the ownership change itself (for example a recorded re-verification of project control). */
 export interface GuildOwnershipHost extends GuildHost {
   authorizeOwnershipTransfer(
     tx: CommandReceiptTransaction,
     change: { guildId: string; fromAccountId: string; toAccountId: string },
-  ): Promise<boolean>;
+  ): Promise<OwnershipTransferAuthorization>;
 }
 export type GuildAuthorityKind = 'PROFILE' | 'WORK' | 'TREASURY' | 'DISPUTE';
 export const GUILD_AUTHORITY_KINDS: readonly GuildAuthorityKind[] = [

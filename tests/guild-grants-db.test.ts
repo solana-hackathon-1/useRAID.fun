@@ -835,7 +835,13 @@ integration('T009 Guild role grants and revocation', () => {
         fields: ['name'],
       })
     ).grant;
-    const ownerHost = { allowNewWrites: true, authorizeOwnershipTransfer: async () => true };
+    const ownerHost = {
+      allowNewWrites: true,
+      authorizeOwnershipTransfer: async () => ({
+        approved: true as const,
+        verificationRef: 'reverify:test.1',
+      }),
+    };
     const proposed = await run((tx) =>
       proposeOwnershipTransfer(
         tx,
@@ -1022,7 +1028,13 @@ integration('T009 Guild role grants and revocation', () => {
       )
     ).map((row) => row.id);
   const transferFounder = async (guildId: string, from: GuildActor, to: GuildActor) => {
-    const ownerHost = { allowNewWrites: true, authorizeOwnershipTransfer: async () => true };
+    const ownerHost = {
+      allowNewWrites: true,
+      authorizeOwnershipTransfer: async () => ({
+        approved: true as const,
+        verificationRef: 'reverify:test.1',
+      }),
+    };
     const proposed = await run((tx) =>
       proposeOwnershipTransfer(
         tx,

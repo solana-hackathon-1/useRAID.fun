@@ -1743,6 +1743,7 @@ model GuildOwnershipTransfer {
   appliedAt DateTime? @db.Timestamptz(6)
   proposeReceiptId String @unique(map: "GuildOwnershipTransfer_proposeReceiptId_key") @db.Uuid
   decideReceiptId String? @unique(map: "GuildOwnershipTransfer_decideReceiptId_key") @db.Uuid
+  verificationRef String?
   guild Guild @relation(fields: [guildId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_guild_fkey")
   from User @relation("GuildTransferFrom", fields: [fromAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_from_fkey")
   to User @relation("GuildTransferTo", fields: [toAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "GuildOwnershipTransfer_to_fkey")

@@ -50,7 +50,10 @@ const handlersFor = (actor: GuildActor) =>
       run((tx) =>
         respondOwnershipTransfer(tx, command, {
           allowNewWrites: writes,
-          authorizeOwnershipTransfer: async () => approve,
+          authorizeOwnershipTransfer: async () =>
+            approve
+              ? { approved: true as const, verificationRef: 'reverify:http.1' }
+              : { approved: false as const },
         }),
       ),
     listTransfers: async (who) => ({

@@ -830,7 +830,13 @@ integration('T009 Guild public updates', () => {
 
   describe('DEC-2026-11-14-05 (b): publish and withdraw replays re-check live authority', () => {
     const handOver = async (founder: GuildActor, guildId: string, to: GuildActor) => {
-      const ownerHost = { allowNewWrites: true, authorizeOwnershipTransfer: async () => true };
+      const ownerHost = {
+        allowNewWrites: true,
+        authorizeOwnershipTransfer: async () => ({
+          approved: true as const,
+          verificationRef: 'reverify:test.1',
+        }),
+      };
       const proposed = await run((tx) =>
         proposeOwnershipTransfer(
           tx,
