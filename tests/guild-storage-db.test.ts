@@ -519,6 +519,9 @@ integration('T009 persisted Guild storage', () => {
     }
   });
 
+  /** Both sessions of the cycle pin this, so the 300ms gap below is explicitly shorter than it, not a server default. */
+  const DEADLOCK_TIMEOUT = '1s';
+
   /**
    * A real 40P01 against `activateGuild`. Activations themselves no longer deadlock (#496: the lower account id is locked
    * first), so the cycle comes from a locker that is not ordered, standing in for any host code or other module that
@@ -548,7 +551,13 @@ integration('T009 persisted Guild storage', () => {
     const go = new Promise<void>((resolve) => (proceed = resolve));
     const host = {
       allowNewWrites: true,
-      authorizeActivation: async (_tx: unknown, who: { accountId: string }) => {
+      authorizeActivation: async (tx: unknown, who: { accountId: string }) => {
+        // The activation's own session pins the same deadlock_timeout, on every attempt (a retry is a new transaction).
+        // The hook runs after the approver's User row and before the draft owner's, so it is early enough to cover the wait.
+        await (tx as CommandReceiptTransaction).query(
+          `SET LOCAL deadlock_timeout='${DEADLOCK_TIMEOUT}'`,
+          [],
+        );
         if (++hooks === 1) {
           reached();
           await go;
@@ -566,6 +575,7 @@ integration('T009 persisted Guild storage', () => {
     );
     await db.$transaction(
       async (t) => {
+        await t.$executeRawUnsafe(`SET LOCAL deadlock_timeout='${DEADLOCK_TIMEOUT}'`);
         await t.$queryRawUnsafe(
           `SELECT 1 FROM "User" WHERE "id"=$1 FOR NO KEY UPDATE`,
           b.accountId,
@@ -581,6 +591,8 @@ integration('T009 persisted Guild storage', () => {
           await new Promise((resolve) => setTimeout(resolve, 25));
         }
         // The cycle closes later than the activation began waiting, so the activation's deadlock check fires first.
+        // That needs the 300ms gap to be well under deadlock_timeout, which both sessions pin (DEADLOCK_TIMEOUT), so the
+        // ordering does not depend on the server default.
         await new Promise((resolve) => setTimeout(resolve, 300));
         await t.$queryRawUnsafe(`SELECT 1 FROM "User" WHERE "id"=$1 FOR UPDATE`, a.accountId);
       },
