@@ -18,6 +18,8 @@ export const AppealAdjudicatorFactsSchema = z
     originalReviewerAccountIds: z.array(Id).max(1000).readonly(),
     /** Guilds where the adjudicator and the appellant each hold a Founder or live role relationship. */
     sharedGuildIds: z.array(Id).max(1000).readonly(),
+    /** Parties (14) with a formed roster (every named member consented) that includes both, counting the leader (17.4 related Party). */
+    sharedPartyIds: z.array(Id).max(1000).readonly(),
     /** The host's current dedicated allowlist answer for the adjudicator. */
     onAllowlist: z.boolean(),
   })
@@ -28,14 +30,18 @@ export type AppealAdjudicatorVerdict =
   | {
       readonly allowed: false;
       readonly reason:
-        'SELF_ADJUDICATION' | 'ORIGINAL_REVIEWER' | 'GUILD_RELATIONSHIP' | 'NOT_AUTHORIZED';
+        | 'SELF_ADJUDICATION'
+        | 'ORIGINAL_REVIEWER'
+        | 'GUILD_RELATIONSHIP'
+        | 'PARTY_RELATIONSHIP'
+        | 'NOT_AUTHORIZED';
     };
 
 /**
  * Pure independence rule: an adjudicator is the appellant, an original reviewer or related to the appellant through a
- * Guild never; otherwise only the dedicated allowlist authorizes. Self-adjudication is reported first so the most
- * specific refusal wins. The answer is informational and never a token a caller can hand back. Related-Party and
- * financial-interest conflicts (17.4) are not observable for skill assessments yet and stay a recorded gap.
+ * Guild or a Party never; otherwise only the dedicated allowlist authorizes. Self-adjudication is reported first so
+ * the most specific refusal wins. The answer is informational and never a token a caller can hand back. A
+ * financial-interest conflict (17.4) has no recorded fact for skill assessments and stays a recorded gap.
  */
 export function evaluateAppealAdjudicator(value: AppealAdjudicatorFacts): AppealAdjudicatorVerdict {
   const facts = AppealAdjudicatorFactsSchema.parse(value);
@@ -44,6 +50,7 @@ export function evaluateAppealAdjudicator(value: AppealAdjudicatorFacts): Appeal
   if (facts.originalReviewerAccountIds.includes(facts.adjudicatorAccountId))
     return { allowed: false, reason: 'ORIGINAL_REVIEWER' };
   if (facts.sharedGuildIds.length > 0) return { allowed: false, reason: 'GUILD_RELATIONSHIP' };
+  if (facts.sharedPartyIds.length > 0) return { allowed: false, reason: 'PARTY_RELATIONSHIP' };
   if (!facts.onAllowlist) return { allowed: false, reason: 'NOT_AUTHORIZED' };
   return { allowed: true };
 }

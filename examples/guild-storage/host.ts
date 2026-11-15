@@ -94,6 +94,21 @@ const host = {
   authorizeActivation: async (_tx: CommandReceiptTransaction, who: { accountId: string }) =>
     activationOperators.has(who.accountId),
 };
+// The host owns its re-verification record (its evidence, content and retention); the module stores only the opaque,
+// non-secret reference this hook returns (v2 contract, DEC-2026-11-14-02). A real host would write the record in the
+// given transaction, so it commits or rolls back with the decision; this one keeps it in memory.
+const reverifications = new Map<string, { guildId: string; toAccountId: string }>();
+const approveTransfer = async (
+  _tx: CommandReceiptTransaction,
+  change: { guildId: string; fromAccountId: string; toAccountId: string },
+) => {
+  const verificationRef = `example-reverification:${reverifications.size + 1}`;
+  reverifications.set(verificationRef, {
+    guildId: change.guildId,
+    toAccountId: change.toAccountId,
+  });
+  return { approved: true as const, verificationRef };
+};
 const cmd = (actor: GuildActor, input: unknown, key: string) => ({
   actor,
   input,
@@ -418,7 +433,7 @@ try {
       transaction((tx) =>
         respondOwnershipTransfer(tx, command, {
           ...host,
-          authorizeOwnershipTransfer: async () => true,
+          authorizeOwnershipTransfer: approveTransfer,
         }),
       ),
     listTransfers: async (who) => ({
@@ -571,7 +586,7 @@ try {
           { guildId: active.guild.id, transferId: proposal.transfer.id, decision: 'ACCEPT' },
           't-2',
         ),
-        { ...host, authorizeOwnershipTransfer: async () => true },
+        { ...host, authorizeOwnershipTransfer: approveTransfer },
       ),
     ),
     (e) => e instanceof GuildStorageError && e.code === 'FORBIDDEN',
@@ -584,10 +599,55 @@ try {
         { guildId: active.guild.id, transferId: proposal.transfer.id, decision: 'ACCEPT' },
         't-3',
       ),
-      { ...host, authorizeOwnershipTransfer: async () => true },
+      { ...host, authorizeOwnershipTransfer: approveTransfer },
     ),
   );
   assert.equal(moved.transfer.applied, true);
+  // The accepted transfer keeps the host's reference on its row only: the response and the public read carry none.
+  const stored = await transaction((tx) =>
+    tx.query<{ verificationRef: string | null }>(
+      'SELECT "verificationRef" FROM "GuildOwnershipTransfer" WHERE "id"=$1::uuid',
+      [proposal.transfer.id],
+    ),
+  );
+  assert.deepEqual(reverifications.get(stored[0].verificationRef ?? ''), {
+    guildId: active.guild.id,
+    toAccountId: successor.accountId,
+  });
+  assert.equal(JSON.stringify(moved).includes('example-reverification'), false);
+  // A host that answers the old boolean, or approves without a reference, moves nothing (fail closed).
+  const heir = await account('second-successor');
+  const reproposal = await transaction((tx) =>
+    proposeOwnershipTransfer(
+      tx,
+      cmd(
+        successor,
+        {
+          guildId: active.guild.id,
+          toAccountId: heir.accountId,
+          expiresAt: new Date(Date.now() + 86400000).toISOString(),
+        },
+        't-4',
+      ),
+      host,
+    ),
+  );
+  for (const legacy of [true, { approved: true }]) {
+    await assert.rejects(
+      transaction((tx) =>
+        respondOwnershipTransfer(
+          tx,
+          cmd(
+            heir,
+            { guildId: active.guild.id, transferId: reproposal.transfer.id, decision: 'ACCEPT' },
+            't-5',
+          ),
+          { ...host, authorizeOwnershipTransfer: async () => legacy as never },
+        ),
+      ),
+      (e) => e instanceof GuildStorageError && e.code === 'FORBIDDEN',
+    );
+  }
   assert.deepEqual([await can(founder, 'PROFILE'), await can(successor, 'PROFILE')], [false, true]);
   // Activation over HTTP: the host session names the approver; an applicant who is on the allowlist is still refused.
   const activationHttp = createGuildActivationHandlers({

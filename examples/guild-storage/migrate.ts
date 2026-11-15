@@ -15,6 +15,7 @@ try {
     'migrations/followup-lapse-successor.sql',
     'migrations/role-separation.sql',
     'migrations/role-separation-recheck.sql',
+    'migrations/transfer-verification-ref.sql',
   ])
     await client.query(await readFile(new URL(file, import.meta.url), 'utf8'));
   console.log(

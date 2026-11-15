@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { db } from '../src/lib/db';
@@ -10,7 +11,9 @@ import {
   hasGuildAuthority,
   listPendingOwnershipTransfers,
   proposeOwnershipTransfer,
+  listPublicGuilds,
   readManagedGuild,
+  readPublicGuild,
   respondOwnershipTransfer,
   revokeGuildRole,
   type GuildActor,
@@ -102,9 +105,12 @@ const edit = (
   );
 
 let approve = true;
+let hookRef: unknown = 'reverify:t010.0001';
 const ownerHost = (allowNewWrites = true) => ({
   allowNewWrites,
-  authorizeOwnershipTransfer: async () => approve,
+  // `hookRef` is deliberately untyped so tests can feed a contract-breaking value.
+  authorizeOwnershipTransfer: async () =>
+    (approve ? { approved: true, verificationRef: hookRef } : { approved: false }) as never,
 });
 const propose = (
   actor: GuildActor,
@@ -168,6 +174,7 @@ integration('T009 Guild ownership transfer', () => {
     await truncateAll(db);
     operators.clear();
     approve = true;
+    hookRef = 'reverify:t010.0001';
   });
   afterAll(() => db.$disconnect());
 
@@ -388,7 +395,7 @@ integration('T009 Guild ownership transfer', () => {
     );
     // An accepted transfer cannot be left unapplied at commit.
     await refused(
-      `UPDATE "GuildOwnershipTransfer" SET "state"='ACCEPTED',"decidedAt"=clock_timestamp(),"decidedByAccountId"="toAccountId","decideReceiptId"="proposeReceiptId" WHERE "id"='${id}'`,
+      `UPDATE "GuildOwnershipTransfer" SET "state"='ACCEPTED',"decidedAt"=clock_timestamp(),"decidedByAccountId"="toAccountId","decideReceiptId"="proposeReceiptId","verificationRef"='direct:writer' WHERE "id"='${id}'`,
       'An accepted Guild ownership transfer must be applied to the Guild',
     );
   });
@@ -432,7 +439,7 @@ integration('T009 Guild ownership transfer', () => {
     const forge = (decidedBy: string, receiptColumn: string, decidedAt = 'clock_timestamp()') =>
       db.$transaction(async (tx) => {
         await tx.$executeRawUnsafe(
-          `UPDATE "GuildOwnershipTransfer" SET "state"='ACCEPTED',"decidedAt"=${decidedAt},"decidedByAccountId"=$2,"decideReceiptId"=${receiptColumn} WHERE "id"=$1::uuid`,
+          `UPDATE "GuildOwnershipTransfer" SET "state"='ACCEPTED',"decidedAt"=${decidedAt},"decidedByAccountId"=$2,"decideReceiptId"=${receiptColumn},"verificationRef"='forged:ref' WHERE "id"=$1::uuid`,
           id,
           decidedBy,
         );
@@ -510,7 +517,7 @@ integration('T009 Guild ownership transfer', () => {
       authorizeOwnershipTransfer: async () => {
         hookCalls++;
         await new Promise((resolve) => setTimeout(resolve, at.getTime() - Date.now() + 300));
-        return true;
+        return { approved: true, verificationRef: 'slow.ref' };
       },
     };
     const result = await run((tx) =>
@@ -797,7 +804,7 @@ integration('T009 Guild ownership transfer', () => {
           `UPDATE "GuildOwnershipTransfer" SET "state"='WITHDRAWN',"decidedAt"=clock_timestamp(),"decidedByAccountId"="fromAccountId","decideReceiptId"="proposeReceiptId" WHERE "id"=$1::uuid`,
           [id],
         );
-        return true;
+        return { approved: true, verificationRef: 'meddling.ref' };
       },
     };
     await expect(
@@ -841,7 +848,7 @@ integration('T009 Guild ownership transfer', () => {
           `UPDATE "GuildOwnershipTransfer" SET "state"='WITHDRAWN',"decidedAt"=clock_timestamp(),"decidedByAccountId"="fromAccountId","decideReceiptId"="proposeReceiptId" WHERE "id"=$1::uuid`,
           [id],
         );
-        return true;
+        return { approved: true, verificationRef: 'meddling.ref' };
       },
     };
     const spy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
@@ -1429,7 +1436,7 @@ integration('T009 Guild ownership transfer', () => {
             authorizeOwnershipTransfer: async () => {
               reached();
               await gate;
-              return true;
+              return { approved: true, verificationRef: 'held.ref' };
             },
           },
         ),
@@ -1552,5 +1559,289 @@ integration('T009 Guild ownership transfer', () => {
         expect(await founderOf(g.id)).toBe(next.accountId);
       }
     });
+  });
+});
+
+// DEC-2026-11-14-02: the accepted transfer stores the host's opaque re-verification reference, and only an approval
+// carrying a valid one moves a Founder.
+integration('DEC-2026-11-14-02 ownership-transfer verification reference', () => {
+  beforeEach(async () => {
+    assertTestDatabase();
+    await truncateAll(db);
+    operators.clear();
+    approve = true;
+    hookRef = 'reverify:t010.0001';
+  });
+  afterAll(() => db.$disconnect());
+
+  const transferRow = async (id: string) =>
+    (
+      await db.$queryRawUnsafe<
+        { state: string; verificationRef: string | null; applied: boolean }[]
+      >(
+        `SELECT "state","verificationRef","appliedAt" IS NOT NULL AS applied FROM "GuildOwnershipTransfer" WHERE "id"=$1::uuid`,
+        id,
+      )
+    )[0];
+  /** A host whose hook answers `answer` exactly (including shapes a contract-breaking host might return). */
+  const hostAnswering = (answer: unknown) => ({
+    allowNewWrites: true,
+    authorizeOwnershipTransfer: async () => answer as never,
+  });
+  const acceptWith = (actor: GuildActor, g: string, id: string, answer: unknown, key?: string) =>
+    run((tx) =>
+      respondOwnershipTransfer(
+        tx,
+        cmd(actor, { guildId: g, transferId: id, decision: 'ACCEPT' }, key),
+        hostAnswering(answer),
+      ),
+    );
+
+  it('stores the approved reference on the accepted transfer and moves the Founder', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const id = (await propose(founder, g.id, next.accountId, {}, 'p-1')).transfer.id;
+    hookRef = 'Reverify_2026-11:Case.42';
+    const done = await respond(next, g.id, id, 'ACCEPT', 'a-1');
+    expect(done.transfer).toMatchObject({ state: 'ACCEPTED', applied: true });
+    expect(await transferRow(id)).toEqual({
+      state: 'ACCEPTED',
+      verificationRef: 'Reverify_2026-11:Case.42',
+      applied: true,
+    });
+    expect(await founderOf(g.id)).toBe(next.accountId);
+  });
+
+  it('keeps a reference off a decline and a withdrawal', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const id = (await propose(founder, g.id, next.accountId, {}, 'p-1')).transfer.id;
+    expect((await respond(next, g.id, id, 'DECLINE', 'd-1')).transfer.state).toBe('DECLINED');
+    expect((await transferRow(id)).verificationRef).toBeNull();
+    const second = (await propose(founder, g.id, next.accountId, {}, 'p-2')).transfer.id;
+    expect((await respond(founder, g.id, second, 'WITHDRAW', 'w-1')).transfer.state).toBe(
+      'WITHDRAWN',
+    );
+    expect((await transferRow(second)).verificationRef).toBeNull();
+  });
+
+  it('never returns the reference in a response, replay, list, managed or public read, audit event or outbox row', async () => {
+    const { founder, guild: g } = await guild('ref-private-guild');
+    const next = await person();
+    const id = (await propose(founder, g.id, next.accountId, {}, 'p-1')).transfer.id;
+    hookRef = 'secretish-ref.9f3a';
+    const outputs: unknown[] = [];
+    outputs.push(await respond(next, g.id, id, 'ACCEPT', 'a-1'));
+    outputs.push(await respond(next, g.id, id, 'ACCEPT', 'a-1'));
+    // A later open proposal from the new Founder, read by both parties.
+    const third = await person();
+    await propose(next, g.id, third.accountId, {}, 'p-2');
+    for (const who of [next, third, founder])
+      outputs.push(await run((tx) => listPendingOwnershipTransfers(tx, who)));
+    outputs.push(await run((tx) => readManagedGuild(tx, next, g.id)));
+    outputs.push(await run((tx) => readPublicGuild(tx, 'ref-private-guild')));
+    outputs.push(await run((tx) => listPublicGuilds(tx, {})));
+    expect(JSON.stringify(outputs)).not.toContain('secretish-ref.9f3a');
+    const stored = await db.$queryRawUnsafe<{ doc: string }[]>(
+      `SELECT to_jsonb(a)::text AS doc FROM "AuditEvent" a UNION ALL SELECT to_jsonb(o)::text FROM "OutboxEvent" o UNION ALL SELECT to_jsonb(c)::text FROM "CommandReceipt" c`,
+    );
+    expect(stored.length).toBeGreaterThan(0);
+    for (const row of stored) expect(row.doc).not.toContain('secretish-ref.9f3a');
+    const events = await db.$queryRawUnsafe<{ payload: unknown }[]>(
+      `SELECT "payload" FROM "AuditEvent" WHERE "guildId"=$1 AND "eventType"='guild.ownership_transferred.v1'`,
+      g.id,
+    );
+    expect(events.map((e) => e.payload)).toEqual([{ guildOwnershipTransferId: id }]);
+  });
+
+  const withoutValidRef: [string, unknown][] = [
+    ['a legacy boolean approval', true],
+    ['a refusal', { approved: false }],
+    ['a refusal that carries a reference', { approved: false, verificationRef: 'ok.ref' }],
+    ['a missing reference', { approved: true }],
+    ['a null reference', { approved: true, verificationRef: null }],
+    ['an empty reference', { approved: true, verificationRef: '' }],
+    ['a non-string reference', { approved: true, verificationRef: 42 }],
+    ['a 129-character reference', { approved: true, verificationRef: 'a'.repeat(129) }],
+    ['a reference with a space', { approved: true, verificationRef: 'has space' }],
+    ['a reference that is a URL', { approved: true, verificationRef: 'https://x.example/a' }],
+    ['a reference with a newline', { approved: true, verificationRef: 'ok\nref' }],
+    ['a reference with a trailing newline', { approved: true, verificationRef: 'ok.ref\n' }],
+    ['a reference with a non-ASCII letter', { approved: true, verificationRef: 'réf' }],
+    ['an approval that is not exactly true', { approved: 'yes', verificationRef: 'ok.ref' }],
+    ['an unknown extra key', { approved: true, verificationRef: 'ok.ref', evidence: 'x' }],
+    ['no answer', undefined],
+    ['null', null],
+  ];
+  it.each(withoutValidRef)(
+    'refuses an approval without a valid reference (%s): FORBIDDEN, nothing applied, no receipt',
+    async (_label, answer) => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const id = (await propose(founder, g.id, next.accountId, {}, 'p-1')).transfer.id;
+      await expect(acceptWith(next, g.id, id, answer, 'a-bad')).rejects.toMatchObject({
+        code: 'FORBIDDEN',
+      });
+      expect(await transferRow(id)).toEqual({
+        state: 'PROPOSED',
+        verificationRef: null,
+        applied: false,
+      });
+      expect(await founderOf(g.id)).toBe(founder.accountId);
+      const receipts = await db.$queryRawUnsafe<{ n: number }[]>(
+        `SELECT count(*)::int AS n FROM "CommandReceipt" WHERE "actorId"=$1 AND "commandKind"='RespondOwnershipTransfer'`,
+        next.accountId,
+      );
+      expect(receipts[0].n).toBe(0);
+      // The proposal stays answerable once the host returns a valid reference.
+      hookRef = 'ok.ref-2';
+      expect((await respond(next, g.id, id, 'ACCEPT', 'a-ok')).transfer.applied).toBe(true);
+    },
+  );
+
+  it.each(['a', 'A.b_c:d-e0123456789', 'z'.repeat(128)])(
+    'accepts the reference %s (alphabet and length bounds)',
+    async (ref) => {
+      const { founder, guild: g } = await guild();
+      const next = await person();
+      const id = (await propose(founder, g.id, next.accountId, {}, 'p-1')).transfer.id;
+      expect(
+        (await acceptWith(next, g.id, id, { approved: true, verificationRef: ref })).transfer.state,
+      ).toBe('ACCEPTED');
+      expect((await transferRow(id)).verificationRef).toBe(ref);
+    },
+  );
+
+  it('records a lapsed acceptance as EXPIRED with no reference', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const id = (await propose(founder, g.id, next.accountId, {}, 'p-1')).transfer.id;
+    await db.$executeRawUnsafe(
+      `ALTER TABLE "GuildOwnershipTransfer" DISABLE TRIGGER guild_transfer_guard_v1`,
+    );
+    try {
+      await db.$executeRawUnsafe(
+        `UPDATE "GuildOwnershipTransfer" SET "proposedAt"=clock_timestamp()-interval '2 days',"expiresAt"=clock_timestamp()-interval '1 day' WHERE "id"=$1::uuid`,
+        id,
+      );
+    } finally {
+      await db.$executeRawUnsafe(
+        `ALTER TABLE "GuildOwnershipTransfer" ENABLE TRIGGER guild_transfer_guard_v1`,
+      );
+    }
+    expect((await respond(next, g.id, id, 'ACCEPT', 'a-late')).transfer.state).toBe('EXPIRED');
+    expect(await transferRow(id)).toEqual({
+      state: 'EXPIRED',
+      verificationRef: null,
+      applied: false,
+    });
+  });
+
+  it('refuses a direct writer that accepts without a reference, with a malformed one, or sets one on another state', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const id = (await propose(founder, g.id, next.accountId, {}, 'p-1')).transfer.id;
+    const decide = (state: string, ref: string | null) =>
+      db.$executeRawUnsafe(
+        `UPDATE "GuildOwnershipTransfer" SET "state"='${state}',"decidedAt"=clock_timestamp(),"decidedByAccountId"="toAccountId","decideReceiptId"="proposeReceiptId","verificationRef"=$2 WHERE "id"=$1::uuid`,
+        id,
+        ref,
+      );
+    await expect(decide('ACCEPTED', null)).rejects.toThrow(
+      'GuildOwnershipTransfer_verification_required_check',
+    );
+    for (const bad of ['', 'has space', 'a'.repeat(129), 'https://x.example', 'ok\n'])
+      await expect(decide('ACCEPTED', bad), JSON.stringify(bad)).rejects.toThrow(
+        'GuildOwnershipTransfer_verification_ref_check',
+      );
+    await expect(decide('DECLINED', 'ok.ref')).rejects.toThrow(
+      'GuildOwnershipTransfer_verification_ref_check',
+    );
+    // A pending proposal cannot carry one either, nor can a stored one be changed after the decision.
+    await expect(
+      db.$executeRawUnsafe(
+        `UPDATE "GuildOwnershipTransfer" SET "verificationRef"='ok.ref' WHERE "id"=$1::uuid`,
+        id,
+      ),
+    ).rejects.toThrow();
+    expect(await transferRow(id)).toEqual({
+      state: 'PROPOSED',
+      verificationRef: null,
+      applied: false,
+    });
+    hookRef = 'final.ref';
+    await respond(next, g.id, id, 'ACCEPT', 'a-1');
+    await expect(
+      db.$executeRawUnsafe(
+        `UPDATE "GuildOwnershipTransfer" SET "verificationRef"='changed.ref' WHERE "id"=$1::uuid`,
+        id,
+      ),
+    ).rejects.toThrow('A decided Guild ownership transfer is final');
+    expect((await transferRow(id)).verificationRef).toBe('final.ref');
+  });
+
+  it('leaves earlier accepted rows untouched: the migration validates only later writes', async () => {
+    const { founder, guild: g } = await guild();
+    const next = await person();
+    const third = await person();
+    const earlier = (await propose(founder, g.id, next.accountId, {}, 'p-1')).transfer.id;
+    await respond(next, g.id, earlier, 'ACCEPT', 'a-1');
+    const later = (await propose(next, g.id, third.accountId, {}, 'p-2')).transfer.id;
+    const migration = readFileSync(
+      new URL(
+        '../prisma/migrations/202611150002_guild_transfer_verification_ref/migration.sql',
+        import.meta.url,
+      ),
+      'utf8',
+    );
+    const rollback = new Error('rollback');
+    await db
+      .$transaction(async (tx) => {
+        // Recreate the pre-migration state: no column, and an accepted, applied transfer that has no reference.
+        await tx.$executeRawUnsafe(
+          `ALTER TABLE "GuildOwnershipTransfer" DROP COLUMN "verificationRef"`,
+        );
+        // Prisma runs one statement per call: the plain statements, then the function (its body holds semicolons).
+        const [plain, ...rest] = migration.split('CREATE OR REPLACE FUNCTION');
+        const statements = [
+          ...plain
+            .replace(/^--.*$/gm, '')
+            .split(';')
+            .map((statement) => statement.trim())
+            .filter((statement) => statement && !/^(BEGIN|COMMIT)$/.test(statement)),
+          ('CREATE OR REPLACE FUNCTION' + rest.join('CREATE OR REPLACE FUNCTION'))
+            .replace(/COMMIT;\s*$/, '')
+            .trim(),
+        ];
+        expect(statements.length).toBeGreaterThanOrEqual(4);
+        for (const statement of statements) await tx.$executeRawUnsafe(statement);
+        const legacy = await tx.$queryRawUnsafe<{ state: string; ref: string | null }[]>(
+          `SELECT "state","verificationRef" AS ref FROM "GuildOwnershipTransfer" WHERE "id"=$1::uuid`,
+          earlier,
+        );
+        expect(legacy).toEqual([{ state: 'ACCEPTED', ref: null }]);
+        const checks = await tx.$queryRawUnsafe<{ conname: string; convalidated: boolean }[]>(
+          `SELECT conname,convalidated FROM pg_constraint WHERE conrelid='"GuildOwnershipTransfer"'::regclass AND conname LIKE '%verification%' ORDER BY conname`,
+        );
+        expect(checks).toEqual([
+          { conname: 'GuildOwnershipTransfer_verification_ref_check', convalidated: true },
+          { conname: 'GuildOwnershipTransfer_verification_required_check', convalidated: false },
+        ]);
+        // Later writes are judged: a new acceptance without a reference is refused.
+        await tx.$executeRawUnsafe('SAVEPOINT later');
+        await expect(
+          tx.$executeRawUnsafe(
+            `UPDATE "GuildOwnershipTransfer" SET "state"='ACCEPTED',"decidedAt"=clock_timestamp(),"decidedByAccountId"="toAccountId","decideReceiptId"="proposeReceiptId" WHERE "id"=$1::uuid`,
+            later,
+          ),
+        ).rejects.toThrow('GuildOwnershipTransfer_verification_required_check');
+        await tx.$executeRawUnsafe('ROLLBACK TO SAVEPOINT later');
+        throw rollback;
+      })
+      .catch((error: unknown) => {
+        if (error !== rollback) throw error;
+      });
+    // The rolled-back replay left the real schema and rows as they were.
+    expect((await transferRow(earlier)).verificationRef).toBe('reverify:t010.0001');
   });
 });
