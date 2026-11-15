@@ -328,6 +328,47 @@ integration('#331 applicant-consented per-application evidence snapshot', () => 
     ).rejects.toThrow(/pending application/);
   });
 
+  it('#491: a caller who may not touch the application is refused before any lock on the application, slot or listing', async () => {
+    const s = await setup();
+    await share(s.applicant.actor, s.applicationId, ['writing']);
+    const stranger = await seedWorkHuman(db);
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => (release = resolve));
+    let holding!: () => void;
+    const held = new Promise<void>((resolve) => (holding = resolve));
+    // Another connection holds the exclusive locks that any SHARE or UPDATE on the listing, slot or application would queue behind.
+    const holder = db.$transaction(
+      async (t) => {
+        await t.$queryRawUnsafe(
+          `SELECT 1 FROM "WorkListing" l JOIN "RaidSlot" sl ON sl."listingId"=l."id" JOIN "RaidApplication" a ON a."slotId"=sl."id" WHERE a."id"=$1::uuid FOR UPDATE OF l, sl, a`,
+          s.applicationId,
+        );
+        holding();
+        await gate;
+      },
+      { timeout: 30000 },
+    );
+    await held;
+    try {
+      const answer = (call: Promise<unknown>) =>
+        Promise.race([
+          call.then(
+            () => 'ALLOWED',
+            (e: { code: string }) => e.code,
+          ),
+          new Promise<string>((resolve) => setTimeout(() => resolve('BLOCKED'), 1500)),
+        ]);
+      // A missing application and an existing one the caller may not touch answer alike and neither waits on a row lock.
+      for (const target of [s.applicationId, randomUUID()]) {
+        expect(await answer(share(stranger.actor, target))).toBe('FORBIDDEN');
+        expect(await answer(unshare(stranger.actor, target))).toBe('FORBIDDEN');
+      }
+    } finally {
+      release();
+      await holder;
+    }
+  });
+
   it('serializes a share against a concurrent close of the application (two connections)', async () => {
     const s = await setup();
     let release!: () => void;

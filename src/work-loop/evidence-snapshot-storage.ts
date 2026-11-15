@@ -38,21 +38,27 @@ function input<T>(schema: z.ZodType<T>, command: WorkCommand, tx: Tx): T {
 }
 /**
  * The binding of an application, read without its private evidence references. A missing application is FORBIDDEN, the
- * same answer as one the caller may not touch, so these commands are no existence oracle.
+ * same answer as one the caller may not touch, so these commands are no existence oracle. With `actor` the read also
+ * answers FORBIDDEN, in this same single unlocked query, when the application is not the caller's own: that decision is
+ * made before any lock on the listing, slot or application is taken (#491), so an application that exists but is not
+ * the caller's costs the same query and waits on no row, like a missing one. It is a pre-screen only: the account of a
+ * participant never changes, and the locked canonical-HUMAN check that follows stays the authority.
  */
-async function application(tx: Tx, id: string, lock = false) {
+async function application(tx: Tx, id: string, lock = false, actor?: WorkActor) {
   const rows = await tx.query<{
     id: string;
     slotId: string;
     termsVersionId: string;
     participantId: string;
+    accountId: string;
     state: string;
   }>(
-    'SELECT "id"::text,"slotId"::text,"termsVersionId"::text,"participantId"::text,"state" FROM "RaidApplication" WHERE "id"=$1::uuid' +
-      (lock ? ' FOR UPDATE' : ''),
+    'SELECT a."id"::text,a."slotId"::text,a."termsVersionId"::text,a."participantId"::text,p."accountId",a."state" FROM "RaidApplication" a JOIN "Participant" p ON p."id"=a."participantId" WHERE a."id"=$1::uuid' +
+      (lock ? ' FOR UPDATE OF a' : ''),
     [id],
   );
   if (rows.length !== 1) fail('FORBIDDEN');
+  if (actor && rows[0].accountId !== actor.accountId) fail('FORBIDDEN');
   return rows[0];
 }
 const event = (type: string, s: Awaited<ReturnType<typeof source>>, termsVersionId: string) => ({
@@ -90,7 +96,7 @@ export async function recordEvidenceSnapshot(
     },
     async () => {
       if (!host.allowNewWrites) fail('WRITES_DISABLED');
-      const ref = await application(tx, value.applicationId);
+      const ref = await application(tx, value.applicationId, false, actor);
       // Listing then slot then application, as every admission writer; SHARE because nothing on the source changes.
       const s = await source(tx, ref.slotId, 'SHARE');
       auth = await currentHuman(tx, actor);
@@ -170,7 +176,7 @@ export async function withdrawEvidenceSnapshot(tx: Tx, command: WorkCommand) {
       request: value,
     },
     async () => {
-      const ref = await application(tx, value.applicationId);
+      const ref = await application(tx, value.applicationId, false, actor);
       const s = await source(tx, ref.slotId, 'SHARE');
       auth = await currentHuman(tx, actor);
       if (ref.participantId !== auth.participantId) fail('FORBIDDEN');

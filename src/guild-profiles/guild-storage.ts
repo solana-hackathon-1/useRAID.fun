@@ -222,10 +222,11 @@ export async function activateGuild(
       // (FOR SHARE, below). Every multi-User locker in this module takes the lower account id first (see the ownership
       // acceptance), or a cycle with another locker is possible: an approver whose transfer the draft owner is accepting
       // would otherwise deadlock with that acceptance. So an owner whose id sorts below the approver's is locked here,
-      // before approved() takes the approver's row; a higher one is locked after it, as before. The approver cannot yet
-      // be known to hold a live session, so a caller with a revoked or expired one can share-lock a draft owner's row
-      // until its UNAUTHENTICATED rollback, which blocks only a concurrent update of that User row for that moment (it
-      // is the same for any such command that locks before it authenticates, and it reads nothing back). The owner
+      // before approved() takes the approver's row; a higher one is locked after it, as before. No session has been proven
+      // yet, so ANY caller that supplies an existing draft id (not only someone the host would let approve it, and with
+      // a revoked, expired or no-longer-existing session) can share-lock that draft owner's row until the UNAUTHENTICATED
+      // rollback. That blocks only a concurrent update of the User row for that moment, reads nothing back, and the
+      // answer is unchanged; it is the same for any such command that locks before it authenticates. The owner
       // is immutable, so the unlocked read is safe; a missing draft still answers only after approved().
       if (found.length === 1 && found[0].ownerAccountId < actor.accountId)
         await query(tx, 'SELECT "suspended" FROM "User" WHERE "id"=$1 FOR SHARE', [
