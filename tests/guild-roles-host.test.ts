@@ -74,7 +74,7 @@ it('answers the ownership policy hook closed: no project-control re-verification
       {},
       { guildId: 'g', fromAccountId: 'a', toAccountId: 'b' },
     ),
-  ).resolves.toBe(false);
+  ).resolves.toEqual({ approved: false });
 });
 
 it('reads pending transfers whatever the write switch says: a recipient can always see what is asked of them', async () => {

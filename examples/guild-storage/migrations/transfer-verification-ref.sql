@@ -1,0 +1,1 @@
+../../../prisma/migrations/202611150002_guild_transfer_verification_ref/migration.sql

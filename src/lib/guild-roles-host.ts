@@ -35,7 +35,7 @@ export const respondTransfer = (command: GuildCommand) =>
   runCommandTransaction(db, (tx) =>
     respondOwnershipTransfer(tx, command, {
       ...host(),
-      authorizeOwnershipTransfer: async () => false,
+      authorizeOwnershipTransfer: async () => ({ approved: false }),
     }),
   );
 /** Reads stay available whatever the write switch says: a recipient must always be able to see what is asked of them. */

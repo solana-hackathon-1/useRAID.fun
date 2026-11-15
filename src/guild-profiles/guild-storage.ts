@@ -36,6 +36,7 @@ import {
   ListManagedGuildUpdatesInputSchema,
   GUILD_MANAGED_UPDATE_PAGE_MAX,
   OWNERSHIP_TRANSFER_MAX_DAYS,
+  OwnershipTransferApprovalSchema,
   OwnershipTransferViewSchema,
   PENDING_OWNERSHIP_TRANSFER_PAGE_MAX,
   PendingOwnershipTransferViewSchema,
@@ -1247,14 +1248,17 @@ export async function respondOwnershipTransfer(
       // One decision instant: the state is the requested one inside the window and EXPIRED at or after its end, so a
       // decision that crosses `expiresAt` (for example during a slow host hook) records the lapse instead of failing
       // the timing CHECK.
-      const decide = async (state: string) => {
+      // `verificationRef` (DEC-2026-11-14-02) is stored only on an acceptance that lands inside the window: a decline,
+      // a withdrawal and a lapse carry none, as the CHECKs require.
+      const decide = async (state: string, verificationRef: string | null = null) => {
         const rows = await query<{ state: string }>(
           tx,
           `WITH d AS (SELECT clock_timestamp() AS t)
            UPDATE "GuildOwnershipTransfer" SET "state"=CASE WHEN "expiresAt"<=d.t THEN 'EXPIRED' ELSE $2 END,
-             "decidedAt"=d.t,"decidedByAccountId"=$3,"decideReceiptId"=$4::uuid
+             "decidedAt"=d.t,"decidedByAccountId"=$3,"decideReceiptId"=$4::uuid,
+             "verificationRef"=CASE WHEN "expiresAt"<=d.t THEN NULL ELSE $5::text END
            FROM d WHERE "id"=$1::uuid AND "state"='PROPOSED' RETURNING "state"`,
-          [input.transferId, state, actor.accountId, receiptId],
+          [input.transferId, state, actor.accountId, receiptId, verificationRef],
         );
         // The transfer row is locked and was PROPOSED a moment ago; finding it decided anyway means something else
         // moved it inside this transaction, which is the same answer as a transfer that was no longer pending.
@@ -1307,16 +1311,18 @@ export async function respondOwnershipTransfer(
           fail('FORBIDDEN');
         if (await holdsSeparateAuthority(tx, input.guildId, transfer.toAccountId))
           fail('FORBIDDEN');
-        if (
-          (await host.authorizeOwnershipTransfer(tx, {
+        // DEC-2026-11-14-02: only an approval carrying a valid opaque reference moves a Founder. A refusal, a legacy
+        // boolean, a missing or malformed reference and any unknown shape all fail closed (nothing is applied).
+        const approval = OwnershipTransferApprovalSchema.safeParse(
+          await host.authorizeOwnershipTransfer(tx, {
             guildId: input.guildId,
             fromAccountId: transfer.fromAccountId,
             toAccountId: transfer.toAccountId,
-          })) !== true
-        )
-          fail('FORBIDDEN');
+          }),
+        );
+        if (!approval.success) fail('FORBIDDEN');
         await authorize(tx, actor);
-        if ((await decide('ACCEPTED')) === 'EXPIRED') type = expired;
+        if ((await decide('ACCEPTED', approval.data.verificationRef)) === 'EXPIRED') type = expired;
         else type = await apply();
       } else if (input.decision === 'DECLINE') {
         type = (await decide('DECLINED')) === 'EXPIRED' ? expired : 'guild.ownership_declined.v1';
