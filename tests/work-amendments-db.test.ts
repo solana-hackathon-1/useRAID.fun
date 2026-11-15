@@ -933,6 +933,82 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
       await amendment.catch(() => undefined);
     }
   });
+  it('#269-3: keeps funding-reference serialization inside the BEFORE guards, one check per table', async () => {
+    // The 202610270002 AFTER triggers duplicated the guards' EXISTS checks; the lock now lives in the guards themselves.
+    expect(
+      await row(
+        `SELECT tgname FROM pg_trigger WHERE NOT tgisinternal AND tgname LIKE '%funding_serialize'`,
+      ),
+    ).toEqual([]);
+    expect(
+      await row(
+        `SELECT proname FROM pg_proc WHERE pronamespace='public'::regnamespace AND proname LIKE 'raid_%_funding_serialize'`,
+      ),
+    ).toEqual([]);
+    const guards = await row<{ proname: string; locks: boolean; checks: boolean; before: boolean }>(
+      `SELECT p.proname,
+              p.prosrc LIKE '%pg_advisory_xact_lock(hashtextextended(''raid:funding-reference:''||%' AS locks,
+              p.prosrc ~ 'EXISTS [(]SELECT 1 FROM "(RaidSlot|EngagementAmendment)" WHERE' AS checks,
+              bool_and((t.tgtype & 2) = 2) AS before
+         FROM pg_proc p JOIN pg_trigger t ON t.tgfoid=p.oid AND NOT t.tgisinternal
+        WHERE p.proname IN ('raid_amendment_insert_guard','raid_slot_funding_distinct')
+        GROUP BY p.proname,p.prosrc ORDER BY p.proname`,
+    );
+    expect(guards).toEqual([
+      { proname: 'raid_amendment_insert_guard', locks: true, checks: true, before: true },
+      { proname: 'raid_slot_funding_distinct', locks: true, checks: true, before: true },
+    ]);
+  });
+  it('#269-3: makes a direct amendment insert wait for an uncommitted slot reference, then reject it', async () => {
+    const { founder, slot, engagementId } = await setup();
+    await start(engagementId);
+    let release!: () => void;
+    const held = new Promise<void>((resolve) => (release = resolve));
+    let inserted!: () => void;
+    const slotWritten = new Promise<void>((resolve) => (inserted = resolve));
+    const slotWriter = db.$transaction(
+      async (tx) => {
+        await tx.$executeRawUnsafe(
+          `INSERT INTO "RaidSlot" ("listingId","termsVersionId","slotNumber","fundingRef") VALUES ($1::uuid,$2::uuid,97,'guard-race-ref')`,
+          slot.listingId,
+          slot.termsVersionId,
+        );
+        await tx.$executeRawUnsafe(
+          `INSERT INTO "WorkSimulatedReservation" ("slotId","termsVersionId","vectorDigest","legs","fundingRef")
+           SELECT s."id",s."termsVersionId",raid_work_reward_digest(t."snapshot"->'rewards'),t."snapshot"->'rewards',s."fundingRef"
+           FROM "RaidSlot" s JOIN "TermsVersion" t ON t."id"=s."termsVersionId" WHERE s."fundingRef"='guard-race-ref'`,
+        );
+        inserted();
+        await held;
+      },
+      { timeout: 20000 },
+    );
+    try {
+      await slotWritten;
+      const raced = db.$transaction(
+        (tx) =>
+          tx.$executeRawUnsafe(
+            `INSERT INTO "EngagementAmendment" ("engagementId","sequence","snapshot","digest","proposedByAccountId","additionalFundingRef","expiresAt") SELECT "id",1,jsonb_set("acceptedTerms",'{rewards,0,amount}','"1500000000"'),'${'c'.repeat(64)}',$2,'guard-race-ref',clock_timestamp()+interval '1 hour' FROM "Engagement" WHERE "id"=$1::uuid`,
+            engagementId,
+            founder.actor.accountId,
+          ),
+        { timeout: 20000 },
+      );
+      const settled = raced.then(
+        () => 'settled',
+        () => 'settled',
+      );
+      expect(await advisoryWaiter()).toBe(true);
+      expect(await Promise.race([settled, Promise.resolve('waiting')])).toBe('waiting');
+      release();
+      await slotWriter;
+      await expect(raced).rejects.toThrow(/already reserved for a slot/i);
+      expect(await row('SELECT 1 FROM "EngagementAmendment"')).toEqual([]);
+    } finally {
+      release();
+      await slotWriter.catch(() => undefined);
+    }
+  });
   const overdue = () => ({
     commitment: at(6000),
     preparation: at(6500),
