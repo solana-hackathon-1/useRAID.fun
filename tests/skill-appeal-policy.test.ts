@@ -24,6 +24,7 @@ describe('skill-assessment appeal adjudicator independence (DEC-2026-11-13-12, 0
     ['the appellant', { adjudicatorAccountId: 'synthetic-appellant' }, 'SELF_ADJUDICATION'],
     ['an original reviewer', { adjudicatorAccountId: 'synthetic-reviewer' }, 'ORIGINAL_REVIEWER'],
     ['sharing a Guild with the appellant', { sharedGuildIds: ['g1'] }, 'GUILD_RELATIONSHIP'],
+    ['sharing a Party with the appellant (17.4)', { sharedPartyIds: ['p1'] }, 'PARTY_RELATIONSHIP'],
   ])('refuses %s', (_name, patch, reason) => {
     expect(evaluateAppealAdjudicator({ ...facts, ...patch })).toEqual({ allowed: false, reason });
   });
@@ -36,6 +37,14 @@ describe('skill-assessment appeal adjudicator independence (DEC-2026-11-13-12, 0
         originalReviewerAccountIds: ['synthetic-appellant'],
       }),
     ).toEqual({ allowed: false, reason: 'SELF_ADJUDICATION' });
+  });
+  it('treats facts without Party relationships as no Party conflict (existing hosts keep working)', () => {
+    expect(evaluateAppealAdjudicator({ ...facts, sharedPartyIds: [] })).toEqual({ allowed: true });
+  });
+  it('reports a Guild relationship before a Party relationship', () => {
+    expect(
+      evaluateAppealAdjudicator({ ...facts, sharedGuildIds: ['g1'], sharedPartyIds: ['p1'] }),
+    ).toEqual({ allowed: false, reason: 'GUILD_RELATIONSHIP' });
   });
   it('is informational: the answer never carries an authorization token', () => {
     expect(JSON.stringify(evaluateAppealAdjudicator(facts))).not.toMatch(/token|grant/i);

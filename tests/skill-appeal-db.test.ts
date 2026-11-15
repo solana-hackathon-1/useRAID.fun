@@ -5,6 +5,7 @@ import { hash } from '../src/lib/auth-primitives';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
 import { saveGuildDraft } from '../src/guild-profiles/draft-storage';
 import { activateGuild, grantGuildRole } from '../src/guild-profiles/guild-storage';
+import { createParty } from '../src/parties';
 import {
   adjudicateSkillAssessmentAppeal,
   fileSkillAssessmentAppeal,
@@ -427,10 +428,78 @@ integration('T014 skill-assessment appeals: intake and independent adjudication 
       );
       expect(replay).toMatchObject({ status: 'REPLAYED', appeal: { state: done.appeal.state } });
     });
-    it('reports an unknown appeal as not found', async () => {
-      await expect(adjudicate(randomUUID(), await person())).rejects.toMatchObject({
-        code: 'NOT_FOUND',
+    it('answers an unknown appeal id exactly like a conflicted adjudicator (no existence oracle)', async () => {
+      const unknown = await adjudicate(randomUUID(), await person()).then(
+        () => null,
+        (e) => e,
+      );
+      allowlist.add(appellant.accountId);
+      const conflicted = await adjudicate(appealId, appellant).then(
+        () => null,
+        (e) => e,
+      );
+      expect(conflicted).toMatchObject({ code: 'FORBIDDEN' });
+      expect(unknown).toMatchObject({ code: 'FORBIDDEN' });
+      expect({ ...unknown, message: unknown.message }).toEqual({
+        ...conflicted,
+        message: conflicted.message,
       });
+      // A malformed id gets the same answer too; the HTTP layer rejects it earlier for everyone.
+      expect(
+        await adjudicate('not-a-uuid', await person()).then(
+          () => null,
+          (e) => e,
+        ),
+      ).toMatchObject({ code: 'INVALID_INPUT' });
+    });
+    it('refuses an adjudicator who shares a Party with the appellant (17.4 related Party)', async () => {
+      const adjudicator = await person();
+      await db.participant.create({
+        data: {
+          accountId: adjudicator.accountId,
+          provisionActorAccountId: adjudicator.accountId,
+          provisionRequestId: 'synthetic-provision',
+        },
+      });
+      const stranger = await person();
+      await db.participant.create({
+        data: {
+          accountId: stranger.accountId,
+          provisionActorAccountId: stranger.accountId,
+          provisionRequestId: 'synthetic-provision',
+        },
+      });
+      const { party } = await run((tx) =>
+        createParty(
+          tx,
+          {
+            actor: appellant,
+            input: { name: 'Synthetic Party' },
+            idempotencyKey: randomUUID(),
+            requestId: 'synthetic-party',
+          },
+          { allowNewWrites: true },
+        ),
+      );
+      // The appellant leads the Party; the stranger is unrelated and still adjudicates.
+      await db.$transaction(async (tx) => {
+        // Foreign keys to a published slot are not what is under test; the replication role skips only triggers.
+        await tx.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
+        const [{ id }] = await tx.$queryRawUnsafe<{ id: string }[]>(
+          `INSERT INTO "PartyProposal"("partyId","leaderParticipantId","slotId","termsVersionId","termsDigest","snapshot","snapshotDigest","receiptId") SELECT $1::uuid,"leaderParticipantId",gen_random_uuid(),gen_random_uuid(),repeat('a',64),'{}'::jsonb,repeat('b',64),gen_random_uuid() FROM "Party" WHERE "id"=$1::uuid RETURNING "id"::text AS "id"`,
+          party.id,
+        );
+        await tx.$executeRawUnsafe(
+          `INSERT INTO "PartyProposalMember"("proposalId","participantId","role","allocations") SELECT $1::uuid,"id",'Member','[{"amount":"1"}]'::jsonb FROM "Participant" WHERE "accountId"=$2`,
+          id,
+          adjudicator.accountId,
+        );
+      });
+      await expect(adjudicate(appealId, adjudicator)).rejects.toMatchObject({ code: 'FORBIDDEN' });
+      expect(
+        await db.$queryRawUnsafe('SELECT 1 FROM "SkillAssessmentAppealDecision"'),
+      ).toHaveLength(0);
+      expect(await adjudicate(appealId, stranger)).toMatchObject({ status: 'EXECUTED' });
     });
     it('lets exactly one of two concurrent adjudicators decide', async () => {
       const [a, b] = [await person(), await person()];
@@ -525,6 +594,72 @@ integration('T014 skill-assessment appeals: intake and independent adjudication 
       expect(finished).toBe(false);
       await release();
       expect((await pending).appeal.state).toBe('UPHELD');
+    });
+  });
+
+  describe('fresh review after an upheld appeal (DEC-2026-11-13-12 (c))', () => {
+    let appealId: string, adminId: string;
+    const insertAssignment = (evaluator: string, purpose = 'ASSESSMENT_REVIEW') =>
+      db.$transaction(async (tx) => {
+        await tx.$executeRawUnsafe(
+          `INSERT INTO "PracticeTrialReviewAssignment"("submissionId","evaluatorAccountId","purpose","expiresAt","reason","issuedByAccountId","receiptId","requestId") VALUES ($1::uuid,$2,$3,clock_timestamp()+interval '1 hour','Synthetic fresh review.',$4,(SELECT "id" FROM "CommandReceipt" ORDER BY "createdAt" LIMIT 1),'synthetic-fresh')`,
+          seed.submissionId,
+          evaluator,
+          purpose,
+          adminId,
+        );
+        // Roll back: the deferred receipt/audit proof is the real command's job, only the guard is under test.
+        throw new Error('ROLLED_BACK');
+      });
+    beforeEach(async () => {
+      appealId = (await file()).appeal.id;
+      [{ id: adminId }] = await db.$queryRawUnsafe<{ id: string }[]>(
+        `SELECT "id" FROM "User" WHERE "role"='ADMIN' LIMIT 1`,
+      );
+    });
+    it('lets an original reviewer keep acting while the appeal is pending or denied', async () => {
+      await expect(insertAssignment(originalReviewer)).rejects.toThrow('ROLLED_BACK');
+      await adjudicate(appealId, await person(), 'DENIED');
+      await expect(insertAssignment(originalReviewer)).rejects.toThrow('ROLLED_BACK');
+    });
+    it('refuses to appoint an excluded original reviewer once the appeal is upheld, by trigger message', async () => {
+      await adjudicate(appealId, await person(), 'UPHELD');
+      for (const purpose of ['ASSESSMENT_REVIEW', 'OWNERSHIP_REVIEW'])
+        await expect(insertAssignment(originalReviewer, purpose)).rejects.toThrow(
+          /excluded from the fresh review/,
+        );
+      // Positive control: any other evaluator can be appointed (rolled back by the helper).
+      await expect(insertAssignment((await person(false)).accountId)).rejects.toThrow(
+        'ROLLED_BACK',
+      );
+    });
+    it('refuses a new assessment decision by an excluded original reviewer and records nothing', async () => {
+      await adjudicate(appealId, await person(), 'UPHELD');
+      const before = await assessmentRows();
+      await expect(seed.decide('REQUIRE_REASSESSMENT')).rejects.toBeDefined();
+      expect(await assessmentRows()).toEqual(before);
+      expect(await db.$queryRawUnsafe('SELECT 1 FROM "PracticeAssessmentDecision"')).toHaveLength(
+        0,
+      );
+    });
+    it('serializes an appointment against an appeal decision on the same person/skill lock', async () => {
+      const key = seed.participantId + ':frontend';
+      const release = await holdLock(key, 12022);
+      let settled = false;
+      const pending = insertAssignment(originalReviewer).then(
+        (v) => ((settled = true), v),
+        (e) => ((settled = true), e),
+      );
+      expect(await waitForAdvisoryWaiter(db, key, 12022)).toBe(true);
+      await new Promise((r) => setTimeout(r, 200));
+      expect(settled).toBe(false);
+      await release();
+      expect(await pending).toMatchObject({ message: 'ROLLED_BACK' });
+    });
+    it('does not change the appealed decision or grant anything by itself', async () => {
+      const before = await assessmentRows();
+      await adjudicate(appealId, await person(), 'UPHELD');
+      expect(await assessmentRows()).toEqual(before);
     });
   });
 });

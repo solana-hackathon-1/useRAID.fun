@@ -307,7 +307,9 @@ export async function adjudicateSkillAssessmentAppeal(
         'SELECT a."participantId"::text AS "participantId",v."skillId",v."assessmentId"::text AS "assessmentId" FROM "SkillAssessmentAppeal" a JOIN "SkillAssessmentVersion" v ON v."id"=a."assessmentVersionId" WHERE a."id"=$1::uuid',
         [body.appealId],
       );
-      if (located.length !== 1) fail('NOT_FOUND');
+      // An allowlisted account guessing ids must not tell a missing appeal from one it is barred from: the same opaque
+      // refusal as an independence conflict.
+      if (located.length !== 1) fail('FORBIDDEN');
       // Lock order matches decisions and their triggers: case (submission, 12020) before person/skill (12022). The
       // case locks make an in-flight review/ownership/decision commit before the original reviewers are read.
       const familySubmissions = async () =>
@@ -353,12 +355,24 @@ export async function adjudicateSkillAssessmentAppeal(
          ) SELECT DISTINCT a."guildId"::text AS "guildId" FROM "related" a JOIN "related" b ON b."guildId"=a."guildId" WHERE a."accountId"=$1 AND b."accountId"=$2`,
         [actor.accountId, state[0].appellantAccountId],
       );
+      // Related Party (17.4): the adjudicator and the appellant are each the leader or a proposed member of one Party.
+      const parties = await query<{ partyId: string }>(
+        tx,
+        `WITH "related" AS (
+           SELECT p."id" AS "partyId",p."leaderParticipantId" AS "participantId" FROM "Party" p
+           UNION SELECT q."partyId",m."participantId" FROM "PartyProposalMember" m JOIN "PartyProposal" q ON q."id"=m."proposalId"
+         ), "accounted" AS (
+           SELECT r."partyId",x."accountId" FROM "related" r JOIN "Participant" x ON x."id"=r."participantId"
+         ) SELECT DISTINCT a."partyId"::text AS "partyId" FROM "accounted" a JOIN "accounted" b ON b."partyId"=a."partyId" WHERE a."accountId"=$1 AND b."accountId"=$2`,
+        [actor.accountId, state[0].appellantAccountId],
+      );
       const verdict = evaluateAppealAdjudicator({
         version: 'v1',
         adjudicatorAccountId: actor.accountId,
         appellantAccountId: state[0].appellantAccountId,
         originalReviewerAccountIds: reviewers.map((r) => r.accountId),
         sharedGuildIds: guilds.map((g) => g.guildId),
+        sharedPartyIds: parties.map((p) => p.partyId),
         onAllowlist: true,
       });
       // Independence is answered before the appeal's state, with one opaque refusal whichever conflict applied, so a
@@ -369,13 +383,13 @@ export async function adjudicateSkillAssessmentAppeal(
       if (body.outcome === 'UPHELD' && excluded.length === 0) fail('STORAGE_CONTRACT');
       const inserted = await query<{ id: string }>(
         tx,
-        'INSERT INTO "SkillAssessmentAppealDecision" ("appealId","outcome","adjudicatorAccountId","reason","freshReviewExcludedAccountIds","receiptId","requestId") VALUES ($1::uuid,$2,$3,$4,$5::text[],$6::uuid,$7) RETURNING "id"::text AS "id"',
+        'INSERT INTO "SkillAssessmentAppealDecision" ("appealId","outcome","adjudicatorAccountId","reason","freshReviewExcludedAccountIds","receiptId","requestId") VALUES ($1::uuid,$2,$3,$4,ARRAY(SELECT jsonb_array_elements_text($5::jsonb)),$6::uuid,$7) RETURNING "id"::text AS "id"',
         [
           body.appealId,
           body.outcome,
           actor.accountId,
           body.reason,
-          '{' + excluded.map((id) => JSON.stringify(id)).join(',') + '}',
+          JSON.stringify(excluded),
           receiptId,
           command.requestId,
         ],
