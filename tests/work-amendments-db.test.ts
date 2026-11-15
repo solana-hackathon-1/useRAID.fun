@@ -945,19 +945,249 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
         `SELECT proname FROM pg_proc WHERE pronamespace='public'::regnamespace AND proname LIKE 'raid_%_funding_serialize'`,
       ),
     ).toEqual([]);
-    const guards = await row<{ proname: string; locks: boolean; checks: boolean; before: boolean }>(
-      `SELECT p.proname,
-              p.prosrc LIKE '%pg_advisory_xact_lock(hashtextextended(''raid:funding-reference:''||%' AS locks,
-              p.prosrc ~ 'EXISTS [(]SELECT 1 FROM "(RaidSlot|EngagementAmendment)" WHERE' AS checks,
-              bool_and((t.tgtype & 2) = 2) AS before
-         FROM pg_proc p JOIN pg_trigger t ON t.tgfoid=p.oid AND NOT t.tgisinternal
-        WHERE p.proname IN ('raid_amendment_insert_guard','raid_slot_funding_distinct')
-        GROUP BY p.proname,p.prosrc ORDER BY p.proname`,
+    // Catalog shape only (#501): the lock and the reuse check are proven by the concurrent-writer tests, not by matching
+    // function source. Each table has exactly one BEFORE ROW funding trigger.
+    const funding = await row<{
+      rel: string;
+      fn: string;
+      insert: boolean;
+      update: boolean;
+      before: boolean;
+      each: boolean;
+    }>(
+      `SELECT c.relname AS rel, p.proname AS fn,
+              (t.tgtype & 4) = 4 AS insert, (t.tgtype & 16) = 16 AS update,
+              (t.tgtype & 2) = 2 AS before, (t.tgtype & 1) = 1 AS each
+         FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid JOIN pg_proc p ON p.oid=t.tgfoid
+        WHERE NOT t.tgisinternal AND p.proname IN ('raid_amendment_insert_guard','raid_slot_funding_distinct')
+        ORDER BY c.relname`,
     );
-    expect(guards).toEqual([
-      { proname: 'raid_amendment_insert_guard', locks: true, checks: true, before: true },
-      { proname: 'raid_slot_funding_distinct', locks: true, checks: true, before: true },
+    expect(funding).toEqual([
+      {
+        rel: 'EngagementAmendment',
+        fn: 'raid_amendment_insert_guard',
+        insert: true,
+        update: false,
+        before: true,
+        each: true,
+      },
+      {
+        rel: 'RaidSlot',
+        fn: 'raid_slot_funding_distinct',
+        insert: true,
+        update: true,
+        before: true,
+        each: true,
+      },
     ]);
+  });
+  it('#501: fires the slot funding check after RaidSlot_guard, matching the listing-then-funding lock order', async () => {
+    // PostgreSQL fires same-event BEFORE ROW triggers in name order (C collation), so the name is the lock order.
+    const names = (
+      await row<{ tgname: string }>(
+        `SELECT tgname FROM pg_trigger
+          WHERE tgrelid='"RaidSlot"'::regclass AND NOT tgisinternal AND (tgtype & 3) = 3 AND (tgtype & 16) = 16
+          ORDER BY tgname COLLATE "C"`,
+      )
+    ).map((r) => r.tgname);
+    expect(names).toContain('RaidSlot_guard');
+    expect(names.findIndex((n) => n.includes('funding'))).toBeGreaterThan(
+      names.indexOf('RaidSlot_guard'),
+    );
+  });
+  /** An unfunded second slot (null reference) whose reference a raw UPDATE OF "fundingRef" later sets. */
+  const unfundedSlot = async (listingId: string, termsVersionId: string) =>
+    (
+      await row<{ id: string }>(
+        `INSERT INTO "RaidSlot" ("listingId","termsVersionId","slotNumber") VALUES ($1::uuid,$2::uuid,96) RETURNING "id"::text`,
+        listingId,
+        termsVersionId,
+      )
+    )[0].id;
+  const rawAmendment = (
+    tx: Pick<PrismaClient, '$executeRawUnsafe'>,
+    engagementId: string,
+    accountId: string,
+    ref: string,
+    digest: string,
+  ) =>
+    tx.$executeRawUnsafe(
+      `INSERT INTO "EngagementAmendment" ("engagementId","sequence","snapshot","digest","proposedByAccountId","additionalFundingRef","expiresAt") SELECT "id",1,jsonb_set("acceptedTerms",'{rewards,0,amount}','"1500000000"'),$4,$3,$2,clock_timestamp()+interval '1 hour' FROM "Engagement" WHERE "id"=$1::uuid`,
+      engagementId,
+      ref,
+      accountId,
+      digest,
+    );
+  it('#501: a slot UPDATE OF fundingRef waits for an uncommitted amendment reference, then rejects it', async () => {
+    const { founder, slot, engagementId } = await setup();
+    await start(engagementId);
+    const spare = await unfundedSlot(slot.listingId, slot.termsVersionId);
+    let release!: () => void;
+    const held = new Promise<void>((resolve) => (release = resolve));
+    let inserted!: () => void;
+    const amendmentWritten = new Promise<void>((resolve) => (inserted = resolve));
+    const amendment = db.$transaction(
+      async (tx) => {
+        await rawAmendment(tx, engagementId, founder.actor.accountId, 'upd-race-a', 'd'.repeat(64));
+        inserted();
+        await held;
+      },
+      { timeout: 20000 },
+    );
+    try {
+      await amendmentWritten;
+      const raced = db.$transaction(
+        (tx) =>
+          tx.$executeRawUnsafe(
+            `UPDATE "RaidSlot" SET "fundingRef"='upd-race-a' WHERE "id"=$1::uuid`,
+            spare,
+          ),
+        { timeout: 20000 },
+      );
+      const settled = raced.then(
+        () => 'settled',
+        () => 'settled',
+      );
+      expect(await advisoryWaiter()).toBe(true);
+      expect(await Promise.race([settled, Promise.resolve('waiting')])).toBe('waiting');
+      release();
+      await amendment;
+      await expect(raced).rejects.toThrow(/already reserved for an amendment/i);
+      expect(await row(`SELECT 1 FROM "RaidSlot" WHERE "fundingRef"='upd-race-a'`)).toEqual([]);
+    } finally {
+      release();
+      await amendment.catch(() => undefined);
+    }
+  });
+  it('#501: an amendment insert waits for an uncommitted slot UPDATE OF fundingRef, then rejects it', async () => {
+    const { founder, slot, engagementId } = await setup();
+    await start(engagementId);
+    const spare = await unfundedSlot(slot.listingId, slot.termsVersionId);
+    let release!: () => void;
+    const held = new Promise<void>((resolve) => (release = resolve));
+    let updated!: () => void;
+    const slotWritten = new Promise<void>((resolve) => (updated = resolve));
+    const slotWriter = db.$transaction(
+      async (tx) => {
+        await tx.$executeRawUnsafe(
+          `UPDATE "RaidSlot" SET "fundingRef"='upd-race-b' WHERE "id"=$1::uuid`,
+          spare,
+        );
+        // A complete, validly bound reservation, so this writer commits and wins the reference.
+        await tx.$executeRawUnsafe(
+          `INSERT INTO "WorkSimulatedReservation" ("slotId","termsVersionId","vectorDigest","legs","fundingRef")
+           SELECT s."id",s."termsVersionId",raid_work_reward_digest(t."snapshot"->'rewards'),t."snapshot"->'rewards',s."fundingRef"
+           FROM "RaidSlot" s JOIN "TermsVersion" t ON t."id"=s."termsVersionId" WHERE s."fundingRef"='upd-race-b'`,
+        );
+        updated();
+        await held;
+      },
+      { timeout: 20000 },
+    );
+    try {
+      await slotWritten;
+      const raced = db.$transaction(
+        (tx) =>
+          rawAmendment(tx, engagementId, founder.actor.accountId, 'upd-race-b', 'e'.repeat(64)),
+        { timeout: 20000 },
+      );
+      const settled = raced.then(
+        () => 'settled',
+        () => 'settled',
+      );
+      expect(await advisoryWaiter()).toBe(true);
+      expect(await Promise.race([settled, Promise.resolve('waiting')])).toBe('waiting');
+      release();
+      await slotWriter;
+      await expect(raced).rejects.toThrow(/already reserved for a slot/i);
+      expect(await row('SELECT 1 FROM "EngagementAmendment"')).toEqual([]);
+    } finally {
+      release();
+      await slotWriter.catch(() => undefined);
+    }
+  });
+  it('#501: a slot UPDATE OF fundingRef takes the listing lock before the funding lock', async () => {
+    const { founder, slot, engagementId } = await setup();
+    await start(engagementId);
+    const spare = await unfundedSlot(slot.listingId, slot.termsVersionId);
+    let release!: () => void;
+    const held = new Promise<void>((resolve) => (release = resolve));
+    let locked!: () => void;
+    const listingLocked = new Promise<void>((resolve) => (locked = resolve));
+    // The application order is listing then funding: a command holds the listing row while it works.
+    const listingHolder = db.$transaction(
+      async (tx) => {
+        await tx.$queryRawUnsafe(
+          `SELECT 1 FROM "WorkListing" WHERE "id"=$1::uuid FOR UPDATE`,
+          slot.listingId,
+        );
+        locked();
+        await held;
+      },
+      { timeout: 20000 },
+    );
+    let updaterOutcome: Promise<string> = Promise.resolve('not started');
+    try {
+      // Only start the updater once the listing row is held, so it cannot win the listing lock first.
+      await listingLocked;
+      updaterOutcome = db
+        .$transaction(
+          (tx) =>
+            tx.$executeRawUnsafe(
+              `UPDATE "RaidSlot" SET "fundingRef"='order-race-ref' WHERE "id"=$1::uuid`,
+              spare,
+            ),
+          { timeout: 20000 },
+        )
+        .then(
+          () => 'updated',
+          (e: Error) => e.message,
+        );
+      // Wait until the updater is blocked on the listing row (a row/transaction lock, not the funding advisory lock).
+      let blockedOnListing = false;
+      for (let i = 0; i < 100 && !blockedOnListing; i++) {
+        blockedOnListing =
+          (
+            await row(
+              `SELECT 1 FROM pg_stat_activity WHERE datname=current_database() AND wait_event_type='Lock' AND wait_event IN ('transactionid','tuple') AND query LIKE '%UPDATE "RaidSlot"%' AND pid<>pg_backend_pid()`,
+            )
+          ).length > 0;
+        if (!blockedOnListing) await new Promise((resolve) => setTimeout(resolve, 50));
+      }
+      expect(blockedOnListing).toBe(true);
+      // While it waits it must not already hold the funding-reference lock: an amendment for the same reference can
+      // take that lock, insert and commit. (Holding it would make this insert wait behind the slot update.)
+      const amendmentDone = db
+        .$transaction(
+          (tx) =>
+            rawAmendment(
+              tx,
+              engagementId,
+              founder.actor.accountId,
+              'order-race-ref',
+              'f'.repeat(64),
+            ),
+          { timeout: 20000 },
+        )
+        .then(
+          () => 'committed',
+          (e: Error) => e.message,
+        );
+      const outcome = await Promise.race([
+        amendmentDone,
+        new Promise((resolve) => setTimeout(() => resolve('blocked behind the slot update'), 3000)),
+      ]);
+      release();
+      await listingHolder;
+      await amendmentDone;
+      expect(outcome).toBe('committed');
+      // The slot update then re-reads in a fresh statement and sees the committed amendment.
+      expect(await updaterOutcome).toMatch(/already reserved for an amendment/i);
+    } finally {
+      release();
+      await listingHolder.catch(() => undefined);
+      await updaterOutcome;
+    }
   });
   it('#269-3: makes a direct amendment insert wait for an uncommitted slot reference, then reject it', async () => {
     const { founder, slot, engagementId } = await setup();
