@@ -520,43 +520,76 @@ integration('T009 persisted Guild storage', () => {
   });
 
   /**
-   * Two approvers who each own the draft the other activates: each holds its own User row (authorization, FOR NO KEY
-   * UPDATE) and then asks for the other's (the owner check, FOR SHARE), so Postgres aborts one with 40P01. The barrier
-   * (one-shot, at the first approval) makes both hold their own row before either asks for the other's.
+   * A real 40P01 against `activateGuild`. Activations themselves no longer deadlock (#496: the lower account id is locked
+   * first), so the cycle comes from a locker that is not ordered, standing in for any host code or other module that
+   * locks User rows its own way: the draft owner's row is held, the approver (the LOWER id, so it is locked first and
+   * the owner's row second) is then held open at its approval hook, and the holder reaches for the approver's row. The
+   * activation (which has waited longest) is the deadlock victim.
    */
-  async function crossActivation() {
+  async function activationDeadlock(
+    start: (
+      approver: GuildActor,
+      input: { guildDraftId: string; expectedDraftRevision: number; activationRef: string },
+      host: {
+        allowNewWrites: boolean;
+        authorizeActivation: (tx: unknown, who: { accountId: string }) => Promise<boolean>;
+      },
+    ) => Promise<unknown>,
+  ) {
     const a = await person();
     const b = await person();
+    expect(a.accountId < b.accountId).toBe(true);
     operators.add(a.accountId);
-    operators.add(b.accountId);
-    const draftA = await draftFor(a, 'cross-a');
     const draftB = await draftFor(b, 'cross-b');
-    let arrived = 0;
-    let release: () => void = () => undefined;
-    const both = new Promise<void>((resolve) => (release = resolve));
-    const gate = {
+    let hooks = 0;
+    let reached: () => void = () => undefined;
+    let proceed: () => void = () => undefined;
+    const atHook = new Promise<void>((resolve) => (reached = resolve));
+    const go = new Promise<void>((resolve) => (proceed = resolve));
+    const host = {
       allowNewWrites: true,
       authorizeActivation: async (_tx: unknown, who: { accountId: string }) => {
-        if (++arrived <= 2) {
-          if (arrived === 2) release();
-          await Promise.race([
-            both,
-            new Promise((_, reject) => setTimeout(() => reject(new Error('barrier')), 10000)),
-          ]);
+        if (++hooks === 1) {
+          reached();
+          await go;
         }
         return operators.has(who.accountId);
       },
     };
-    const input = (draft: { id: string; revision: number }, ref: string) => ({
-      guildDraftId: draft.id,
-      expectedDraftRevision: draft.revision,
-      activationRef: ref,
-    });
-    return { a, b, draftA, draftB, gate, input };
+    const activation = start(
+      a,
+      { guildDraftId: draftB.id, expectedDraftRevision: draftB.revision, activationRef: 'cross-b' },
+      host,
+    ).then(
+      (value) => ({ value }),
+      (error: unknown) => ({ error }),
+    );
+    await db.$transaction(
+      async (t) => {
+        await t.$queryRawUnsafe(
+          `SELECT 1 FROM "User" WHERE "id"=$1 FOR NO KEY UPDATE`,
+          b.accountId,
+        );
+        await atHook;
+        proceed();
+        for (let waited = 0; ; waited += 25) {
+          const rows = await db.$queryRawUnsafe<{ n: number }[]>(
+            `SELECT count(*)::int AS n FROM pg_stat_activity WHERE datname=current_database() AND wait_event_type='Lock' AND query LIKE '%FROM "User"%FOR SHARE%' AND pid<>pg_backend_pid()`,
+          );
+          if (rows[0].n > 0) break;
+          if (waited > 10000) throw new Error('the activation did not wait for the owner row');
+          await new Promise((resolve) => setTimeout(resolve, 25));
+        }
+        // The cycle closes later than the activation began waiting, so the activation's deadlock check fires first.
+        await new Promise((resolve) => setTimeout(resolve, 300));
+        await t.$queryRawUnsafe(`SELECT 1 FROM "User" WHERE "id"=$1 FOR UPDATE`, a.accountId);
+      },
+      { timeout: 30000 },
+    );
+    return { a, b, draftB, outcome: await activation, hooks: () => hooks };
   }
 
-  it('#438-2: a cross-activation deadlock (40P01) from a host port that does not classify is a retryable RETRY_TRANSACTION, never STORAGE_UNAVAILABLE', async () => {
-    const { a, b, draftA, draftB, gate, input } = await crossActivation();
+  it('#438-2: a deadlock (40P01) from a host port that does not classify is a retryable RETRY_TRANSACTION, never STORAGE_UNAVAILABLE', async () => {
     // A host port that hands the driver's raw error through, as the port contract allows a host to do.
     const raw = (work: (port: CommandReceiptTransaction) => Promise<unknown>) =>
       db.$transaction(
@@ -569,29 +602,27 @@ integration('T009 persisted Guild storage', () => {
           }),
         { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted, timeout: 20000 },
       );
-    const settled = await Promise.allSettled([
-      raw((tx) => activateGuild(tx, cmd(a, input(draftB, 'cross-b')), gate)),
-      raw((tx) => activateGuild(tx, cmd(b, input(draftA, 'cross-a')), gate)),
-    ]);
-    const failed = settled.filter((r) => r.status === 'rejected');
-    expect(settled.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
-    expect(failed).toHaveLength(1);
-    const reason = (failed[0] as PromiseRejectedResult).reason;
+    const { outcome } = await activationDeadlock((a, input, host) =>
+      raw((tx) => activateGuild(tx, cmd(a, input), host)),
+    );
+    expect(outcome).toHaveProperty('error');
+    const reason = (outcome as { error: unknown }).error;
     expect(reason).toBeInstanceOf(CommandReceiptError);
     expect(reason).toMatchObject({ code: 'RETRY_TRANSACTION' });
   });
 
-  it('#438-2: with the Root host both cross-activations succeed, the deadlock victim retried as a whole', async () => {
-    const { a, b, draftA, draftB, gate, input } = await crossActivation();
-    const done = await Promise.all([
-      run((tx) => activateGuild(tx, cmd(a, input(draftB, 'cross-b')), gate)),
-      run((tx) => activateGuild(tx, cmd(b, input(draftA, 'cross-a')), gate)),
-    ]);
-    expect(done.map((r) => r.status)).toEqual(['EXECUTED', 'EXECUTED']);
-    const founders = await db.$queryRawUnsafe<{ f: string }[]>(
-      'SELECT "founderAccountId" AS f FROM "Guild" ORDER BY "slug"',
+  it('#438-2: with the Root host the deadlock victim is retried as a whole and succeeds', async () => {
+    const { b, outcome, hooks } = await activationDeadlock((a, input, host) =>
+      run((tx) => activateGuild(tx, cmd(a, input), host)),
     );
-    expect(founders.map((row) => row.f)).toEqual([a.accountId, b.accountId]);
+    expect(outcome).toHaveProperty('value');
+    expect((outcome as { value: { status: string } }).value.status).toBe('EXECUTED');
+    // The first attempt hit the hook and was aborted; the retry ran the whole command again.
+    expect(hooks()).toBeGreaterThan(1);
+    const founders = await db.$queryRawUnsafe<{ f: string }[]>(
+      'SELECT "founderAccountId" AS f FROM "Guild"',
+    );
+    expect(founders.map((row) => row.f)).toEqual([b.accountId]);
   });
 
   it('replays an edit only to an actor whose current grant still covers its fields, and returns the stored result', async () => {
