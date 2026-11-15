@@ -269,6 +269,10 @@ export function validateRuntimeConfig(env: ConfigEnv, role: ConfigRole): ConfigV
       add('REFUSE', 'DEVNET_OR_DEMO_IN_PRODUCTION', 'SOLANA_RPC_URL');
     for (const name of ['DEMO_MODE', 'STUDIO_SANDBOX'])
       if (isTrue(env, name)) add('REFUSE', 'DEVNET_OR_DEMO_IN_PRODUCTION', name);
+    // #331: reviewer authority for the applicant evidence view is only the synthetic operator allowlist, which is not
+    // Guild or production authority, so the view never opens under the production label.
+    if (isTrue(env, 'WORK_EVIDENCE_SNAPSHOT_ENABLED'))
+      add('REFUSE', 'TEST_MODE_IN_PRODUCTION', 'WORK_EVIDENCE_SNAPSHOT_ENABLED');
     // The production label alone decides (a host may omit NODE_ENV=production): a remote test database is a test mode.
     if (isTrue(env, 'ALLOW_REMOTE_TEST_DB'))
       add('REFUSE', 'TEST_MODE_IN_PRODUCTION', 'ALLOW_REMOTE_TEST_DB');
