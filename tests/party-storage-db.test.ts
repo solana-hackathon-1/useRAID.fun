@@ -15,6 +15,13 @@ import {
 import { raidTerms } from './helpers/raid-terms-fixture';
 import { seedWorkHuman, seedWorkSlot } from './helpers/work-loop-db';
 import { assertTestDatabase, truncateAll } from './helpers/db-guard';
+import { waitForAdvisoryWaiter } from './helpers/advisory-wait';
+import {
+  PARTY_ROSTER_LOCK_CLASS,
+  PARTY_ROSTER_LOCK_EXCLUSIVE_SQL,
+  PARTY_ROSTER_LOCK_KEY,
+  PARTY_ROSTER_LOCK_SHARED_SQL,
+} from '../src/parties/roster-lock';
 import { matchesBlockingObservation } from './helpers/lock-observation';
 
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
@@ -314,6 +321,82 @@ integration('T056 Party rosters, exact splits and per-member consent', () => {
     expect(events.map((e) => e.aggregateId).sort()).toEqual(
       consents.map((c) => c.consent.id).sort(),
     );
+  });
+
+  describe('roster lock (class 12023): consent vs a reader of formed rosters', () => {
+    const hold = (sql: string) => {
+      let release!: () => void;
+      let held!: () => void;
+      const gate = new Promise<void>((r) => (release = r));
+      const acquired = new Promise<void>((r) => (held = r));
+      const done = db.$transaction(
+        async (tx) => {
+          await tx.$queryRawUnsafe(sql, PARTY_ROSTER_LOCK_KEY);
+          held();
+          await gate;
+        },
+        { timeout: 60000 },
+      );
+      return {
+        acquired,
+        release: async () => {
+          release();
+          await done;
+        },
+      };
+    };
+    it('makes a consent wait for a reader holding the roster lock exclusively, then record it', async () => {
+      const t = await setup();
+      const { proposal } = await t.propose(
+        t.leader.actor,
+        t.proposal(t.split(500000000n, 300000000n, 200000000n)),
+      );
+      const input = { proposalId: proposal.id, snapshotDigest: proposal.snapshotDigest };
+      const reader = hold(PARTY_ROSTER_LOCK_EXCLUSIVE_SQL);
+      await reader.acquired;
+      let finished = false;
+      const pending = t.consent(t.ana.actor, input).then((value) => ((finished = true), value));
+      expect(await waitForAdvisoryWaiter(db, PARTY_ROSTER_LOCK_KEY, PARTY_ROSTER_LOCK_CLASS)).toBe(
+        true,
+      );
+      await new Promise((r) => setTimeout(r, 200));
+      expect(finished).toBe(false);
+      await reader.release();
+      expect((await pending).status).toBe('EXECUTED');
+    });
+    it('does not make consents wait for each other (shared mode)', async () => {
+      const t = await setup();
+      const { proposal } = await t.propose(
+        t.leader.actor,
+        t.proposal(t.split(500000000n, 300000000n, 200000000n)),
+      );
+      const input = { proposalId: proposal.id, snapshotDigest: proposal.snapshotDigest };
+      const other = hold(PARTY_ROSTER_LOCK_SHARED_SQL);
+      await other.acquired;
+      try {
+        expect((await t.consent(t.ana.actor, input)).status).toBe('EXECUTED');
+      } finally {
+        await other.release();
+      }
+    });
+    it('does not take the lock for a replayed or refused consent', async () => {
+      const t = await setup();
+      const { proposal } = await t.propose(
+        t.leader.actor,
+        t.proposal(t.split(500000000n, 300000000n, 200000000n)),
+      );
+      const input = { proposalId: proposal.id, snapshotDigest: proposal.snapshotDigest };
+      const key = randomUUID();
+      await t.consent(t.ana.actor, input, on, key);
+      const reader = hold(PARTY_ROSTER_LOCK_EXCLUSIVE_SQL);
+      await reader.acquired;
+      try {
+        expect((await t.consent(t.ana.actor, input, off, key)).status).toBe('REPLAYED');
+        await rejects(t.consent(t.outsider.actor, input), 'NOT_FOUND');
+      } finally {
+        await reader.release();
+      }
+    });
   });
 
   it('refuses rows that are not the snapshot or do not sum exactly, even written directly', async () => {

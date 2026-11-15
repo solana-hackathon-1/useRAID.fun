@@ -8,6 +8,7 @@ import {
 import { ASSESSMENT_LOCK_SQL, assessmentLockKey } from '../skills/assessment-lock';
 import { lockPracticeTrialParticipant } from '../skills/practice-trial-attempt-storage';
 import { lockSkillStorageActor } from '../skills/taxonomy-storage';
+import { PARTY_ROSTER_LOCK_EXCLUSIVE_SQL, PARTY_ROSTER_LOCK_KEY } from '../parties/roster-lock';
 import { evaluateAppealAdjudicator } from './policy';
 import {
   AdjudicateSkillAssessmentAppealInputSchema,
@@ -355,6 +356,10 @@ export async function adjudicateSkillAssessmentAppeal(
          ) SELECT DISTINCT a."guildId"::text AS "guildId" FROM "related" a JOIN "related" b ON b."guildId"=a."guildId" WHERE a."accountId"=$1 AND b."accountId"=$2`,
         [actor.accountId, state[0].appellantAccountId],
       );
+      // The Party roster lock is the leaf lock, taken after every lock above and held to commit: a Party
+      // consent that would complete a roster is either committed before the read below or waits for this decision, so
+      // the check cannot go stale before the decision is written. Consents take it shared and never wait for each other.
+      await query(tx, PARTY_ROSTER_LOCK_EXCLUSIVE_SQL, [PARTY_ROSTER_LOCK_KEY]);
       // Related Party (17.4), agent default under DEC-2026-11-13-12: the adjudicator and the appellant are both on one
       // FORMED roster, i.e. a proposal in which every named member recorded consent, counting the Party leader and those
       // members. An unconsented, declined or abandoned proposal never counts, so naming someone in a proposal cannot

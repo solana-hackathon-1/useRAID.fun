@@ -28,6 +28,7 @@ import {
   type ProposePartyRosterResult,
   type RecordPartyConsentResult,
 } from './contracts';
+import { PARTY_ROSTER_LOCK_KEY, PARTY_ROSTER_LOCK_SHARED_SQL } from './roster-lock';
 
 const iso = (value: unknown) => (value instanceof Date ? value.toISOString() : value);
 function requireHost(tx: Tx, command: WorkCommand, host: PartyHost) {
@@ -319,6 +320,9 @@ export async function recordPartyMemberConsent(
         fail('PUBLICATION_BLOCKED');
       if (proposal.currentTermsVersionId !== proposal.termsVersionId) fail('TERMS_VERSION_CHANGED');
       if (Date.parse(proposal.commitment) <= (await clock(tx)).getTime()) fail('DEADLINE_PASSED');
+      // Last lock taken, shared: a consent can complete a roster, so a reader of formed rosters (the skill-appeal
+      // adjudicator check) either sees this consent or makes it wait. Consents never wait for each other.
+      await tx.query(PARTY_ROSTER_LOCK_SHARED_SQL, [PARTY_ROSTER_LOCK_KEY]);
       const inserted = await tx.query<{ id: string }>(
         `INSERT INTO "PartyMemberConsent" ("proposalId","participantId","snapshotDigest","receiptId") VALUES ($1::uuid,$2::uuid,$3,$4::uuid)
          ON CONFLICT ("proposalId","participantId") DO NOTHING RETURNING "id"::text`,

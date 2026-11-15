@@ -58,6 +58,16 @@ it('keeps the module free of host imports so a replacement host can consume it',
     expect(source).not.toMatch(/process\.env/);
   }
 });
+it('takes the Party roster lock through the shared helper, never a copied class literal (consent takes it shared)', async () => {
+  const storage = await readFile('src/skill-appeals/storage.ts', 'utf8');
+  expect(storage).toContain("from '../parties/roster-lock'");
+  expect(storage).toContain('PARTY_ROSTER_LOCK_EXCLUSIVE_SQL');
+  expect(storage).not.toContain('12023');
+  const party = await readFile('src/parties/party-storage.ts', 'utf8');
+  expect(party).toContain("from './roster-lock'");
+  expect(party).toContain('PARTY_ROSTER_LOCK_SHARED_SQL');
+  expect(party).not.toContain('12023');
+});
 it('reads the filing window and the filing instant from one clock value', async () => {
   const storage = await readFile('src/skill-appeals/storage.ts', 'utf8');
   const select = storage.match(/`WITH "c" AS[^`]*"withinWindow"[^`]*`/)?.[0] ?? '';
