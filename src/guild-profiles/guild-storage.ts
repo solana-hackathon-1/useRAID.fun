@@ -1413,7 +1413,7 @@ export async function draftGuildUpdate(
         `SELECT count(*)::int AS n FROM "GuildUpdate"
          WHERE "guildId"=$1::uuid AND "authorAccountId"=$2 AND ("state"='DRAFT' OR ("state"='WITHDRAWN' AND "publishedAt" IS NULL))
            AND "createdAt">clock_timestamp()-make_interval(days=>$3::int)`,
-        [input.guildId, actor.accountId, GUILD_UNPUBLISHED_UPDATE_WINDOW_DAYS],
+        [input.guildId, actor.accountId, String(GUILD_UNPUBLISHED_UPDATE_WINDOW_DAYS)],
       );
       if ((unpublished[0]?.n ?? 0) >= GUILD_UNPUBLISHED_UPDATE_LIMIT) fail('UPDATE_LIMIT');
       const rows = await query<{ id: string }>(
