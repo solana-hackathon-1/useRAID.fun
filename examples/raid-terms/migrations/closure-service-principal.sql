@@ -1,0 +1,1 @@
+../../../prisma/migrations/202611140001_work_closure_service_principal/migration.sql

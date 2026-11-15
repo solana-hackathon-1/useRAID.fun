@@ -68,6 +68,8 @@ export async function runUnderJobLease<T>(
         >`SELECT COALESCE((SELECT "lockedAt" FROM "Job" WHERE id=${job.id} AND "lease"=${job.lease}), NOW() AT TIME ZONE 'UTC') AS at`
       )[0].at;
   let renewing = false;
+  let stopped = false;
+  let inflight: Promise<void> | null = null;
   const stopAtCap = () => {
     store.lost = true;
     clearInterval(timer!);
@@ -82,10 +84,11 @@ export async function runUnderJobLease<T>(
   };
   const timer: ReturnType<typeof setInterval> | null = job.lease
     ? setInterval(() => {
-        if (renewing || store.lost) return;
+        if (renewing || store.lost || stopped) return;
         renewing = true;
-        capReached(claimedAt!, maxRunMs)
+        inflight = capReached(claimedAt!, maxRunMs)
           .then(async (capped) => {
+            if (stopped) return; // the handler ended while this renewal waited: never renew after it
             if (capped) return stopAtCap();
             if (await renewJobLease(store)) return;
             store.lost = true;
@@ -105,7 +108,10 @@ export async function runUnderJobLease<T>(
   try {
     return await held.run(store, fn);
   } finally {
+    stopped = true;
     if (timer) clearInterval(timer);
+    // Drain a renewal already in flight so nothing touches the lease after the handler has returned (#483).
+    await inflight;
   }
 }
 /** Has `maxRunMs` passed since `claimedAt`, by the database clock (the one that decides lease expiry)? */

@@ -11,6 +11,7 @@ import {
 } from './guild-http-shared';
 import {
   DraftGuildUpdateInputSchema,
+  GUILD_MANAGED_UPDATE_PAGE_MAX,
   GuildStorageError,
   ManagedGuildUpdateSchema,
   type GuildActor,
@@ -31,7 +32,8 @@ export interface GuildUpdatesHttpHost {
   checkOrigin(request: Request): Promise<void> | void;
   /** Reads and commands are throttled separately, so polling can never block a publication or takedown. */
   rateLimit(actor: GuildActor, scope: 'READ' | 'WRITE'): Promise<void>;
-  list(actor: GuildActor, guildId: string): Promise<unknown>;
+  /** `options.before` is the previous page's `nextCursor`; the host passes it straight to storage. */
+  list(actor: GuildActor, guildId: string, options?: { before?: string }): Promise<unknown>;
   draft(command: GuildCommand): Promise<unknown>;
   publish(command: GuildCommand): Promise<unknown>;
   withdraw(command: GuildCommand): Promise<unknown>;
@@ -40,7 +42,9 @@ export const guildUpdatesHeaders = guildHttpHeaders;
 const StateSchema = z
   .strictObject({
     version: z.literal('v1'),
-    updates: z.array(ManagedGuildUpdateSchema).max(100),
+    updates: z.array(ManagedGuildUpdateSchema).max(GUILD_MANAGED_UPDATE_PAGE_MAX),
+    // Additive (DEC-2026-11-14-04): a host that predates the cursor reads as the end of the list.
+    nextCursor: z.uuid().nullable().default(null),
     writesAvailable: z.boolean(),
     unavailableReason: z.literal('DISABLED').nullable(),
   })
@@ -87,12 +91,29 @@ export function createGuildUpdatesHandlers(host: GuildUpdatesHttpHost) {
         await host.rateLimit(actor, 'READ');
         const params = new URL(request.url).searchParams;
         const guildId = z.uuid().safeParse(params.get('guildId'));
-        if (!guildId.success || params.size !== 1 || params.getAll('guildId').length !== 1)
+        // `before` is optional and single-valued; a malformed one fails like a cursor storage refuses (same 422).
+        const rawBefore = params.getAll('before');
+        const before = rawBefore.length === 1 ? z.uuid().safeParse(rawBefore[0]) : null;
+        if (
+          !guildId.success ||
+          params.getAll('guildId').length !== 1 ||
+          params.size !== 1 + rawBefore.length ||
+          rawBefore.length > 1 ||
+          (before !== null && !before.success)
+        )
           throw new JsonBodyFailure(422);
-        const value = StateSchema.safeParse(await host.list(actor, guildId.data));
+        const value = StateSchema.safeParse(
+          await (before?.success
+            ? host.list(actor, guildId.data, { before: before.data })
+            : host.list(actor, guildId.data)),
+        );
         if (
           !value.success ||
-          value.data.updates.some((u) => u.guildId.toLowerCase() !== guildId.data.toLowerCase())
+          value.data.updates.some((u) => u.guildId.toLowerCase() !== guildId.data.toLowerCase()) ||
+          // A cursor is only ever the last update of a non-empty page.
+          (value.data.nextCursor !== null &&
+            value.data.nextCursor.toLowerCase() !==
+              value.data.updates[value.data.updates.length - 1]?.id.toLowerCase())
         )
           throw contract();
         return Response.json(value.data, { headers: guildUpdatesHeaders });

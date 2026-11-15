@@ -48,6 +48,8 @@ const profileDescription = z.string().trim().pipe(PublicGuildSchema.shape.descri
 /** Live grants per Guild, and live grants one delegate may have passed on (bounds the cascade audit on revocation). */
 export const GUILD_GRANT_LIMIT = 200;
 export const DELEGATED_GRANT_LIMIT = 10;
+/** A delegate-issued grant expires within this many days of issuance (DEC-2026-11-14-01, provisional). */
+export const DELEGATED_GRANT_MAX_DAYS = 90;
 const profileFields = z.enum(['name', 'description']);
 /**
  * Id inputs are canonicalized to lowercase: they are stored verbatim in receipts (`resultRef`, request digest) and
@@ -146,6 +148,13 @@ export const ListPublicGuildUpdatesInputSchema = z.strictObject({
   limit: z.number().int().min(1).max(GUILD_UPDATE_PAGE_MAX).optional(),
   before: uuid.optional(),
 });
+/** Managed view page size: the first page is the newest 100, as before the cursor existed. */
+export const GUILD_MANAGED_UPDATE_PAGE_MAX = 100;
+export const ListManagedGuildUpdatesInputSchema = z.strictObject({
+  limit: z.number().int().min(1).max(GUILD_MANAGED_UPDATE_PAGE_MAX).optional(),
+  /** Keyset cursor: the `nextCursor` of the previous page; the page continues strictly after that update. */
+  before: uuid.optional(),
+});
 export const ManagedGuildUpdateSchema = z.strictObject({
   version: z.literal('v1'),
   id: z.uuid(),
@@ -158,6 +167,11 @@ export const ManagedGuildUpdateSchema = z.strictObject({
   publishedAt: z.iso.datetime().nullable(),
 });
 export type ManagedGuildUpdate = z.infer<typeof ManagedGuildUpdateSchema>;
+export type ManagedGuildUpdatesPage = {
+  updates: ManagedGuildUpdate[];
+  /** The id of the last update on a full page that has more behind it; `null` at the end. */
+  nextCursor: string | null;
+};
 /** The whole public projection of an update: text and time, no author, Guild or state. */
 export const PublicGuildUpdateSchema = z.strictObject({
   id: z.uuid(),

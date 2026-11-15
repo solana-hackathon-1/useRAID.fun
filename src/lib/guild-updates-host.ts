@@ -15,11 +15,15 @@ export function guildUpdatesWriteConfiguration() {
   return { writesAvailable, unavailableReason: writesAvailable ? null : ('DISABLED' as const) };
 }
 const host = () => ({ allowNewWrites: guildUpdatesWriteConfiguration().writesAvailable });
-export async function listUpdatesState(actor: GuildActor, guildId: string) {
-  const { updates } = await runCommandTransaction(db, (tx) =>
-    listManagedGuildUpdates(tx, actor, guildId),
+export async function listUpdatesState(
+  actor: GuildActor,
+  guildId: string,
+  options?: { before?: string },
+) {
+  const { updates, nextCursor } = await runCommandTransaction(db, (tx) =>
+    listManagedGuildUpdates(tx, actor, guildId, options),
   );
-  return { version: 'v1' as const, updates, ...guildUpdatesWriteConfiguration() };
+  return { version: 'v1' as const, updates, nextCursor, ...guildUpdatesWriteConfiguration() };
 }
 export const draftUpdate = (command: GuildCommand) =>
   runCommandTransaction(db, (tx) => draftGuildUpdate(tx, command, host()));

@@ -18,6 +18,7 @@ import { evaluateGuildProfilePermission, projectPublicGuildProfile } from './ind
 import {
   ActivateGuildInputSchema,
   DELEGATED_GRANT_LIMIT,
+  DELEGATED_GRANT_MAX_DAYS,
   EditGuildProfileInputSchema,
   GUILD_AUTHORITY_KINDS,
   GUILD_GRANT_LIMIT,
@@ -32,6 +33,8 @@ import {
   ListPublicGuildsInputSchema,
   ListPublicGuildUpdatesInputSchema,
   ManagedGuildUpdateSchema,
+  ListManagedGuildUpdatesInputSchema,
+  GUILD_MANAGED_UPDATE_PAGE_MAX,
   OWNERSHIP_TRANSFER_MAX_DAYS,
   OwnershipTransferViewSchema,
   PENDING_OWNERSHIP_TRANSFER_PAGE_MAX,
@@ -47,6 +50,7 @@ import {
   ManagedGuildListSchema,
   type ManagedGuildList,
   type ManagedGuildUpdate,
+  type ManagedGuildUpdatesPage,
   type PublicGuildDirectoryPage,
   type PublicGuildUpdate,
   type OwnershipTransferView,
@@ -696,11 +700,24 @@ export async function grantGuildRole(
         // Fail closed: every requested field must still show delegating cover here.
         const covered = new Set(bounds.map((b) => b.field));
         if (input.fields.some((f) => !covered.has(f))) fail('FORBIDDEN');
+        // DEC-2026-11-14-01: second-hand authority always lapses by itself. A delegate-issued grant needs an explicit
+        // expiry no later than 90 days after issuance on the database clock; a missing or later one is INVALID_INPUT.
+        // Judged only after the delegate's standing and cover, so it tells a non-delegate nothing. Founder-issued
+        // grants are unchanged and existing passed-on grants are never edited or revoked.
+        if (input.expiresAt === null) fail('INVALID_INPUT');
+        const capped = await query<{ ok: boolean }>(
+          tx,
+          // Hours, not days: a days interval follows the session time zone (daylight saving), the cap is exactly 90 x 24h.
+          // Bound to the instant the policy judged, not a second clock read.
+          `SELECT $1::timestamptz<=$2::timestamptz+make_interval(hours=>${DELEGATED_GRANT_MAX_DAYS * 24}) AS ok`,
+          [input.expiresAt, guild.now.toISOString()],
+        );
+        if (capped[0]?.ok !== true) fail('INVALID_INPUT');
         // The latest expiry among the covering grants, per field; the earliest of those bounds the new grant.
         const finite = bounds.filter((b) => !b.unbounded && b.bound);
         if (finite.length) {
           const earliest = Math.min(...finite.map((b) => b.bound!.getTime()));
-          if (input.expiresAt === null || Date.parse(input.expiresAt) > earliest) fail('FORBIDDEN');
+          if (Date.parse(input.expiresAt) > earliest) fail('FORBIDDEN');
         }
         const passed = await query<{ n: number }>(
           tx,
@@ -1166,6 +1183,21 @@ export async function respondOwnershipTransfer(
             : early.to !== actor.accountId
       )
         fail('FORBIDDEN');
+      // DEC-2026-11-14-03 (a): the proposing Founder's User row is locked FOR SHARE before the Guild row, the order
+      // every other command uses (authorize(): User, then Guild), as `activateGuild` does for the draft owner. A
+      // suspension is a non-key UPDATE, which conflicts with FOR SHARE, so it serializes with this acceptance: the later
+      // of the two sees the earlier. Locking it after the Guild row would deadlock with a Founder command that holds its
+      // own User row and waits for the Guild. The proposer's id is immutable on the transfer, so reading it unlocked
+      // is safe; it is confirmed against the locked transfer row below.
+      let proposerSuspended: boolean | null = null;
+      if (input.decision === 'ACCEPT' && early.from !== null) {
+        const proposers = await query<{ suspended: boolean }>(
+          tx,
+          'SELECT "suspended" FROM "User" WHERE "id"=$1 FOR SHARE',
+          [early.from],
+        );
+        proposerSuspended = proposers.length === 1 ? proposers[0].suspended : null;
+      }
       const guilds = await query<{ founderAccountId: string; revision: number }>(
         tx,
         'SELECT "founderAccountId","revision" FROM "Guild" WHERE "id"=$1::uuid FOR UPDATE',
@@ -1244,6 +1276,16 @@ export async function respondOwnershipTransfer(
         await decide('EXPIRED');
         type = expired;
       } else if (input.decision === 'ACCEPT') {
+        // DEC-2026-11-14-03 (a): under the Guild and transfer row locks (the proposer's User row is already held
+        // FOR SHARE, above) the proposer must still be the Founder and not suspended. Refusing rolls the transaction
+        // back, so the proposal stays PROPOSED and can still be accepted if the suspension is lifted inside the
+        // window. Decline and withdraw are not judged here.
+        if (
+          early.from !== transfer.fromAccountId ||
+          proposerSuspended !== false ||
+          guilds[0].founderAccountId !== transfer.fromAccountId
+        )
+          fail('FORBIDDEN');
         if (await holdsSeparateAuthority(tx, input.guildId, transfer.toAccountId))
           fail('FORBIDDEN');
         if (
@@ -1485,8 +1527,12 @@ async function moveUpdate(
       };
     },
   );
-  // A replay is for the account that took the step, judged by identity.
+  // A replay is for the account that took the step, judged by identity, and (DEC-2026-11-14-05 b) only while that
+  // account still holds the live authority the step needs: Founder status to publish, Founder status or a live
+  // `PROFILE` grant to withdraw. Nothing is returned to an account that has since lost it.
   await authorize(tx, actor);
+  const live = await authorityKinds(tx, actor.accountId, input.guildId);
+  if (step === 'PUBLISH' ? !live.founder : !live.kinds.includes('PROFILE')) fail('FORBIDDEN');
   const by = await query<{ by: string | null }>(
     tx,
     step === 'PUBLISH'
@@ -1557,26 +1603,53 @@ export async function listPublicGuildUpdates(
   });
   return { updates: page, nextCursor: rows.length > limit ? page[page.length - 1].id : null };
 }
-/** Updates a manager may see: the Founder all of them, a profile delegate only their own. */
+/**
+ * Updates a manager may see: the Founder all of them, a profile delegate only their own, newest first by creation
+ * with the id as tie-break (DEC-2026-11-14-04). Pages hold at most 100; `before` is the previous page's `nextCursor`.
+ * A cursor must name an update of this Guild that this caller may see by authorship (it may have been withdrawn since
+ * the page was served); anything else, including another author's row, is the same INVALID_INPUT as a malformed one,
+ * so a cursor cannot probe drafts the caller could not list.
+ */
 export async function listManagedGuildUpdates(
   tx: CommandReceiptTransaction,
   actor: GuildActor,
   guildId: string,
-): Promise<{ updates: ManagedGuildUpdate[] }> {
+  options?: unknown,
+): Promise<ManagedGuildUpdatesPage> {
   validateActor(actor);
   if (!z.uuid().safeParse(guildId).success) fail('INVALID_INPUT');
+  const parsed = ListManagedGuildUpdatesInputSchema.safeParse(options ?? {});
+  if (!parsed.success) fail('INVALID_INPUT');
+  const limit = parsed.data.limit ?? GUILD_MANAGED_UPDATE_PAGE_MAX;
   await authorize(tx, actor);
   const authority = await authorityKinds(tx, actor.accountId, guildId);
   if (!authority.kinds.includes('PROFILE')) fail('FORBIDDEN');
+  const founder = String(authority.founder);
+  let after: string | null = null;
+  if (parsed.data.before) {
+    // The position is read at full timestamp precision under the same authorship filter as the list itself.
+    const position = await query<{ createdAt: string }>(
+      tx,
+      `SELECT "createdAt"::text AS "createdAt" FROM "GuildUpdate"
+       WHERE "id"=$1::uuid AND "guildId"=$2::uuid AND ($3::boolean OR "authorAccountId"=$4)`,
+      [parsed.data.before, guildId, founder, actor.accountId],
+    );
+    if (position.length !== 1) fail('INVALID_INPUT');
+    after = position[0].createdAt;
+  }
   const rows = await query<Record<string, unknown>>(
     tx,
     `SELECT ${UPDATE_COLUMNS} FROM "GuildUpdate" WHERE "guildId"=$1::uuid AND "state"<>'WITHDRAWN' AND ($3::boolean OR "authorAccountId"=$2)
-     ORDER BY "createdAt" DESC,"id" DESC LIMIT 100`,
-    [guildId, actor.accountId, String(authority.founder)],
+       AND ($4::timestamptz IS NULL OR ("createdAt","id")<($4::timestamptz,$5::uuid))
+     ORDER BY "createdAt" DESC,"id" DESC LIMIT $6::int`,
+    [guildId, actor.accountId, founder, after, parsed.data.before ?? null, String(limit + 1)],
   );
-  const updates = rows.map(parseUpdate);
+  const updates = rows.slice(0, limit).map(parseUpdate);
   await authorize(tx, actor);
-  return { updates };
+  return {
+    updates,
+    nextCursor: rows.length > limit ? updates[updates.length - 1].id : null,
+  };
 }
 /**
  * The Guilds this caller manages right now: founded, or holding any live grant. Authority is recomputed per Guild by

@@ -146,6 +146,7 @@ try {
     'migrations/json-shape.sql',
     'migrations/offer-application-index.sql',
     'migrations/closure-hardening.sql',
+    'migrations/closure-service-principal.sql',
     'migrations/acceptance-consent.sql',
     'migrations/json-shape-js-rules.sql',
     'migrations/applicant-evidence-snapshot.sql',
