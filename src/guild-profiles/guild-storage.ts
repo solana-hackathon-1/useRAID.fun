@@ -1160,6 +1160,25 @@ export async function respondOwnershipTransfer(
       request: input,
     },
     async ({ receiptId }) => {
+      // #487: an acceptance holds two User rows, its own (authorize(), FOR NO KEY UPDATE) and the proposing Founder's
+      // (FOR SHARE, below). Two Founders who proposed to each other and accept at once would each hold their own and
+      // wait for the other's: a 40P01 cycle. Every multi-User locker therefore takes the lower account id first, so a
+      // proposer whose id sorts below the recipient's is locked here, before `authorize()`; a higher one is locked
+      // after it, as before. Only the recipient of this very transfer reaches the lock (the lookup is keyed on the
+      // actor), so a stranger still queues behind nothing. The id is immutable, so the unlocked read is safe; the
+      // proposer is confirmed against the locked transfer row below, as before.
+      if (input.decision === 'ACCEPT') {
+        const preview = await query<{ from: string }>(
+          tx,
+          `SELECT "fromAccountId" AS "from" FROM "GuildOwnershipTransfer"
+           WHERE "id"=$1::uuid AND "guildId"=$2::uuid AND "toAccountId"=$3`,
+          [input.transferId, input.guildId, actor.accountId],
+        );
+        if (preview.length === 1 && preview[0].from < actor.accountId)
+          await query(tx, 'SELECT "suspended" FROM "User" WHERE "id"=$1 FOR SHARE', [
+            preview[0].from,
+          ]);
+      }
       await authorize(tx, actor);
       // Only ACCEPT is a new write. WITHDRAW and DECLINE only cancel pending authority, so like revocation they are
       // exempt from the role-management flag and the kill switch (DEC-2026-11-13-03 b).
