@@ -137,6 +137,11 @@ export const PendingOwnershipTransferListSchema = z.strictObject({
 export const GUILD_DRAFT_UPDATE_LIMIT = 50;
 /** Per author and Guild: open drafts plus drafts withdrawn before ever being published (rows are never deleted). */
 export const GUILD_UNPUBLISHED_UPDATE_LIMIT = 100;
+/**
+ * The cap counts only rows created in this trailing window, so an author is never locked out for good
+ * (DEC-2026-11-13-05 c, #296-7; provisional, the owner may revisit). It applies to the Founder too.
+ */
+export const GUILD_UNPUBLISHED_UPDATE_WINDOW_DAYS = 30;
 export const GUILD_UPDATE_PAGE_MAX = 20;
 export const DraftGuildUpdateInputSchema = z.strictObject({
   guildId: uuid,

@@ -26,6 +26,7 @@ import {
   DraftGuildUpdateInputSchema,
   GUILD_DRAFT_UPDATE_LIMIT,
   GUILD_UNPUBLISHED_UPDATE_LIMIT,
+  GUILD_UNPUBLISHED_UPDATE_WINDOW_DAYS,
   GUILD_UPDATE_PAGE_MAX,
   GuildRoleGrantViewSchema,
   GUILD_DIRECTORY_PAGE_MAX,
@@ -1405,12 +1406,14 @@ export async function draftGuildUpdate(
         [input.guildId],
       );
       if ((open[0]?.n ?? 0) >= GUILD_DRAFT_UPDATE_LIMIT) fail('UPDATE_LIMIT');
-      // Withdrawn drafts are never deleted, so they keep counting against their author.
+      // Withdrawn drafts are never deleted, so they keep counting against their author, the Founder included, but
+      // only for the trailing window (DEC-2026-11-13-05 c): an author is not locked out for good.
       const unpublished = await query<{ n: number }>(
         tx,
         `SELECT count(*)::int AS n FROM "GuildUpdate"
-         WHERE "guildId"=$1::uuid AND "authorAccountId"=$2 AND ("state"='DRAFT' OR ("state"='WITHDRAWN' AND "publishedAt" IS NULL))`,
-        [input.guildId, actor.accountId],
+         WHERE "guildId"=$1::uuid AND "authorAccountId"=$2 AND ("state"='DRAFT' OR ("state"='WITHDRAWN' AND "publishedAt" IS NULL))
+           AND "createdAt">clock_timestamp()-make_interval(days=>$3::int)`,
+        [input.guildId, actor.accountId, GUILD_UNPUBLISHED_UPDATE_WINDOW_DAYS],
       );
       if ((unpublished[0]?.n ?? 0) >= GUILD_UNPUBLISHED_UPDATE_LIMIT) fail('UPDATE_LIMIT');
       const rows = await query<{ id: string }>(

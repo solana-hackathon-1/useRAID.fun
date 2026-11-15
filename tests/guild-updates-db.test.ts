@@ -18,6 +18,7 @@ import {
   withdrawGuildUpdate,
   GUILD_DRAFT_UPDATE_LIMIT,
   GUILD_UNPUBLISHED_UPDATE_LIMIT,
+  GUILD_UNPUBLISHED_UPDATE_WINDOW_DAYS,
   type GuildActor,
 } from '../src/guild-profiles/guild-storage';
 import { hash } from '../src/lib/auth-primitives';
@@ -351,13 +352,39 @@ integration('T009 Guild public updates', () => {
     await expect(draft(author, g.id, 'One more', 'Body', 'c-over')).rejects.toMatchObject({
       code: 'UPDATE_LIMIT',
     });
-    // The cap is per author: the Founder is unaffected, and published updates never count.
+    // The cap is per author, and published updates never count.
     const live = (await draft(founder, g.id, 'Live', 'Body', 'f-1')).update.id;
     await publish(founder, g.id, live, 'f-p');
     expect(
       (await run((tx) => listManagedGuildUpdates(tx, founder, g.id))).updates.map((u) => u.title),
     ).toEqual(['Live']);
   }, 120_000);
+
+  it('DEC-2026-11-13-05 c (#296-7): the unpublished cap covers the Founder too and counts only the trailing window', async () => {
+    const { founder, guild: g } = await guild('news-window');
+    for (let i = 0; i < GUILD_UNPUBLISHED_UPDATE_LIMIT; i++) {
+      const id = (await draft(founder, g.id, `Churn ${i}`, 'Body', `wc-${i}`)).update.id;
+      await withdraw(founder, g.id, id, `ww-${i}`);
+    }
+    // The Founder is not exempt.
+    await expect(draft(founder, g.id, 'One more', 'Body', 'wc-over')).rejects.toMatchObject({
+      code: 'UPDATE_LIMIT',
+    });
+    // Rows older than the window stop counting; rows inside it still do. createdAt is immutable to every writer but a
+    // trigger-bypassing fixture, so the fixture ages the two oldest rows directly.
+    await db.$transaction(async (tx) => {
+      await tx.$executeRawUnsafe('SET LOCAL session_replication_role = replica');
+      await tx.$executeRawUnsafe(
+        `UPDATE "GuildUpdate" SET "createdAt"=clock_timestamp()-interval '${GUILD_UNPUBLISHED_UPDATE_WINDOW_DAYS} days 1 minute'
+         WHERE "id" IN (SELECT "id" FROM "GuildUpdate" WHERE "guildId"='${g.id}'::uuid ORDER BY "createdAt" LIMIT 2)`,
+      );
+    });
+    await draft(founder, g.id, 'Fresh one', 'Body', 'wc-fresh-1');
+    await draft(founder, g.id, 'Fresh two', 'Body', 'wc-fresh-2');
+    await expect(draft(founder, g.id, 'Fresh three', 'Body', 'wc-fresh-3')).rejects.toMatchObject({
+      code: 'UPDATE_LIMIT',
+    });
+  }, 180_000);
 
   it('serves only the public projection over HTTP and drops a withdrawn update at once', async () => {
     const { founder, guild: g } = await guild('news-http');
