@@ -1126,20 +1126,23 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
       },
       { timeout: 20000 },
     );
-    const updater = db.$transaction(
-      (tx) =>
-        tx.$executeRawUnsafe(
-          `UPDATE "RaidSlot" SET "fundingRef"='order-race-ref' WHERE "id"=$1::uuid`,
-          spare,
-        ),
-      { timeout: 20000 },
-    );
-    const updaterOutcome = updater.then(
-      () => 'updated',
-      (e: Error) => e.message,
-    );
+    let updaterOutcome: Promise<string> = Promise.resolve('not started');
     try {
+      // Only start the updater once the listing row is held, so it cannot win the listing lock first.
       await listingLocked;
+      updaterOutcome = db
+        .$transaction(
+          (tx) =>
+            tx.$executeRawUnsafe(
+              `UPDATE "RaidSlot" SET "fundingRef"='order-race-ref' WHERE "id"=$1::uuid`,
+              spare,
+            ),
+          { timeout: 20000 },
+        )
+        .then(
+          () => 'updated',
+          (e: Error) => e.message,
+        );
       // Wait until the updater is blocked on the listing row (a row/transaction lock, not the funding advisory lock).
       let blockedOnListing = false;
       for (let i = 0; i < 100 && !blockedOnListing; i++) {
