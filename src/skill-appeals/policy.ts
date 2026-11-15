@@ -18,8 +18,8 @@ export const AppealAdjudicatorFactsSchema = z
     originalReviewerAccountIds: z.array(Id).max(1000).readonly(),
     /** Guilds where the adjudicator and the appellant each hold a Founder or live role relationship. */
     sharedGuildIds: z.array(Id).max(1000).readonly(),
-    /** Parties (14) where the adjudicator and the appellant are each the leader or a proposed member (17.4 related Party). */
-    sharedPartyIds: z.array(Id).max(1000).readonly().default([]),
+    /** Parties (14) with a formed roster (every named member consented) that includes both, counting the leader (17.4 related Party). */
+    sharedPartyIds: z.array(Id).max(1000).readonly(),
     /** The host's current dedicated allowlist answer for the adjudicator. */
     onAllowlist: z.boolean(),
   })

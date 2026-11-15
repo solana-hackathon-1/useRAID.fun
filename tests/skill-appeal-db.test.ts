@@ -452,23 +452,20 @@ integration('T014 skill-assessment appeals: intake and independent adjudication 
         ),
       ).toMatchObject({ code: 'INVALID_INPUT' });
     });
-    it('refuses an adjudicator who shares a Party with the appellant (17.4 related Party)', async () => {
+    // A Party relationship (17.4) needs a FORMED roster: a proposal whose every member recorded consent. A leader can
+    // add anyone to a proposal, so an unconsented, declined or abandoned proposal must never recuse an adjudicator.
+    async function partyFixture(spec: { members: number; consented: number }) {
       const adjudicator = await person();
-      await db.participant.create({
-        data: {
-          accountId: adjudicator.accountId,
-          provisionActorAccountId: adjudicator.accountId,
-          provisionRequestId: 'synthetic-provision',
-        },
-      });
-      const stranger = await person();
-      await db.participant.create({
-        data: {
-          accountId: stranger.accountId,
-          provisionActorAccountId: stranger.accountId,
-          provisionRequestId: 'synthetic-provision',
-        },
-      });
+      const bystander = await person();
+      const accounts = [adjudicator, bystander].slice(0, spec.members);
+      for (const who of [adjudicator, bystander])
+        await db.participant.create({
+          data: {
+            accountId: who.accountId,
+            provisionActorAccountId: who.accountId,
+            provisionRequestId: 'synthetic-provision',
+          },
+        });
       const { party } = await run((tx) =>
         createParty(
           tx,
@@ -481,25 +478,46 @@ integration('T014 skill-assessment appeals: intake and independent adjudication 
           { allowNewWrites: true },
         ),
       );
-      // The appellant leads the Party; the stranger is unrelated and still adjudicates.
       await db.$transaction(async (tx) => {
-        // Foreign keys to a published slot are not what is under test; the replication role skips only triggers.
+        // Foreign keys to a published slot and receipt are not what is under test; the replication role skips only triggers.
         await tx.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
         const [{ id }] = await tx.$queryRawUnsafe<{ id: string }[]>(
           `INSERT INTO "PartyProposal"("partyId","leaderParticipantId","slotId","termsVersionId","termsDigest","snapshot","snapshotDigest","receiptId") SELECT $1::uuid,"leaderParticipantId",gen_random_uuid(),gen_random_uuid(),repeat('a',64),'{}'::jsonb,repeat('b',64),gen_random_uuid() FROM "Party" WHERE "id"=$1::uuid RETURNING "id"::text AS "id"`,
           party.id,
         );
-        await tx.$executeRawUnsafe(
-          `INSERT INTO "PartyProposalMember"("proposalId","participantId","role","allocations") SELECT $1::uuid,"id",'Member','[{"amount":"1"}]'::jsonb FROM "Participant" WHERE "accountId"=$2`,
-          id,
-          adjudicator.accountId,
-        );
+        for (const [index, who] of accounts.entries()) {
+          await tx.$executeRawUnsafe(
+            `INSERT INTO "PartyProposalMember"("proposalId","participantId","role","allocations") SELECT $1::uuid,"id",'Member','[{"amount":"1"}]'::jsonb FROM "Participant" WHERE "accountId"=$2`,
+            id,
+            who.accountId,
+          );
+          if (index < spec.consented)
+            await tx.$executeRawUnsafe(
+              `INSERT INTO "PartyMemberConsent"("proposalId","participantId","snapshotDigest","receiptId") SELECT $1::uuid,"id",repeat('b',64),gen_random_uuid() FROM "Participant" WHERE "accountId"=$2`,
+              id,
+              who.accountId,
+            );
+        }
       });
+      return { adjudicator, bystander };
+    }
+    it('refuses an adjudicator in a formed Party with the appellant (17.4 related Party)', async () => {
+      const { adjudicator, bystander } = await partyFixture({ members: 1, consented: 1 });
       await expect(adjudicate(appealId, adjudicator)).rejects.toMatchObject({ code: 'FORBIDDEN' });
       expect(
         await db.$queryRawUnsafe('SELECT 1 FROM "SkillAssessmentAppealDecision"'),
       ).toHaveLength(0);
-      expect(await adjudicate(appealId, stranger)).toMatchObject({ status: 'EXECUTED' });
+      // The unrelated account (not in the roster) still adjudicates.
+      expect(await adjudicate(appealId, bystander)).toMatchObject({ status: 'EXECUTED' });
+    });
+    it('does not count a proposal member who never consented as related (no forced recusal)', async () => {
+      const { adjudicator } = await partyFixture({ members: 1, consented: 0 });
+      expect(await adjudicate(appealId, adjudicator)).toMatchObject({ status: 'EXECUTED' });
+    });
+    it('does not count a declined or abandoned proposal, even for a member who did consent', async () => {
+      // Two members named; only the adjudicator consented, so the roster never formed.
+      const { adjudicator } = await partyFixture({ members: 2, consented: 1 });
+      expect(await adjudicate(appealId, adjudicator)).toMatchObject({ status: 'EXECUTED' });
     });
     it('lets exactly one of two concurrent adjudicators decide', async () => {
       const [a, b] = [await person(), await person()];
@@ -636,11 +654,27 @@ integration('T014 skill-assessment appeals: intake and independent adjudication 
     it('refuses a new assessment decision by an excluded original reviewer and records nothing', async () => {
       await adjudicate(appealId, await person(), 'UPHELD');
       const before = await assessmentRows();
-      await expect(seed.decide('REQUIRE_REASSESSMENT')).rejects.toBeDefined();
+      const refused = await seed.decide('REQUIRE_REASSESSMENT').then(
+        () => null,
+        (e) => e,
+      );
+      // The command layer reports any database refusal as the opaque STORAGE_UNAVAILABLE, so the cause is pinned below.
+      expect(refused).toMatchObject({ code: 'STORAGE_UNAVAILABLE' });
       expect(await assessmentRows()).toEqual(before);
       expect(await db.$queryRawUnsafe('SELECT 1 FROM "PracticeAssessmentDecision"')).toHaveLength(
         0,
       );
+      // Pin the guard as the cause: with only that trigger disabled the very same decision commits.
+      await db.$executeRawUnsafe(
+        'ALTER TABLE "PracticeAssessmentDecision" DISABLE TRIGGER skill_appeal_fresh_review_decision_v1',
+      );
+      try {
+        expect(await seed.decide('REQUIRE_REASSESSMENT')).toMatchObject({ status: 'EXECUTED' });
+      } finally {
+        await db.$executeRawUnsafe(
+          'ALTER TABLE "PracticeAssessmentDecision" ENABLE TRIGGER skill_appeal_fresh_review_decision_v1',
+        );
+      }
     });
     it('serializes an appointment against an appeal decision on the same person/skill lock', async () => {
       const key = seed.participantId + ':frontend';

@@ -355,15 +355,22 @@ export async function adjudicateSkillAssessmentAppeal(
          ) SELECT DISTINCT a."guildId"::text AS "guildId" FROM "related" a JOIN "related" b ON b."guildId"=a."guildId" WHERE a."accountId"=$1 AND b."accountId"=$2`,
         [actor.accountId, state[0].appellantAccountId],
       );
-      // Related Party (17.4): the adjudicator and the appellant are each the leader or a proposed member of one Party.
+      // Related Party (17.4), agent default under DEC-2026-11-13-12: the adjudicator and the appellant are both on one
+      // FORMED roster, i.e. a proposal in which every named member recorded consent, counting the Party leader and those
+      // members. An unconsented, declined or abandoned proposal never counts, so naming someone in a proposal cannot
+      // force their recusal (consent is the only gate on the Party model).
       const parties = await query<{ partyId: string }>(
         tx,
-        `WITH "related" AS (
-           SELECT p."id" AS "partyId",p."leaderParticipantId" AS "participantId" FROM "Party" p
-           UNION SELECT q."partyId",m."participantId" FROM "PartyProposalMember" m JOIN "PartyProposal" q ON q."id"=m."proposalId"
+        `WITH "formed" AS (
+           SELECT q."id" AS "proposalId",q."partyId" FROM "PartyProposal" q
+           WHERE EXISTS(SELECT 1 FROM "PartyProposalMember" m WHERE m."proposalId"=q."id")
+             AND NOT EXISTS(SELECT 1 FROM "PartyProposalMember" m WHERE m."proposalId"=q."id" AND NOT EXISTS(SELECT 1 FROM "PartyMemberConsent" c WHERE c."proposalId"=m."proposalId" AND c."participantId"=m."participantId"))
+         ), "related" AS (
+           SELECT f."proposalId",f."partyId",p."leaderParticipantId" AS "participantId" FROM "formed" f JOIN "Party" p ON p."id"=f."partyId"
+           UNION SELECT f."proposalId",f."partyId",m."participantId" FROM "formed" f JOIN "PartyProposalMember" m ON m."proposalId"=f."proposalId"
          ), "accounted" AS (
-           SELECT r."partyId",x."accountId" FROM "related" r JOIN "Participant" x ON x."id"=r."participantId"
-         ) SELECT DISTINCT a."partyId"::text AS "partyId" FROM "accounted" a JOIN "accounted" b ON b."partyId"=a."partyId" WHERE a."accountId"=$1 AND b."accountId"=$2`,
+           SELECT r."proposalId",r."partyId",x."accountId" FROM "related" r JOIN "Participant" x ON x."id"=r."participantId"
+         ) SELECT DISTINCT a."partyId"::text AS "partyId" FROM "accounted" a JOIN "accounted" b ON b."proposalId"=a."proposalId" WHERE a."accountId"=$1 AND b."accountId"=$2`,
         [actor.accountId, state[0].appellantAccountId],
       );
       const verdict = evaluateAppealAdjudicator({

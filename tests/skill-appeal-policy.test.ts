@@ -12,6 +12,7 @@ const facts = {
   appellantAccountId: 'synthetic-appellant',
   originalReviewerAccountIds: ['synthetic-reviewer'],
   sharedGuildIds: [] as string[],
+  sharedPartyIds: [] as string[],
   onAllowlist: true,
 };
 
@@ -38,8 +39,9 @@ describe('skill-assessment appeal adjudicator independence (DEC-2026-11-13-12, 0
       }),
     ).toEqual({ allowed: false, reason: 'SELF_ADJUDICATION' });
   });
-  it('treats facts without Party relationships as no Party conflict (existing hosts keep working)', () => {
-    expect(evaluateAppealAdjudicator({ ...facts, sharedPartyIds: [] })).toEqual({ allowed: true });
+  it('requires the host to state Party relationships: omitted facts are rejected, never read as no conflict', () => {
+    const { sharedPartyIds: _omitted, ...without } = facts;
+    expect(() => evaluateAppealAdjudicator(without as never)).toThrow();
   });
   it('reports a Guild relationship before a Party relationship', () => {
     expect(
