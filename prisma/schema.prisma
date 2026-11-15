@@ -29,6 +29,7 @@ model User {
  assessmentDecisions PracticeAssessmentDecision[]
   practiceAssessmentReviewVersions PracticeAssessmentReviewVersion[]
   skillAssessmentVersions SkillAssessmentVersion[]
+  skillAppealDecisions SkillAssessmentAppealDecision[]
   practiceTrialOwnershipVersions PracticeTrialOwnershipVersion[]
   practiceReviewPolicyVersions PracticeReviewPolicyVersion[]
 
@@ -69,6 +70,7 @@ model Participant {
   engagementMembers EngagementMember[]
   activeCommitment ActiveCommitment?
   skillAssessments SkillAssessment[]
+  skillAssessmentAppeals SkillAssessmentAppeal[]
   acceptanceConsents WorkAcceptanceConsent[]
   consentWithdrawals WorkAcceptanceConsentWithdrawal[]
   ledParties Party[]
@@ -734,6 +736,8 @@ model CommandReceipt {
   assessmentPolicyAccesses PracticeAssessmentReviewVersion[] @relation("AssessmentPolicyAccess")
   assessmentOwnershipAccesses PracticeAssessmentReviewVersion[] @relation("AssessmentOwnershipAccess")
   skillAssessmentVersion SkillAssessmentVersion? @relation("SkillAssessmentReceipt")
+  skillAssessmentAppeal SkillAssessmentAppeal?
+  skillAssessmentAppealDecision SkillAssessmentAppealDecision?
   practiceTrialOwnershipVersion PracticeTrialOwnershipVersion? @relation("OwnershipCommandReceipt")
   practiceTrialOwnershipCaseAccess PracticeTrialOwnershipVersion[] @relation("OwnershipCaseAccess")
   practiceTrialOwnershipPolicyAccess PracticeTrialOwnershipVersion[] @relation("OwnershipPolicyAccess")
@@ -1255,6 +1259,7 @@ model SkillAssessment {
  @@unique([id,participantId,skillId,skillDomain,taxonomyId],map:"SkillAssessment_family_key")
 }
 model SkillAssessmentVersion {
+ appeal SkillAssessmentAppeal?
  decision PracticeAssessmentDecision? @relation("AssessmentDecisionProvenance",fields:[decisionId],references:[id],onDelete:Restrict,onUpdate:Restrict,map:"SkillAssessmentVersion_decision_fkey")
  priorForDecisions PracticeAssessmentDecision[] @relation("DecisionPrior")
  resultForDecision PracticeAssessmentDecision? @relation("DecisionResult")
@@ -1774,4 +1779,43 @@ model GuildUpdate {
   @@index([authorAccountId], map: "GuildUpdate_author_idx")
   @@index([publishedByAccountId], map: "GuildUpdate_publisher_idx")
   @@index([withdrawnByAccountId], map: "GuildUpdate_withdrawer_idx")
+}
+
+// Skill-assessment appeals (#357, DEC-2026-11-13-12 / -14-11). Append-only and SQL-owned: raid_skill_appeal_guard_v1 and
+// raid_skill_appeal_decision_guard_v1 (current-version filing, immutability, independent adjudicator, excluded reviewers)
+// and the CHECK constraints are not modeled here. An appeal never edits the assessment it names.
+model SkillAssessmentAppeal {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  assessmentVersionId String @unique(map: "SkillAssessmentAppeal_version_key") @db.Uuid
+  participantId String @db.Uuid
+  appellantAccountId String
+  reasonCategory String
+  statement String
+  decisionNoticeAt DateTime @db.Timestamptz(3)
+  filingDeadlineAt DateTime @db.Timestamptz(3)
+  filedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
+  adjudicationDueAt DateTime @db.Timestamptz(3)
+  receiptId String @unique(map: "SkillAssessmentAppeal_receipt_key") @db.Uuid
+  requestId String
+  version SkillAssessmentVersion @relation(fields: [assessmentVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillAssessmentAppeal_version_fkey")
+  participant Participant @relation(fields: [participantId, appellantAccountId], references: [id, accountId], onDelete: Restrict, onUpdate: Restrict, map: "SkillAssessmentAppeal_participant_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillAssessmentAppeal_receipt_fkey")
+  decision SkillAssessmentAppealDecision?
+  @@index([adjudicationDueAt], map: "SkillAssessmentAppeal_due_idx")
+  @@index([participantId, appellantAccountId], map: "SkillAssessmentAppeal_participant_idx")
+}
+model SkillAssessmentAppealDecision {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  appealId String @unique(map: "SkillAssessmentAppealDecision_appeal_key") @db.Uuid
+  outcome String
+  adjudicatorAccountId String
+  reason String
+  freshReviewExcludedAccountIds String[]
+  decidedAt DateTime @default(dbgenerated("date_trunc('milliseconds'::text, clock_timestamp())")) @db.Timestamptz(3)
+  receiptId String @unique(map: "SkillAssessmentAppealDecision_receipt_key") @db.Uuid
+  requestId String
+  appeal SkillAssessmentAppeal @relation(fields: [appealId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillAssessmentAppealDecision_appeal_fkey")
+  adjudicator User @relation(fields: [adjudicatorAccountId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillAssessmentAppealDecision_adjudicator_fkey")
+  receipt CommandReceipt @relation(fields: [receiptId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "SkillAssessmentAppealDecision_receipt_fkey")
+  @@index([adjudicatorAccountId], map: "SkillAssessmentAppealDecision_adjudicator_idx")
 }
