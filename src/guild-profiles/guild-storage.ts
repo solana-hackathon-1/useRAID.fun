@@ -33,6 +33,8 @@ import {
   ListPublicGuildsInputSchema,
   ListPublicGuildUpdatesInputSchema,
   ManagedGuildUpdateSchema,
+  ListManagedGuildUpdatesInputSchema,
+  GUILD_MANAGED_UPDATE_PAGE_MAX,
   OWNERSHIP_TRANSFER_MAX_DAYS,
   OwnershipTransferViewSchema,
   PENDING_OWNERSHIP_TRANSFER_PAGE_MAX,
@@ -48,6 +50,7 @@ import {
   ManagedGuildListSchema,
   type ManagedGuildList,
   type ManagedGuildUpdate,
+  type ManagedGuildUpdatesPage,
   type PublicGuildDirectoryPage,
   type PublicGuildUpdate,
   type OwnershipTransferView,
@@ -1600,26 +1603,53 @@ export async function listPublicGuildUpdates(
   });
   return { updates: page, nextCursor: rows.length > limit ? page[page.length - 1].id : null };
 }
-/** Updates a manager may see: the Founder all of them, a profile delegate only their own. */
+/**
+ * Updates a manager may see: the Founder all of them, a profile delegate only their own, newest first by creation
+ * with the id as tie-break (DEC-2026-11-14-04). Pages hold at most 100; `before` is the previous page's `nextCursor`.
+ * A cursor must name an update of this Guild that this caller may see by authorship (it may have been withdrawn since
+ * the page was served); anything else, including another author's row, is the same INVALID_INPUT as a malformed one,
+ * so a cursor cannot probe drafts the caller could not list.
+ */
 export async function listManagedGuildUpdates(
   tx: CommandReceiptTransaction,
   actor: GuildActor,
   guildId: string,
-): Promise<{ updates: ManagedGuildUpdate[] }> {
+  options?: unknown,
+): Promise<ManagedGuildUpdatesPage> {
   validateActor(actor);
   if (!z.uuid().safeParse(guildId).success) fail('INVALID_INPUT');
+  const parsed = ListManagedGuildUpdatesInputSchema.safeParse(options ?? {});
+  if (!parsed.success) fail('INVALID_INPUT');
+  const limit = parsed.data.limit ?? GUILD_MANAGED_UPDATE_PAGE_MAX;
   await authorize(tx, actor);
   const authority = await authorityKinds(tx, actor.accountId, guildId);
   if (!authority.kinds.includes('PROFILE')) fail('FORBIDDEN');
+  const founder = String(authority.founder);
+  let after: string | null = null;
+  if (parsed.data.before) {
+    // The position is read at full timestamp precision under the same authorship filter as the list itself.
+    const position = await query<{ createdAt: string }>(
+      tx,
+      `SELECT "createdAt"::text AS "createdAt" FROM "GuildUpdate"
+       WHERE "id"=$1::uuid AND "guildId"=$2::uuid AND ($3::boolean OR "authorAccountId"=$4)`,
+      [parsed.data.before, guildId, founder, actor.accountId],
+    );
+    if (position.length !== 1) fail('INVALID_INPUT');
+    after = position[0].createdAt;
+  }
   const rows = await query<Record<string, unknown>>(
     tx,
     `SELECT ${UPDATE_COLUMNS} FROM "GuildUpdate" WHERE "guildId"=$1::uuid AND "state"<>'WITHDRAWN' AND ($3::boolean OR "authorAccountId"=$2)
-     ORDER BY "createdAt" DESC,"id" DESC LIMIT 100`,
-    [guildId, actor.accountId, String(authority.founder)],
+       AND ($4::timestamptz IS NULL OR ("createdAt","id")<($4::timestamptz,$5::uuid))
+     ORDER BY "createdAt" DESC,"id" DESC LIMIT $6::int`,
+    [guildId, actor.accountId, founder, after, parsed.data.before ?? null, String(limit + 1)],
   );
-  const updates = rows.map(parseUpdate);
+  const updates = rows.slice(0, limit).map(parseUpdate);
   await authorize(tx, actor);
-  return { updates };
+  return {
+    updates,
+    nextCursor: rows.length > limit ? updates[updates.length - 1].id : null,
+  };
 }
 /**
  * The Guilds this caller manages right now: founded, or holding any live grant. Authority is recomputed per Guild by

@@ -148,6 +148,13 @@ export const ListPublicGuildUpdatesInputSchema = z.strictObject({
   limit: z.number().int().min(1).max(GUILD_UPDATE_PAGE_MAX).optional(),
   before: uuid.optional(),
 });
+/** Managed view page size: the first page is the newest 100, as before the cursor existed. */
+export const GUILD_MANAGED_UPDATE_PAGE_MAX = 100;
+export const ListManagedGuildUpdatesInputSchema = z.strictObject({
+  limit: z.number().int().min(1).max(GUILD_MANAGED_UPDATE_PAGE_MAX).optional(),
+  /** Keyset cursor: the `nextCursor` of the previous page; the page continues strictly after that update. */
+  before: uuid.optional(),
+});
 export const ManagedGuildUpdateSchema = z.strictObject({
   version: z.literal('v1'),
   id: z.uuid(),
@@ -160,6 +167,11 @@ export const ManagedGuildUpdateSchema = z.strictObject({
   publishedAt: z.iso.datetime().nullable(),
 });
 export type ManagedGuildUpdate = z.infer<typeof ManagedGuildUpdateSchema>;
+export type ManagedGuildUpdatesPage = {
+  updates: ManagedGuildUpdate[];
+  /** The id of the last update on a full page that has more behind it; `null` at the end. */
+  nextCursor: string | null;
+};
 /** The whole public projection of an update: text and time, no author, Guild or state. */
 export const PublicGuildUpdateSchema = z.strictObject({
   id: z.uuid(),

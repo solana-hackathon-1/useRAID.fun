@@ -146,6 +146,15 @@ const withdraw = (
   key?: string,
   writes = true,
 ) => run((tx) => withdrawGuildUpdate(tx, cmd(actor, { guildId, updateId }, key), host(writes)));
+/** Test-only: lifts the immutability guard for one statement to build fixtures the application cannot (ties, retention). */
+async function withoutUpdateGuard(work: () => Promise<unknown>) {
+  await db.$executeRawUnsafe(`ALTER TABLE "GuildUpdate" DISABLE TRIGGER guild_update_guard_v1`);
+  try {
+    await work();
+  } finally {
+    await db.$executeRawUnsafe(`ALTER TABLE "GuildUpdate" ENABLE TRIGGER guild_update_guard_v1`);
+  }
+}
 integration('T009 Guild public updates', () => {
   beforeEach(async () => {
     assertTestDatabase();
@@ -549,6 +558,137 @@ integration('T009 Guild public updates', () => {
     const five = await counted(5);
     await draft(founder, g.id, 'Draft 6', 'Body', 'q-6');
     expect(await counted(6)).toBe(five);
+  });
+
+  it('DEC-2026-11-14-04: the managed list pages by a keyset cursor, stable across equal timestamps', async () => {
+    const { founder, guild: g } = await guild('news-mk');
+    const ids: string[] = [];
+    for (let i = 1; i <= 5; i++)
+      ids.push((await draft(founder, g.id, `Row ${i}`, 'Body', `mk-${i}`)).update.id);
+    // Two groups of equal createdAt force the id tie-break to decide the order.
+    await withoutUpdateGuard(() =>
+      db.$executeRawUnsafe(
+        `UPDATE "GuildUpdate" SET "createdAt"=CASE WHEN "id"=ANY($1::uuid[]) THEN '2026-01-01T00:00:00Z'::timestamptz ELSE '2026-01-02T00:00:00Z'::timestamptz END WHERE "guildId"=$2::uuid`,
+        ids.slice(0, 3),
+        g.id,
+      ),
+    );
+    const expected = [...ids.slice(3).sort().reverse(), ...ids.slice(0, 3).sort().reverse()];
+    const seen: string[] = [];
+    let before: string | undefined;
+    for (let pages = 0; pages < 10; pages++) {
+      const page = await run((tx) =>
+        listManagedGuildUpdates(tx, founder, g.id, { limit: 2, ...(before ? { before } : {}) }),
+      );
+      expect(page.updates.length).toBeLessThanOrEqual(2);
+      seen.push(...page.updates.map((u) => u.id));
+      if (page.nextCursor === null) break;
+      expect(page.nextCursor).toBe(page.updates[page.updates.length - 1].id);
+      before = page.nextCursor;
+    }
+    expect(seen).toEqual(expected);
+    // The first page of a caller that ignores the cursor is unchanged (newest 100, no options needed).
+    const whole = await run((tx) => listManagedGuildUpdates(tx, founder, g.id));
+    expect(whole.updates.map((u) => u.id)).toEqual(expected);
+    expect(whole.nextCursor).toBeNull();
+    await expect(
+      run((tx) => listManagedGuildUpdates(tx, founder, g.id, { limit: 101 })),
+    ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+  });
+
+  it('DEC-2026-11-14-04: more than 100 managed rows are each reachable once, in order', async () => {
+    const { founder, guild: g } = await guild('news-m105');
+    const ids: string[] = [];
+    // Open drafts are capped per Guild; publishing frees room.
+    for (let round = 0; round < 3; round++)
+      for (let i = 0; i < 35; i++) {
+        const id = (await draft(founder, g.id, `Bulk ${round}-${i}`, 'Body', `b-d-${round}-${i}`))
+          .update.id;
+        await publish(founder, g.id, id, `b-p-${round}-${i}`);
+        ids.push(id);
+      }
+    const first = await run((tx) => listManagedGuildUpdates(tx, founder, g.id));
+    expect(first.updates).toHaveLength(100);
+    expect(first.nextCursor).toBe(first.updates[99].id);
+    const second = await run((tx) =>
+      listManagedGuildUpdates(tx, founder, g.id, { before: first.nextCursor! }),
+    );
+    expect(second.updates).toHaveLength(5);
+    expect(second.nextCursor).toBeNull();
+    const all = [...first.updates, ...second.updates].map((u) => u.id);
+    expect(new Set(all).size).toBe(105);
+    expect([...all].sort()).toEqual([...ids].sort());
+  }, 180_000);
+
+  it('DEC-2026-11-14-04: a cursor the caller may not see is the same INVALID_INPUT as an unknown one', async () => {
+    const { founder, guild: g } = await guild('news-mf');
+    const { founder: other, guild: h } = await guild('news-mf-other');
+    const delegate = await person();
+    const rival = await person();
+    await grantRow(g.id, delegate);
+    await grantRow(g.id, rival);
+    const own = (await draft(delegate, g.id, 'Mine', 'Body')).update.id;
+    const theirs = (await draft(rival, g.id, 'Rival draft', 'Body')).update.id;
+    const foreign = (await draft(other, h.id, 'Elsewhere', 'Body')).update.id;
+    const refusals: { code?: string; message?: string }[] = [];
+    for (const before of [crypto.randomUUID(), foreign, theirs])
+      refusals.push(
+        await run((tx) => listManagedGuildUpdates(tx, delegate, g.id, { before })).catch(
+          (error) => error,
+        ),
+      );
+    for (const refusal of refusals) expect(refusal).toMatchObject({ code: 'INVALID_INPUT' });
+    // Indistinguishable: the same code and message whatever the row is.
+    expect(new Set(refusals.map((e) => e.message)).size).toBe(1);
+    // A malformed cursor fails the same way.
+    await expect(
+      run((tx) => listManagedGuildUpdates(tx, delegate, g.id, { before: 'not-a-uuid' })),
+    ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    // The delegate's own row is a valid position.
+    expect(
+      (await run((tx) => listManagedGuildUpdates(tx, delegate, g.id, { before: own }))).updates,
+    ).toEqual([]);
+    // The Founder may use any row of this Guild as a cursor, but never another Guild's row.
+    expect(
+      (await run((tx) => listManagedGuildUpdates(tx, founder, g.id, { before: theirs }))).updates,
+    ).toBeDefined();
+    await expect(
+      run((tx) => listManagedGuildUpdates(tx, founder, g.id, { before: foreign })),
+    ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
+    // A cursor is judged only after authority: an outsider is FORBIDDEN, not told whether the cursor exists.
+    const outsider = await person();
+    for (const before of [own, crypto.randomUUID()])
+      await expect(
+        run((tx) => listManagedGuildUpdates(tx, outsider, g.id, { before })),
+      ).rejects.toMatchObject({ code: 'FORBIDDEN' });
+  });
+
+  it('DEC-2026-11-14-04: a cursor withdrawn after serving still pages; a row that no longer exists is refused', async () => {
+    const { founder, guild: g } = await guild('news-mw');
+    const ids: string[] = [];
+    for (let i = 1; i <= 4; i++) {
+      const id = (await draft(founder, g.id, `W ${i}`, 'Body', `mw-${i}`)).update.id;
+      await publish(founder, g.id, id, `mw-p-${i}`);
+      ids.push(id);
+    }
+    const first = await run((tx) => listManagedGuildUpdates(tx, founder, g.id, { limit: 2 }));
+    expect(first.updates.map((u) => u.id)).toEqual([ids[3], ids[2]]);
+    await withdraw(founder, g.id, ids[2], 'mw-w');
+    const second = await run((tx) =>
+      listManagedGuildUpdates(tx, founder, g.id, { limit: 2, before: first.nextCursor! }),
+    );
+    expect(second.updates.map((u) => u.id)).toEqual([ids[1], ids[0]]);
+    // Withdrawn rows never appear in results.
+    expect(
+      (await run((tx) => listManagedGuildUpdates(tx, founder, g.id))).updates.map((u) => u.id),
+    ).toEqual([ids[3], ids[1], ids[0]]);
+    // Updates are never deleted by the application; if retention removes a row, its cursor is unknown.
+    await withoutUpdateGuard(() =>
+      db.$executeRawUnsafe(`DELETE FROM "GuildUpdate" WHERE "id"=$1::uuid`, ids[0]),
+    );
+    await expect(
+      run((tx) => listManagedGuildUpdates(tx, founder, g.id, { before: ids[0] })),
+    ).rejects.toMatchObject({ code: 'INVALID_INPUT' });
   });
 
   it('caps open drafts per Guild and replays only to someone who still may act', async () => {
