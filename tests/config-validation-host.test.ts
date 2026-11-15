@@ -9,10 +9,11 @@ import { deploymentEnvironment } from '../src/lib/deployment-environment';
 import { checkRuntimeConfig } from '../src/lib/config-validation-host';
 
 const text = (path: string) => readFileSync(path, 'utf8');
+// A pinned value is quoted, or a host opt-in `${NAME:-default}` read at its default (the opt-in is off unless set).
 const pairs = (source: string) =>
-  [...source.matchAll(/^\s*([A-Z][A-Z0-9_]*):\s*'([^']*)'\s*$/gm)].map(
-    (m) => [m[1], m[2]] as const,
-  );
+  [
+    ...source.matchAll(/^\s*([A-Z][A-Z0-9_]*):\s*(?:'([^']*)'|\$\{[A-Z0-9_]+:-([^}]*)\})\s*$/gm),
+  ].map((m) => [m[1], m[2] ?? m[3]] as const);
 const stagingPinned = () => {
   const block = text('compose.staging.yaml').split('safe-environment')[1]!.split('depends_on')[0]!;
   return Object.fromEntries(pairs(block));
@@ -34,6 +35,32 @@ describe('T037 startup host (web instrumentation and worker)', () => {
     };
     for (const role of ['web', 'worker'] as const)
       expect(validateRuntimeConfig(env, role), role).toEqual({ ok: true, violations: [] });
+  });
+
+  it('staging Studio devnet opt-in boots with devnet variables and refuses without them', () => {
+    expect(text('compose.staging.yaml')).toMatch(/^\s+RAID_ENVIRONMENT: staging$/m);
+    const optIn = {
+      ...stagingPinned(),
+      RAID_ENVIRONMENT: 'staging',
+      DATABASE_URL: 'postgresql://u:p@db:5432/useraid_staging',
+      LIVE_COLLECTION_APPROVED: 'true',
+      X_TRACKING_V2_ENABLED: 'true',
+      X_TRACKING_V2_SETTLEMENT_ENABLED: 'true',
+    };
+    const devnet = {
+      ...optIn,
+      X_ADMIN_USER_ID: '1',
+      USDC_NETWORK: 'devnet',
+      USDC_FUNDING_ADDRESS: '9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin',
+      SOLANA_RPC_URL: 'https://api.devnet.solana.com',
+    };
+    for (const role of ['web', 'worker'] as const) {
+      expect(validateRuntimeConfig(devnet, role), role).toEqual({ ok: true, violations: [] });
+      expect(validateRuntimeConfig(optIn, role).ok, role).toBe(false);
+      expect(validateRuntimeConfig({ ...devnet, USDC_NETWORK: 'mainnet' }, role).ok, role).toBe(
+        false,
+      );
+    }
   });
 
   it('accepts the documented example file and the live-browser CI fixture; refuses a mutated copy', () => {

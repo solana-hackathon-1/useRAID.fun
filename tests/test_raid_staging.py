@@ -183,6 +183,38 @@ class StagingConsumingHost(unittest.TestCase):
             self.assertEqual(watcher['environment']['WATCHTOWER_INCLUDE_RESTARTING'], 'true')
             self.assertIn('postgres', json.loads(result.stdout)['volumes'])
 
+    def render_app_environment(self, **extra):
+        with tempfile.TemporaryDirectory() as directory:
+            host = Path(directory)
+            for name in ['.env.app', '.env.web', '.env.worker']:
+                (host / name).write_text('')
+            result = subprocess.run(['docker', 'compose', '--project-directory', str(host),
+                '-f', str(ROOT / 'compose.staging.yaml'), 'config', '--format', 'json'],
+                capture_output=True, text=True,
+                env={**os.environ, 'STAGING_ROOT': str(host), **extra})
+            self.assertEqual(result.returncode, 0, result.stderr)
+            services = json.loads(result.stdout)['services']
+            return {role: services[role]['environment'] for role in ['web', 'worker']}
+
+    def test_studio_usdc_is_off_by_default_and_never_enables_launch_or_payout(self):
+        for env in self.render_app_environment().values():
+            for name in ['X_TRACKING_V2_ENABLED', 'X_TRACKING_V2_SETTLEMENT_ENABLED',
+                    'LIVE_COLLECTION_APPROVED', 'LAUNCH_ENABLED', 'PAYOUT_ENABLED']:
+                self.assertEqual(env[name], 'false', name)
+
+    def test_studio_devnet_usdc_is_one_opt_in_switch_on_the_host(self):
+        # Studio launch/deposit need tracking v2, settlement and live collection (src/lib/studio-campaigns.ts,
+        # src/lib/usdc.ts depositsReady); it needs neither LAUNCH_ENABLED nor PAYOUT_ENABLED. The config validator
+        # then refuses boot unless USDC_NETWORK=devnet and the RPC is not mainnet (RAID_ENVIRONMENT=staging).
+        rendered = self.render_app_environment(STAGING_STUDIO_USDC_ENABLED='true')
+        for role, env in rendered.items():
+            self.assertEqual(env['RAID_ENVIRONMENT'], 'staging', role)
+            for name in ['X_TRACKING_V2_ENABLED', 'X_TRACKING_V2_SETTLEMENT_ENABLED',
+                    'LIVE_COLLECTION_APPROVED']:
+                self.assertEqual(env[name], 'true', f'{role} {name}')
+            for name in ['LAUNCH_ENABLED', 'PAYOUT_ENABLED', 'STUDIO_SANDBOX', 'DEMO_MODE']:
+                self.assertEqual(env[name], 'false', f'{role} {name}')
+
 
 if __name__ == '__main__':
     unittest.main()

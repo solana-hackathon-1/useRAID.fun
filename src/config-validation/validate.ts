@@ -26,7 +26,8 @@ export type ViolationCode =
   | 'SYNTHETIC_WITH_REAL_MONEY'
   | 'ENVIRONMENT_NOT_DECLARED'
   | 'DATABASE_URL_UNPARSEABLE'
-  | 'NETWORK_NOT_EXPLICIT';
+  | 'NETWORK_NOT_EXPLICIT'
+  | 'NON_DEVNET_IN_STAGING';
 export interface ConfigViolation {
   readonly severity: ViolationSeverity;
   readonly code: ViolationCode;
@@ -141,6 +142,15 @@ function databaseName(url: string | undefined): string | null | undefined {
   }
 }
 
+/** True when an RPC URL is not a parseable URL or its host names a mainnet endpoint (never echoed). */
+function isMainnetOrUnparseableRpc(url: string): boolean {
+  try {
+    return new URL(url).hostname.toLowerCase().includes('mainnet');
+  } catch {
+    return true;
+  }
+}
+
 const present = (env: ConfigEnv, name: string) => (env[name] ?? '').trim() !== '';
 const isTrue = (env: ConfigEnv, name: string) => env[name] === 'true';
 
@@ -240,6 +250,15 @@ export function validateRuntimeConfig(env: ConfigEnv, role: ConfigRole): ConfigV
       'NETWORK_NOT_EXPLICIT',
       'USDC_NETWORK',
     );
+
+  // Owner 2026-11-15: staging may enable Creator Studio USDC settlement, but only against devnet. `usdcSettings()`
+  // derives the mint from the network, so exactly `devnet` pins the devnet USDC mint; anything else (omitted,
+  // misspelled, mainnet) or a mainnet RPC would let the staging label move mainnet funds, so boot is refused.
+  if (environment === 'staging' && isTrue(env, 'X_TRACKING_V2_SETTLEMENT_ENABLED')) {
+    if (env.USDC_NETWORK !== 'devnet') add('REFUSE', 'NON_DEVNET_IN_STAGING', 'USDC_NETWORK');
+    if (isMainnetOrUnparseableRpc(env.SOLANA_RPC_URL ?? ''))
+      add('REFUSE', 'NON_DEVNET_IN_STAGING', 'SOLANA_RPC_URL');
+  }
 
   for (const name of realOperations)
     if (isTrue(env, 'DEMO_MODE')) add('REFUSE', 'REAL_OPERATION_IN_DEMO', name);
