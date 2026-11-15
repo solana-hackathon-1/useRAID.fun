@@ -448,3 +448,82 @@ describe('USDC funding address requires an explicit network', () => {
     expect(JSON.stringify(result)).not.toContain(FUNDING.USDC_FUNDING_ADDRESS);
   });
 });
+
+// Owner 2026-11-15: Creator Studio may settle USDC on staging, but only on devnet. Staging must never be able to
+// move mainnet funds, so enabling settlement under RAID_ENVIRONMENT=staging refuses anything but explicit devnet.
+// The mint is derived from the network (`usdcSettings()` has no mint override), so network === devnet pins
+// USDC_MINTS.devnet. DEC-2026-11-07-03 stays: USDC is the only asset; there is no SOL reward asset.
+describe('staging Studio settlement is devnet-only', () => {
+  const STAGING_STUDIO = {
+    RAID_ENVIRONMENT: 'staging',
+    NODE_ENV: 'production',
+    X_TRACKING_V2_SETTLEMENT_ENABLED: 'true',
+    X_ADMIN_USER_ID: '12345',
+    USDC_NETWORK: 'devnet',
+    USDC_FUNDING_ADDRESS: '9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin',
+    SOLANA_RPC_URL: 'https://api.devnet.solana.com',
+    DATABASE_URL: `postgresql://useraid:${SECRET}@db:5432/useraid_staging`,
+  };
+
+  it('accepts explicit devnet with a devnet RPC', () => {
+    expect(validateRuntimeConfig(STAGING_STUDIO, 'web')).toEqual({ ok: true, violations: [] });
+    expect(validateRuntimeConfig(STAGING_STUDIO, 'worker').ok).toBe(true);
+    expect(
+      validateRuntimeConfig(
+        { ...STAGING_STUDIO, SOLANA_RPC_URL: 'https://devnet.helius-rpc.com/?api-key=k' },
+        'web',
+      ).ok,
+    ).toBe(true);
+  });
+
+  it.each([undefined, '', 'mainnet', 'Devnet', 'testnet', ' devnet'])(
+    'refuses USDC_NETWORK=%j',
+    (network) => {
+      const env: Record<string, string> = { ...STAGING_STUDIO };
+      if (network === undefined) delete env.USDC_NETWORK;
+      else env.USDC_NETWORK = network;
+      const result = validateRuntimeConfig(env, 'web');
+      expect(result.ok).toBe(false);
+      expect(codes(result.violations)).toContain('REFUSE:NON_DEVNET_IN_STAGING:USDC_NETWORK');
+    },
+  );
+
+  it.each([
+    'https://api.mainnet-beta.solana.com',
+    'https://mainnet.helius-rpc.com/?api-key=k',
+    'https://solana-mainnet.g.alchemy.com/v2/k',
+    'https://API.MAINNET-BETA.SOLANA.COM/',
+    'not a url',
+  ])('refuses SOLANA_RPC_URL %s', (url) => {
+    const result = validateRuntimeConfig({ ...STAGING_STUDIO, SOLANA_RPC_URL: url }, 'web');
+    expect(result.ok).toBe(false);
+    expect(codes(result.violations)).toContain('REFUSE:NON_DEVNET_IN_STAGING:SOLANA_RPC_URL');
+  });
+
+  it('is judged only when settlement is on under the staging label', () => {
+    const mainnet = {
+      USDC_NETWORK: 'mainnet',
+      SOLANA_RPC_URL: 'https://api.mainnet-beta.solana.com',
+    };
+    expect(
+      validateRuntimeConfig(
+        { ...STAGING_STUDIO, ...mainnet, X_TRACKING_V2_SETTLEMENT_ENABLED: 'false' },
+        'web',
+      ).violations.map((v) => v.code),
+    ).not.toContain('NON_DEVNET_IN_STAGING');
+    expect(
+      validateRuntimeConfig(
+        { ...STAGING_STUDIO, ...mainnet, RAID_ENVIRONMENT: 'production' },
+        'web',
+      ).violations.map((v) => v.code),
+    ).not.toContain('NON_DEVNET_IN_STAGING');
+  });
+
+  it('never echoes the RPC URL or key', () => {
+    const result = validateRuntimeConfig(
+      { ...STAGING_STUDIO, SOLANA_RPC_URL: `https://mainnet.example/?api-key=${SECRET}` },
+      'web',
+    );
+    expect(JSON.stringify(result)).not.toContain(SECRET);
+  });
+});

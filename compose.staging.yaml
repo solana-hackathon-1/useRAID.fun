@@ -21,9 +21,12 @@ x-app: &app
     WALLET_LINKS_ENABLED: 'false'
     STUDIO_SANDBOX: 'false'
     ALLOW_REMOTE_TEST_DB: 'false'
-    LIVE_COLLECTION_APPROVED: 'false'
-    X_TRACKING_V2_ENABLED: 'false'
-    X_TRACKING_V2_SETTLEMENT_ENABLED: 'false'
+    # Creator Studio devnet USDC (owner 2026-11-15): one host opt-in, STAGING_STUDIO_USDC_ENABLED=true in
+    # $STAGING_ROOT/.env, default false. Studio needs all three (tracking v2, settlement, live X collection) but
+    # not LAUNCH/PAYOUT. Boot then requires USDC_NETWORK=devnet and a non-mainnet SOLANA_RPC_URL (validate.ts).
+    LIVE_COLLECTION_APPROVED: ${STAGING_STUDIO_USDC_ENABLED:-false}
+    X_TRACKING_V2_ENABLED: ${STAGING_STUDIO_USDC_ENABLED:-false}
+    X_TRACKING_V2_SETTLEMENT_ENABLED: ${STAGING_STUDIO_USDC_ENABLED:-false}
     LAUNCH_ENABLED: 'false'
     PAYOUT_ENABLED: 'false'
   depends_on:
