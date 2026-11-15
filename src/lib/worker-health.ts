@@ -36,6 +36,7 @@ export const KNOWN_WORKER_STEPS: readonly string[] = [
   'job-dead-letter',
   'notifications',
   'work-closure',
+  'skill-appeal-overdue',
   'finance-readiness',
   'status-transitions',
   'coverage-expired',

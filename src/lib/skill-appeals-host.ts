@@ -3,10 +3,13 @@ import {
   DEFAULT_APPEAL_ADJUDICATION_SECONDS,
   DEFAULT_APPEAL_FILING_WINDOW_SECONDS,
   fileSkillAssessmentAppeal,
+  listOverdueSkillAssessmentAppeals,
   type SkillAppealCommand,
 } from '../skill-appeals/storage';
+import { createOverdueAppealAlerter } from '../skill-appeals/overdue-alert';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { db } from './db';
+import { correlationFields } from './worker-diagnostics';
 
 /**
  * Exact-string flag, default off. It gates only NEW filings and decisions: an original receipt still replays. Appeals
@@ -65,3 +68,15 @@ export const adjudicateSkillAppealFromHost = (command: SkillAppealCommand) =>
       isAdjudicator: (accountId) => skillAppealAdjudicators().has(accountId),
     }),
   );
+
+/**
+ * Worker step (DEC-2026-11-13-12 (b)): one value-free operator alert line while any appeal is past its adjudication
+ * target, at most every 15 minutes per worker process. It runs whether or not new appeals are enabled (an appeal filed
+ * earlier can still be overdue), reads only, and never decides, closes or grants anything.
+ */
+export const runSkillAppealOverdueAlert = createOverdueAppealAlerter({
+  list: (limit) =>
+    runCommandTransaction(db, (tx) => listOverdueSkillAssessmentAppeals(tx, { limit })),
+  log: (line) => console.error(JSON.stringify({ ...line, ...correlationFields() })),
+  now: Date.now,
+});

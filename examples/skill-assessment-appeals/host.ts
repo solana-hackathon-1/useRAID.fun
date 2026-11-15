@@ -14,6 +14,7 @@ const base = {
   appellantAccountId: 'synthetic-appellant',
   originalReviewerAccountIds: ['synthetic-reviewer-1', 'synthetic-reviewer-2'],
   sharedGuildIds: [] as string[],
+  sharedPartyIds: [] as string[],
   onAllowlist: true,
 };
 assert.deepEqual(evaluateAppealAdjudicator(base), { allowed: true });
@@ -32,6 +33,10 @@ assert.deepEqual(listed({ adjudicatorAccountId: 'synthetic-reviewer-2' }), {
 assert.deepEqual(listed({ sharedGuildIds: ['synthetic-guild'] }), {
   allowed: false,
   reason: 'GUILD_RELATIONSHIP',
+});
+assert.deepEqual(listed({ sharedPartyIds: ['synthetic-party'] }), {
+  allowed: false,
+  reason: 'PARTY_RELATIONSHIP',
 });
 // A different host with a different list of original reviewers reaches the same rule.
 assert.deepEqual(

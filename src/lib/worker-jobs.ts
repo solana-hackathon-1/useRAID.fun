@@ -22,6 +22,7 @@ import { usdcSettings } from './usdc';
 import { reconcileUsdc, reconciliationJson } from './usdc-reconcile';
 import { runNotificationDispatch } from './notifications-host';
 import { runWorkClosureWorker } from './work-closure-host';
+import { runSkillAppealOverdueAlert } from './skill-appeals-host';
 import { recordStepOutcome } from './worker-health';
 import { operatorErrorFields } from './operator-log';
 import {
@@ -97,6 +98,7 @@ async function runSchedule(now: Date) {
   await step('job-dead-letter', () => sweepExhaustedJobs());
   await step('notifications', () => runNotificationDispatch());
   await step('work-closure', () => runWorkClosureWorker());
+  await step('skill-appeal-overdue', () => runSkillAppealOverdueAlert());
   await step('finance-readiness', () => updateFinanceReadiness());
   await step('status-transitions', async () => {
     await db.raid.updateMany({
