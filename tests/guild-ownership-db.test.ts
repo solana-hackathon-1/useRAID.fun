@@ -1538,6 +1538,200 @@ integration('T009 Guild ownership transfer', () => {
       }
     });
 
+    /** An account created before (`lower`) or after `than`; account ids are time-ordered, so creation order pins id order. */
+    const personOn = async (than: GuildActor, lower: boolean, early?: GuildActor) => {
+      const picked = lower ? early! : await person();
+      expect(picked.accountId < than.accountId).toBe(lower);
+      return picked;
+    };
+    /** True while another backend holds a lock on the User row that conflicts with FOR NO KEY UPDATE (authorize()). */
+    const userRowHeld = async (id: string) => {
+      try {
+        await db.$queryRawUnsafe(`SELECT 1 FROM "User" WHERE "id"=$1 FOR NO KEY UPDATE NOWAIT`, id);
+        return false;
+      } catch (error) {
+        if (/55P03|could not obtain lock/.test(String(error))) return true;
+        throw error;
+      }
+    };
+
+    it('#496 (strengthens #487): the lower account id is locked first, so reversing the comparison fails', async () => {
+      // Both directions, observed from outside: with one account row held elsewhere, a blocked acceptance has taken the
+      // other account's row exactly when the held one is the HIGHER id. The mutual-swap test below cannot see this,
+      // because a consistently reversed order (higher first) never deadlocks either.
+      for (const proposerIsLower of [true, false]) {
+        const early = await person();
+        const { founder, guild: g } = await guild('order-' + proposerIsLower);
+        const next = await personOn(founder, !proposerIsLower, early);
+        const id = (await propose(founder, g.id, next.accountId)).transfer.id;
+        let accepting: Promise<unknown> | undefined;
+        let recipientHeld = true;
+        await db.$transaction(async (t) => {
+          await t.$queryRawUnsafe(
+            `SELECT 1 FROM "User" WHERE "id"=$1 FOR NO KEY UPDATE`,
+            founder.accountId,
+          );
+          accepting = respond(next, g.id, id, 'ACCEPT', 'order-acc-' + proposerIsLower);
+          accepting.catch(() => undefined);
+          await waitForLockWaiter(acceptWaiter);
+          recipientHeld = await userRowHeld(next.accountId);
+        });
+        // Proposer lower: it is locked first and the recipient's row is still free while waiting. Proposer higher: the
+        // recipient's own row (authorize()) comes first and is held while waiting for the proposer.
+        expect(recipientHeld).toBe(!proposerIsLower);
+        expect((await accepting) as { transfer: unknown }).toMatchObject({
+          transfer: { state: 'ACCEPTED' },
+        });
+      }
+    });
+
+    describe('#496: activateGuild locks the approver and the draft owner in id order', () => {
+      const activation = (
+        approver: GuildActor,
+        draft: { id: string; revision: number },
+        key: string,
+        gate?: () => Promise<void>,
+      ) => {
+        let attempts = 0;
+        const result = run((tx) => {
+          attempts++;
+          return activateGuild(
+            tx,
+            cmd(
+              approver,
+              {
+                guildDraftId: draft.id,
+                expectedDraftRevision: draft.revision,
+                activationRef: 'evidence-' + key,
+              },
+              key,
+            ),
+            {
+              allowNewWrites: true,
+              authorizeActivation: async (_tx: unknown, who: { accountId: string }) => {
+                if (gate) await gate();
+                return operators.has(who.accountId);
+              },
+            },
+          );
+        });
+        result.catch(() => undefined);
+        return { result, attempts: () => attempts };
+      };
+
+      it('takes the lower account id first, observed with the other row held (both directions)', async () => {
+        for (const ownerIsLower of [true, false]) {
+          const early = await person();
+          const approver = await person();
+          operators.add(approver.accountId);
+          const owner = await personOn(approver, ownerIsLower, early);
+          const draft = await draftFor(owner, 'act-order-' + ownerIsLower);
+          let activating: ReturnType<typeof activation> | undefined;
+          let approverHeld = true;
+          await db.$transaction(async (t) => {
+            await t.$queryRawUnsafe(
+              `SELECT 1 FROM "User" WHERE "id"=$1 FOR NO KEY UPDATE`,
+              owner.accountId,
+            );
+            activating = activation(approver, draft, 'act-order-' + ownerIsLower);
+            await waitForLockWaiter(acceptWaiter);
+            approverHeld = await userRowHeld(approver.accountId);
+          });
+          // Owner lower: its row is locked before authorize(), so the approver's own row is still free. Owner higher:
+          // the approver's row (authorize()) comes first.
+          expect(approverHeld).toBe(!ownerIsLower);
+          expect((await activating!.result).guild).toMatchObject({
+            founderAccountId: owner.accountId,
+          });
+          expect(activating!.attempts()).toBe(1);
+        }
+      });
+
+      it('never deadlocks with an ownership acceptance whose proposer is the approver, in either id order', async () => {
+        for (const ownerIsLower of [true, false]) {
+          const early = await person();
+          const { founder: approver, guild: g } = await guild('act-vs-accept-' + ownerIsLower);
+          operators.add(approver.accountId);
+          const owner = await personOn(approver, ownerIsLower, early);
+          const draft = await draftFor(owner, 'act-draft-' + ownerIsLower);
+          const id = (await propose(approver, g.id, owner.accountId)).transfer.id;
+          let reached!: () => void;
+          let release!: () => void;
+          const atHook = new Promise<void>((r) => (reached = r));
+          const gate = new Promise<void>((r) => (release = r));
+          // The approver is held open after authorize() (its own row locked) while the draft owner, who is also the
+          // recipient of the approver's transfer, accepts it. Unordered, the acceptance holds the owner's row and waits
+          // for the approver's, and the activation then asks for the owner's: PostgreSQL aborts one with 40P01, which
+          // runCommandTransaction retries and so hides (count the attempts).
+          const activating = activation(approver, draft, 'act-race-' + ownerIsLower, async () => {
+            reached();
+            await gate;
+          });
+          // Ordered with the owner lower, the activation locks the owner before the hook; either way it gets here.
+          await atHook;
+          let acceptAttempts = 0;
+          const accepting = run((tx) => {
+            acceptAttempts++;
+            return respondOwnershipTransfer(
+              tx,
+              cmd(
+                owner,
+                { guildId: g.id, transferId: id, decision: 'ACCEPT' },
+                'act-acc-' + ownerIsLower,
+              ),
+              ownerHost(),
+            );
+          });
+          accepting.catch(() => undefined);
+          await waitForLockWaiter('FROM "User" WHERE "id"=$1 FOR');
+          release();
+          expect((await activating.result).guild).toMatchObject({
+            founderAccountId: owner.accountId,
+          });
+          expect((await accepting).transfer).toMatchObject({ state: 'ACCEPTED', applied: true });
+          expect(activating.attempts()).toBe(1);
+          expect(acceptAttempts).toBe(1);
+          expect(await founderOf(g.id)).toBe(owner.accountId);
+        }
+      });
+
+      it('two approvers who each own the draft the other activates do not deadlock (#438-2)', async () => {
+        const one = await person();
+        const two = await person();
+        operators.add(one.accountId);
+        operators.add(two.accountId);
+        const draftOne = await draftFor(one, 'mutual-one');
+        const draftTwo = await draftFor(two, 'mutual-two');
+        let hooks = 0;
+        let release!: () => void;
+        const gate = new Promise<void>((r) => (release = r));
+        const hold = async () => {
+          hooks++;
+          await gate;
+        };
+        const first = activation(one, draftTwo, 'mutual-a', hold);
+        const until = async (done: () => boolean) => {
+          const limit = Date.now() + 10000;
+          while (!done()) {
+            if (Date.now() > limit) throw new Error('the approvals did not park');
+            await new Promise((r) => setTimeout(r, 25));
+          }
+        };
+        await until(() => hooks === 1);
+        const second = activation(two, draftOne, 'mutual-b', hold);
+        // Unordered, both approvers reach the hook holding their own row and then want each other's. Ordered, the
+        // higher id queues for the lower one's row before it holds its own, so the second never reaches the hook.
+        await Promise.race([
+          until(() => hooks === 2),
+          waitForLockWaiter('FROM "User" WHERE "id"=$1 FOR'),
+        ]);
+        release();
+        await Promise.all([first.result, second.result]);
+        expect(first.attempts()).toBe(1);
+        expect(second.attempts()).toBe(1);
+      });
+    });
+
     it('a Founder command racing the acceptance completes with it, whichever order wins', async () => {
       for (const round of [1, 2, 3]) {
         const { founder, guild: g } = await guild('race-founder-' + round);

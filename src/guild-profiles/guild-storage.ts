@@ -211,8 +211,6 @@ export async function activateGuild(
       request: input,
     },
     async ({ receiptId }) => {
-      await approved();
-      if (!host.allowNewWrites) fail('WRITES_DISABLED');
       // The draft writer locks the owner's User row and then the draft; take them in that order here too.
       // The owner is immutable, so it can be read before any lock and confirmed after.
       const found = await query<{ ownerAccountId: string }>(
@@ -220,6 +218,21 @@ export async function activateGuild(
         'SELECT "ownerAccountId" FROM "GuildDraft" WHERE "id"=$1::uuid',
         [input.guildDraftId],
       );
+      // #496: this command holds two User rows, the approver's own (approved(), FOR NO KEY UPDATE) and the draft owner's
+      // (FOR SHARE, below). Every multi-User locker in this module takes the lower account id first (see the ownership
+      // acceptance), or a cycle with another locker is possible: an approver whose transfer the draft owner is accepting
+      // would otherwise deadlock with that acceptance. So an owner whose id sorts below the approver's is locked here,
+      // before approved() takes the approver's row; a higher one is locked after it, as before. The approver cannot yet
+      // be known to hold a live session, so a caller with a revoked or expired one can share-lock a draft owner's row
+      // until its UNAUTHENTICATED rollback, which blocks only a concurrent update of that User row for that moment (it
+      // is the same for any such command that locks before it authenticates, and it reads nothing back). The owner
+      // is immutable, so the unlocked read is safe; a missing draft still answers only after approved().
+      if (found.length === 1 && found[0].ownerAccountId < actor.accountId)
+        await query(tx, 'SELECT "suspended" FROM "User" WHERE "id"=$1 FOR SHARE', [
+          found[0].ownerAccountId,
+        ]);
+      await approved();
+      if (!host.allowNewWrites) fail('WRITES_DISABLED');
       if (found.length !== 1) fail('NOT_FOUND');
       // Founder control is approved by someone other than the Founder, whatever the host policy says.
       if (found[0].ownerAccountId === actor.accountId) fail('FORBIDDEN');
@@ -227,10 +240,10 @@ export async function activateGuild(
         tx,
         // FOR SHARE, not FOR KEY SHARE: a suspension is a non-key UPDATE (FOR NO KEY UPDATE), which conflicts with
         // SHARE but not with KEY SHARE, so KEY SHARE would let a concurrent suspension commit after this read and
-        // activate a Guild for a suspended owner (#290-7; pinned by tests/guild-storage-db.test.ts). The cost is that
-        // two approvers who each own a draft the other activates can deadlock (#438-2); Postgres aborts one, which
-        // surfaces as the retryable RETRY_TRANSACTION, and the host's whole-transaction retry covers it. The share lock
-        // also blocks any other update of the owner's User row (including from a host hook) until commit.
+        // activate a Guild for a suspended owner (#290-7; pinned by tests/guild-storage-db.test.ts). A lower-id owner
+        // is already share-locked above (#496), so two approvers who each own a draft the other activates, and an
+        // activation racing an ownership acceptance, queue instead of deadlocking (#438-2). The share lock also blocks
+        // any other update of the owner's User row (including from a host hook) until commit.
         'SELECT "suspended" FROM "User" WHERE "id"=$1 FOR SHARE',
         [found[0].ownerAccountId],
       );
@@ -1164,11 +1177,13 @@ export async function respondOwnershipTransfer(
     async ({ receiptId }) => {
       // #487: an acceptance holds two User rows, its own (authorize(), FOR NO KEY UPDATE) and the proposing Founder's
       // (FOR SHARE, below). Two Founders who proposed to each other and accept at once would each hold their own and
-      // wait for the other's: a 40P01 cycle. Every multi-User locker therefore takes the lower account id first, so a
-      // proposer whose id sorts below the recipient's is locked here, before `authorize()`; a higher one is locked
-      // after it, as before. Only the recipient of this very transfer reaches the lock (the lookup is keyed on the
-      // actor), so a stranger still queues behind nothing. The id is immutable, so the unlocked read is safe; the
-      // proposer is confirmed against the locked transfer row below, as before.
+      // wait for the other's: a 40P01 cycle. The multi-User lockers in this module (this and `activateGuild`, #496)
+      // therefore take the lower account id first, so a proposer whose id sorts below the recipient's is locked here,
+      // before `authorize()`; a higher one is locked after it, as before. The lookup is keyed on the actor, so only the
+      // named recipient of this very transfer reaches the lock, but that caller is not yet authenticated: a recipient
+      // with a revoked or expired session can share-lock the proposer's row until its UNAUTHENTICATED rollback, which
+      // blocks only a concurrent update of that User row for that moment. A stranger takes no lock. The id is
+      // immutable, so the unlocked read is safe; the proposer is confirmed against the locked transfer row below.
       if (input.decision === 'ACCEPT') {
         const preview = await query<{ from: string }>(
           tx,
