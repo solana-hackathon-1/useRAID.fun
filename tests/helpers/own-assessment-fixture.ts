@@ -291,6 +291,79 @@ import {
   observePracticeTrialAssessmentContext,
   recordPracticeAssessmentDecision,
 } from '../../src/skills/practice-trial-assessment-storage';
+async function currentCaseReferences(who: SkillTaxonomyActor, assignment: string) {
+  const context = await runCommandTransaction(db, (tx) =>
+    observePracticeTrialAssessmentContext(
+      tx,
+      who,
+      { version: 'v1', assignmentId: assignment, submissionId },
+      () => true,
+    ),
+  );
+  if (
+    !context?.currentAssessmentReference ||
+    !context.currentReviewReference ||
+    !context.currentOwnershipReference
+  )
+    throw Error('Synthetic current source unavailable');
+  return context;
+}
+async function decideAs(
+  who: SkillTaxonomyActor,
+  assignment: string,
+  action: 'REQUIRE_REASSESSMENT' | 'REVOKE',
+) {
+  const context = await currentCaseReferences(who, assignment);
+  return runCommandTransaction(db, (tx) =>
+    recordPracticeAssessmentDecision(
+      tx,
+      {
+        actor: who,
+        input: {
+          version: 'v1',
+          assignmentId: assignment,
+          submissionId,
+          expectedAssessmentReference: context.currentAssessmentReference,
+          expectedReviewReference: context.currentReviewReference,
+          expectedOwnershipReference: context.currentOwnershipReference,
+          expectedPolicyReference: { recordId: assessmentPolicyId, revision: 1 },
+          action,
+          reasonCategory:
+            action === 'REVOKE' ? 'FRAUDULENT_ASSESSMENT_EVIDENCE' : 'CAPABILITY_RECHECK',
+          reason: 'Synthetic bounded original-case finding.',
+          findings: [
+            {
+              kind: action === 'REVOKE' ? 'ASSESSMENT_EVIDENCE' : 'CAPABILITY_EVIDENCE',
+              detail: 'Synthetic actual manual observation.',
+            },
+          ],
+          dueAt: action === 'REVOKE' ? null : new Date(Date.now() + 3600000).toISOString(),
+        },
+        idempotencyKey: randomUUID(),
+        requestId: 'synthetic-browser-decision',
+      },
+      {
+        allowNewWrites: true,
+        canRead: () => true,
+        canUsePolicy: () => true,
+        canDecide: () => true,
+      },
+    ),
+  );
+}
+async function rereviewAs(who: SkillTaxonomyActor, assignment: string) {
+  const context = await currentCaseReferences(who, assignment);
+  return recordAssessment(
+    {
+      ...assessmentInput(),
+      assignmentId: assignment,
+      expectedOwnershipReference: context.currentOwnershipReference,
+      expectedReviewReference: context.currentReviewReference,
+      expectedAssessmentReference: context.currentAssessmentReference,
+    },
+    who,
+  );
+}
 export async function seedOwnAssessmentFixture(createVerified = true) {
   assertTestDatabase();
 
@@ -332,58 +405,26 @@ export async function seedOwnAssessmentFixture(createVerified = true) {
     participantId,
     submissionId,
     issued,
-    async decide(action: 'REQUIRE_REASSESSMENT' | 'REVOKE') {
-      const context = await runCommandTransaction(db, (tx) =>
-        observePracticeTrialAssessmentContext(
-          tx,
-          evaluator,
-          { version: 'v1', assignmentId: assessmentAssignmentId, submissionId },
-          () => true,
-        ),
+    decide: (action: 'REQUIRE_REASSESSMENT' | 'REVOKE') =>
+      decideAs(evaluator, assessmentAssignmentId, action),
+    /** An unrelated evaluator with their own ASSESSMENT_REVIEW assignment on the same case (never an original reviewer). */
+    async appointUnrelatedEvaluator() {
+      const unrelated = await actor(false, false);
+      const assignment = await issue(
+        { ...grantInput(), evaluatorAccountId: unrelated.accountId, purpose: 'ASSESSMENT_REVIEW' },
+        publisher,
+        { ...policy, canManage: (scope) => scope.evaluatorAccountId === unrelated.accountId },
       );
-      if (
-        !context?.currentAssessmentReference ||
-        !context.currentReviewReference ||
-        !context.currentOwnershipReference
-      )
-        throw Error('Synthetic current source unavailable');
-      return runCommandTransaction(db, (tx) =>
-        recordPracticeAssessmentDecision(
-          tx,
-          {
-            actor: evaluator,
-            input: {
-              version: 'v1',
-              assignmentId: assessmentAssignmentId,
-              submissionId,
-              expectedAssessmentReference: context.currentAssessmentReference,
-              expectedReviewReference: context.currentReviewReference,
-              expectedOwnershipReference: context.currentOwnershipReference,
-              expectedPolicyReference: { recordId: assessmentPolicyId, revision: 1 },
-              action,
-              reasonCategory:
-                action === 'REVOKE' ? 'FRAUDULENT_ASSESSMENT_EVIDENCE' : 'CAPABILITY_RECHECK',
-              reason: 'Synthetic bounded original-case finding.',
-              findings: [
-                {
-                  kind: action === 'REVOKE' ? 'ASSESSMENT_EVIDENCE' : 'CAPABILITY_EVIDENCE',
-                  detail: 'Synthetic actual manual observation.',
-                },
-              ],
-              dueAt: action === 'REVOKE' ? null : new Date(Date.now() + 3600000).toISOString(),
-            },
-            idempotencyKey: randomUUID(),
-            requestId: 'synthetic-browser-decision',
-          },
-          {
-            allowNewWrites: true,
-            canRead: () => true,
-            canUsePolicy: () => true,
-            canDecide: () => true,
-          },
-        ),
-      );
+      return {
+        actor: unrelated,
+        assignmentId: assignment.assignment.id,
+        decide: (action: 'REQUIRE_REASSESSMENT' | 'REVOKE') =>
+          decideAs(unrelated, assignment.assignment.id, action),
+        rereview: () => rereviewAs(unrelated, assignment.assignment.id),
+      };
     },
+    /** A second review of the same case by the original evaluator on their original assignment. */
+    rereview: () => rereviewAs(evaluator, assessmentAssignmentId),
   };
 }
 export { db, publishCatalog as publishSyntheticCatalog };

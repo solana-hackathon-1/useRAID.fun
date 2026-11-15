@@ -7,7 +7,7 @@ import type { OverdueSkillAssessmentAppeal } from './contracts';
  * contract: a bounded read of overdue appeals, a line sink, and a clock; no environment, database or logger import.
  */
 export const OVERDUE_ALERT_NAME = 'skill-appeal-overdue';
-/** One alert per process at most this often while the same backlog stays overdue (the worker runs about once a minute). */
+/** One alert per process at most this often while the same set of appeals stays overdue (the worker runs about once a minute); an appeal newly overdue alerts at once. */
 export const OVERDUE_ALERT_REPEAT_SECONDS = 15 * 60;
 /** Appeal ids named in one alert; the count says how many more there are. */
 export const OVERDUE_ALERT_MAX_IDS = 10;
@@ -46,20 +46,34 @@ export interface OverdueAppealAlerterPorts {
 }
 
 /**
- * One alert pass. Returns the alert it logged, or null when nothing is overdue or the previous alert is still inside
- * the repeat interval. A failed read propagates so the caller's step records the failure.
+ * One alert pass. Returns the alert it logged, or null when nothing is overdue or the previous alert still covers every
+ * overdue appeal inside the repeat interval. An appeal that was not in the previously alerted set alerts at once, so a
+ * newly overdue appeal is never masked; a set that only shrank stays quiet. The remembered set is the ids of the
+ * bounded read (at most the read limit), held per process. A failed read propagates so the caller's step records the
+ * failure.
  */
 export function createOverdueAppealAlerter(ports: OverdueAppealAlerterPorts) {
   let lastAlertAt: number | null = null;
+  let alerted: ReadonlySet<string> = new Set();
   return async (): Promise<OverdueAppealAlert | null> => {
-    const alert = buildOverdueAppealAlert(
-      await ports.list(OVERDUE_ALERT_READ_LIMIT),
-      OVERDUE_ALERT_READ_LIMIT,
-    );
-    if (!alert) return null;
+    const overdue = await ports.list(OVERDUE_ALERT_READ_LIMIT);
+    const alert = buildOverdueAppealAlert(overdue, OVERDUE_ALERT_READ_LIMIT);
+    if (!alert) {
+      // A cleared backlog starts afresh: the next overdue appeal alerts without waiting out the interval.
+      lastAlertAt = null;
+      alerted = new Set();
+      return null;
+    }
     const at = ports.now();
-    if (lastAlertAt !== null && at - lastAlertAt < OVERDUE_ALERT_REPEAT_SECONDS * 1000) return null;
+    const gainedNew = overdue.some((r) => !alerted.has(r.appealId));
+    if (
+      !gainedNew &&
+      lastAlertAt !== null &&
+      at - lastAlertAt < OVERDUE_ALERT_REPEAT_SECONDS * 1000
+    )
+      return null;
     lastAlertAt = at;
+    alerted = new Set(overdue.map((r) => r.appealId));
     ports.log(alert);
     return alert;
   };

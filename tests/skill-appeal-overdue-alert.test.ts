@@ -49,6 +49,46 @@ describe('overdue skill-assessment appeal operator alert (DEC-2026-11-13-12 (b))
     expect(await alerter()).toMatchObject({ count: 2 });
     expect(lines).toHaveLength(2);
   });
+  it('alerts again inside the interval when the overdue set gains a new appeal, naming it', async () => {
+    let rows = overdue(2);
+    let clock = 1_000_000;
+    const lines: unknown[] = [];
+    const alerter = createOverdueAppealAlerter({
+      list: async () => rows,
+      log: (line) => lines.push(line),
+      now: () => clock,
+    });
+    expect(await alerter()).toMatchObject({ count: 2 });
+    clock += 1000;
+    expect(await alerter()).toBeNull();
+    rows = overdue(3);
+    clock += 1000;
+    expect(await alerter()).toMatchObject({ count: 3 });
+    expect(lines).toHaveLength(2);
+    // The new set is now the baseline: the same three stay quiet until the interval passes.
+    clock += 1000;
+    expect(await alerter()).toBeNull();
+    // A shrinking set (an appeal was decided) is not new information and stays quiet inside the interval.
+    rows = overdue(2);
+    clock += 1000;
+    expect(await alerter()).toBeNull();
+  });
+  it('treats a fully cleared backlog as a fresh start for the next overdue appeal', async () => {
+    let rows = overdue(1);
+    let clock = 1_000_000;
+    const alerter = createOverdueAppealAlerter({
+      list: async () => rows,
+      log: () => undefined,
+      now: () => clock,
+    });
+    expect(await alerter()).toMatchObject({ count: 1 });
+    rows = [];
+    clock += 1000;
+    expect(await alerter()).toBeNull();
+    rows = overdue(1);
+    clock += 1000;
+    expect(await alerter()).toMatchObject({ count: 1 });
+  });
   it('does not consume the repeat interval when nothing was overdue', async () => {
     let rows = overdue(0);
     const alerter = createOverdueAppealAlerter({

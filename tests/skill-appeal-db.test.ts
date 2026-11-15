@@ -7,6 +7,11 @@ import { saveGuildDraft } from '../src/guild-profiles/draft-storage';
 import { activateGuild, grantGuildRole } from '../src/guild-profiles/guild-storage';
 import { createParty } from '../src/parties';
 import {
+  PARTY_ROSTER_LOCK_CLASS,
+  PARTY_ROSTER_LOCK_KEY,
+  PARTY_ROSTER_LOCK_SHARED_SQL,
+} from '../src/parties/roster-lock';
+import {
   adjudicateSkillAssessmentAppeal,
   fileSkillAssessmentAppeal,
   listOverdueSkillAssessmentAppeals,
@@ -519,6 +524,48 @@ integration('T014 skill-assessment appeals: intake and independent adjudication 
       const { adjudicator } = await partyFixture({ members: 2, consented: 1 });
       expect(await adjudicate(appealId, adjudicator)).toMatchObject({ status: 'EXECUTED' });
     });
+    it('waits for an in-flight Party consent, then sees the formed roster and refuses (no check-then-decide gap)', async () => {
+      const { adjudicator } = await partyFixture({ members: 1, consented: 0 });
+      const [{ id: proposalId }] = await db.$queryRawUnsafe<{ id: string }[]>(
+        'SELECT "id"::text AS "id" FROM "PartyProposal"',
+      );
+      let release!: () => void;
+      let held!: () => void;
+      const gate = new Promise<void>((r) => (release = r));
+      const inFlight = new Promise<void>((r) => (held = r));
+      // What recordPartyMemberConsent does: the shared roster lock, then the consent that completes the roster.
+      const consenting = db.$transaction(
+        async (tx) => {
+          await tx.$queryRawUnsafe(PARTY_ROSTER_LOCK_SHARED_SQL, PARTY_ROSTER_LOCK_KEY);
+          await tx.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
+          await tx.$executeRawUnsafe(
+            `INSERT INTO "PartyMemberConsent"("proposalId","participantId","snapshotDigest","receiptId") SELECT $1::uuid,"id",repeat('b',64),gen_random_uuid() FROM "Participant" WHERE "accountId"=$2`,
+            proposalId,
+            adjudicator.accountId,
+          );
+          held();
+          await gate;
+        },
+        { timeout: 60000 },
+      );
+      await inFlight;
+      let finished = false;
+      const pending = adjudicate(appealId, adjudicator).then(
+        (value) => ((finished = true), { value }),
+        (error) => ((finished = true), { error }),
+      );
+      expect(await waitForAdvisoryWaiter(db, PARTY_ROSTER_LOCK_KEY, PARTY_ROSTER_LOCK_CLASS)).toBe(
+        true,
+      );
+      await new Promise((r) => setTimeout(r, 200));
+      expect(finished).toBe(false);
+      release();
+      await consenting;
+      expect(await pending).toMatchObject({ error: { code: 'FORBIDDEN' } });
+      expect(
+        await db.$queryRawUnsafe('SELECT 1 FROM "SkillAssessmentAppealDecision"'),
+      ).toHaveLength(0);
+    });
     it('lets exactly one of two concurrent adjudicators decide', async () => {
       const [a, b] = [await person(), await person()];
       const settled = await Promise.allSettled([
@@ -664,17 +711,31 @@ integration('T014 skill-assessment appeals: intake and independent adjudication 
       expect(await db.$queryRawUnsafe('SELECT 1 FROM "PracticeAssessmentDecision"')).toHaveLength(
         0,
       );
-      // Pin the guard as the cause: with only that trigger disabled the very same decision commits.
-      await db.$executeRawUnsafe(
-        'ALTER TABLE "PracticeAssessmentDecision" DISABLE TRIGGER skill_appeal_fresh_review_decision_v1',
-      );
-      try {
-        expect(await seed.decide('REQUIRE_REASSESSMENT')).toMatchObject({ status: 'EXECUTED' });
-      } finally {
-        await db.$executeRawUnsafe(
-          'ALTER TABLE "PracticeAssessmentDecision" ENABLE TRIGGER skill_appeal_fresh_review_decision_v1',
+      // Pin the guard as the cause without touching the schema: an unrelated evaluator with their own assignment, in
+      // the very same case state, commits the same kind of decision.
+      const unrelated = await seed.appointUnrelatedEvaluator();
+      expect(await unrelated.decide('REQUIRE_REASSESSMENT')).toMatchObject({ status: 'EXECUTED' });
+    });
+    it('refuses a new review version by an excluded original reviewer (PracticeAssessmentReviewVersion trigger)', async () => {
+      await adjudicate(appealId, await person(), 'UPHELD');
+      const reviews = () =>
+        db.$queryRawUnsafe<{ n: number }[]>(
+          'SELECT count(*)::int AS n FROM "PracticeAssessmentReviewVersion"',
         );
-      }
+      const before = await reviews();
+      const refused = await seed.rereview().then(
+        () => null,
+        (e) => e,
+      );
+      expect(refused).toMatchObject({ code: 'STORAGE_UNAVAILABLE' });
+      expect(await reviews()).toEqual(before);
+      // Positive control through the same command and state: an unrelated evaluator's review version commits.
+      const unrelated = await seed.appointUnrelatedEvaluator();
+      expect(await unrelated.rereview()).toMatchObject({ status: 'EXECUTED' });
+      expect((await reviews())[0].n).toBe(before[0].n + 1);
+    });
+    it('does not exclude the original reviewer from a review version while the appeal is only pending', async () => {
+      expect(await seed.rereview()).toMatchObject({ status: 'EXECUTED' });
     });
     it('serializes an appointment against an appeal decision on the same person/skill lock', async () => {
       const key = seed.participantId + ':frontend';
