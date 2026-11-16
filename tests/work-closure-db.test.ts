@@ -283,6 +283,93 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
     expect(['ACCEPTED', 'TERMINATED']).toContain((await engagement(raced.engagementId)).state);
     expect(await commitments()).toEqual([]);
   }, 30000);
+  it('serializes a closure releasing the Raider with that Raider accepting the next Raid: the acceptance waits on the release, then wins', async () => {
+    const deadlines = {
+      // The commitment window must outlast setup() (two humans, publication and acceptance) on a cold, loaded CI database.
+      commitment: at(3000),
+      preparation: at(3300),
+      submission: at(3600),
+      review: at(3900),
+      operationalClosure: at(4200),
+    };
+    const { worker, engagementId } = await setup({ deadlines });
+    const next = await seedWorkSlot(db);
+    const ops = await seedWorkHuman(db, 'ops-' + randomUUID());
+    await untilPast(deadlines.operationalClosure);
+    const input = { engagementId, expectedRevision: (await engagement(engagementId)).revision };
+    let release!: () => void;
+    const released = new Promise<void>((r) => (release = r));
+    // The latest backend of each side: a retried attempt runs on a new connection.
+    const seen: { closer?: number; acceptor?: number } = {};
+    let ready!: (pid: number) => void;
+    const closing = new Promise<number>((r) => (ready = r));
+    const closure = runCommandTransaction(
+      db,
+      async (port, tx) => {
+        const done = await closeOverdueEngagement(port, cmd(ops.actor, input), host);
+        seen.closer = (
+          await tx.$queryRawUnsafe<{ pid: number }[]>('SELECT pg_backend_pid() AS pid')
+        )[0].pid;
+        ready(seen.closer);
+        await released;
+        return done;
+      },
+      { transaction: { timeout: 15000, maxWait: 15000 } },
+    );
+    let acceptance: Promise<unknown> | undefined;
+    try {
+      await Promise.race([
+        closing,
+        closure.then(() => {
+          throw Error('Closure ended before its barrier.');
+        }),
+      ]);
+      acceptance = runCommandTransaction(
+        db,
+        async (port, tx) => {
+          seen.acceptor = (
+            await tx.$queryRawUnsafe<{ pid: number }[]>('SELECT pg_backend_pid() AS pid')
+          )[0].pid;
+          return commitEngagement(
+            port,
+            cmd(worker.actor, { slotId: next.slotId, termsVersionId: next.termsVersionId }),
+            syntheticAcceptanceHost,
+          );
+        },
+        { transaction: { timeout: 15000, maxWait: 15000 } },
+      );
+      const settled = Promise.allSettled([closure, acceptance]),
+        until = Date.now() + 5000;
+      let blocked = false;
+      while (!blocked && Date.now() < until) {
+        if (seen.closer !== undefined && seen.acceptor !== undefined) {
+          const [r] = await row<{ blockers: number[]; query: string }>(
+            'SELECT pg_blocking_pids(pid) AS blockers,query FROM pg_stat_activity WHERE pid=$1::int',
+            String(seen.acceptor),
+          );
+          blocked =
+            r !== undefined && r.blockers.includes(seen.closer) && /ActiveCommitment/.test(r.query);
+        }
+        if (!blocked) await new Promise((r) => setTimeout(r, 10));
+      }
+      expect(blocked).toBe(true);
+      release();
+      const [closed, accepted] = await settled;
+      expect(closed.status).toBe('fulfilled');
+      expect(accepted.status).toBe('fulfilled');
+      expect((await engagement(engagementId)).state).toBe('TERMINATED');
+      const held = await commitments();
+      expect(held).toHaveLength(1);
+      expect(held[0].participantId).toBe(worker.participantId);
+      expect(held[0].engagementId).not.toBe(engagementId);
+      expect(await row('SELECT "state" FROM "RaidSlot" WHERE "id"=$1::uuid', next.slotId)).toEqual([
+        { state: 'FILLED' },
+      ]);
+    } finally {
+      release();
+      await Promise.allSettled([closure, ...(acceptance ? [acceptance] : [])]);
+    }
+  }, 30000);
   it('cannot let a delayed closure release a newer commitment of the same participant', async () => {
     const { worker, reviewer, engagementId } = await setup();
     await start(engagementId);
