@@ -24,6 +24,7 @@ export const rewardAssets = () => {
     },
   ];
 };
+export const WORK_CREATION_TAXONOMY_ID = 'synthetic-work-creation-catalog';
 /** Server environment for the owned preview: every flag explicit, nothing live. */
 export function workCreationBrowserEnvironment(): Record<string, string> {
   return {
@@ -41,6 +42,8 @@ export function workCreationBrowserEnvironment(): Record<string, string> {
     WORK_RECOMMENDATIONS_ENABLED: 'true',
     RAID_WORK_OPERATOR_ACCOUNT_IDS: 'founder-synthetic',
     RAID_WORK_GUILD_ID: 'synthetic-guild',
+    // Publication names only skills of this published taxonomy (seeded below), as acceptance reads it.
+    WORK_ACCEPTANCE_TAXONOMY_ID: WORK_CREATION_TAXONOMY_ID,
     WORK_REWARD_ASSETS_JSON: JSON.stringify(rewardAssets()),
     WORK_RECOMMENDATION_RUBRIC_JSON: JSON.stringify(exampleRubric()),
     WORK_WORKSPACE_READS_ENABLED: 'false',
@@ -58,11 +61,14 @@ export function workCreationBrowserEnvironment(): Record<string, string> {
 }
 /** Resets the synthetic database and creates the operator Founder and a non-operator stranger, each with a session. */
 export async function seedWorkCreationFixture() {
-  const [{ db }, { hash }, { assertTestDatabase, truncateAll }] = await Promise.all([
-    import('../../src/lib/db'),
-    import('../../src/lib/auth-primitives'),
-    import('./db-guard'),
-  ]);
+  const [{ db }, { hash }, { assertTestDatabase, truncateAll }, taxonomy, receipts] =
+    await Promise.all([
+      import('../../src/lib/db'),
+      import('../../src/lib/auth-primitives'),
+      import('./db-guard'),
+      import('../../src/skills/taxonomy-storage'),
+      import('../../src/lib/command-receipts-adapter'),
+    ]);
   assertTestDatabase();
   await truncateAll(db);
   async function human(id: string) {
@@ -85,6 +91,33 @@ export async function seedWorkCreationFixture() {
     });
     return { id, cookie };
   }
+  // The published skill taxonomy that Raid publication checks required skills against.
+  const publisher = await human('catalog-publisher-synthetic');
+  await db.user.update({ where: { id: publisher.id }, data: { xId: randomUUID() } });
+  await receipts.runCommandTransaction(db, (tx) =>
+    taxonomy.publishSkillTaxonomy(
+      tx,
+      {
+        actor: { accountId: publisher.id, sessionHash: hash(publisher.cookie) },
+        input: {
+          taxonomyId: WORK_CREATION_TAXONOMY_ID,
+          expectedRevision: 0,
+          skills: [
+            {
+              id: 'writing',
+              domain: 'content',
+              name: 'Writing',
+              status: 'ACTIVE',
+              aliases: ['writing'],
+            },
+          ],
+        },
+        idempotencyKey: randomUUID(),
+        requestId: randomUUID(),
+      },
+      { allowNewWrites: true, canPublish: () => true },
+    ),
+  );
   return {
     db,
     founder: await human('founder-synthetic'),

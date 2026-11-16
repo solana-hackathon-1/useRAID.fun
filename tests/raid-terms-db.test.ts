@@ -169,6 +169,30 @@ integration('T016 durable immutable terms and publication', () => {
       fundingRef: 'synthetic:' + published.slotId,
     });
   });
+  it('blocks publication when the host does not recognise every required skill, leaving no slot or reservation', async () => {
+    const one = await save(draft());
+    const seen: unknown[] = [];
+    const catalogHost = (answer: unknown): WorkHost => ({
+      ...host,
+      verifyRequiredSkills: async (_tx, _actor, skills) => {
+        seen.push(skills);
+        return answer as boolean;
+      },
+    });
+    for (const answer of [false, undefined, 'true', 1]) {
+      await expect(
+        publish(one.listingId, one.termsVersionId, catalogHost(answer)),
+      ).rejects.toMatchObject({ code: 'PUBLICATION_BLOCKED' });
+    }
+    expect(await query('SELECT * FROM "RaidSlot"')).toHaveLength(0);
+    expect(await query('SELECT * FROM "WorkSimulatedReservation"')).toHaveLength(0);
+    const [listing] = await query('SELECT "state" FROM "WorkListing"');
+    expect(listing.state).toBe('DRAFT');
+    expect(seen[0]).toEqual(raidTerms().requiredSkills);
+    const published = await publish(one.listingId, one.termsVersionId, catalogHost(true));
+    expect(published.fundingMode).toBe('SIMULATED');
+    expect(await query('SELECT * FROM "RaidSlot"')).toHaveLength(1);
+  });
   it('rejects an OPEN listing without a funded current slot at commit', async () => {
     const one = await save(draft());
     await expect(

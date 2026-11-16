@@ -124,6 +124,21 @@ integration('T018 founder creation drafts and simulated reward reservation', () 
       'DEADLINE_PASSED',
     );
   });
+  it('shows the Founder an unrecognised required skill as a server-derived publication problem', async () => {
+    const mine = await founder();
+    const h = hostFor(mine.actor.accountId, assets(true));
+    const saved = await save(mine, h, raidTerms());
+    const read = (verify: WorkHost['verifyRequiredSkills']) =>
+      run((tx) => readCreationDrafts(tx, mine.actor, { ...h, verifyRequiredSkills: verify }));
+    const [unknown] = await read(async () => false);
+    expect(unknown.problems).toContain('SKILL_NOT_RECOGNISED');
+    const [known] = await read(async () => true);
+    expect(known.problems).not.toContain('SKILL_NOT_RECOGNISED');
+    expect(known.listingId).toBe(saved.listingId);
+    // A host with no skill catalog states no opinion, as before.
+    const [silent] = await read(undefined);
+    expect(silent.problems).not.toContain('SKILL_NOT_RECOGNISED');
+  });
   it('reads an exact old receipt version outside the recent list without substituting current terms', async () => {
     const f = await founder();
     const host = hostFor(f.actor.accountId, assets(true));

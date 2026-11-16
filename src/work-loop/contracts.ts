@@ -26,6 +26,18 @@ export interface WorkHost {
     tx: CommandReceiptTransaction,
     binding: { slotId: string; termsVersionId: string; terms: RaidTerms },
   ): Promise<string | null>;
+  /**
+   * Optional skill catalog check (T016, blueprint 11.2/R05): resolves exactly `true` only when every required skill
+   * is an active skill of the host's published taxonomy. Anything else blocks publication (PUBLICATION_BLOCKED) and
+   * is shown to the Founder as SKILL_NOT_RECOGNISED. A host with no skill catalog omits it and states no opinion;
+   * the Root composition always supplies it. It runs inside the publication transaction and must not wait on a
+   * provider, wallet or model.
+   */
+  verifyRequiredSkills?(
+    tx: CommandReceiptTransaction,
+    actor: WorkActor,
+    skills: RaidTerms['requiredSkills'],
+  ): Promise<boolean>;
 }
 export class WorkError extends Error {
   constructor(
