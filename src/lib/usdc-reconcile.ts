@@ -3,6 +3,15 @@ import { getAssociatedTokenAddressSync } from '@solana/spl-token';
 import { db } from './db';
 import { usdcRpc, usdcSettings } from './usdc';
 
+// Only the RPC's "account not found" answer (JSON-RPC -32602 "Invalid param: could not find account").
+// Every other RPC or transport error, including other -32602 invalid params, must still surface.
+function isAccountNotFound(error: unknown) {
+  const { code, message } = (error ?? {}) as { code?: unknown; message?: unknown };
+  return (
+    code === -32602 && typeof message === 'string' && message.includes('could not find account')
+  );
+}
+
 export async function reconcileUsdc(network = usdcSettings().network) {
   const settings = usdcSettings();
   const [ledger, rewards, unconfirmedDeposits] = await Promise.all([
@@ -23,13 +32,19 @@ export async function reconcileUsdc(network = usdcSettings().network) {
   let custody: bigint | null = null;
   if (network !== 'sandbox') {
     const rpc = await usdcRpc(network);
-    const { value } = await rpc.getTokenAccountBalance(
-      getAssociatedTokenAddressSync(
-        new PublicKey(settings.mint),
-        new PublicKey(settings.recipient),
-      ),
-    );
-    custody = BigInt(value.amount);
+    try {
+      const { value } = await rpc.getTokenAccountBalance(
+        getAssociatedTokenAddressSync(
+          new PublicKey(settings.mint),
+          new PublicKey(settings.recipient),
+        ),
+      );
+      custody = BigInt(value.amount);
+    } catch (error) {
+      // The custody ATA does not exist until the first deposit lands: that is zero custody, not a failure.
+      if (!isAccountNotFound(error)) throw error;
+      custody = 0n;
+    }
   }
   return {
     network,
