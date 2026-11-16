@@ -285,11 +285,12 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
   }, 30000);
   it('serializes a closure releasing the Raider with that Raider accepting the next Raid: the acceptance waits on the release, then wins', async () => {
     const deadlines = {
-      commitment: at(1500),
-      preparation: at(1800),
-      submission: at(2100),
-      review: at(2400),
-      operationalClosure: at(2700),
+      // The commitment window must outlast setup() (two humans, publication and acceptance) on a cold, loaded CI database.
+      commitment: at(3000),
+      preparation: at(3300),
+      submission: at(3600),
+      review: at(3900),
+      operationalClosure: at(4200),
     };
     const { worker, engagementId } = await setup({ deadlines });
     const next = await seedWorkSlot(db);
@@ -298,15 +299,18 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
     const input = { engagementId, expectedRevision: (await engagement(engagementId)).revision };
     let release!: () => void;
     const released = new Promise<void>((r) => (release = r));
+    // The latest backend of each side: a retried attempt runs on a new connection.
+    const seen: { closer?: number; acceptor?: number } = {};
     let ready!: (pid: number) => void;
     const closing = new Promise<number>((r) => (ready = r));
     const closure = runCommandTransaction(
       db,
       async (port, tx) => {
         const done = await closeOverdueEngagement(port, cmd(ops.actor, input), host);
-        ready(
-          (await tx.$queryRawUnsafe<{ pid: number }[]>('SELECT pg_backend_pid() AS pid'))[0].pid,
-        );
+        seen.closer = (
+          await tx.$queryRawUnsafe<{ pid: number }[]>('SELECT pg_backend_pid() AS pid')
+        )[0].pid;
+        ready(seen.closer);
         await released;
         return done;
       },
@@ -314,20 +318,18 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
     );
     let acceptance: Promise<unknown> | undefined;
     try {
-      const blocker = await Promise.race([
+      await Promise.race([
         closing,
         closure.then(() => {
           throw Error('Closure ended before its barrier.');
         }),
       ]);
-      let waiter!: (pid: number) => void;
-      const waiting = new Promise<number>((r) => (waiter = r));
       acceptance = runCommandTransaction(
         db,
         async (port, tx) => {
-          waiter(
-            (await tx.$queryRawUnsafe<{ pid: number }[]>('SELECT pg_backend_pid() AS pid'))[0].pid,
-          );
+          seen.acceptor = (
+            await tx.$queryRawUnsafe<{ pid: number }[]>('SELECT pg_backend_pid() AS pid')
+          )[0].pid;
           return commitEngagement(
             port,
             cmd(worker.actor, { slotId: next.slotId, termsVersionId: next.termsVersionId }),
@@ -337,21 +339,17 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
         { transaction: { timeout: 15000, maxWait: 15000 } },
       );
       const settled = Promise.allSettled([closure, acceptance]),
-        pid = await Promise.race([
-          waiting,
-          acceptance.then(() => {
-            throw Error('Acceptance ended before observing its backend.');
-          }),
-        ]),
         until = Date.now() + 5000;
       let blocked = false;
       while (!blocked && Date.now() < until) {
-        const [r] = await row<{ blockers: number[]; query: string }>(
-          'SELECT pg_blocking_pids(pid) AS blockers,query FROM pg_stat_activity WHERE pid=$1::int',
-          String(pid),
-        );
-        blocked =
-          r !== undefined && r.blockers.includes(blocker) && /ActiveCommitment/.test(r.query);
+        if (seen.closer !== undefined && seen.acceptor !== undefined) {
+          const [r] = await row<{ blockers: number[]; query: string }>(
+            'SELECT pg_blocking_pids(pid) AS blockers,query FROM pg_stat_activity WHERE pid=$1::int',
+            String(seen.acceptor),
+          );
+          blocked =
+            r !== undefined && r.blockers.includes(seen.closer) && /ActiveCommitment/.test(r.query);
+        }
         if (!blocked) await new Promise((r) => setTimeout(r, 10));
       }
       expect(blocked).toBe(true);

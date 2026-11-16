@@ -15,7 +15,10 @@ import {
 } from './helpers/work-loop-db';
 import { matchesBlockingObservation } from './helpers/lock-observation';
 const integration = process.env.RUN_DB_TESTS === 'true' ? describe : describe.skip;
-const db = new PrismaClient();
+// The race tests below run up to 16 attempts at once; the pool must not queue them (DEFAULT is cpus*2+1).
+const url = new URL(process.env.DATABASE_URL ?? 'postgresql://invalid/invalid');
+url.searchParams.set('connection_limit', '24');
+const db = new PrismaClient({ datasources: { db: { url: url.toString() } }, log: [] });
 const txOptions = { transaction: { timeout: 15000, maxWait: 15000 } };
 const cmd = (
   actor: Awaited<ReturnType<typeof seedWorkHuman>>['actor'],
@@ -47,6 +50,21 @@ async function waitFor(waiter: number, blocker: number, statement: RegExp) {
       String(waiter),
     );
     if (matchesBlockingObservation(row, blocker, statement)) return;
+    await new Promise((r) => setTimeout(r, 10));
+  }
+  throw Error('Expected database blocking relationship was not observed.');
+}
+/** Retry-safe: judges the most recent backend of each side, since a retried attempt runs on a new connection. */
+async function waitForLatest(seen: { leader?: number; follower?: number }, statement: RegExp) {
+  const until = Date.now() + 5000;
+  while (Date.now() < until) {
+    if (seen.leader !== undefined && seen.follower !== undefined) {
+      const [row] = await rows<{ query: string; blockers: number[] }>(
+        'SELECT query,pg_blocking_pids(pid) AS blockers FROM pg_stat_activity WHERE pid=$1::int',
+        String(seen.follower),
+      );
+      if (matchesBlockingObservation(row, seen.leader, statement)) return;
+    }
     await new Promise((r) => setTimeout(r, 10));
   }
   throw Error('Expected database blocking relationship was not observed.');
@@ -565,7 +583,11 @@ integration('T020 canonical engagement capacity', () => {
           );
       const won = settled.filter((r) => r.status === 'fulfilled').length;
       const seen = await effects();
-      expect(won).toBeGreaterThanOrEqual(1);
+      // Every failure is permanent (a busy Raider stays busy, a FILLED Raid stays FILLED), so a complete size x size
+      // attempt set must end as a perfect matching: one lost attempt means a spurious rejection.
+      expect(won).toBe(size);
+      expect(await rows('SELECT "id" FROM "RaidSlot" WHERE "state"=\'AVAILABLE\'')).toEqual([]);
+      expect(await rows('SELECT "participantId" FROM "ActiveCommitment"')).toHaveLength(size);
       expect(seen.engagements).toHaveLength(won);
       expect(new Set(seen.commitments.map((c) => c.participantId)).size).toBe(won);
       expect(new Set(seen.engagements.map((e) => e.slotId)).size).toBe(won);
@@ -589,6 +611,11 @@ integration('T020 canonical engagement capacity', () => {
             reserveSimulatedFunding: async (_tx: unknown, b: { slotId: string }) =>
               'synthetic:' + b.slotId,
           };
+        const [{ revision }] = await rows<{ revision: number }>(
+          'SELECT "revision" FROM "WorkListing" WHERE "id"=$1::uuid',
+          listingId,
+        );
+        const seen: { leader?: number; follower?: number } = {};
         const accepting = (port: Parameters<typeof commitEngagement>[0]) =>
           commitEngagement(port, cmd(human.actor, slot), host);
         const amending = (port: Parameters<typeof commitEngagement>[0]) =>
@@ -598,7 +625,7 @@ integration('T020 canonical engagement capacity', () => {
               actor: founder,
               input: {
                 listingId,
-                expectedRevision: 1,
+                expectedRevision: revision,
                 guildId: 'synthetic-guild',
                 terms: slot.terms,
               },
@@ -610,13 +637,13 @@ integration('T020 canonical engagement capacity', () => {
         const [leader, follower] =
           order === 'accept-first' ? [accepting, amending] : [amending, accepting];
         const ready = deferred<number>(),
-          waiter = deferred<number>(),
           release = deferred<void>();
         const first = runCommandTransaction(
           db,
           async (port, tx) => {
             const result = await leader(port);
-            ready.resolve(await pid(tx));
+            seen.leader = await pid(tx);
+            ready.resolve(seen.leader);
             await release.promise;
             return result;
           },
@@ -624,7 +651,7 @@ integration('T020 canonical engagement capacity', () => {
         );
         let second: Promise<unknown> | undefined;
         try {
-          const blocker = await Promise.race([
+          await Promise.race([
             ready.promise,
             first.then(() => {
               throw Error('First attempt ended before its barrier.');
@@ -633,22 +660,18 @@ integration('T020 canonical engagement capacity', () => {
           second = runCommandTransaction(
             db,
             async (port, tx) => {
-              waiter.resolve(await pid(tx));
+              seen.follower = await pid(tx);
               return follower(port);
             },
             txOptions,
           );
           const results = Promise.allSettled([first, second]);
-          await waitFor(
-            await Promise.race([
-              waiter.promise,
-              second.then(() => {
-                throw Error('Second attempt ended before observing its backend.');
-              }),
-            ]),
-            blocker,
-            /WorkListing.*FOR UPDATE/,
-          );
+          await Promise.race([
+            waitForLatest(seen, /WorkListing.*FOR UPDATE/),
+            second.then(() => {
+              throw Error('Second attempt ended before observing its backend.');
+            }),
+          ]);
           release.resolve();
           const settled = await results;
           expect(settled[0].status).toBe('fulfilled');
