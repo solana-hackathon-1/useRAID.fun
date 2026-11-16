@@ -283,6 +283,95 @@ integration('T024 finite closure preserving claims and newer capacity', () => {
     expect(['ACCEPTED', 'TERMINATED']).toContain((await engagement(raced.engagementId)).state);
     expect(await commitments()).toEqual([]);
   }, 30000);
+  it('serializes a closure releasing the Raider with that Raider accepting the next Raid: the acceptance waits on the release, then wins', async () => {
+    const deadlines = {
+      commitment: at(1500),
+      preparation: at(1800),
+      submission: at(2100),
+      review: at(2400),
+      operationalClosure: at(2700),
+    };
+    const { worker, engagementId } = await setup({ deadlines });
+    const next = await seedWorkSlot(db);
+    const ops = await seedWorkHuman(db, 'ops-' + randomUUID());
+    await untilPast(deadlines.operationalClosure);
+    const input = { engagementId, expectedRevision: (await engagement(engagementId)).revision };
+    let release!: () => void;
+    const released = new Promise<void>((r) => (release = r));
+    let ready!: (pid: number) => void;
+    const closing = new Promise<number>((r) => (ready = r));
+    const closure = runCommandTransaction(
+      db,
+      async (port, tx) => {
+        const done = await closeOverdueEngagement(port, cmd(ops.actor, input), host);
+        ready(
+          (await tx.$queryRawUnsafe<{ pid: number }[]>('SELECT pg_backend_pid() AS pid'))[0].pid,
+        );
+        await released;
+        return done;
+      },
+      { transaction: { timeout: 15000, maxWait: 15000 } },
+    );
+    let acceptance: Promise<unknown> | undefined;
+    try {
+      const blocker = await Promise.race([
+        closing,
+        closure.then(() => {
+          throw Error('Closure ended before its barrier.');
+        }),
+      ]);
+      let waiter!: (pid: number) => void;
+      const waiting = new Promise<number>((r) => (waiter = r));
+      acceptance = runCommandTransaction(
+        db,
+        async (port, tx) => {
+          waiter(
+            (await tx.$queryRawUnsafe<{ pid: number }[]>('SELECT pg_backend_pid() AS pid'))[0].pid,
+          );
+          return commitEngagement(
+            port,
+            cmd(worker.actor, { slotId: next.slotId, termsVersionId: next.termsVersionId }),
+            syntheticAcceptanceHost,
+          );
+        },
+        { transaction: { timeout: 15000, maxWait: 15000 } },
+      );
+      const settled = Promise.allSettled([closure, acceptance]),
+        pid = await Promise.race([
+          waiting,
+          acceptance.then(() => {
+            throw Error('Acceptance ended before observing its backend.');
+          }),
+        ]),
+        until = Date.now() + 5000;
+      let blocked = false;
+      while (!blocked && Date.now() < until) {
+        const [r] = await row<{ blockers: number[]; query: string }>(
+          'SELECT pg_blocking_pids(pid) AS blockers,query FROM pg_stat_activity WHERE pid=$1::int',
+          String(pid),
+        );
+        blocked =
+          r !== undefined && r.blockers.includes(blocker) && /ActiveCommitment/.test(r.query);
+        if (!blocked) await new Promise((r) => setTimeout(r, 10));
+      }
+      expect(blocked).toBe(true);
+      release();
+      const [closed, accepted] = await settled;
+      expect(closed.status).toBe('fulfilled');
+      expect(accepted.status).toBe('fulfilled');
+      expect((await engagement(engagementId)).state).toBe('TERMINATED');
+      const held = await commitments();
+      expect(held).toHaveLength(1);
+      expect(held[0].participantId).toBe(worker.participantId);
+      expect(held[0].engagementId).not.toBe(engagementId);
+      expect(await row('SELECT "state" FROM "RaidSlot" WHERE "id"=$1::uuid', next.slotId)).toEqual([
+        { state: 'FILLED' },
+      ]);
+    } finally {
+      release();
+      await Promise.allSettled([closure, ...(acceptance ? [acceptance] : [])]);
+    }
+  }, 30000);
   it('cannot let a delayed closure release a newer commitment of the same participant', async () => {
     const { worker, reviewer, engagementId } = await setup();
     await start(engagementId);

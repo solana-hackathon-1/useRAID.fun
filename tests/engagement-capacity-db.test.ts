@@ -498,4 +498,181 @@ integration('T020 canonical engagement capacity', () => {
     expect(await rows('SELECT "id" FROM "Engagement"')).toHaveLength(1);
     expect(await rows('SELECT "participantId" FROM "ActiveCommitment"')).toHaveLength(1);
   });
+  describe('unsynchronized contention (AC11/AC12 at scale)', () => {
+    const racers = 6;
+    async function effects() {
+      const [engagements, commitments, filled, committedEvents, outbox, receipts] =
+        await Promise.all([
+          rows<{ id: string; slotId: string }>(
+            'SELECT "id"::text,"slotId"::text FROM "Engagement"',
+          ),
+          rows<{ participantId: string; engagementId: string }>(
+            'SELECT "participantId"::text,"engagementId"::text FROM "ActiveCommitment"',
+          ),
+          rows<{ id: string }>('SELECT "id"::text FROM "RaidSlot" WHERE "state"=\'FILLED\''),
+          db.auditEvent.count({ where: { eventType: 'work.engagement_committed.v1' } }),
+          rows<{ n: number }>(
+            `SELECT count(*)::int AS n FROM "OutboxEvent" o JOIN "AuditEvent" a ON a."id"=o."eventId" WHERE a."eventType"='work.engagement_committed.v1'`,
+          ),
+          db.commandReceipt.count({ where: { commandKind: 'CommitEngagement' } }),
+        ]);
+      return { engagements, commitments, filled, committedEvents, outbox: outbox[0].n, receipts };
+    }
+    it('one Raider racing many Raids with no barrier: exactly one engagement, others CAPACITY_CONFLICT, nothing extra', async () => {
+      const human = await seedWorkHuman(db),
+        slots = await Promise.all(Array.from({ length: racers }, () => seedWorkSlot(db)));
+      const settled = await Promise.allSettled(slots.map((slot) => accept(cmd(human.actor, slot))));
+      const won = settled.filter((r) => r.status === 'fulfilled');
+      expect(won).toHaveLength(1);
+      for (const r of settled)
+        if (r.status === 'rejected') expect(r.reason).toMatchObject({ code: 'CAPACITY_CONFLICT' });
+      const winner = (won[0] as PromiseFulfilledResult<Awaited<ReturnType<typeof accept>>>).value;
+      const seen = await effects();
+      expect(seen.engagements.map((e) => e.id)).toEqual([winner.engagement.id]);
+      expect(seen.commitments).toEqual([
+        { participantId: human.participantId, engagementId: winner.engagement.id },
+      ]);
+      expect(seen.filled).toHaveLength(1);
+      expect(seen).toMatchObject({ committedEvents: 1, outbox: 1, receipts: 1 });
+      expect(await rows('SELECT "id" FROM "RaidSlot" WHERE "state"=\'AVAILABLE\'')).toHaveLength(
+        racers - 1,
+      );
+    }, 60000);
+    it('many applicants racing one slot with no barrier: exactly one engagement, others SLOT_FILLED, nothing extra', async () => {
+      const slot = await seedWorkSlot(db),
+        humans = await Promise.all(Array.from({ length: racers }, () => seedWorkHuman(db)));
+      const settled = await Promise.allSettled(humans.map((h) => accept(cmd(h.actor, slot))));
+      const won = settled.filter((r) => r.status === 'fulfilled');
+      expect(won).toHaveLength(1);
+      for (const r of settled)
+        if (r.status === 'rejected') expect(r.reason).toMatchObject({ code: 'SLOT_FILLED' });
+      const seen = await effects();
+      expect(seen.engagements).toHaveLength(1);
+      expect(seen.commitments).toHaveLength(1);
+      expect(seen.filled).toEqual([{ id: slot.slotId }]);
+      expect(seen).toMatchObject({ committedEvents: 1, outbox: 1, receipts: 1 });
+    }, 60000);
+    it('every Raider racing every Raid: capacity and vacancy each hold once, with matching audit, outbox and receipts', async () => {
+      const size = 4,
+        humans = await Promise.all(Array.from({ length: size }, () => seedWorkHuman(db))),
+        slots = await Promise.all(Array.from({ length: size }, () => seedWorkSlot(db)));
+      const attempts = humans.flatMap((h) => slots.map((slot) => accept(cmd(h.actor, slot))));
+      const settled = await Promise.allSettled(attempts);
+      for (const r of settled)
+        if (r.status === 'rejected')
+          expect(['CAPACITY_CONFLICT', 'SLOT_FILLED']).toContain(
+            (r.reason as { code: string }).code,
+          );
+      const won = settled.filter((r) => r.status === 'fulfilled').length;
+      const seen = await effects();
+      expect(won).toBeGreaterThanOrEqual(1);
+      expect(seen.engagements).toHaveLength(won);
+      expect(new Set(seen.commitments.map((c) => c.participantId)).size).toBe(won);
+      expect(new Set(seen.engagements.map((e) => e.slotId)).size).toBe(won);
+      expect(seen.filled).toHaveLength(won);
+      expect(seen).toMatchObject({ committedEvents: won, outbox: won, receipts: won });
+    }, 90000);
+  });
+  describe('acceptance racing a Founder amendment of the same source', () => {
+    it.each(['accept-first', 'amend-first'] as const)(
+      'linearizes on the listing lock with one consistent winner: %s',
+      async (order) => {
+        const founderId = 'founder-' + randomUUID(),
+          human = await seedWorkHuman(db),
+          slot = await seedWorkSlot(db, founderId),
+          listingId = (slot as unknown as { listingId: string }).listingId,
+          founder = { accountId: founderId, sessionHash: 'f'.repeat(64) },
+          workHost = {
+            allowNewWrites: true,
+            authorize: async (_tx: unknown, a: { accountId: string }, g: string) =>
+              a.accountId === founderId && g === 'synthetic-guild',
+            reserveSimulatedFunding: async (_tx: unknown, b: { slotId: string }) =>
+              'synthetic:' + b.slotId,
+          };
+        const accepting = (port: Parameters<typeof commitEngagement>[0]) =>
+          commitEngagement(port, cmd(human.actor, slot), host);
+        const amending = (port: Parameters<typeof commitEngagement>[0]) =>
+          saveRaidTerms(
+            port,
+            {
+              actor: founder,
+              input: {
+                listingId,
+                expectedRevision: 1,
+                guildId: 'synthetic-guild',
+                terms: slot.terms,
+              },
+              idempotencyKey: randomUUID(),
+              requestId: 'race-amend',
+            },
+            workHost,
+          );
+        const [leader, follower] =
+          order === 'accept-first' ? [accepting, amending] : [amending, accepting];
+        const ready = deferred<number>(),
+          waiter = deferred<number>(),
+          release = deferred<void>();
+        const first = runCommandTransaction(
+          db,
+          async (port, tx) => {
+            const result = await leader(port);
+            ready.resolve(await pid(tx));
+            await release.promise;
+            return result;
+          },
+          txOptions,
+        );
+        let second: Promise<unknown> | undefined;
+        try {
+          const blocker = await Promise.race([
+            ready.promise,
+            first.then(() => {
+              throw Error('First attempt ended before its barrier.');
+            }),
+          ]);
+          second = runCommandTransaction(
+            db,
+            async (port, tx) => {
+              waiter.resolve(await pid(tx));
+              return follower(port);
+            },
+            txOptions,
+          );
+          const results = Promise.allSettled([first, second]);
+          await waitFor(
+            await Promise.race([
+              waiter.promise,
+              second.then(() => {
+                throw Error('Second attempt ended before observing its backend.');
+              }),
+            ]),
+            blocker,
+            /WorkListing.*FOR UPDATE/,
+          );
+          release.resolve();
+          const settled = await results;
+          expect(settled[0].status).toBe('fulfilled');
+          expect(settled[1]).toMatchObject({
+            status: 'rejected',
+            reason: { code: order === 'accept-first' ? 'TERMS_FROZEN' : 'PUBLICATION_BLOCKED' },
+          });
+          const engagements = await rows('SELECT "id" FROM "Engagement"');
+          expect(engagements).toHaveLength(order === 'accept-first' ? 1 : 0);
+          expect(await rows('SELECT "participantId" FROM "ActiveCommitment"')).toHaveLength(
+            engagements.length,
+          );
+          expect(
+            await rows('SELECT "state" FROM "RaidSlot" WHERE "id"=$1::uuid', slot.slotId),
+          ).toEqual([{ state: order === 'accept-first' ? 'FILLED' : 'CLOSED' }]);
+          expect(
+            await db.auditEvent.count({ where: { eventType: 'work.engagement_committed.v1' } }),
+          ).toBe(engagements.length);
+        } finally {
+          release.resolve();
+          await Promise.allSettled([first, ...(second ? [second] : [])]);
+        }
+      },
+      30000,
+    );
+  });
 });
