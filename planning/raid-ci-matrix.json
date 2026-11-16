@@ -281,6 +281,7 @@
     "tests/usdc-chain.test.ts",
     "tests/usdc-ops-db.test.ts",
     "tests/usdc-receipt.test.ts",
+    "tests/usdc-reconcile.test.ts",
     "tests/wallet-auth-db.test.ts",
     "tests/wallet-auth-isolation-db.test.ts",
     "tests/wallet-auth-transaction.test.ts",
@@ -1148,7 +1149,8 @@
         "tests/rewards.test.ts",
         "tests/usdc-chain.test.ts",
         "tests/usdc-ops-db.test.ts",
-        "tests/usdc-receipt.test.ts"
+        "tests/usdc-receipt.test.ts",
+        "tests/usdc-reconcile.test.ts"
       ],
       "implementation_status": "EXISTING_TESTS_REQUIRE_DOMAIN_REVIEW",
       "required_test_layers": [
