@@ -92,13 +92,23 @@ export async function seedWorkCreationFixture() {
     return { id, cookie };
   }
   // The published skill taxonomy that Raid publication checks required skills against.
-  const publisher = await human('catalog-publisher-synthetic');
-  await db.user.update({ where: { id: publisher.id }, data: { xId: randomUUID() } });
+  const publisher = await db.user.create({
+    data: { handle: 'catalog-publisher-synthetic', role: 'ADMIN', xId: randomUUID() },
+  });
+  const publisherSession = hash(randomUUID());
+  await db.session.create({
+    data: {
+      tokenHash: publisherSession,
+      userId: publisher.id,
+      via: 'x',
+      expiresAt: new Date(Date.now() + 3600000),
+    },
+  });
   await receipts.runCommandTransaction(db, (tx) =>
     taxonomy.publishSkillTaxonomy(
       tx,
       {
-        actor: { accountId: publisher.id, sessionHash: hash(publisher.cookie) },
+        actor: { accountId: publisher.id, sessionHash: publisherSession },
         input: {
           taxonomyId: WORK_CREATION_TAXONOMY_ID,
           expectedRevision: 0,
