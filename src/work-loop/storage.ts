@@ -8,6 +8,7 @@ import {
 } from '../command-receipts';
 import { WorkError, type WorkActor, type WorkCommand, type WorkHost } from './contracts';
 import { RaidTermsSchema, publicationProblems, type RaidTerms } from './terms';
+import { skillsRecognised } from './engagement-authority';
 const Save = z
   .strictObject({
     listingId: z.uuid().nullable(),
@@ -232,6 +233,8 @@ export async function publishRaid(tx: Tx, command: WorkCommand, host: WorkHost) 
       const v = await version(tx, input.termsVersionId);
       const [clock] = await tx.query<{ now: Date }>('SELECT clock_timestamp() AS now', []);
       if (!(clock?.now instanceof Date) || publicationProblems(v.terms, clock.now).length)
+        fail('PUBLICATION_BLOCKED');
+      if (!(await skillsRecognised(tx, actor, host, v.terms.requiredSkills)))
         fail('PUBLICATION_BLOCKED');
       const prior = await tx.query<{ id: string; state: string }>(
         `SELECT "id"::text,"state" FROM "RaidSlot" WHERE "listingId"=$1::uuid AND "termsVersionId"=$2::uuid AND "slotNumber"=1`,

@@ -6,8 +6,8 @@ import {
   requireIdentityLocks,
   type IdentityLockCapability,
 } from '../identity-locks';
-import { WorkError, type WorkActor } from './contracts';
-import { RaidTermsSchema, publicationProblems } from './terms';
+import { WorkError, type WorkActor, type WorkHost } from './contracts';
+import { RaidTermsSchema, publicationProblems, type RaidTerms } from './terms';
 export function fail(code: WorkError['code']): never {
   throw new WorkError(code);
 }
@@ -16,6 +16,17 @@ export function assertOpenForTaking(terms: unknown, now: Date) {
   const problems = publicationProblems(terms, now);
   if (problems.length)
     fail(problems.includes('DEADLINE_PASSED') ? 'DEADLINE_PASSED' : 'PUBLICATION_BLOCKED');
+}
+/** True unless the host supplies a skill catalog check that does not answer exactly `true`. */
+export async function skillsRecognised(
+  tx: Tx,
+  actor: WorkActor,
+  host: Pick<WorkHost, 'verifyRequiredSkills'>,
+  skills: RaidTerms['requiredSkills'],
+): Promise<boolean> {
+  if (host.verifyRequiredSkills === undefined) return true;
+  if (typeof host.verifyRequiredSkills !== 'function') fail('STORAGE_CONTRACT');
+  return (await host.verifyRequiredSkills(tx, actor, skills)) === true;
 }
 export function validate(tx: Tx, actor: WorkActor) {
   if (

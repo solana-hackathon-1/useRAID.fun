@@ -8,6 +8,8 @@ import { RewardAssetSchema, toDraftView } from '../work-loop/creation-contracts'
 import { RubricSchema } from '../work-loop/recommendation-contracts';
 import { recommend } from '../work-loop/recommendation';
 import { hasGuildAuthority } from '../guild-profiles/guild-storage';
+import { SkillTaxonomyStorageError } from '../skills/taxonomy-storage-contracts';
+import { readPublishedSkillTaxonomy } from '../skills/taxonomy-storage';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { db } from './db';
 
@@ -45,12 +47,47 @@ export function rewardCatalog() {
     return [];
   }
 }
+/** The one published taxonomy whose stable skill ids Raid terms name; the same one acceptance and the feed read. */
+const skillTaxonomyId = () => (process.env.WORK_ACCEPTANCE_TAXONOMY_ID ?? '').trim();
+const SESSION_PROBLEM: Readonly<Record<string, 'UNAUTHENTICATED' | 'ACCOUNT_RESTRICTED'>> = {
+  AUTHENTICATION_REQUIRED: 'UNAUTHENTICATED',
+  ACCOUNT_RESTRICTED: 'ACCOUNT_RESTRICTED',
+};
+/**
+ * T016 / blueprint 11.2: a Raid is published only when every required skill is an ACTIVE skill of the published
+ * taxonomy, because acceptance resolves them there and an unknown skill leaves nobody able to take the work. No
+ * configured, unpublished or unreadable taxonomy is a "no" (fail closed); a storage outage is not a verdict and
+ * surfaces to be retried.
+ */
+const verifyRequiredSkills: NonNullable<WorkHost['verifyRequiredSkills']> = async (
+  tx,
+  actor,
+  skills,
+) => {
+  const id = skillTaxonomyId();
+  if (!id) return false;
+  let taxonomy;
+  try {
+    taxonomy = await readPublishedSkillTaxonomy(tx, actor, id);
+  } catch (error) {
+    if (error instanceof SkillTaxonomyStorageError) {
+      if (error.code === 'INVALID_INPUT' || error.code === 'FORBIDDEN') return false;
+      const session = SESSION_PROBLEM[error.code];
+      if (session) throw new WorkError(session);
+    }
+    throw error;
+  }
+  if (!taxonomy) return false;
+  const active = new Set(taxonomy.skills.filter((s) => s.status === 'ACTIVE').map((s) => s.id));
+  return skills.length > 0 && skills.every((s) => active.has(s.skillId));
+};
 function workHost(allowNewWrites: boolean): WorkHost {
   return {
     allowNewWrites,
     authorize: async (_tx, actor, guild, action) =>
       action === 'MANAGE_LISTING' && guild === guildId() && operators().has(actor.accountId),
     reserveSimulatedFunding: createSimulatedReservations(rewardCatalog()),
+    verifyRequiredSkills,
   };
 }
 function requireReads() {

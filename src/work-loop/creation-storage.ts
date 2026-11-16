@@ -2,14 +2,14 @@ import { canonicalRequestDigest, type CommandReceiptTransaction as Tx } from '..
 import type { WorkActor, WorkHost } from './contracts';
 import { RaidTermsSchema, publicationProblems } from './terms';
 import { CreationDraftSchema, type CreationDraft } from './creation-contracts';
-import { fail, validate, currentActor } from './engagement-authority';
+import { fail, validate, currentActor, skillsRecognised } from './engagement-authority';
 
 const LIMIT = 20;
 /** The Founder's own listings (latest first) with their current terms; hidden when the host denies Guild authority. */
 export async function readCreationDrafts(
   tx: Tx,
   actor: WorkActor,
-  host: Pick<WorkHost, 'authorize'>,
+  host: Pick<WorkHost, 'authorize' | 'verifyRequiredSkills'>,
   exact?: { listingId: string; termsVersionId: string },
 ): Promise<CreationDraft[]> {
   validate(tx, actor);
@@ -49,6 +49,9 @@ export async function readCreationDrafts(
         terms: terms.data,
         problems: [
           ...publicationProblems(terms.data, row.now),
+          ...((await skillsRecognised(tx, actor, host, terms.data.requiredSkills))
+            ? []
+            : ['SKILL_NOT_RECOGNISED']),
           ...(row.current ? [] : ['TERMS_VERSION_CHANGED']),
         ],
         reserved: row.reserved,
