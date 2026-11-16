@@ -343,13 +343,14 @@ integration('T021 applications and offers', () => {
     const pending = { admission: 'APPLICATION' } as const;
     const filled = await seedWorkSlot(db, founder.actor.accountId, pending),
       edited = await seedWorkSlot(db, founder.actor.accountId, pending),
-      late = await seedWorkSlot(db, founder.actor.accountId, {
-        ...pending,
-        deadlines: { ...raidTerms().deadlines, commitment: soon(8000) },
-      }),
       lapsing = await seedWorkSlot(db, founder.actor.accountId, pending),
       open = await seedWorkSlot(db, founder.actor.accountId, pending),
-      probe = await seedWorkSlot(db, founder.actor.accountId, pending);
+      probe = await seedWorkSlot(db, founder.actor.accountId, pending),
+      // Seeded last so its deadline starts counting as late as possible; the offer expiry and this deadline overlap.
+      late = await seedWorkSlot(db, founder.actor.accountId, {
+        ...pending,
+        deadlines: { ...raidTerms().deadlines, commitment: soon(9000) },
+      });
     const applyFor = (
       who: typeof applicant,
       s: { slotId: string; termsVersionId: string },
@@ -365,19 +366,20 @@ integration('T021 applications and offers', () => {
     await expect(applyFor(applicant, probe)).rejects.toMatchObject({ code: 'APPLICATION_LIMIT' });
     // True when exactly `live` paths count: a cap of `live` refuses and a cap of `live + 1` admits (then withdraws).
     const countsLive = async (live: number) => {
-      const refused = await applyFor(applicant, probe, { ...host, applicationLimit: live }).then(
-        () => false,
-        (error) => error instanceof WorkError && error.code === 'APPLICATION_LIMIT',
+      const withdraw = (id: string) =>
+        run((tx) => withdrawApplication(tx, cmd(applicant.actor, { applicationId: id }), host));
+      // A cap of `live` that admits means more than `live` paths are free: undo it and report the mismatch.
+      const tooMany = await applyFor(applicant, probe, { ...host, applicationLimit: live }).then(
+        async (a) => (await withdraw(a.application.id), true),
+        (error) => {
+          if (error instanceof WorkError && error.code === 'APPLICATION_LIMIT') return false;
+          throw error;
+        },
       );
+      if (tooMany) return false;
       const admitted = await applyFor(applicant, probe, { ...host, applicationLimit: live + 1 });
-      await run((tx) =>
-        withdrawApplication(
-          tx,
-          cmd(applicant.actor, { applicationId: admitted.application.id }),
-          host,
-        ),
-      );
-      return refused;
+      await withdraw(admitted.application.id);
+      return true;
     };
     const untilDatabaseClockPasses = async (at: string) => {
       const until = Date.now() + 15000;
@@ -431,9 +433,15 @@ integration('T021 applications and offers', () => {
     );
     expect(await countsLive(3)).toBe(true);
     // 3. An offer reaches its database-clock expiry without being accepted or revoked.
-    const expiresAt = soon(1200);
+    const expiresAt = soon(4000);
     await offerTo(cmd(founder.actor, { applicationId: paths[3].application.id, expiresAt }));
     expect(await countsLive(3)).toBe(true);
+    // The pending offer counted only because its expiry had not yet been reached by the database clock.
+    const [{ before }] = await db.$queryRawUnsafe<{ before: boolean }[]>(
+      'SELECT clock_timestamp()<$1::timestamptz AS before',
+      expiresAt,
+    );
+    expect(before, 'the pre-expiry check outlived the offer; the runner is too slow').toBe(true);
     await untilDatabaseClockPasses(expiresAt);
     expect(await countsLive(2)).toBe(true);
     // 4. Another target's commitment deadline passes, so nobody can still commit to it.
@@ -444,13 +452,32 @@ integration('T021 applications and offers', () => {
     expect(await countsLive(2)).toBe(true);
     await untilDatabaseClockPasses(commitment);
     expect(await countsLive(1)).toBe(true);
-    // Every closed path keeps its history, and the untouched target is still an open application.
+    // History is retained: eagerly closed paths are CLOSED, while the deadline and expiry paths were excluded by the
+    // query alone, leaving their rows SUBMITTED; the untouched target is still an open application.
+    const stateOf = async (id: string) =>
+      (
+        (await db.$queryRawUnsafe(
+          'SELECT "state" FROM "RaidApplication" WHERE "id"=$1::uuid',
+          id,
+        )) as { state: string }[]
+      )[0]?.state;
+    expect(await Promise.all(paths.map((p) => stateOf(p.application.id)))).toEqual([
+      'CLOSED',
+      'CLOSED',
+      'SUBMITTED',
+      'SUBMITTED',
+      'SUBMITTED',
+    ]);
     expect(
       await db.$queryRawUnsafe(
-        'SELECT count(*)::int AS n FROM "RaidApplication" WHERE "id" IN (SELECT jsonb_array_elements_text($1::jsonb)::uuid)',
-        JSON.stringify(paths.map((p) => p.application.id)),
+        `SELECT o."state",o."expiresAt"<clock_timestamp() AS "elapsed" FROM "RaidOffer" o WHERE o."applicationId" IN ($1::uuid,$2::uuid) ORDER BY o."state"`,
+        rivalApplication.application.id,
+        paths[3].application.id,
       ),
-    ).toEqual([{ n: 5 }]);
+    ).toEqual([
+      { state: 'ACCEPTED', elapsed: false },
+      { state: 'PENDING', elapsed: true },
+    ]);
     // Four new applications are possible, the fifth is refused again.
     for (let i = 0; i < 4; i++)
       await applyFor(applicant, await seedWorkSlot(db, founder.actor.accountId, pending));
