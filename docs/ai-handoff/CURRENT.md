@@ -1,16 +1,11 @@
 # Current checkpoint
 
-- 2026-11-15, Claude (orchestrator, parallel worktree agents authorized by owner). Session closed; no session agents or pollers running. Untracked `WARP.md`, `.playwright-mcp/` preserved in main checkout.
-- **Merged this session (each Checks-green on exact head):** #489 DEC-04 managed-updates cursor; #485 DEC-12 evidence snapshot (MAJOR existence-oracle fix independently verified; migration 202611140005); #492 #487 swap-accept User locks ordered by id (review: 0 BLOCKER/MAJOR); #494 #490 appeal follow-ups (related-Party conflict = fully consented roster, fresh-review exclusion triggers, overdue alert; migration 202611150001; review MAJOR fixed+verified); #493 DEC-02 ownership hook v2 `verificationRef` (migration 202611150002, NOT VALID CHECK — never VALIDATE; Root hook still closed); #495 unpublished-update cap trailing 30 days incl. Founder + MINOR dispositions.
-- **Closed:** #483 (main green twice: 65228fb, 1b53bf0), #487, #292, #296, #320, #321, #355, #372, #275, #300.
-- **Latest migration on main:** 202611150002. Pick next free number after origin/main.
-- **New follow-ups:** #491 (evidence snapshot timing NOTE), #496 (activateGuild lock order + #492 MINORs), #497 (appeal MINOR/NOTEs + owner-open: fresh-review initiation, case view, financial-interest conflict). #269 item 3 needs migration (risky; review).
-- **T010 (#52):** blocked on O11/G10 project-control evidence (owner). DEC-02 plumbing delivered ahead of it.
-- **Old worktrees** `.claude/worktrees/agent-a52e…` (closure candidates; superseded by 202611050003), `a9088…` (closure principal; superseded by #481), `a638…` (#253 catalog-scope test edit; likely superseded): not deleted. Session agent worktrees under `.claude/worktrees/` hold merged work.
-- **Checks on main tip after #493/#494/#495:** not re-run; dispatch once next session.
-- **Reviews:** all same-model agents; human review NOT VERIFIED.
-- **Owner-only:** O02, O08, O05 mainnet, O11 legal, O12; #490 remainders; #294-8; #57/#49 (T078/UAT). Never build real money/fees/mainnet.
-- **Owner actions (carried):** Docker VM inodes; staging stale `METEORA_*` incl. secret key; VM `compose.yaml` lacks `RAID_ENVIRONMENT`; `WORK_ACCEPTANCE_TAXONOMY_ID` unset; non-staging flag + `USDC_NETWORK` audit. Container `pg-352-closure-principal-24935` not ours.
-- **Tooling:** shared GitHub API limit; one 300s poll loop per agent, stop leftover pollers.
-- **NOT VERIFIED:** UAT U001–U016, G01–G10, T077–T088/T096.
-- **Next:** 1) Checks on main tip; 2) #496 lock order; 3) #497 MINORs; 4) #269-3 (migration, review); 5) owner decisions unlock rest.
+- 2026-11-16, Claude (orchestrator, worktree agents authorized). Session closed; no agents/pollers running. Untracked `WARP.md`, `.playwright-mcp/` preserved.
+- **Merged 2026-11-15/16 (Checks-green exact head; risky ones independently reviewed):** #489, #485, #492, #494, #493, #495, #499 (#269-3, mig 202611150004), #500 (#496), #503 (#497 MINORs), #504 (#501, mig 202611150005), #505 (#491+#502), #506 staging Studio devnet-USDC opt-in + devnet-only boot guard. Main `04d11ad` Checks green. Latest migration 202611150005.
+- **Open follow-ups:** #497 NOTEs + owner-open appeal items, #490 remainders, #269 non-migration NOTEs, #294-8.
+- **Staging (raidstaging@192.168.101.8, /home/raidstaging/useraid-staging):** running local owner-authorized build of `04d11ad` (docker save|load; Watchtower pull DENIED — GHCR read token expired 10 Nov; owner must renew `read:packages` token via `docker --config registry login ghcr.io`). Studio devnet USDC ON: `.env` STAGING_STUDIO_USDC_ENABLED=true; `.env.app` USDC_NETWORK=devnet, SOLANA_RPC_URL devnet, USDC_MICROS_PER_1000_IMPRESSIONS=10000, USDC_FUNDING_ADDRESS=HQQnJMbVKfvkfqAEUpxXCtmMr3SwmTsDLdZAWWaqmsSv (keypair `secrets/devnet-usdc-funding-keypair.json`, 600), ADMIN_X_IDS=@useraidfun,@txsamuraii, X_BEARER_TOKEN set; synthetic WORK_*/GUILD_ROLE/PARTY_ROSTER flags false (DEC-2026-11-07-01 h); Settings.collectionEnabled=true (ModerationEvent audit row). `depositsReady()`=true. LAUNCH/PAYOUT false. Backups `backups/*.before-{devnet-usdc,studio,admin,bearer}-*`. Rollback: set STAGING_STUDIO_USDC_ENABLED=false, `docker compose up -d --no-deps --pull never web worker`.
+- **Staging warnings:** X API returns 402 (no paid credits) → impression collection will fail until X account funded. X bearer token was pasted in chat → owner should rotate. Never set RAID_FUNDING_ADDRESS / RAID_LAMPORTS_* on staging (legacy mainnet SOL path).
+- **Reviews:** same-model agents; human review NOT VERIFIED. UAT U001–U016, G01–G10, T077–T088/T096 NOT VERIFIED.
+- **Owner-only:** O02, O08, O05 mainnet, O11, O12; T010 (#52) blocked on O11/G10. Never real money/fees/mainnet.
+- **Owner actions:** renew GHCR token; fund X API or accept no tracking; rotate X token; Docker VM inodes; stale METEORA_* secrets; WORK_ACCEPTANCE_TAXONOMY_ID.
+- **Next:** 1) owner tests devnet deposit→launch on staging, fix bugs found; 2) #497/#269 NOTEs; 3) next dependency-ready board items (T016→T020→T021→T023→T024→T022 sequence, simulated funds).
