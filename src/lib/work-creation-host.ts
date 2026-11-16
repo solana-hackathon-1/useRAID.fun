@@ -10,6 +10,7 @@ import { recommend } from '../work-loop/recommendation';
 import { hasGuildAuthority } from '../guild-profiles/guild-storage';
 import { SkillTaxonomyStorageError } from '../skills/taxonomy-storage-contracts';
 import { readPublishedSkillTaxonomy } from '../skills/taxonomy-storage';
+import { isPublishedAssessmentPolicy } from '../skills/assessment-policy-lookup';
 import { runCommandTransaction } from './command-receipts-adapter';
 import { db } from './db';
 
@@ -81,6 +82,29 @@ const verifyRequiredSkills: NonNullable<WorkHost['verifyRequiredSkills']> = asyn
   const active = new Set(taxonomy.skills.filter((s) => s.status === 'ACTIVE').map((s) => s.id));
   return skills.length > 0 && skills.every((s) => active.has(s.skillId));
 };
+/**
+ * T016 / blueprint 11.2: acceptance matches a person's verified assessment to the requirement's exact policy version,
+ * so a Raid is published only when each `assessmentPolicyVersion` is a current approved assessment policy for that
+ * skill in the configured taxonomy. Same fail-closed contract as `verifyRequiredSkills`; no taxonomy configured is "no".
+ */
+const verifyAssessmentPolicies: NonNullable<WorkHost['verifyAssessmentPolicies']> = async (
+  tx,
+  _actor,
+  skills,
+) => {
+  const taxonomyId = skillTaxonomyId();
+  if (!taxonomyId || skills.length === 0) return false;
+  for (const s of skills)
+    if (
+      !(await isPublishedAssessmentPolicy(tx, {
+        policyVersionId: s.assessmentPolicyVersion,
+        skillId: s.skillId,
+        taxonomyId,
+      }))
+    )
+      return false;
+  return true;
+};
 function workHost(allowNewWrites: boolean): WorkHost {
   return {
     allowNewWrites,
@@ -88,6 +112,7 @@ function workHost(allowNewWrites: boolean): WorkHost {
       action === 'MANAGE_LISTING' && guild === guildId() && operators().has(actor.accountId),
     reserveSimulatedFunding: createSimulatedReservations(rewardCatalog()),
     verifyRequiredSkills,
+    verifyAssessmentPolicies,
   };
 }
 function requireReads() {

@@ -1357,6 +1357,60 @@ integration('T025 consented amendments and replacement contracts', { timeout: 60
       ),
     ).rejects.toThrow(/terminated/i);
   });
+  it('applies the publication skill and assessment-policy checks to a replacement, creating nothing when refused', async () => {
+    const original = await setup({ deadlines: overdue() });
+    const ops = await seedWorkHuman(db, 'ops-' + randomUUID());
+    const live = await engagement(original.engagementId);
+    await new Promise((resolve) =>
+      setTimeout(resolve, Math.max(0, Date.parse(overdueEnd(original)) - Date.now() + 400)),
+    );
+    await run((tx) =>
+      closeOverdueEngagement(
+        tx,
+        cmd(ops.actor, { engagementId: original.engagementId, expectedRevision: live.revision }),
+        { allowNewWrites: true, authorize: async () => true },
+      ),
+    );
+    const reservations: string[] = [];
+    const seen: unknown[] = [];
+    const host = (skills: unknown, policies: unknown): WorkHost => ({
+      ...founderHost(original.founder.actor.accountId, reservations),
+      verifyRequiredSkills: async (_tx, _actor, required) => {
+        seen.push(required);
+        return skills as boolean;
+      },
+      verifyAssessmentPolicies: async (_tx, _actor, required) => {
+        seen.push(required);
+        return policies as boolean;
+      },
+    });
+    const reissue = (h: WorkHost) =>
+      run((tx) =>
+        reissueRaid(
+          tx,
+          cmd(original.founder.actor, reissueInput(original.engagementId, replacementTerms())),
+          h,
+        ),
+      );
+    for (const [skills, policies] of [
+      [false, true],
+      [true, false],
+      [undefined, true],
+      [true, 'true'],
+    ])
+      await expect(reissue(host(skills, policies))).rejects.toMatchObject({
+        code: 'PUBLICATION_BLOCKED',
+      });
+    expect(seen[0]).toEqual(replacementTerms().requiredSkills);
+    // Nothing was created: no replacement listing, slot, reservation or link, and the worker's claim is untouched.
+    expect(await row('SELECT 1 FROM "WorkListing"')).toHaveLength(1);
+    expect(await row('SELECT 1 FROM "RaidSlot"')).toHaveLength(1);
+    expect(await row('SELECT 1 FROM "RaidReplacement"')).toEqual([]);
+    expect(reservations).toEqual([]);
+    // Once the host recognises the skills and policies the very same replacement publishes.
+    await expect(reissue(host(true, true))).resolves.toMatchObject({ status: 'EXECUTED' });
+    expect(await row('SELECT 1 FROM "RaidSlot"')).toHaveLength(2);
+  });
   it('refuses unauthorized, unfunded, accepted-work and disabled replacements without creating anything', async () => {
     const { founder, engagementId } = await setup();
     await start(engagementId);

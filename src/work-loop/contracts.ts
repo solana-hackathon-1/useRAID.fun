@@ -38,6 +38,18 @@ export interface WorkHost {
     actor: WorkActor,
     skills: RaidTerms['requiredSkills'],
   ): Promise<boolean>;
+  /**
+   * Optional assessment-policy check (T016, blueprint 11.2/R05), same contract as `verifyRequiredSkills`: resolves
+   * exactly `true` only when every requirement's `assessmentPolicyVersion` names a published assessment policy that is
+   * current and approved for that skill, because acceptance matches verified assessments against that exact version.
+   * Anything else blocks publication and is shown as ASSESSMENT_POLICY_NOT_PUBLISHED. Omitted means no opinion; the
+   * Root composition always supplies it. It runs inside the publication transaction and must not wait on a provider.
+   */
+  verifyAssessmentPolicies?(
+    tx: CommandReceiptTransaction,
+    actor: WorkActor,
+    skills: RaidTerms['requiredSkills'],
+  ): Promise<boolean>;
 }
 export class WorkError extends Error {
   constructor(

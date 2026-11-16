@@ -139,6 +139,21 @@ integration('T018 founder creation drafts and simulated reward reservation', () 
     const [silent] = await read(undefined);
     expect(silent.problems).not.toContain('SKILL_NOT_RECOGNISED');
   });
+  it('shows the Founder an unpublished assessment policy as a server-derived publication problem', async () => {
+    const mine = await founder();
+    const h = hostFor(mine.actor.accountId, assets(true));
+    await save(mine, h, raidTerms());
+    const read = (verify: WorkHost['verifyAssessmentPolicies']) =>
+      run((tx) => readCreationDrafts(tx, mine.actor, { ...h, verifyAssessmentPolicies: verify }));
+    const [unpublished] = await read(async () => false);
+    expect(unpublished.problems).toContain('ASSESSMENT_POLICY_NOT_PUBLISHED');
+    expect(unpublished.problems).not.toContain('SKILL_NOT_RECOGNISED');
+    const [published] = await read(async () => true);
+    expect(published.problems).not.toContain('ASSESSMENT_POLICY_NOT_PUBLISHED');
+    // A host with no assessment-policy registry states no opinion, as before.
+    const [silent] = await read(undefined);
+    expect(silent.problems).not.toContain('ASSESSMENT_POLICY_NOT_PUBLISHED');
+  });
   it('reads an exact old receipt version outside the recent list without substituting current terms', async () => {
     const f = await founder();
     const host = hostFor(f.actor.accountId, assets(true));

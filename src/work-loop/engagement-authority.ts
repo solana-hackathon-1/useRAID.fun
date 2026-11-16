@@ -28,6 +28,17 @@ export async function skillsRecognised(
   if (typeof host.verifyRequiredSkills !== 'function') fail('STORAGE_CONTRACT');
   return (await host.verifyRequiredSkills(tx, actor, skills)) === true;
 }
+/** True unless the host supplies an assessment-policy registry check that does not answer exactly `true`. */
+export async function assessmentPoliciesPublished(
+  tx: Tx,
+  actor: WorkActor,
+  host: Pick<WorkHost, 'verifyAssessmentPolicies'>,
+  skills: RaidTerms['requiredSkills'],
+): Promise<boolean> {
+  if (host.verifyAssessmentPolicies === undefined) return true;
+  if (typeof host.verifyAssessmentPolicies !== 'function') fail('STORAGE_CONTRACT');
+  return (await host.verifyAssessmentPolicies(tx, actor, skills)) === true;
+}
 export function validate(tx: Tx, actor: WorkActor) {
   if (
     tx?.dialect !== 'POSTGRESQL' ||
