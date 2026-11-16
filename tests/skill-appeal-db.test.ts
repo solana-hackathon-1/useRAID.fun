@@ -5,7 +5,10 @@ import { hash } from '../src/lib/auth-primitives';
 import { runCommandTransaction } from '../src/lib/command-receipts-adapter';
 import { saveGuildDraft } from '../src/guild-profiles/draft-storage';
 import { activateGuild, grantGuildRole } from '../src/guild-profiles/guild-storage';
-import { createParty } from '../src/parties';
+import { createParty, proposePartyRoster, recordPartyMemberConsent } from '../src/parties';
+import { canonicalRequestDigest } from '../src/command-receipts';
+import { raidTerms } from './helpers/raid-terms-fixture';
+import { seedWorkHuman, seedWorkSlot } from './helpers/work-loop-db';
 import {
   PARTY_ROSTER_LOCK_CLASS,
   PARTY_ROSTER_LOCK_KEY,
@@ -565,6 +568,167 @@ integration('T014 skill-assessment appeals: intake and independent adjudication 
       expect(
         await db.$queryRawUnsafe('SELECT 1 FROM "SkillAssessmentAppealDecision"'),
       ).toHaveLength(0);
+    });
+    // The two sides below are the real commands (recordPartyMemberConsent, adjudicateSkillAssessmentAppeal), not a
+    // hand-written lock-and-insert. The only test seam is a transaction wrapper that parks one command, after it ran the
+    // statement named by `parkAfter`, until released, so the interleaving is deterministic rather than timing-based.
+    type CommandTx = Parameters<Parameters<typeof run>[0]>[0];
+    function parked(parkAfter: string) {
+      let release!: () => void;
+      let reached!: () => void;
+      const gate = new Promise<void>((r) => (release = r));
+      const parkedAt = new Promise<void>((r) => (reached = r));
+      const wrap = (tx: CommandTx): CommandTx =>
+        new Proxy(tx, {
+          get: (target, prop, receiver) => {
+            if (prop !== 'query') return Reflect.get(target, prop, receiver);
+            return async (sql: string, bindings: never) => {
+              const rows = await target.query(sql, bindings);
+              if (sql.includes(parkAfter)) {
+                reached();
+                await gate;
+              }
+              return rows;
+            };
+          },
+        });
+      return { wrap, parkedAt, release };
+    }
+    async function realRosterFixture() {
+      const adjudicator = await seedWorkHuman(db);
+      allowlist.add(adjudicator.actor.accountId);
+      // The member whose consent completes the roster is a third human: the adjudicator's own consent would first
+      // queue on that account's identity lock, which is a different (earlier) serialization point than the roster lock.
+      const closer = await seedWorkHuman(db);
+      const slot = await seedWorkSlot(db, 'founder-' + randomUUID());
+      const terms = { ...raidTerms(), execution: 'PARTY' };
+      // Publication still refuses PARTY terms until Party acceptance exists; relabel the stored terms of the SOLO slot.
+      await db.$transaction(async (tx) => {
+        await tx.$executeRawUnsafe(`SET LOCAL session_replication_role = replica`);
+        await tx.$executeRawUnsafe(
+          `UPDATE "TermsVersion" SET "snapshot"=$1::jsonb,"digest"=$2 WHERE "id"=$3::uuid`,
+          JSON.stringify(terms),
+          canonicalRequestDigest(terms),
+          slot.termsVersionId,
+        );
+      });
+      const command = (actor: Actor, input: unknown) => ({
+        actor,
+        input,
+        idempotencyKey: randomUUID(),
+        requestId: 'synthetic-roster',
+      });
+      const { party } = await run((tx) =>
+        createParty(tx, command(appellant, { name: 'Synthetic Party' }), { allowNewWrites: true }),
+      );
+      const [{ id: appellantParticipantId }] = await db.$queryRawUnsafe<{ id: string }[]>(
+        'SELECT "id"::text AS "id" FROM "Participant" WHERE "accountId"=$1',
+        appellant.accountId,
+      );
+      const { proposal } = await run((tx) =>
+        proposePartyRoster(
+          tx,
+          command(appellant, {
+            partyId: party.id,
+            slotId: slot.slotId,
+            termsVersionId: slot.termsVersionId,
+            termsDigest: canonicalRequestDigest(terms),
+            members: [
+              {
+                participantId: appellantParticipantId,
+                role: 'Lead',
+                allocations: [{ amount: '500000000' }],
+              },
+              {
+                participantId: adjudicator.participantId,
+                role: 'Member',
+                allocations: [{ amount: '300000000' }],
+              },
+              {
+                participantId: closer.participantId,
+                role: 'Member',
+                allocations: [{ amount: '200000000' }],
+              },
+            ],
+          }),
+          { allowNewWrites: true },
+        ),
+      );
+      const consentInput = { proposalId: proposal.id, snapshotDigest: proposal.snapshotDigest };
+      const consent = (actor: Actor, wrap: (tx: CommandTx) => CommandTx = (tx) => tx) =>
+        run((tx) =>
+          recordPartyMemberConsent(wrap(tx), command(actor, consentInput), {
+            allowNewWrites: true,
+          }),
+        );
+      // The appellant (the Party leader) and the adjudicator have consented; the closer's consent forms the roster.
+      await consent(appellant);
+      await consent(adjudicator.actor);
+      return { adjudicator, closer, consent };
+    }
+    const decisions = () =>
+      db.$queryRawUnsafe<{ id: string }[]>(
+        'SELECT "id"::text AS "id" FROM "SkillAssessmentAppealDecision"',
+      );
+    const adjudicateWith = (appealId: string, actor: Actor, wrap: (tx: CommandTx) => CommandTx) =>
+      run((tx) =>
+        adjudicateSkillAssessmentAppeal(
+          wrap(tx),
+          {
+            actor,
+            input: {
+              version: 'v1',
+              appealId,
+              outcome: 'DENIED',
+              reason: 'Synthetic bounded reason for the outcome.',
+            },
+            idempotencyKey: randomUUID(),
+            requestId: 'synthetic-adjudicate',
+          },
+          { allowNewWrites: true, isAdjudicator: (id) => allowlist.has(id) },
+        ),
+      );
+    it('real consent in flight: the real adjudication waits, then sees the formed roster and refuses', async () => {
+      const { adjudicator, closer, consent } = await realRosterFixture();
+      const consenting = parked('INSERT INTO "PartyMemberConsent"');
+      const recording = consent(closer.actor, consenting.wrap);
+      await consenting.parkedAt;
+      let finished = false;
+      const pending = adjudicateWith(appealId, adjudicator.actor, (tx) => tx).then(
+        (value) => ((finished = true), { value }),
+        (error) => ((finished = true), { error }),
+      );
+      expect(await waitForAdvisoryWaiter(db, PARTY_ROSTER_LOCK_KEY, PARTY_ROSTER_LOCK_CLASS)).toBe(
+        true,
+      );
+      await new Promise((r) => setTimeout(r, 200));
+      expect(finished).toBe(false);
+      consenting.release();
+      expect((await recording).status).toBe('EXECUTED');
+      expect(await pending).toMatchObject({ error: { code: 'FORBIDDEN' } });
+      expect(await decisions()).toHaveLength(0);
+    });
+    it('real adjudication in flight: the real consent waits for the decision, then forms the roster after it', async () => {
+      const { adjudicator, closer, consent } = await realRosterFixture();
+      const deciding = parked('INSERT INTO "SkillAssessmentAppealDecision"');
+      const adjudicating = adjudicateWith(appealId, adjudicator.actor, deciding.wrap);
+      await deciding.parkedAt;
+      let finished = false;
+      const pending = consent(closer.actor).then((value) => ((finished = true), value));
+      expect(await waitForAdvisoryWaiter(db, PARTY_ROSTER_LOCK_KEY, PARTY_ROSTER_LOCK_CLASS)).toBe(
+        true,
+      );
+      await new Promise((r) => setTimeout(r, 200));
+      expect(finished).toBe(false);
+      deciding.release();
+      expect(await adjudicating).toMatchObject({ status: 'EXECUTED' });
+      expect((await pending).status).toBe('EXECUTED');
+      // The decision was written against the rosters formed at that moment; the consent formed this one afterwards.
+      expect(await decisions()).toHaveLength(1);
+      const [{ ordered }] = await db.$queryRawUnsafe<{ ordered: boolean }[]>(
+        `SELECT (SELECT "decidedAt" FROM "SkillAssessmentAppealDecision") <= (SELECT max("consentedAt") FROM "PartyMemberConsent") AS "ordered"`,
+      );
+      expect(ordered).toBe(true);
     });
     it('lets exactly one of two concurrent adjudicators decide', async () => {
       const [a, b] = [await person(), await person()];

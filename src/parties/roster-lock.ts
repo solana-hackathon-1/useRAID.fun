@@ -6,9 +6,11 @@
  * reader's transaction ends. A consent therefore cannot slip in between the check and the decision it guards.
  *
  * Lock order: this is always the LAST lock a transaction takes (after the listing/slot rows, identity locks and any
- * 12017-12022 advisory lock) and nothing is awaited under it but the statements that finish the transaction, so it can
- * never take part in a cycle. One fixed key (rosters are not partitioned): readers are rare and holders are short.
- * Both sides must use these helpers; a unit test fails on a copied literal.
+ * 12017-12022 advisory lock) and a holder takes no further lock, only the statements that finish its transaction, so
+ * the lock can never take part in a cycle. It does not make the other side free: a consent waiting for an exclusive
+ * holder keeps the listing/slot share locks and identity locks it already took until that holder commits, which is
+ * bounded by one short transaction. One fixed key (rosters are not partitioned): readers are rare and holders are
+ * short. Both sides must use these helpers; a unit test fails on a copied literal.
  */
 export const PARTY_ROSTER_LOCK_CLASS = 12023;
 export const PARTY_ROSTER_LOCK_KEY = 'party-roster';
