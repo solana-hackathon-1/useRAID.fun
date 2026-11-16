@@ -69,6 +69,10 @@ const PROBLEM_TEXT: Record<string, string> = {
   APPROVAL_REQUIRED: 'Higher difficulty needs application approval.',
   UNSUPPORTED_MODE: 'This format is not supported yet. Use public, solo and human participants.',
   INVALID_TERMS: 'The saved terms are not valid.',
+  SKILL_NOT_RECOGNISED:
+    'A required skill is not an active skill of the published skill taxonomy. Check the skill id.',
+  ASSESSMENT_POLICY_NOT_PUBLISHED:
+    'A required skill names an assessment policy version that is not published and approved for that skill. Check the policy version.',
   TERMS_VERSION_CHANGED: 'A newer version was saved. Reload to review the current draft.',
   FUNDING_NOT_COVERED:
     'The simulated reserve does not cover every reward asset, so this reward cannot be published.',
@@ -407,6 +411,18 @@ function AccountWorkWizard({ accountId, initialState, client = defaultClient }: 
                     onChange={(v) =>
                       patch({
                         skills: form.skills.map((x, j) => (j === i ? { ...x, skillId: v } : x)),
+                      })
+                    }
+                  />
+                  <Text
+                    label={'Skill ' + (i + 1) + ' assessment policy version'}
+                    value={skill.assessmentPolicyVersion}
+                    max={200}
+                    onChange={(v) =>
+                      patch({
+                        skills: form.skills.map((x, j) =>
+                          j === i ? { ...x, assessmentPolicyVersion: v } : x,
+                        ),
                       })
                     }
                   />

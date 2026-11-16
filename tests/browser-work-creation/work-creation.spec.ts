@@ -52,6 +52,7 @@ async function fillOutcomeAndAcceptance(page: Page) {
 async function fillFormat(page: Page) {
   await step(page, 4, 'Format').click();
   await page.getByLabel('Skill 1 id').fill('writing');
+  await page.getByLabel('Skill 1 assessment policy version').fill(fixture.policyVersionId);
 }
 async function fillRewardAndReview(page: Page, asset = 'Synthetic SOL', amount = '1.5') {
   await step(page, 5, 'Reward and terms').click();

@@ -8,7 +8,15 @@ import { InternalId } from '../contracts/ids';
 import type { WorkCommand, WorkHost } from './contracts';
 import { publicationProblems } from './terms';
 import { ReissueRaidInput, ReissuedRaidSchema } from './replacement-contracts';
-import { fail, validate, session, currentActor, clock } from './engagement-authority';
+import {
+  fail,
+  validate,
+  session,
+  currentActor,
+  clock,
+  skillsRecognised,
+  assessmentPoliciesPublished,
+} from './engagement-authority';
 
 function hostContract(host: WorkHost) {
   if (
@@ -70,6 +78,11 @@ export async function reissueRaid(tx: Tx, command: WorkCommand, host: WorkHost) 
       );
       if (prior.length) fail('REPLACEMENT_EXISTS');
       if (publicationProblems(value.terms, await clock(tx)).length) fail('PUBLICATION_BLOCKED');
+      // A replacement is a new publication: it names only recognised skills and published assessment policies.
+      if (!(await skillsRecognised(tx, actor, host, value.terms.requiredSkills)))
+        fail('PUBLICATION_BLOCKED');
+      if (!(await assessmentPoliciesPublished(tx, actor, host, value.terms.requiredSkills)))
+        fail('PUBLICATION_BLOCKED');
       const [listing] = await tx.query<{ id: string }>(
         'INSERT INTO "WorkListing" ("guildId","creatorAccountId") VALUES ($1,$2) RETURNING "id"::text',
         [guildId, actor.accountId],

@@ -128,8 +128,16 @@ export async function seedWorkCreationFixture() {
       { allowNewWrites: true, canPublish: () => true },
     ),
   );
+  // The approved assessment policy the Raid names (acceptance matches a verified assessment to this exact version).
+  const { publishAssessmentPolicy } = await import('./assessment-policy-fixture');
+  const { policyVersionId } = await publishAssessmentPolicy(
+    db,
+    { accountId: publisher.id, sessionHash: publisherSession },
+    { taxonomyId: WORK_CREATION_TAXONOMY_ID, skillId: 'writing', skillDomain: 'content' },
+  );
   return {
     db,
+    policyVersionId,
     founder: await human('founder-synthetic'),
     stranger: await human('synthetic-stranger'),
   };
