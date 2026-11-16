@@ -335,6 +335,127 @@ integration('T021 applications and offers', () => {
       ),
     ).resolves.toMatchObject({ status: 'EXECUTED' });
   });
+  it('frees the cap as targets are filled by someone else, edited, reach their commitment deadline or lose an expired offer (AC24)', async () => {
+    const founder = await seedWorkHuman(db, 'founder-' + randomUUID()),
+      applicant = await seedWorkHuman(db),
+      rival = await seedWorkHuman(db);
+    const soon = (ms: number) => new Date(Date.now() + ms).toISOString();
+    const pending = { admission: 'APPLICATION' } as const;
+    const filled = await seedWorkSlot(db, founder.actor.accountId, pending),
+      edited = await seedWorkSlot(db, founder.actor.accountId, pending),
+      late = await seedWorkSlot(db, founder.actor.accountId, {
+        ...pending,
+        deadlines: { ...raidTerms().deadlines, commitment: soon(8000) },
+      }),
+      lapsing = await seedWorkSlot(db, founder.actor.accountId, pending),
+      open = await seedWorkSlot(db, founder.actor.accountId, pending),
+      probe = await seedWorkSlot(db, founder.actor.accountId, pending);
+    const applyFor = (
+      who: typeof applicant,
+      s: { slotId: string; termsVersionId: string },
+      h = host,
+    ) =>
+      applyTo(
+        cmd(who.actor, { slotId: s.slotId, termsVersionId: s.termsVersionId, evidenceRefs: [] }),
+        h,
+      );
+    // The applicant holds five open paths; a sixth is refused while all five are live.
+    const paths = [];
+    for (const s of [filled, edited, late, lapsing, open]) paths.push(await applyFor(applicant, s));
+    await expect(applyFor(applicant, probe)).rejects.toMatchObject({ code: 'APPLICATION_LIMIT' });
+    // True when exactly `live` paths count: a cap of `live` refuses and a cap of `live + 1` admits (then withdraws).
+    const countsLive = async (live: number) => {
+      const refused = await applyFor(applicant, probe, { ...host, applicationLimit: live }).then(
+        () => false,
+        (error) => error instanceof WorkError && error.code === 'APPLICATION_LIMIT',
+      );
+      const admitted = await applyFor(applicant, probe, { ...host, applicationLimit: live + 1 });
+      await run((tx) =>
+        withdrawApplication(
+          tx,
+          cmd(applicant.actor, { applicationId: admitted.application.id }),
+          host,
+        ),
+      );
+      return refused;
+    };
+    const untilDatabaseClockPasses = async (at: string) => {
+      const until = Date.now() + 15000;
+      for (;;) {
+        const [r] = await db.$queryRawUnsafe<{ over: boolean }[]>(
+          'SELECT clock_timestamp()>$1::timestamptz AS over',
+          at,
+        );
+        if (r.over) return;
+        if (Date.now() > until) throw Error('The database clock never reached ' + at);
+        await new Promise((resolve) => setTimeout(resolve, 20));
+      }
+    };
+    // 1. A rival is offered and accepts the same slot: it is filled and the applicant's path stops counting.
+    const rivalApplication = await applyFor(rival, filled);
+    const rivalOffer = await offerTo(
+      cmd(founder.actor, {
+        applicationId: rivalApplication.application.id,
+        expiresAt: soon(3600000),
+      }),
+    );
+    await run((tx) =>
+      commitEngagement(
+        tx,
+        cmd(rival.actor, {
+          slotId: filled.slotId,
+          termsVersionId: filled.termsVersionId,
+          offerId: rivalOffer.offer.id,
+        }),
+        syntheticAcceptanceHost,
+      ),
+    );
+    expect(await countsLive(4)).toBe(true);
+    // 2. The Founder edits another target's terms, which closes its slot and applications.
+    await run((tx) =>
+      saveRaidTerms(
+        tx,
+        cmd(founder.actor, {
+          listingId: edited.listingId,
+          expectedRevision: 1,
+          guildId: 'synthetic-guild',
+          terms: { ...raidTerms(), admission: 'APPLICATION', title: 'Edited synthetic task' },
+        }),
+        {
+          allowNewWrites: true,
+          authorize: async (_tx, who, guild) =>
+            who.accountId === founder.actor.accountId && guild === 'synthetic-guild',
+          reserveSimulatedFunding: async (_tx, b) => 'synthetic:' + b.slotId,
+        },
+      ),
+    );
+    expect(await countsLive(3)).toBe(true);
+    // 3. An offer reaches its database-clock expiry without being accepted or revoked.
+    const expiresAt = soon(1200);
+    await offerTo(cmd(founder.actor, { applicationId: paths[3].application.id, expiresAt }));
+    expect(await countsLive(3)).toBe(true);
+    await untilDatabaseClockPasses(expiresAt);
+    expect(await countsLive(2)).toBe(true);
+    // 4. Another target's commitment deadline passes, so nobody can still commit to it.
+    const [{ commitment }] = (await db.$queryRawUnsafe(
+      `SELECT "snapshot"->'deadlines'->>'commitment' AS commitment FROM "TermsVersion" WHERE "id"=$1::uuid`,
+      late.termsVersionId,
+    )) as { commitment: string }[];
+    expect(await countsLive(2)).toBe(true);
+    await untilDatabaseClockPasses(commitment);
+    expect(await countsLive(1)).toBe(true);
+    // Every closed path keeps its history, and the untouched target is still an open application.
+    expect(
+      await db.$queryRawUnsafe(
+        'SELECT count(*)::int AS n FROM "RaidApplication" WHERE "id" IN (SELECT jsonb_array_elements_text($1::jsonb)::uuid)',
+        JSON.stringify(paths.map((p) => p.application.id)),
+      ),
+    ).toEqual([{ n: 5 }]);
+    // Four new applications are possible, the fifth is refused again.
+    for (let i = 0; i < 4; i++)
+      await applyFor(applicant, await seedWorkSlot(db, founder.actor.accountId, pending));
+    await expect(applyFor(applicant, probe)).rejects.toMatchObject({ code: 'APPLICATION_LIMIT' });
+  });
   const expiry = () => new Date(Date.now() + 3600000).toISOString();
   const accept = (
     applicantActor: Parameters<typeof cmd>[0],
